@@ -1,8 +1,12 @@
 import axios from "axios";
 import instance from "@/shared/api/instance";
 import { ApiErrorResponse } from "@/shared/api/types/ApiType";
+import postImageUploadWithSupabase from "./postImageUpload.supabase";
+import { isSupabase } from "@/shared/config/backend";
 
 const postImageUpload = async (file: File): Promise<string> => {
+  if (isSupabase) return postImageUploadWithSupabase(file);
+
   try {
     const formData = new FormData();
     formData.append("image", file);

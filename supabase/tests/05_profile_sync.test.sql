@@ -25,3 +25,17 @@ begin
   where id = (select auth_id from public.profiles where id = me);
   assert (select image from public.profiles where id = me) = 'https://img/mine.png', '직접 바꾼 이미지는 유지';
 end $$;
+
+-- 프로필 수정 RPC (20261005000009)
+do $$
+declare
+  a bigint := public.test_signup('pa@test.com', '에이');
+  b bigint := public.test_signup('pb@test.com', '비');
+begin
+  perform public.test_login(a);
+  assert public.update_my_profile(p_nickname => '새이름') ->> 'nickname' = '새이름', '닉네임 수정';
+  assert public.update_my_profile(p_image => 'https://img/x.png') ->> 'nickname' = '새이름', '이미지만 바꾸면 닉네임 유지';
+  assert public.test_error($q$select public.update_my_profile(p_nickname => '비')$q$) = 'P0001', '중복 닉네임은 거부';
+  perform public.test_logout();
+  assert (select nickname from public.profiles where id = b) = '비', '남의 프로필은 그대로';
+end $$;

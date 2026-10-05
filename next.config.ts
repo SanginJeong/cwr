@@ -1,5 +1,10 @@
 import type { NextConfig } from "next";
 
+// Supabase Storage 이미지 (supabase/migrations의 images 버킷)
+const supabaseHost = process.env.NEXT_PUBLIC_SUPABASE_URL
+  ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
+  : null;
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -9,6 +14,9 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      ...(supabaseHost
+        ? [{ protocol: "https" as const, hostname: supabaseHost, port: "", pathname: "/storage/v1/object/public/**" }]
+        : []),
     ],
   },
 
