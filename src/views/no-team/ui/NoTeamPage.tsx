@@ -5,17 +5,13 @@ import { PageLayout } from "@/shared/ui/page-layout";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/shared/config/routes";
-import { fetchWithServerToken } from "@/shared/api/serverFetch";
-import type { UserResponse } from "@/shared/api/types/UserType";
+import { getServerMe } from "@/shared/api/serverApi";
 
 const EmptyTeamPage = async () => {
   // 소속 팀이 있으면 첫 번째 팀으로 보낸다
-  const res = await fetchWithServerToken("/user");
-  if (res?.ok) {
-    const user: UserResponse = await res.json();
-    const groupId = user.memberships?.[0]?.groupId;
-    if (groupId) redirect(ROUTES.team(groupId));
-  }
+  const user = await getServerMe();
+  const groupId = user?.memberships?.[0]?.groupId;
+  if (groupId) redirect(ROUTES.team(groupId));
 
   return (
     <PageLayout ariaLabel="팀 페이지">
