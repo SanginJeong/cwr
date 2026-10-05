@@ -30,7 +30,7 @@ const instance = axios.create({
 
 const callRefreshEndpoint = async (): Promise<string | null> => {
   try {
-    const response = await fetch("/auth/refresh-token", {
+    const response = await fetch("/api/auth/refresh", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     });
