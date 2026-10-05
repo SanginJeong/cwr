@@ -2,19 +2,38 @@
 
 import { useGetArticles } from "@/api/hooks";
 import BestArticleCard from "../../../../(route)/dashboard/_components/Article/BestArticleCard";
+import BestArticleRankItem from "../../../../(route)/dashboard/_components/Article/BestArticleRankItem";
 import { useDevice } from "@/hooks";
 import { useState } from "react";
 import Pagination from "./_internal/Pagination";
 
+const PC_RANK_SIZE = 5;
+
 const DashBoardBestArticles = () => {
-  const { isMobile, isTablet } = useDevice();
+  const { isMobile, isTablet, isPc } = useDevice();
   const [page, setPage] = useState(1);
-  const pageSize = isMobile ? 1 : isTablet ? 2 : 3;
+  // PC는 사이드 영역에 순위 목록(5개), 모바일·태블릿은 캐러셀
+  const pageSize = isPc ? PC_RANK_SIZE : isMobile ? 1 : isTablet ? 2 : 3;
 
   const { data: articles } = useGetArticles({ page, pageSize, orderBy: "like" });
 
   if (!articles) {
     return null;
+  }
+
+  if (isPc) {
+    return (
+      <section className="rounded-[20px] bg-background-secondary p-5">
+        <h3 className="text-text-primary text-lg-bold mb-3 px-3">베스트 게시글</h3>
+        <ol className="flex flex-col">
+          {articles.list.map((article, index) => (
+            <li key={article.id}>
+              <BestArticleRankItem article={article} rank={index + 1} />
+            </li>
+          ))}
+        </ol>
+      </section>
+    );
   }
 
   const totalPages = Math.ceil(articles?.totalCount / pageSize);
