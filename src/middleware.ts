@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { AUTH_ONLY_ROUTES, PROTECTED_ROUTES, ROUTES } from "@/shared/config/routes";
 
-export async function middleware(req: NextRequest) {
+// 쿠키 유무로만 리다이렉트한다. 팀 존재 확인 등 API 호출이 필요한 검사는
+// 서버 컴포넌트(views/no-team, app/(route)/team/[teamId]/layout.tsx)에서 한다.
+export function middleware(req: NextRequest) {
   const token = req.cookies.get("accessToken")?.value;
 
   const { pathname } = req.nextUrl;
@@ -17,44 +19,9 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(ROUTES.login, req.url));
   }
 
-  // 소속팀 없는 페이지 -> 유저정보 검사 -> 리다이렉트
-  if (token && req.nextUrl.pathname === ROUTES.teams) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
-      headers: { Authorization: `Bearer ${token}` },
-      cache: "no-store",
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      const groupId = data.memberships?.[0]?.groupId;
-
-      if (groupId) {
-        return NextResponse.redirect(new URL(ROUTES.team(groupId), req.url));
-      }
-    }
-  }
-
-  // 존재하지 않는 groupID URL에 입력시
-  if (token && req.nextUrl.pathname.startsWith("/team/")) {
-    const teamId = req.nextUrl.pathname.split("/")[2];
-
-    if (!teamId) {
-      return NextResponse.next();
-    }
-
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/groups/${teamId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-      cache: "no-store",
-    });
-
-    if (!res.ok) {
-      return NextResponse.redirect(new URL(ROUTES.teams, req.url));
-    }
-  }
-
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/team/:path*", "/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
