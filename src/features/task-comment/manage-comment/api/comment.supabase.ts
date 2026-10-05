@@ -1,6 +1,6 @@
 import { getSupabase } from "@/shared/api/supabase/client";
 import { assertAffected, toApiError } from "@/shared/api/supabase/errors";
-import { mapTaskComment } from "@/shared/api/supabase/mappers/comment";
+import { mapTaskComment, TaskCommentRow } from "@/shared/api/supabase/mappers/comment";
 import { PatchCommentResponse, PostTaskListCommentResponse } from "@/shared/api/types/taskCommentApi";
 
 // 작성자는 컬럼 기본값(current_profile_id)으로 정해진다. 수정·삭제는 작성자만 (RLS)
@@ -8,7 +8,7 @@ import { PatchCommentResponse, PostTaskListCommentResponse } from "@/shared/api/
 const fetchComment = async (id: number) => {
   const { data, error } = await getSupabase().from("task_comment_view").select().eq("id", id).single();
   if (error) throw toApiError(error, "댓글을 불러오지 못했습니다.");
-  return mapTaskComment(data);
+  return mapTaskComment(data as TaskCommentRow);
 };
 
 export const postCommentWithSupabase = async (

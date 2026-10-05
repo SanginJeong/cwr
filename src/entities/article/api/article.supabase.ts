@@ -1,4 +1,4 @@
-import { fetchArticle, mapArticle } from "@/shared/api/supabase/article";
+import { ArticleRow, fetchArticle, mapArticle } from "@/shared/api/supabase/article";
 import { getSupabase } from "@/shared/api/supabase/client";
 import { toApiError } from "@/shared/api/supabase/errors";
 import { GetArticleResponse, GetArticlesRequest, GetArticlesResponse } from "@/shared/api/types/articleApi";
@@ -26,7 +26,7 @@ export const getArticlesWithSupabase = async ({
   const from = (page - 1) * pageSize;
   const { data, error, count } = await query.range(from, from + pageSize - 1);
   if (error) throw toApiError(error, "게시글을 불러오지 못했습니다.");
-  return { totalCount: count ?? 0, list: data.map(mapArticle) };
+  return { totalCount: count ?? 0, list: (data as ArticleRow[]).map(mapArticle) };
 };
 
 export const getArticleWithSupabase = (articleId: number): Promise<GetArticleResponse> => fetchArticle(articleId);

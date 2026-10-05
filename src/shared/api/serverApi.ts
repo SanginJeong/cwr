@@ -3,6 +3,7 @@ import { isSupabase } from "@/shared/config/backend";
 import { fetchWithServerToken } from "@/shared/api/serverFetch";
 import { getServerSupabase } from "@/shared/api/supabase/server";
 import { mapMe } from "@/shared/api/supabase/mappers/user";
+import { rpcJson } from "@/shared/api/supabase/types";
 import type { UserResponse } from "@/shared/api/types/UserType";
 
 /**
@@ -23,7 +24,7 @@ export const getServerMe = async (): Promise<UserResponse | null> => {
   if (isSupabase) {
     const supabase = await getServerSupabase();
     const { data, error } = await supabase.rpc("get_me");
-    return error || !data ? null : mapMe(data);
+    return error || !data ? null : mapMe(rpcJson("get_me", data));
   }
   const res = await fetchWithServerToken("/user");
   return res?.ok ? res.json() : null;

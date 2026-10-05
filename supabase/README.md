@@ -76,6 +76,17 @@ NEXT_PUBLIC_BACKEND=supabase
 - 아직 Supabase 구현이 없는 도메인(Phase 4)은 Supabase 모드에서 동작하지 않습니다. 지금 되는 것: 로그인, 가입, 카카오, 로그아웃, 비밀번호 재설정, 회원 탈퇴, 내 정보(get_me)
 - 구현 규칙: 기존 API 함수 옆에 `*.supabase.ts`를 두고 훅에서 `isSupabase`로 고릅니다.
 
+## DB 타입
+
+```bash
+npm run db:types   # 연결된 프로젝트의 스키마로 src/shared/api/supabase/database.types.ts 생성
+```
+
+- 마이그레이션을 `db push`한 뒤에 실행하고, 생성된 파일을 함께 커밋합니다. 직접 고치지 않습니다(lint·prettier 제외).
+- 생성된 타입이 표현하지 못하는 것은 `src/shared/api/supabase/types.ts`에서 보완합니다.
+  - jsonb를 돌려주는 RPC: `RpcJsonReturns`에 응답 모양을 선언하고 `rpcJson("get_me", data)`로 읽습니다. SQL의 `*_json` 함수를 바꾸면 여기도 바꿔야 합니다.
+  - 뷰: 컬럼이 모두 nullable로 생성되므로 `ViewRow<"article_view", "image">`처럼 실제로 null이 될 수 있는 컬럼만 지정합니다.
+
 ## 프론트에서 호출할 때
 
 | 기존 API                                    | Supabase                                                             |

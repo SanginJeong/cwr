@@ -1,16 +1,8 @@
 import type { TaskUser } from "@/shared/api/types/UserType";
+import type { ViewRow } from "../types";
 
 /** task_comment_view 행 */
-export interface TaskCommentRow {
-  id: number;
-  task_id: number;
-  content: string;
-  created_at: string;
-  updated_at: string;
-  user_id: number;
-  user_nickname: string;
-  user_image: string | null;
-}
+export type TaskCommentRow = ViewRow<"task_comment_view", "user_image">;
 
 export const mapTaskComment = (row: TaskCommentRow) => ({
   id: row.id,

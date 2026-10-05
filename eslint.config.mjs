@@ -52,6 +52,8 @@ const eslintConfig = defineConfig([
     },
   },
   ...["shared", "entities", "features", "widgets", "views"].map(fsdLayerRule),
+  // npm run db:types로 생성하는 파일
+  { ignores: ["src/shared/api/supabase/database.types.ts"] },
 ]);
 
 export default eslintConfig;

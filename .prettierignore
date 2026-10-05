@@ -1,0 +1,2 @@
+# npm run db:types로 생성하는 파일
+src/shared/api/supabase/database.types.ts
