@@ -20,10 +20,6 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  if (!token && req.nextUrl.pathname.startsWith("/team")) {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
-
   // 소속팀 없는 페이지 -> 유저정보 검사 -> 리다이렉트
   if (token && req.nextUrl.pathname === "/team") {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
