@@ -1,6 +1,6 @@
 import Icon from "@/common/Icon/Icon";
-import { Membership } from "@/types";
-import { useIsActivePath } from "@/utils";
+import { Membership } from "@/types/UserType";
+import { useIsActivePath } from "@/utils/isActivePath";
 import { cn } from "@/utils/cn";
 import Link from "next/link";
 import SidebarTooltip from "../SidebarTooltip/SidebarTooltip";

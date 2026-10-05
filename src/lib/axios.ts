@@ -1,5 +1,5 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-import { tokenStorage } from "@/utils";
+import tokenStorage from "@/utils/tokenStorage";
 
 const BASEURL = process.env.NEXT_PUBLIC_API_URL;
 

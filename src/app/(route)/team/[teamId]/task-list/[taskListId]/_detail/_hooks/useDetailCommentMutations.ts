@@ -1,5 +1,7 @@
 import { FormEvent } from "react";
-import { useDeleteComment, usePatchComment, usePostTaskListComment } from "@/api/hooks";
+import useDeleteComment from "@/api/hooks/comment/useDeleteComment";
+import usePatchComment from "@/api/hooks/comment/usePatchComment";
+import usePostTaskListComment from "@/api/hooks/comment/usePostTaskListComment";
 
 interface Comment {
   commentValue: string;

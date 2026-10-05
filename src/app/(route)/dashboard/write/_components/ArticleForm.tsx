@@ -1,11 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { Input, InputBox, BaseButton, Icon, FloatingButton } from "@/common";
+import Input from "@/common/Input/Input";
+import InputBox from "@/common/Input/InputBox/InputBox";
+import BaseButton from "@/common/Button/BaseButton";
+import Icon from "@/common/Icon/Icon";
+import FloatingButton from "@/common/Button/FloatingButton";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { usePostArticle } from "@/api/hooks";
+import usePostArticle from "@/api/hooks/article/usePostArticle";
 import { INPUT_AREA_STYLE, LABEL_STYLE } from "../_constants/STYLE";
-import { toastKit } from "@/utils";
+import { toastKit } from "@/utils/toastKit";
 import useImageUpload from "@/hooks/useImageUpload";
 
 interface FormStateType {

@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 import { AxiosError } from "axios";
-import { toastKit } from "@/utils";
-import { validateTeamName } from "@/utils";
-import { useGetUser } from "@/api/hooks";
-import { usePostCreateTeam } from "@/api/hooks";
-import { useImageUpload } from "@/hooks";
+import { toastKit } from "@/utils/toastKit";
+import { validateTeamName } from "@/utils/Validation";
+import useGetUser from "@/api/hooks/user/useGetUser";
+import usePostCreateTeam from "@/api/hooks/team-creation/usePostCreateTeam";
+import useImageUpload from "@/hooks/useImageUpload";
 import { resolveTeamImageUrl } from "../_util/resolveTeamImage";
 
 interface UseCreateTeamFlowReturn {

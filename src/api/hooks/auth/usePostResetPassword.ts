@@ -1,4 +1,4 @@
-import { postResetPassword } from "@/api/axios";
+import postResetPassword from "@/api/axios/auth/resetPassword";
 import { useMutation } from "@tanstack/react-query";
 
 type UsePostResetPwOptions = {

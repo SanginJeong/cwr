@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { PatchTaskRequest } from "./_types";
 
 const patchTask = async ({ groupId, id, name }: PatchTaskRequest) => {

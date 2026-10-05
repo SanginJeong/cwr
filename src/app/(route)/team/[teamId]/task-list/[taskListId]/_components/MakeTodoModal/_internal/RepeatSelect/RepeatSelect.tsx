@@ -1,6 +1,6 @@
-import { Input } from "@/common";
-import { DATE_OPTIONS } from "../../_constants";
-import { cn } from "@/utils";
+import Input from "@/common/Input/Input";
+import { DATE_OPTIONS } from "../../_constants/MODAL_OPTIONS";
+import { cn } from "@/utils/cn";
 import { ChangeEvent } from "react";
 
 const RepeatOptionItem = ({ label, selected, onClick }: { label: string; selected: boolean; onClick: () => void }) => {

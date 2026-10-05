@@ -1,9 +1,9 @@
 "use client";
 
-import { useGetArticles } from "@/api/hooks";
+import useGetArticles from "@/api/hooks/article/useGetArticles";
 import BestArticleCard from "../../../../(route)/dashboard/_components/Article/BestArticleCard";
 import BestArticleRankItem from "../../../../(route)/dashboard/_components/Article/BestArticleRankItem";
-import { useDevice } from "@/hooks";
+import useDevice from "@/hooks/useDevice";
 import { useState } from "react";
 import Pagination from "./_internal/Pagination";
 

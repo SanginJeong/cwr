@@ -1,4 +1,4 @@
-import { CommentUser } from "@/types";
+import { CommentUser } from "@/types/CommentType";
 
 export type ArticleCommentType = {
   writer: CommentUser;

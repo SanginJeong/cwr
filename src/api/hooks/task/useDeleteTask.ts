@@ -1,7 +1,7 @@
-import { toastKit } from "@/utils";
+import { toastKit } from "@/utils/toastKit";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteTask } from "@/api/axios";
+import deleteTask from "@/api/axios/task/deleteTask";
 import { DeleteTaskRequest } from "@/api/axios/task/_types";
 
 const useDeleteTask = () => {

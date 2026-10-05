@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { cn } from "@/utils";
-import { UserResponse } from "@/types";
-import { CommentItem, InputReply, Profile } from "@/common";
-import { useGetTaskListComment } from "@/api/hooks";
+import { cn } from "@/utils/cn";
+import { UserResponse } from "@/types/UserType";
+import CommentItem from "@/common/Comment/CommentItem";
+import InputReply from "@/common/Input/InputReply/InputReply";
+import Profile from "@/common/Profile/Profile";
+import useGetTaskListComment from "@/api/hooks/comment/useGetTaskListComment";
 import { useQueryClient } from "@tanstack/react-query";
-import { useDetailCommentMutations } from "../../../_hooks";
+import useDetailCommentMutations from "../../../_hooks/useDetailCommentMutations";
 import { GetTaskDetailResponse } from "@/api/axios/task/_types";
 
 interface CommentSectionProps {

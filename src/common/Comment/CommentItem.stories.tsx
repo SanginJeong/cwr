@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from "@storybook/nextjs";
 import { useState } from "react";
 import CommentItem from "./CommentItem";
-import { CommentData } from "@/types";
+import { CommentData } from "@/types/CommentType";
 import Profile from "../Profile/Profile";
-import { CommentEdit } from "./_internal";
+import CommentEdit from "./_internal/CommentEdit/CommentEdit";
 
 const meta: Meta<typeof CommentItem> = {
   title: "Common/Comment",

@@ -1,6 +1,6 @@
 "use client";
 
-import { LoadingSpinner } from "@/features";
+import LoadingSpinner from "@/features/LoadingSpinner/LoadingSpinner";
 import dynamic from "next/dynamic";
 
 const MyPageContainer = dynamic(() => import("./_components/MypageContainer"), {

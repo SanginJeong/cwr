@@ -1,4 +1,4 @@
-import { User } from "@/types";
+import { User } from "@/types/UserType";
 
 export interface SidebarProps {
   user: User | null;

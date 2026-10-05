@@ -1,6 +1,6 @@
 import Icon from "@/common/Icon/Icon";
 import BaseButton from "@/common/Button/BaseButton";
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 
 interface UnsavedSnackbarProps {
   title: string;

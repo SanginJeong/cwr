@@ -1,5 +1,5 @@
-import { deleteArticle } from "@/api/axios";
-import { toastKit } from "@/utils";
+import deleteArticle from "@/api/axios/article/deleteArticle";
+import { toastKit } from "@/utils/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 

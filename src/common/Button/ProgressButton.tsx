@@ -1,6 +1,6 @@
 import Icon from "../Icon/Icon";
 import { PROGRESS_BUTTON_BASE_STYLE } from "./BUTTON_STYLES";
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 
 /**
  * @author sangin

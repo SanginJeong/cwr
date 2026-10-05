@@ -1,5 +1,5 @@
-import { toastKit } from "@/utils";
-import { patchTaskDetail } from "@/api/axios";
+import { toastKit } from "@/utils/toastKit";
+import patchTaskDetail from "@/api/axios/task/patchTaskDetail";
 import { PatchTaskDetailRequest } from "@/api/axios/task/_types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

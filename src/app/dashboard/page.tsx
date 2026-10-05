@@ -1,6 +1,9 @@
 import Link from "next/link";
-import { FloatingButton, PageLayout } from "@/common";
-import { DashBoardHeader, DashBoardBestArticles, DashBoardAllArticles } from "./_components";
+import FloatingButton from "@/common/Button/FloatingButton";
+import PageLayout from "@/common/PageLayout/PageLayout";
+import DashBoardHeader from "./_components/Section/DashBoardHeader/DashBoardHeader";
+import DashBoardBestArticles from "./_components/Section/DashBoardBestArticles/DashBoardBestArticles";
+import DashBoardAllArticles from "./_components/Section/DashBoardAllArticles/DashBoardAllArticles";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

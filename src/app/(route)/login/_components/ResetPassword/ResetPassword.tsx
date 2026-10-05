@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { toastKit } from "@/utils";
-import { useForm } from "@/hooks";
-import { validateEmail } from "@/utils";
-import { usePostResetPassword } from "@/api/hooks";
-import { Modal, Input, BaseButton } from "@/common";
+import { toastKit } from "@/utils/toastKit";
+import useForm from "@/hooks/useForm/useForm";
+import { validateEmail } from "@/utils/Validation";
+import usePostResetPassword from "@/api/hooks/auth/usePostResetPassword";
+import Modal from "@/common/Modal/Modal";
+import Input from "@/common/Input/Input";
+import BaseButton from "@/common/Button/BaseButton";
 
 interface ResetPasswordModalProps {
   isOpen: boolean;

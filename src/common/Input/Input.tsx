@@ -1,4 +1,4 @@
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import { ComponentPropsWithRef, ReactNode, RefObject, useId } from "react";
 
 type InputVariant = "default" | "error";

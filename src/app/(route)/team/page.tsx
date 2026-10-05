@@ -1,6 +1,7 @@
 import ImgEmptyTeam from "@/assets/images/empty-team.png";
 import Image from "next/image";
-import { BaseButton, PageLayout } from "@/common";
+import BaseButton from "@/common/Button/BaseButton";
+import PageLayout from "@/common/PageLayout/PageLayout";
 import Link from "next/link";
 import { Metadata } from "next";
 

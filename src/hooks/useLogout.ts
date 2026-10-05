@@ -1,6 +1,7 @@
 "use client";
 
-import { toastKit, tokenStorage } from "@/utils";
+import { toastKit } from "@/utils/toastKit";
+import tokenStorage from "@/utils/tokenStorage";
 import { clearAuthCookies } from "@/utils/setAuthCookies";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";

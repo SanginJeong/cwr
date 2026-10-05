@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { cn } from "@/utils";
-import { useAutoHeight } from "./_hooks";
+import { cn } from "@/utils/cn";
+import useAutoHeight from "./_hooks/useAutoHeight";
 import Icon from "@/common/Icon/Icon";
 import InputBox from "../InputBox/InputBox";
 

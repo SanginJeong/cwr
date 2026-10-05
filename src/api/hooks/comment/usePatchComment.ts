@@ -1,6 +1,6 @@
-import { patchComment } from "@/api/axios";
+import patchComment from "@/api/axios/comment/patchComment";
 import { PatchCommentRequest } from "@/api/axios/comment/_types";
-import { toastKit } from "@/utils";
+import { toastKit } from "@/utils/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const usePatchComment = () => {

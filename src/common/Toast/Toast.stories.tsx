@@ -1,4 +1,4 @@
-import { toastKit } from "@/utils";
+import { toastKit } from "@/utils/toastKit";
 import Toaster from "@/lib/toaster";
 import type { Meta, StoryObj } from "@storybook/react";
 

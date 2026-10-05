@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toastKit } from "@/utils";
-import { patchTask } from "@/api/axios";
+import { toastKit } from "@/utils/toastKit";
+import patchTask from "@/api/axios/task/patchTask";
 import { PatchTaskRequest } from "@/api/axios/task/_types";
 
 const usePatchTask = () => {

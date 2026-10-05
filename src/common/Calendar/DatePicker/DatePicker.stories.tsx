@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import { ComponentProps, useState } from "react";
 import DatePicker from "./DatePicker";
-import { DateValue } from "@/types";
+import { DateValue } from "@/types/DatePickerType";
 import { fn } from "storybook/test";
 
 const meta = {

@@ -1,16 +1,20 @@
 import { useState } from "react";
 import Link from "next/link";
-import { cn } from "@/utils";
-import { BaseButton, Dropdown, Icon, ProgressBadge } from "@/common";
+import { cn } from "@/utils/cn";
+import BaseButton from "@/common/Button/BaseButton";
+import Dropdown from "@/common/Dropdown/Dropdown";
+import Icon from "@/common/Icon/Icon";
+import ProgressBadge from "@/common/ProgressBadge/ProgressBadge";
 import TaskListCreateModal from "../TaskListCreateModal/TaskListCreateModal";
 import TaskItemEditModal from "../TaskItemEditModal/TaskItemEditModal";
-import { TaskList } from "@/types";
+import { TaskList } from "@/types/Group/GroupData";
 import { GetGroupsResponse } from "@/api/axios/group/_type";
 import useDeleteTaskList from "@/api/hooks/task-list/useDeleteTaskList";
-import { EmptyState, LoadingSpinner } from "@/features";
+import EmptyState from "@/features/EmptyState/EmptyState";
+import LoadingSpinner from "@/features/LoadingSpinner/LoadingSpinner";
 import ErrorState from "@/features/ErrorState/ErrorState";
-import { useDevice } from "@/hooks";
-import { TaskDropdown } from "./_internal";
+import useDevice from "@/hooks/useDevice";
+import TaskDropdown from "./_internal/TaskDropdown/TaskDropdown";
 
 const TodoItem = ({ data }: { data: TaskList }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);

@@ -2,15 +2,18 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Icon } from "@/common";
-import { useForm } from "@/hooks";
-import { useEmailStore } from "@/stores";
-import { OverlayLoading } from "@/app/(route)/_components";
-import { ValidationRules } from "@/types";
-import { usePostLogin } from "@/api/hooks";
+import Icon from "@/common/Icon/Icon";
+import useForm from "@/hooks/useForm/useForm";
+import useEmailStore from "@/stores/useEmailStore";
+import OverlayLoading from "@/app/(route)/_components/OverlayLoading/OverlayLoading";
+import { ValidationRules } from "@/types/AuthType";
+import usePostLogin from "@/api/hooks/auth/usePostLogin";
 import ResetPassword from "../ResetPassword/ResetPassword";
-import { Input, InputPassword, BaseButton } from "@/common";
-import { toastKit, validateEmail, validatePassword } from "@/utils";
+import Input from "@/common/Input/Input";
+import InputPassword from "@/common/Input/InputPassword/InputPassword";
+import BaseButton from "@/common/Button/BaseButton";
+import { toastKit } from "@/utils/toastKit";
+import { validateEmail, validatePassword } from "@/utils/Validation";
 
 const loginRules: ValidationRules = {
   email: (value) => validateEmail(value),

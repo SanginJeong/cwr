@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import Image from "next/image";
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 
 interface LandingHeaderProps {
   iconSrc: string;

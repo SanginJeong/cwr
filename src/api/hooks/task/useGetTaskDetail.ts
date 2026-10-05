@@ -1,4 +1,4 @@
-import { getTaskDetail } from "@/api/axios";
+import getTaskDetail from "@/api/axios/task/getTaskDetail";
 import { GetTaskDetailRequest } from "@/api/axios/task/_types";
 import { useQuery } from "@tanstack/react-query";
 

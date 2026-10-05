@@ -1,6 +1,6 @@
 "use server";
 
-import { setAuthCookies } from "@/utils";
+import { setAuthCookies } from "@/utils/setAuthCookies";
 
 interface KakaoLoginResult {
   success: boolean;

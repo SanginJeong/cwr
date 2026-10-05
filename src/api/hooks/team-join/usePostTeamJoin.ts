@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postTeamJoin from "@/api/axios/team-join/postTeamJoin";
 import { PostTeamJoinRequest, PostTeamJoinResponse } from "@/api/axios/team-join/_type/type";
-import { toastKit } from "@/utils";
+import { toastKit } from "@/utils/toastKit";
 
 type UsePostTeamJoinOptions = {
   onSuccess?: (data: PostTeamJoinResponse) => void;

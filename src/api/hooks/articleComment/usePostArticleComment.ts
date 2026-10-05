@@ -1,5 +1,5 @@
-import { postArticleComment } from "@/api/axios";
-import { toastKit } from "@/utils";
+import postArticleComment from "@/api/axios/articleComment/postArticleComment";
+import { toastKit } from "@/utils/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const usePostArticleComment = () => {

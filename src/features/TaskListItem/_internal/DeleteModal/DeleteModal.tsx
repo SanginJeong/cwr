@@ -1,4 +1,5 @@
-import { BaseButton, Modal } from "@/common";
+import BaseButton from "@/common/Button/BaseButton";
+import Modal from "@/common/Modal/Modal";
 
 interface DeleteModalProps {
   isOpen: boolean;

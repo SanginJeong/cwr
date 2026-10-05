@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { FormValues, FormErrors, ValidationFunction, ValidationRules, ValidationResult } from "@/types";
+import type { FormValues, FormErrors, ValidationFunction, ValidationRules, ValidationResult } from "@/types/AuthType";
 
 interface UseFormValidationReturn {
   errors: FormErrors;

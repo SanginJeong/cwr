@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { postImageUpload } from "@/api/axios";
-import { toastKit } from "@/utils";
+import postImageUpload from "@/api/axios/image/postImageUpload";
+import { toastKit } from "@/utils/toastKit";
 
 interface UsePostImageUploadReturn {
   preview: string;

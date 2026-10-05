@@ -1,4 +1,4 @@
-import { CenteredCardLayout } from "@/app/(route)/_components";
+import CenteredCardLayout from "@/app/(route)/_components/layouts/CenteredCardLayout";
 import EditTeamForm from "./_components/EditTeamForm/EditTeamForm";
 import { Metadata } from "next";
 

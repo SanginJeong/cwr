@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { DeleteGroupRequest, DeleteGroupResponse } from "./_type";
 
 const deleteGroup = async ({ id }: DeleteGroupRequest): Promise<DeleteGroupResponse> => {

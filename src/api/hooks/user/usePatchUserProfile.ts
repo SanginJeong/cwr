@@ -1,8 +1,8 @@
 import { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { patchUserProfile } from "@/api/axios";
-import { ApiErrorResponse } from "@/types";
-import { toastKit } from "@/utils";
+import patchUserProfile from "@/api/axios/user/patchUserProfile";
+import { ApiErrorResponse } from "@/types/ApiType";
+import { toastKit } from "@/utils/toastKit";
 
 type UsePatchUserProfileOptions = {
   onSuccess?: () => void;

@@ -1,4 +1,4 @@
-import { TaskList } from "@/types";
+import { TaskList } from "@/types/Group/GroupData";
 import { TaskStatus } from "./getTaskStatus";
 
 const getTaskListStatus = (taskList: TaskList): TaskStatus => {

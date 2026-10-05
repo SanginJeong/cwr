@@ -1,4 +1,4 @@
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import { Ref, TextareaHTMLAttributes, useId } from "react";
 
 type InputSize = "sm" | "md" | "lg";

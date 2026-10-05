@@ -1,4 +1,4 @@
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import ICONS from "./CONST_ICON";
 import { SVGProps } from "react";
 

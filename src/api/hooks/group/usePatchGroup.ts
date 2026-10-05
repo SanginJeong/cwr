@@ -1,5 +1,5 @@
-import { patchGroup } from "@/api/axios";
-import { toastKit } from "@/utils";
+import patchGroup from "@/api/axios/group/patchGroup";
+import { toastKit } from "@/utils/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const usePatchGroup = () => {

@@ -1,4 +1,4 @@
-import { TaskList } from "@/types";
+import { TaskList } from "@/types/Group/GroupData";
 import getTaskStatus from "./getTaskStatus";
 
 export const getCompletedTaskCount = (taskLists: TaskList[]) => {

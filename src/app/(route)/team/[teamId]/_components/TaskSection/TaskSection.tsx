@@ -1,9 +1,9 @@
 "use client";
 
-import { useGetGroups } from "@/api/hooks";
-import { TaskColumn } from "./_internal";
+import useGetGroups from "@/api/hooks/group/useGetGroups";
+import TaskColumn from "./_internal/TaskColumn/TaskColumn";
 import { useParams } from "next/navigation";
-import { getTaskListStatus } from "@/utils";
+import getTaskListStatus from "@/utils/getTaskListStatus";
 import { getUncompletedTaskCount } from "@/utils/getTaskCount";
 
 const TaskSection = () => {

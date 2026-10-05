@@ -1,6 +1,8 @@
-import { usePatchTask } from "@/api/hooks";
-import { BaseButton, Input, Modal } from "@/common";
-import { TaskList } from "@/types";
+import usePatchTask from "@/api/hooks/task/usePatchTask";
+import BaseButton from "@/common/Button/BaseButton";
+import Input from "@/common/Input/Input";
+import Modal from "@/common/Modal/Modal";
+import { TaskList } from "@/types/Group/GroupData";
 import { ChangeEvent, useState } from "react";
 
 interface EditTaskListModalProps {

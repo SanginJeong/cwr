@@ -1,9 +1,10 @@
 "use client";
 
 import { startTransition, useEffect, useState } from "react";
-import { SidebarMobile, SidebarTablet } from "./_internal";
-import { useGetUser } from "@/api/hooks";
-import { useLogout } from "@/hooks/";
+import SidebarMobile from "./_internal/SidebarMobile/SidebarMobile";
+import SidebarTablet from "./_internal/SidebarTablet/SidebarTablet";
+import useGetUser from "@/api/hooks/user/useGetUser";
+import useLogout from "@/hooks/useLogout";
 import { useRouter } from "next/navigation";
 
 /**

@@ -1,6 +1,6 @@
 import axios from "axios";
-import { instance } from "@/lib";
-import { ApiErrorResponse } from "@/types";
+import instance from "@/lib/axios";
+import { ApiErrorResponse } from "@/types/ApiType";
 import { LoginResponse, LoginRequest } from "./types";
 
 const postLogin = async (credentials: LoginRequest): Promise<LoginResponse> => {

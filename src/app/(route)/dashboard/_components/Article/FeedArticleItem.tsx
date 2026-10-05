@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Icon } from "@/common";
+import Icon from "@/common/Icon/Icon";
 import { ArticleListItem } from "@/types/ArticleType";
 import ArticleWriter from "./_internal/ArticleWriter";
 import ArticleLike from "./_internal/ArticleLike";

@@ -1,7 +1,8 @@
-import { Dropdown, ProgressBadge } from "@/common";
-import { Todo } from "@/common";
-import { useTaskMutations } from "@/hooks";
-import { TaskList } from "@/types";
+import Dropdown from "@/common/Dropdown/Dropdown";
+import ProgressBadge from "@/common/ProgressBadge/ProgressBadge";
+import Todo from "@/common/Todo/Todo";
+import useTaskMutations from "@/hooks/useTaskMutations/useListDataMutations";
+import { TaskList } from "@/types/Group/GroupData";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";

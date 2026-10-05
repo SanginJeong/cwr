@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { DeleteArticleLikeRequest, DeleteArticleLikeResponse } from "./_type";
 
 const deleteArticleLike = async ({ articleId }: DeleteArticleLikeRequest) => {

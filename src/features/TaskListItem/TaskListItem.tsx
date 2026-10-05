@@ -1,9 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Dropdown, Icon, Todo } from "@/common";
-import type { TaskListItemType } from "@/types";
-import { cn, formatToKoreanDate, getFrequencyLabel } from "@/utils";
+import Dropdown from "@/common/Dropdown/Dropdown";
+import Icon from "@/common/Icon/Icon";
+import Todo from "@/common/Todo/Todo";
+import type { TaskListItemType } from "@/types/TaskListItemType";
+import { cn } from "@/utils/cn";
+import { formatToKoreanDate } from "@/utils/formatDate";
+import { getFrequencyLabel } from "@/utils/getFrequencyLabel";
 import EditModal from "./_internal/EditModal/EditModal";
 import DeleteModal from "./_internal/DeleteModal/DeleteModal";
 import { MyHistoryItem } from "@/api/axios/user/type";

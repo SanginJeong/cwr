@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "@/hooks";
-import { usePatchUserPassword } from "@/api/hooks";
-import { Input, BaseButton, Modal, InputPassword } from "@/common";
-import { validatePassword, validatePasswordConfirm } from "@/utils";
+import useForm from "@/hooks/useForm/useForm";
+import usePatchUserPassword from "@/api/hooks/user/usePatchUserPassword";
+import Input from "@/common/Input/Input";
+import BaseButton from "@/common/Button/BaseButton";
+import Modal from "@/common/Modal/Modal";
+import InputPassword from "@/common/Input/InputPassword/InputPassword";
+import { validatePassword, validatePasswordConfirm } from "@/utils/Validation";
 
 const PasswordInputSection = () => {
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);

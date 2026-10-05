@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { GetGroupsRequest, GetGroupsResponse } from "./_type";
 
 const getGroups = async ({ id }: GetGroupsRequest): Promise<GetGroupsResponse> => {

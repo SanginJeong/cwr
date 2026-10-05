@@ -1,10 +1,12 @@
 "use client";
 
 import { FormEvent } from "react";
-import { useDevice } from "@/hooks";
-import { useTeamCreation } from "../../_hooks";
-import { OverlayLoading } from "@/app/(route)/_components";
-import { ProfileEdit, Input, BaseButton } from "@/common";
+import useDevice from "@/hooks/useDevice";
+import useTeamCreation from "../../_hooks/useTeamCreation";
+import OverlayLoading from "@/app/(route)/_components/OverlayLoading/OverlayLoading";
+import ProfileEdit from "@/common/Profile/ProfileEdit/ProfileEdit";
+import Input from "@/common/Input/Input";
+import BaseButton from "@/common/Button/BaseButton";
 
 const TeamCreateForm = () => {
   const { isMobile } = useDevice();

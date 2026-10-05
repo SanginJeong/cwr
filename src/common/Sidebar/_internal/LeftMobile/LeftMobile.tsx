@@ -1,9 +1,9 @@
 "use client";
 
-import { cn } from "@/utils";
-import { Icon } from "@/common";
+import { cn } from "@/utils/cn";
+import Icon from "@/common/Icon/Icon";
 import { motion, AnimatePresence } from "framer-motion";
-import { SidebarProps } from "@/common/Sidebar/_types";
+import { SidebarProps } from "@/common/Sidebar/_types/SidebarProps";
 import SidebarLink from "../SidebarLink/SidebarLink";
 import AddTeamButton from "../AddTeamButton/AddTeamButton";
 import MobileMenuItem from "../MobileMenuItem/MobileMenuItem";

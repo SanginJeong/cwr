@@ -1,7 +1,8 @@
 "use client";
 
 import { FormEvent, useRef, useState } from "react";
-import { usePostTeamJoin, useGetUser } from "@/api/hooks";
+import usePostTeamJoin from "@/api/hooks/team-join/usePostTeamJoin";
+import useGetUser from "@/api/hooks/user/useGetUser";
 
 type UseTeamJoinReturn = {
   token: string;

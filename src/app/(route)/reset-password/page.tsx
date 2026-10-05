@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import NewPasswordForm from "./_components/NewPasswordForm/NewPasswordForm";
 
 const ResetPasswordPage = () => {

@@ -1,4 +1,4 @@
-import { Icon } from "@/common";
+import Icon from "@/common/Icon/Icon";
 
 const ArticleBestBadge = () => {
   return (

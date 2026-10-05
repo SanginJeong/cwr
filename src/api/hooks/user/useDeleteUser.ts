@@ -1,9 +1,10 @@
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
-import { ApiErrorResponse } from "@/types";
-import { deleteUser } from "@/api/axios";
-import { toastKit, tokenStorage } from "@/utils";
+import { ApiErrorResponse } from "@/types/ApiType";
+import deleteUser from "@/api/axios/user/deleteUser";
+import { toastKit } from "@/utils/toastKit";
+import tokenStorage from "@/utils/tokenStorage";
 import { clearAuthCookies } from "@/utils/setAuthCookies";
 
 type UseDeleteUserOptions = {

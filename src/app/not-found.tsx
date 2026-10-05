@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { cn } from "@/utils";
-import { PageEmptyState } from "@/features";
+import { cn } from "@/utils/cn";
+import PageEmptyState from "@/features/PageEmptyState/PageEmptyState";
 
 const NotFound = () => {
   return (

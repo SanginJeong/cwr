@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { GetInvitationRequest, GetInvitationResponse } from "./_type";
 
 const getInvitation = async ({ id }: GetInvitationRequest) => {

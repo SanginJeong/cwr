@@ -1,8 +1,9 @@
 "use client";
 
 import { FormEvent } from "react";
-import { useDevice } from "@/hooks";
-import { ProfileEdit, Input } from "@/common";
+import useDevice from "@/hooks/useDevice";
+import ProfileEdit from "@/common/Profile/ProfileEdit/ProfileEdit";
+import Input from "@/common/Input/Input";
 
 interface MyProfileFormProps {
   userInfo: {

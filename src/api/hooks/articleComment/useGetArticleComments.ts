@@ -1,4 +1,4 @@
-import { getArticleComments } from "@/api/axios";
+import getArticleComments from "@/api/axios/articleComment/getArticleComments";
 import { GetArticleCommentsRequest } from "@/api/axios/articleComment/_type";
 import { useQuery } from "@tanstack/react-query";
 

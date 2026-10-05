@@ -1,19 +1,19 @@
 "use client";
 
-import {
-  useDeleteArticleComment,
-  useGetArticle,
-  useGetArticleComments,
-  useGetUser,
-  usePostArticleComment,
-} from "@/api/hooks";
-import { Dropdown, InputReply, Profile } from "@/common";
-import { useDevice } from "@/hooks";
-import { formatTime } from "@/utils";
+import useDeleteArticleComment from "@/api/hooks/articleComment/useDeleteArticleComment";
+import useGetArticle from "@/api/hooks/article/useGetArticle";
+import useGetArticleComments from "@/api/hooks/articleComment/useGetArticleComments";
+import useGetUser from "@/api/hooks/user/useGetUser";
+import usePostArticleComment from "@/api/hooks/articleComment/usePostArticleComment";
+import Dropdown from "@/common/Dropdown/Dropdown";
+import InputReply from "@/common/Input/InputReply/InputReply";
+import Profile from "@/common/Profile/Profile";
+import useDevice from "@/hooks/useDevice";
+import { formatTime } from "@/utils/formatTime";
 import { useParams } from "next/navigation";
 import { FormEvent, useState } from "react";
 import ArticleEditCommentModal from "./ArticleEditCommentModal";
-import { ArticleCommentType } from "@/types";
+import { ArticleCommentType } from "@/types/ArticleCommentType";
 
 const ArticleComments = () => {
   const { id } = useParams();

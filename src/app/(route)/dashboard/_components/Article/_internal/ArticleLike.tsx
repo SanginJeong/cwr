@@ -1,4 +1,4 @@
-import { formatClampedCount } from "@/utils";
+import { formatClampedCount } from "@/utils/formatClampedCount";
 
 const ArticleLike = ({ likeCount }: { likeCount: number }) => {
   const count = formatClampedCount(likeCount, 999);

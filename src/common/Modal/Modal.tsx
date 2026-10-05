@@ -1,7 +1,7 @@
 "use client";
 
 import { MouseEvent, useEffect } from "react";
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import {
   MODAL_BASE_STYLE,
   MODAL_BODY_STYLE,

@@ -1,4 +1,4 @@
-import { Frequency } from "@/types";
+import { Frequency } from "@/types/FrequencyType";
 
 export const MODAL_STYLES = {
   baseDiv: "w-full flex flex-col gap-4",

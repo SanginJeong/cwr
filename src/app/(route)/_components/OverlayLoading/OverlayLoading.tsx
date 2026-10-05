@@ -1,4 +1,4 @@
-import { LoadingSpinner } from "@/features";
+import LoadingSpinner from "@/features/LoadingSpinner/LoadingSpinner";
 
 const OverlayLoading = () => {
   return (

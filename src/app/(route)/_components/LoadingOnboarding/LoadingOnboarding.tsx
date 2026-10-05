@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
-import { LoadingSpinner } from "@/features";
+import LoadingSpinner from "@/features/LoadingSpinner/LoadingSpinner";
 
 const OnboardingModal = dynamic(() => import("@/app/(route)/_components/Onboarding/OnboardingModal"), { ssr: false });
 

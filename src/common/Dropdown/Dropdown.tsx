@@ -1,8 +1,8 @@
 "use client";
 
-import { useDropdownClose } from "@/hooks";
+import useDropdownClose from "@/hooks/useDropdownClose";
 import { MouseEvent, ReactNode, useRef, useState } from "react";
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import Icon, { IconKeys } from "../Icon/Icon";
 import { DropdownOption } from "./_types/types";
 import Portal from "../Portal/Portal";

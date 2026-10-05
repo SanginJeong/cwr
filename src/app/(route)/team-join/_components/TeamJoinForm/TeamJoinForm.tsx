@@ -1,6 +1,7 @@
 "use client";
 
-import { BaseButton, Input } from "@/common";
+import BaseButton from "@/common/Button/BaseButton";
+import Input from "@/common/Input/Input";
 import useTeamJoin from "../../_hooks/useTeamJoin";
 
 const TeamJoinForm = () => {

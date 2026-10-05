@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import type { Membership } from "@/types";
+import type { Membership } from "@/types/UserType";
 import MobileMenuItem from "./MobileMenuItem";
 
 const meta: Meta<typeof MobileMenuItem> = {

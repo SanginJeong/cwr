@@ -1,4 +1,4 @@
-import { ArticleCommentType } from "@/types";
+import { ArticleCommentType } from "@/types/ArticleCommentType";
 
 export interface GetArticleCommentsRequest {
   articleId: number;

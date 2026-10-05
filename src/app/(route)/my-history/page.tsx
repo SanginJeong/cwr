@@ -1,8 +1,9 @@
 "use client";
 
-import { useGetHistory } from "@/api/hooks";
-import { PageHeaderBar, PageLayout } from "@/common";
-import { WorkHistorySection } from "./_components";
+import useGetHistory from "@/api/hooks/user/useGetHistory";
+import PageHeaderBar from "@/common/PageHeaderBar/PageHeaderBar";
+import PageLayout from "@/common/PageLayout/PageLayout";
+import WorkHistorySection from "./_components/WorkHistorySection/WorkHistorySection";
 
 const MyHistoryPage = () => {
   const { data: historyData, isPending, isError } = useGetHistory();

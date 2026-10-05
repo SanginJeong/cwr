@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { useDeleteUser } from "@/api/hooks";
-import { Icon, Modal, BaseButton } from "@/common";
+import useDeleteUser from "@/api/hooks/user/useDeleteUser";
+import Icon from "@/common/Icon/Icon";
+import Modal from "@/common/Modal/Modal";
+import BaseButton from "@/common/Button/BaseButton";
 
 const DeleteAccountButton = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);

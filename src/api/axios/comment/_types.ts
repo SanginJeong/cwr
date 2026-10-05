@@ -1,4 +1,4 @@
-import { TaskUser } from "@/types";
+import { TaskUser } from "@/types/UserType";
 
 // POST TaskListComment
 

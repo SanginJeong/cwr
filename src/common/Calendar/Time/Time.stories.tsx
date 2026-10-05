@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Meta, StoryObj } from "@storybook/nextjs";
 import Time from "./Time";
-import type { HalfHour } from "@/types";
+import type { HalfHour } from "@/types/TimeType";
 
 const meta: Meta<typeof Time> = {
   title: "Common/Time",

@@ -1,8 +1,8 @@
 "use client";
 
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import { HALF_HOUR_TIMES, TIME_PERIOD_LIST, TIME_STYLES } from "./CONST_TIME";
-import { HalfHour } from "@/types";
+import { HalfHour } from "@/types/TimeType";
 import { TimeProps } from "@/types/TimeType";
 
 /**

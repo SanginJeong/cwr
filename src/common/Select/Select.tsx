@@ -2,9 +2,9 @@
 
 import { useRef, useState } from "react";
 import Icon from "../Icon/Icon";
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import { SelectOption } from "./_types/types";
-import { useDropdownClose } from "@/hooks";
+import useDropdownClose from "@/hooks/useDropdownClose";
 
 /**
  * @author sangin

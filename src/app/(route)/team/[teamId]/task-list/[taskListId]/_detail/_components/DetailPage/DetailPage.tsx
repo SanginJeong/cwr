@@ -1,12 +1,15 @@
 "use client";
 
-import { cn } from "@/utils";
-import { BaseButton, Icon } from "@/common";
+import { cn } from "@/utils/cn";
+import BaseButton from "@/common/Button/BaseButton";
+import Icon from "@/common/Icon/Icon";
 import { useRouter } from "next/navigation";
-import { CommentSection, ContentSection, HeaderSection } from "../_internal";
+import CommentSection from "../_internal/CommentSection/CommentSection";
+import ContentSection from "../_internal/ContentSection/ContentSection";
+import HeaderSection from "../_internal/HeaderSection/HeaderSection";
 import useGetTaskDetail from "@/api/hooks/task/useGetTaskDetail";
-import { useTaskMutations } from "@/hooks";
-import { LoadingSpinner } from "@/features";
+import useTaskMutations from "@/hooks/useTaskMutations/useListDataMutations";
+import LoadingSpinner from "@/features/LoadingSpinner/LoadingSpinner";
 import ErrorState from "@/features/ErrorState/ErrorState";
 
 interface DetailPageProps {

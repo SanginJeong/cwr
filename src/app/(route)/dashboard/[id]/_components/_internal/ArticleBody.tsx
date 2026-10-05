@@ -1,9 +1,11 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { Dropdown } from "@/common";
-import { useDevice } from "@/hooks";
-import { useDeleteArticle, useGetArticle, useGetUser } from "@/api/hooks";
+import Dropdown from "@/common/Dropdown/Dropdown";
+import useDevice from "@/hooks/useDevice";
+import useDeleteArticle from "@/api/hooks/article/useDeleteArticle";
+import useGetArticle from "@/api/hooks/article/useGetArticle";
+import useGetUser from "@/api/hooks/user/useGetUser";
 import ArticleTitle from "../../../_components/Article/_internal/ArticleTitle";
 import ArticleWriter from "../../../_components/Article/_internal/ArticleWriter";
 import ArticleContent from "../../../_components/Article/_internal/ArticleContent";

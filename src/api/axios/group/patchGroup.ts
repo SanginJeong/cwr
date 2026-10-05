@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { PatchGroupRequest, PatchGroupResponse } from "./_type";
 
 const patchGroup = async ({ param, body }: PatchGroupRequest): Promise<PatchGroupResponse> => {

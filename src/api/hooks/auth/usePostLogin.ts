@@ -1,7 +1,8 @@
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
-import { setAuthCookies, tokenStorage } from "@/utils";
-import { postLogin } from "@/api/axios";
+import { setAuthCookies } from "@/utils/setAuthCookies";
+import tokenStorage from "@/utils/tokenStorage";
+import postLogin from "@/api/axios/auth/login";
 
 const usePostLogin = () => {
   const router = useRouter();

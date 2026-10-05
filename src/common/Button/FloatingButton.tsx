@@ -1,5 +1,5 @@
 import Icon, { IconKeys } from "../Icon/Icon";
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import { FLOATING_BUTTON_BASE_STYLE } from "./BUTTON_STYLES";
 
 /**

@@ -6,9 +6,9 @@ import Icon from "../Icon/Icon";
 import Modal from "../Modal/Modal";
 import Dropdown from "../Dropdown/Dropdown";
 import BaseButton from "../Button/BaseButton";
-import { cn } from "@/utils";
-import { LoadingSpinner } from "@/features";
-import { useDeleteGroup } from "@/api/hooks";
+import { cn } from "@/utils/cn";
+import LoadingSpinner from "@/features/LoadingSpinner/LoadingSpinner";
+import useDeleteGroup from "@/api/hooks/group/useDeleteGroup";
 
 /**
  * @author jikwon

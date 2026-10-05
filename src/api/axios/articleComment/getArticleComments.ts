@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { GetArticleCommentsRequest, GetArticleCommentsResponse } from "./_type";
 
 const getArticleComments = async ({ articleId, limit = 10, cursor }: GetArticleCommentsRequest) => {

@@ -1,5 +1,5 @@
-import { FloatingButton } from "@/common";
-import { cn } from "@/utils";
+import FloatingButton from "@/common/Button/FloatingButton";
+import { cn } from "@/utils/cn";
 
 interface PaginationProps {
   page: number;

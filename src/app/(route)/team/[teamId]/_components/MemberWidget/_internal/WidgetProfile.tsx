@@ -1,6 +1,6 @@
 "use client";
 
-import { ProfileItem } from "@/common";
+import ProfileItem from "@/common/Profile/ProfileItem/ProfileItem";
 import { GroupMember } from "@/types/Group/GroupData";
 /**
  * @author sangin

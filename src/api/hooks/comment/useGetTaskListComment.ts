@@ -1,4 +1,4 @@
-import { getTaskListComment } from "@/api/axios";
+import getTaskListComment from "@/api/axios/comment/getTaskListComment";
 import { GetTaskListCommentRequest } from "@/api/axios/comment/_types";
 import { useQuery } from "@tanstack/react-query";
 

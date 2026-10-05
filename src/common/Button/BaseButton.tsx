@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import { ButtonHTMLAttributes, ReactNode } from "react";
 import {
   BASE_BUTTON_BASE_STYLE,

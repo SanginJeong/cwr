@@ -2,9 +2,9 @@
 
 import { FormEvent } from "react";
 import { UserData } from "../../_types/type";
-import { SaveChangesSnackbar } from "@/common";
-import { CenteredCardLayout } from "@/app/(route)/_components";
-import { OverlayLoading } from "@/app/(route)/_components";
+import SaveChangesSnackbar from "@/common/SaveChangesSnackbar/SaveChangesSnackbar";
+import CenteredCardLayout from "@/app/(route)/_components/layouts/CenteredCardLayout";
+import OverlayLoading from "@/app/(route)/_components/OverlayLoading/OverlayLoading";
 import MyProfileForm from "../MyProfileForm/MyProfileForm";
 import DeleteAccountButton from "../DeleteAccountButton/DeleteAccountButton";
 import PasswordInputSection from "../PasswordInputSection/PasswordInputSection";

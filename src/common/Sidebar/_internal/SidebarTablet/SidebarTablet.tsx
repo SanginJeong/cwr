@@ -1,7 +1,9 @@
 import { cn } from "@/utils/cn";
 import Link from "next/link";
-import { SidebarDropdownProps } from "../../_types";
-import { Dropdown, Icon, Profile } from "@/common";
+import { SidebarDropdownProps } from "../../_types/SidebarProps";
+import Dropdown from "@/common/Dropdown/Dropdown";
+import Icon from "@/common/Icon/Icon";
+import Profile from "@/common/Profile/Profile";
 import SidebarDropdown from "../SidebarDropdown/SidebarDropdown";
 import AddTeamButton from "../AddTeamButton/AddTeamButton";
 import SidebarLink from "../SidebarLink/SidebarLink";

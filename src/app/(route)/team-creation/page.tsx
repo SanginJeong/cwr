@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import { CenteredCardLayout } from "../_components";
-import { TeamCreateForm } from "./_components/";
+import CenteredCardLayout from "../_components/layouts/CenteredCardLayout";
+import TeamCreateForm from "./_components/TeamCreateForm/TeamCreateForm";
 
 export const metadata: Metadata = {
   title: "Coworkers | 팀 생성하기",

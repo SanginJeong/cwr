@@ -1,4 +1,4 @@
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import { SIZE_MAP } from "./SIZE_MAP";
 
 interface LoadingSpinnerProps {

@@ -1,5 +1,5 @@
-import { PageLayout } from "@/common";
-import { ArticleDetail } from "./_components";
+import PageLayout from "@/common/PageLayout/PageLayout";
+import ArticleDetail from "./_components/ArticleDetail";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

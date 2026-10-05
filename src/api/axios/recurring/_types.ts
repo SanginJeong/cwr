@@ -1,4 +1,4 @@
-import { Frequency } from "@/types";
+import { Frequency } from "@/types/FrequencyType";
 
 // POST Task
 

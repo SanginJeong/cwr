@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { PostTeamJoinRequest, PostTeamJoinResponse } from "./_type/type";
 
 const postTeamJoin = async (request: PostTeamJoinRequest): Promise<PostTeamJoinResponse> => {

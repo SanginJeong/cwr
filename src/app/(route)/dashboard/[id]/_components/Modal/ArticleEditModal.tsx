@@ -1,7 +1,12 @@
 "use client";
 
-import { usePatchArticle } from "@/api/hooks";
-import { BaseButton, Input, InputBox, Modal, Icon, FloatingButton } from "@/common";
+import usePatchArticle from "@/api/hooks/article/usePatchArticle";
+import BaseButton from "@/common/Button/BaseButton";
+import Input from "@/common/Input/Input";
+import InputBox from "@/common/Input/InputBox/InputBox";
+import Modal from "@/common/Modal/Modal";
+import Icon from "@/common/Icon/Icon";
+import FloatingButton from "@/common/Button/FloatingButton";
 import { ArticleDetail } from "@/types/ArticleType";
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";

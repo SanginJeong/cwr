@@ -1,4 +1,4 @@
-import { getHistory } from "@/api/axios";
+import getHistory from "@/api/axios/user/getHistory";
 import { useQuery } from "@tanstack/react-query";
 
 const useGetHistory = () => {

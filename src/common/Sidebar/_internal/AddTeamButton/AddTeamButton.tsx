@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import Icon from "@/common/Icon/Icon";
 
 const AddTeamButton = () => {

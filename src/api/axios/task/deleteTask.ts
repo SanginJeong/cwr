@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { DeleteTaskRequest } from "./_types";
 
 const deleteTask = async ({ groupId, taskListId, taskId }: DeleteTaskRequest) => {

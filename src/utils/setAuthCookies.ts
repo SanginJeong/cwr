@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { AuthToken } from "@/types";
+import { AuthToken } from "@/types/AuthType";
 
 const isProd = process.env.NODE_ENV === "production";
 

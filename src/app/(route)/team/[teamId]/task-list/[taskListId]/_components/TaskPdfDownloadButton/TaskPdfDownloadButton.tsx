@@ -1,9 +1,9 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { toastKit } from "@/utils";
+import { toastKit } from "@/utils/toastKit";
 import { format } from "date-fns";
-import { TaskPdfDocument } from "./_internal";
+import TaskPdfDocument from "./_internal/TaskPdfDocument/TaskPdfDocument";
 import { TaskResponse } from "@/api/axios/task/_types";
 
 const PDFViewer = dynamic(() => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink), {

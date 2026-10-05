@@ -1,5 +1,5 @@
-import { instance } from "@/lib";
-import { UserResponse } from "@/types";
+import instance from "@/lib/axios";
+import { UserResponse } from "@/types/UserType";
 
 const getUser = async (): Promise<UserResponse> => {
   const { data } = await instance.get<UserResponse>("/user");

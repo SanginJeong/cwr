@@ -1,8 +1,10 @@
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { postSignup } from "@/api/axios";
-import { setAuthCookies, toastKit, tokenStorage } from "@/utils";
+import postSignup from "@/api/axios/auth/signup";
+import { setAuthCookies } from "@/utils/setAuthCookies";
+import { toastKit } from "@/utils/toastKit";
+import tokenStorage from "@/utils/tokenStorage";
 
 type ErrorResponse = {
   message?: string;

@@ -1,5 +1,5 @@
-import { CenteredCardLayout } from "../_components";
-import { TeamJoinForm } from "./_components";
+import CenteredCardLayout from "../_components/layouts/CenteredCardLayout";
+import TeamJoinForm from "./_components/TeamJoinForm/TeamJoinForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

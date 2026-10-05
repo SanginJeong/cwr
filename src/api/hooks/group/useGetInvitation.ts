@@ -1,5 +1,5 @@
-import { getInvitation } from "@/api/axios";
-import { toastKit } from "@/utils";
+import getInvitation from "@/api/axios/group/getInvitation";
+import { toastKit } from "@/utils/toastKit";
 import { useMutation } from "@tanstack/react-query";
 
 const useGetInvitation = () => {

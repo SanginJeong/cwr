@@ -1,9 +1,12 @@
 "use client";
 
 import { FormEvent } from "react";
-import { useDevice } from "@/hooks";
-import { ProfileEdit, Input, BaseButton, FloatingButton } from "@/common";
-import { useTeamEdit } from "../../_hooks";
+import useDevice from "@/hooks/useDevice";
+import ProfileEdit from "@/common/Profile/ProfileEdit/ProfileEdit";
+import Input from "@/common/Input/Input";
+import BaseButton from "@/common/Button/BaseButton";
+import FloatingButton from "@/common/Button/FloatingButton";
+import useTeamEdit from "../../_hooks/useTeamEdit";
 import { useParams } from "next/navigation";
 
 const TeamEditForm = () => {

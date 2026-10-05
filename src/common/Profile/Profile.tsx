@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import { ProfileProps } from "./_type/types";
 import { PROFILE_SIZE, PROFILE_IMAGE_SIZE, PROFILE_ICON_SIZE, DEFAULT_ICON_SIZE } from "./PROFILE_SIZE_STYLES";
 import IcUser from "@/assets/icon/ic-user.svg?url";

@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { PostTaskListCommentRequest, PostTaskListCommentResponse } from "./_types";
 
 const postTaskListComment = async ({

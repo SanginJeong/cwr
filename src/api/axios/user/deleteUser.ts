@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 
 const deleteUser = async (): Promise<void> => {
   await instance.delete("/user");

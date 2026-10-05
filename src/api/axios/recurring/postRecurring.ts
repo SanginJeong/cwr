@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { PostTaskRequest, PostTaskResponse } from "./_types";
 
 const postRecurring = async ({ groupId, taskListId, body }: PostTaskRequest): Promise<PostTaskResponse> => {

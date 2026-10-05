@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Icon } from "@/common";
+import Icon from "@/common/Icon/Icon";
 import { ArticleListItem } from "@/types/ArticleType";
 import ArticleLike from "./_internal/ArticleLike";
 

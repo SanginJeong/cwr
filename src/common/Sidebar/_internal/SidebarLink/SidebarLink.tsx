@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/utils/cn";
-import { Icon } from "@/common";
+import Icon from "@/common/Icon/Icon";
 import { usePathname } from "next/navigation";
 import SidebarTooltip from "../SidebarTooltip/SidebarTooltip";
 import { IconKeys } from "@/common/Icon/Icon";

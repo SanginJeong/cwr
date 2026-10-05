@@ -1,5 +1,7 @@
-import { useDeleteTaskList } from "@/api/hooks";
-import { BaseButton, Icon, Modal } from "@/common";
+import useDeleteTaskList from "@/api/hooks/task-list/useDeleteTaskList";
+import BaseButton from "@/common/Button/BaseButton";
+import Icon from "@/common/Icon/Icon";
+import Modal from "@/common/Modal/Modal";
 
 interface DeleteTaskListModalProps {
   isOpen: boolean;

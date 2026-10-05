@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { PatchTaskDetailRequest, PatchTaskDetailResponse } from "./_types";
 
 const patchTaskDetail = async ({

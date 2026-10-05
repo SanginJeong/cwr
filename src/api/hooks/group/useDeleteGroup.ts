@@ -1,5 +1,5 @@
-import { deleteGroup } from "@/api/axios";
-import { toastKit } from "@/utils";
+import deleteGroup from "@/api/axios/group/deleteGroup";
+import { toastKit } from "@/utils/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 

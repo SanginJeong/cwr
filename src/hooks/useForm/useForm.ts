@@ -2,7 +2,7 @@
 
 import { ChangeEvent, FormEvent, useState, useRef } from "react";
 import useFormValidation from "./useFormValidation";
-import { FormValues, ValidationRules } from "@/types";
+import { FormValues, ValidationRules } from "@/types/AuthType";
 
 type AuthValidationRules = ValidationRules;
 

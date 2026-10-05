@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { PatchArticleCommentRequest, PatchArticleCommentResponse } from "./_type";
 
 const patchArticleComment = async ({ commentId, body }: PatchArticleCommentRequest) => {

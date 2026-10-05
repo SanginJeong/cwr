@@ -1,5 +1,9 @@
 import { cookies } from "next/headers";
-import { HeroSection, KanbanSection, DetailSection, CooperationSection, ConversionSection } from "./(route)/_landing";
+import HeroSection from "./(route)/_landing/_components/HeroSection/HeroSection";
+import KanbanSection from "./(route)/_landing/_components/KanbanSection/KanbanSection";
+import DetailSection from "./(route)/_landing/_components/DetailSection/DetailSection";
+import CooperationSection from "./(route)/_landing/_components/CooperationSection/CooperationSection";
+import ConversionSection from "./(route)/_landing/_components/ConversionSection/ConversionSection";
 import LandingOnboarding from "./(route)/_components/LoadingOnboarding/LoadingOnboarding";
 
 export default async function Page() {

@@ -1,6 +1,7 @@
-import { Icon } from "@/common";
-import { Membership } from "@/types";
-import { cn, useIsActivePath } from "@/utils";
+import Icon from "@/common/Icon/Icon";
+import { Membership } from "@/types/UserType";
+import { cn } from "@/utils/cn";
+import { useIsActivePath } from "@/utils/isActivePath";
 import Link from "next/link";
 
 interface MobileMenuItemProps {

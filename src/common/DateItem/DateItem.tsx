@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import { ko } from "date-fns/locale";
 import { startOfWeek, addDays, format } from "date-fns";
 
@@ -31,7 +31,9 @@ const DateItem = ({ onClick, selectedDate }: { onClick: (date: Date) => void; se
             className={cn(
               "box-border flex-col-center gap-1 rounded-lg flex-1 h-[49px] py-2 border ",
               "tablet:flex-1 tablet:min-h-[68px] tablet:px-4 tablet:py-3 tablet:rounded-xl",
-              isSelected ? "bg-brand-primary text-text-inverse" : "border hover:bg-background-tertiary transition-colors",
+              isSelected
+                ? "bg-brand-primary text-text-inverse"
+                : "border hover:bg-background-tertiary transition-colors",
             )}
           >
             <span className={`text-xs-medium tablet:text-sm-medium ${!isSelected ? "text-text-default" : ""}`}>

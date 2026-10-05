@@ -1,4 +1,4 @@
-import { getArticles } from "@/api/axios";
+import getArticles from "@/api/axios/article/getArticles";
 import { GetArticlesRequest } from "@/api/axios/article/_type";
 import { useQuery } from "@tanstack/react-query";
 

@@ -4,9 +4,9 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { cn } from "@/utils";
-import { DeviceImage } from "../_internal";
-import { LinkButton } from "@/common";
+import { cn } from "@/utils/cn";
+import DeviceImage from "../_internal/DeviceImage/DeviceImage";
+import LinkButton from "@/common/asProp/LinkButton/LinkButton";
 
 interface HeroSectionProps {
   link?: string;

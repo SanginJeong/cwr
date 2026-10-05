@@ -1,4 +1,4 @@
-import { Group } from "@/types";
+import { Group } from "@/types/UserType";
 import { GroupMember, TaskList } from "@/types/Group/GroupData";
 
 export interface GetGroupsRequest {

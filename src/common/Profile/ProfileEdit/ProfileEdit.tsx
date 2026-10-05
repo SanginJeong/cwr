@@ -2,7 +2,7 @@
 
 import { ChangeEvent } from "react";
 import Image from "next/image";
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import Icon from "@/common/Icon/Icon";
 import { ProfileEditProps } from "../_type/types";
 import useImageError from "../_hook/useImageError";

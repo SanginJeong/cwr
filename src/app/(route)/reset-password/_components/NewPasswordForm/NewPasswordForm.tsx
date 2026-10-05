@@ -2,11 +2,13 @@
 
 import { useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useForm } from "@/hooks";
-import { usePatchResetPassword } from "@/api/hooks";
-import { InputPassword, BaseButton } from "@/common";
-import { OverlayLoading } from "@/app/(route)/_components";
-import { toastKit, validatePassword, validatePasswordConfirm } from "@/utils";
+import useForm from "@/hooks/useForm/useForm";
+import usePatchResetPassword from "@/api/hooks/auth/usePatchResetPassword";
+import InputPassword from "@/common/Input/InputPassword/InputPassword";
+import BaseButton from "@/common/Button/BaseButton";
+import OverlayLoading from "@/app/(route)/_components/OverlayLoading/OverlayLoading";
+import { toastKit } from "@/utils/toastKit";
+import { validatePassword, validatePasswordConfirm } from "@/utils/Validation";
 
 const NewPasswordForm = () => {
   const router = useRouter();

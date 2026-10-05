@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useGetGroups, usePatchGroup } from "@/api/hooks";
+import useGetGroups from "@/api/hooks/group/useGetGroups";
+import usePatchGroup from "@/api/hooks/group/usePatchGroup";
 import useImageUpload from "@/hooks/useImageUpload";
 
 const useTeamEdit = (teamId: number) => {

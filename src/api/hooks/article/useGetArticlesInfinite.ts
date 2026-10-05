@@ -1,6 +1,6 @@
 "use client";
 
-import { getArticles } from "@/api/axios";
+import getArticles from "@/api/axios/article/getArticles";
 import { GetArticlesRequest } from "@/api/axios/article/_type";
 import { useInfiniteQuery } from "@tanstack/react-query";
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { useGetUser } from "@/api/hooks";
-import { BaseButton } from "@/common";
-import { LoadingSpinner } from "@/features";
+import useGetUser from "@/api/hooks/user/useGetUser";
+import BaseButton from "@/common/Button/BaseButton";
+import LoadingSpinner from "@/features/LoadingSpinner/LoadingSpinner";
 import ErrorState from "@/features/ErrorState/ErrorState";
 import MyPageContent from "./MyPageContent/MyPageContent";
 import NotFound from "@/app/not-found";

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import { Icon } from "@/common";
-import { useArticleSearchStore } from "@/stores";
-import { cn } from "@/utils";
+import Icon from "@/common/Icon/Icon";
+import useArticleSearchStore from "@/stores/useArticleSearchStore";
+import { cn } from "@/utils/cn";
 
 const DashBoardHeader = () => {
   const { keyword, setKeyword } = useArticleSearchStore();

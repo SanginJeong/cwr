@@ -1,5 +1,5 @@
-import { deleteArticleComment } from "@/api/axios";
-import { toastKit } from "@/utils";
+import deleteArticleComment from "@/api/axios/articleComment/deleteArticleComment";
+import { toastKit } from "@/utils/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useDeleteArticleComment = () => {

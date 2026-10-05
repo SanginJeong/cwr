@@ -1,4 +1,5 @@
-import { Frequency, TaskUser } from "@/types";
+import { Frequency } from "@/types/FrequencyType";
+import { TaskUser } from "@/types/UserType";
 
 // GET TaskListDetail
 

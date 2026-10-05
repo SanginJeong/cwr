@@ -1,13 +1,18 @@
 "use client";
 
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import { Suspense, use, useState, useSyncExternalStore } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { TodoSection, TodoHeader, MakeTodoModal } from "./_components";
-import { FloatingButton, PageHeaderBar, PageLayout } from "@/common";
-import { DetailPage } from "./_detail/_components";
-import { useGetGroups, useGetTask } from "@/api/hooks";
-import { LoadingSpinner } from "@/features";
+import TodoSection from "./_components/TodoSection/TodoSection";
+import TodoHeader from "./_components/TodoHeader/TodoHeader";
+import MakeTodoModal from "./_components/MakeTodoModal/MakeTodoModal";
+import FloatingButton from "@/common/Button/FloatingButton";
+import PageHeaderBar from "@/common/PageHeaderBar/PageHeaderBar";
+import PageLayout from "@/common/PageLayout/PageLayout";
+import DetailPage from "./_detail/_components/DetailPage/DetailPage";
+import useGetGroups from "@/api/hooks/group/useGetGroups";
+import useGetTask from "@/api/hooks/task/useGetTask";
+import LoadingSpinner from "@/features/LoadingSpinner/LoadingSpinner";
 
 const subscribeNoop = () => () => {};
 

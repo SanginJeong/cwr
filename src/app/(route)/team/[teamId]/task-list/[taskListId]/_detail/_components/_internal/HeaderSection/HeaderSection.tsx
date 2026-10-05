@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { Dropdown, Icon, Profile } from "@/common";
-import { cn, formatToKoreanDate, getFrequencyLabel } from "@/utils";
+import Dropdown from "@/common/Dropdown/Dropdown";
+import Icon from "@/common/Icon/Icon";
+import Profile from "@/common/Profile/Profile";
+import { cn } from "@/utils/cn";
+import { formatToKoreanDate } from "@/utils/formatDate";
+import { getFrequencyLabel } from "@/utils/getFrequencyLabel";
 import { HEADER_STYLES } from "./HEADER_STYLES";
 import EditDataModal from "../EditDataModal/EditDataModal";
 import { GetTaskDetailResponse } from "@/api/axios/task/_types";
-import { useTaskMutations } from "@/hooks";
+import useTaskMutations from "@/hooks/useTaskMutations/useListDataMutations";
 
 interface HeaderSectionProps {
   data: GetTaskDetailResponse;

@@ -1,4 +1,6 @@
-import { BaseButton, Input, Modal } from "@/common";
+import BaseButton from "@/common/Button/BaseButton";
+import Input from "@/common/Input/Input";
+import Modal from "@/common/Modal/Modal";
 
 interface EditModalProps {
   isOpen: boolean;

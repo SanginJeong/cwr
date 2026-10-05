@@ -1,7 +1,7 @@
 "use client";
 
 import { TaskGroupItem, TaskResponse } from "@/api/axios/task/_types";
-import { getFrequencyLabel } from "@/utils";
+import { getFrequencyLabel } from "@/utils/getFrequencyLabel";
 import { Document, Page, Text, View, StyleSheet, Font } from "@react-pdf/renderer";
 import { format } from "date-fns";
 

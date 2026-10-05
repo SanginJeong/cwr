@@ -1,6 +1,6 @@
 import ArticleBody from "./_internal/ArticleBody";
 import ArticleComments from "./_internal/ArticleComments";
-import { LinkButton } from "@/common";
+import LinkButton from "@/common/asProp/LinkButton/LinkButton";
 
 const ArticleDetail = () => {
   return (

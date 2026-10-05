@@ -1,8 +1,8 @@
 import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { patchUserPassword } from "@/api/axios";
-import { ApiErrorResponse } from "@/types";
-import { toastKit } from "@/utils";
+import patchUserPassword from "@/api/axios/user/patchUserPassword";
+import { ApiErrorResponse } from "@/types/ApiType";
+import { toastKit } from "@/utils/toastKit";
 
 type UsePatchUserPasswordOptions = {
   onSuccess?: () => void;

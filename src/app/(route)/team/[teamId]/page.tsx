@@ -1,5 +1,7 @@
-import { PageLayout } from "@/common";
-import { MemberWidget, ProgressWidget, TaskSection } from "./_components";
+import PageLayout from "@/common/PageLayout/PageLayout";
+import MemberWidget from "./_components/MemberWidget/MemberWidget";
+import ProgressWidget from "./_components/ProgressWidget/ProgressWidget";
+import TaskSection from "./_components/TaskSection/TaskSection";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { cn } from "@/utils";
-import { useAutoHeight } from "@/common/Input/InputReply/_hooks";
+import { cn } from "@/utils/cn";
+import useAutoHeight from "@/common/Input/InputReply/_hooks/useAutoHeight";
 import InputBox from "@/common/Input/InputBox/InputBox";
 import BaseButton from "@/common/Button/BaseButton";
-import { CommentEditProps } from "../../_types";
+import { CommentEditProps } from "../../_types/type";
 
 /**
  * @author KimWonSeon

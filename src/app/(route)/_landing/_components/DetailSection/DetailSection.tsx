@@ -4,8 +4,9 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import { DeviceImage, FeatureBlock } from "../_internal";
-import { DETAIL_SECTION } from "../../_constants";
+import DeviceImage from "../_internal/DeviceImage/DeviceImage";
+import FeatureBlock from "../_internal/FeatureBlock/FeatureBlock";
+import { DETAIL_SECTION } from "../../_constants/constants";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);

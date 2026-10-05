@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import { ChangeEvent } from "react";
 import Icon from "../Icon/Icon";
 

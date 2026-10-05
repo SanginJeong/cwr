@@ -1,5 +1,6 @@
-import { useGetInvitation } from "@/api/hooks";
-import { BaseButton, Modal } from "@/common";
+import useGetInvitation from "@/api/hooks/group/useGetInvitation";
+import BaseButton from "@/common/Button/BaseButton";
+import Modal from "@/common/Modal/Modal";
 
 interface InviteMemberModalProps {
   isOpen: boolean;

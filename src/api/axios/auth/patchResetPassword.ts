@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { PatchResetPasswordRequest, PatchResetPasswordResponse } from "./types";
 
 const patchResetPassword = async (request: PatchResetPasswordRequest): Promise<PatchResetPasswordResponse> => {

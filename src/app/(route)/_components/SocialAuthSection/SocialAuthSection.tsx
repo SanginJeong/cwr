@@ -1,6 +1,6 @@
 "use client";
 
-import { Icon } from "@/common";
+import Icon from "@/common/Icon/Icon";
 
 const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
 const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_LOGIN_URI;

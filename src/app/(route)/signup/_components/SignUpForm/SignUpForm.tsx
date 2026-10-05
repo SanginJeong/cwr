@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useForm } from "@/hooks";
-import { usePostSignup } from "@/api/hooks";
-import { OverlayLoading } from "@/app/(route)/_components";
-import { Input, InputPassword, BaseButton } from "@/common";
-import { validateEmail, validateName, validatePassword, validatePasswordConfirm } from "@/utils";
+import useForm from "@/hooks/useForm/useForm";
+import usePostSignup from "@/api/hooks/auth/usePostSignup";
+import OverlayLoading from "@/app/(route)/_components/OverlayLoading/OverlayLoading";
+import Input from "@/common/Input/Input";
+import InputPassword from "@/common/Input/InputPassword/InputPassword";
+import BaseButton from "@/common/Button/BaseButton";
+import { validateEmail, validateName, validatePassword, validatePasswordConfirm } from "@/utils/Validation";
 
 const INITIAL_VALUES = {
   email: "",

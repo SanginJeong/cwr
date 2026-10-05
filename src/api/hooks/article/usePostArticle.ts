@@ -1,5 +1,5 @@
-import { postArticle } from "@/api/axios";
-import { toastKit } from "@/utils";
+import postArticle from "@/api/axios/article/postArticle";
+import { toastKit } from "@/utils/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 

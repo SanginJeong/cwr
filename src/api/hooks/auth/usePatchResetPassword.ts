@@ -1,9 +1,9 @@
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { patchResetPassword } from "@/api/axios";
-import { ApiErrorResponse } from "@/types";
-import { toastKit } from "@/utils";
+import patchResetPassword from "@/api/axios/auth/patchResetPassword";
+import { ApiErrorResponse } from "@/types/ApiType";
+import { toastKit } from "@/utils/toastKit";
 
 type UsePatchResetPasswordOptions = {
   onSuccess?: () => void;

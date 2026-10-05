@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { UserResponse } from "@/types";
-import { tokenStorage } from "@/utils";
-import { getUser } from "@/api/axios";
+import { UserResponse } from "@/types/UserType";
+import tokenStorage from "@/utils/tokenStorage";
+import getUser from "@/api/axios/user/getUser";
 
 const useGetUser = () => {
   const isLoggedIn = typeof window !== "undefined" && !!tokenStorage.getAccessToken();

@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import Image from "next/image";
-import { Dropdown, Icon } from "@/common";
-import { SidebarDropdownProps } from "../../_types";
+import Dropdown from "@/common/Dropdown/Dropdown";
+import Icon from "@/common/Icon/Icon";
+import { SidebarDropdownProps } from "../../_types/SidebarProps";
 import LeftMobile from "../LeftMobile/LeftMobile";
 
 const SidebarMobile = ({ user, isOpen, handleOpenDropdown, options }: SidebarDropdownProps) => {

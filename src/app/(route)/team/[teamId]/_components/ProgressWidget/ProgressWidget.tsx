@@ -1,9 +1,14 @@
 "use client";
 
-import { useDeleteGroup, useGetGroups } from "@/api/hooks";
-import { BaseButton, Dropdown, Icon, Modal, ProgressBar } from "@/common";
+import useDeleteGroup from "@/api/hooks/group/useDeleteGroup";
+import useGetGroups from "@/api/hooks/group/useGetGroups";
+import BaseButton from "@/common/Button/BaseButton";
+import Dropdown from "@/common/Dropdown/Dropdown";
+import Icon from "@/common/Icon/Icon";
+import Modal from "@/common/Modal/Modal";
+import ProgressBar from "@/common/ProgressBar/ProgressBar";
 import { useParams, useRouter } from "next/navigation";
-import { useCheckAdmin } from "@/hooks";
+import useCheckAdmin from "@/hooks/useCheckAdmin";
 import { useState } from "react";
 import { getCompletedTaskCount, getUncompletedTaskCount } from "@/utils/getTaskCount";
 

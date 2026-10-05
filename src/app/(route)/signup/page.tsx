@@ -1,5 +1,6 @@
-import { SignUpForm } from "./_components";
-import { CenteredCardLayout, SocialAuthSection } from "../_components";
+import SignUpForm from "./_components/SignUpForm/SignUpForm";
+import CenteredCardLayout from "../_components/layouts/CenteredCardLayout";
+import SocialAuthSection from "../_components/SocialAuthSection/SocialAuthSection";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

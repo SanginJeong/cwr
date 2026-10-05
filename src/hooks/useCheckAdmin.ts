@@ -1,4 +1,4 @@
-import { useGetUser } from "@/api/hooks";
+import useGetUser from "@/api/hooks/user/useGetUser";
 import { useParams } from "next/navigation";
 
 const useCheckAdmin = () => {

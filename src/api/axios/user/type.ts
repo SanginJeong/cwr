@@ -1,6 +1,6 @@
 // 프로필 업데이트
 
-import { Frequency } from "@/types";
+import { Frequency } from "@/types/FrequencyType";
 
 export type PatchUserProfileRequest = {
   nickname?: string;

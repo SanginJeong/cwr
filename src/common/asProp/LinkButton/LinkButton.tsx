@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import {
   BASE_BUTTON_BASE_STYLE,
   BASE_BUTTON_STYLE_BY_SIZE,

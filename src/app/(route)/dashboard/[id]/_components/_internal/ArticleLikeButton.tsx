@@ -1,10 +1,13 @@
 "use client";
 
-import { useDeleteArticleLike, useGetArticle, usePostArticleLike } from "@/api/hooks";
-import { FloatingButton, Icon } from "@/common";
+import useDeleteArticleLike from "@/api/hooks/article/useDeleteArticleLike";
+import useGetArticle from "@/api/hooks/article/useGetArticle";
+import usePostArticleLike from "@/api/hooks/article/usePostArticleLike";
+import FloatingButton from "@/common/Button/FloatingButton";
+import Icon from "@/common/Icon/Icon";
 import { useParams } from "next/navigation";
 import ArticleLike from "../../../_components/Article/_internal/ArticleLike";
-import { useDevice } from "@/hooks";
+import useDevice from "@/hooks/useDevice";
 
 const ArticleLikeButton = () => {
   const { id } = useParams();

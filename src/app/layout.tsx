@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import QueryProviders from "../providers";
 import ToasterContainer from "@/lib/toaster";
-import { Sidebar } from "@/common";
+import Sidebar from "@/common/Sidebar/Sidebar";
 
 const pretendard = localFont({
   src: "../../public/fonts/PretendardVariable.woff2",

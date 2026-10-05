@@ -1,6 +1,6 @@
-import { deleteComment } from "@/api/axios";
+import deleteComment from "@/api/axios/comment/deleteComment";
 import { DeleteTaskListCommentRequest } from "@/api/axios/comment/_types";
-import { toastKit } from "@/utils";
+import { toastKit } from "@/utils/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useDeleteComment = () => {

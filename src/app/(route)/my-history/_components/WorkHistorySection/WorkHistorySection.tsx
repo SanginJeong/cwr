@@ -1,5 +1,7 @@
-import { cn } from "@/utils";
-import { EmptyState, LoadingSpinner, TaskListItem } from "@/features";
+import { cn } from "@/utils/cn";
+import EmptyState from "@/features/EmptyState/EmptyState";
+import LoadingSpinner from "@/features/LoadingSpinner/LoadingSpinner";
+import TaskListItem from "@/features/TaskListItem/TaskListItem";
 import { GetHistoryResponse } from "@/api/axios/user/type";
 import ErrorState from "@/features/ErrorState/ErrorState";
 

@@ -1,6 +1,6 @@
-import { postRecurring } from "@/api/axios";
+import postRecurring from "@/api/axios/recurring/postRecurring";
 import { useMutation } from "@tanstack/react-query";
-import { toastKit } from "@/utils";
+import { toastKit } from "@/utils/toastKit";
 import { useQueryClient } from "@tanstack/react-query";
 import { PostTaskRequest } from "@/api/axios/recurring/_types";
 

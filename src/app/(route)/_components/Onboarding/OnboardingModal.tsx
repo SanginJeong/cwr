@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/utils";
+import { cn } from "@/utils/cn";
 import { ONBOARDING_STEPS } from "./_constants/onBoardingData";
 import { overlayVariants, modalVariants, contentVariants } from "./_constants/onBoardingAnimations";
 

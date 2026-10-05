@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { UserData } from "../_types/type";
-import { usePatchUserProfile } from "@/api/hooks";
-import { useImageUpload } from "@/hooks";
-import { validateName } from "@/utils";
+import usePatchUserProfile from "@/api/hooks/user/usePatchUserProfile";
+import useImageUpload from "@/hooks/useImageUpload";
+import { validateName } from "@/utils/Validation";
 import { PatchUserProfileRequest } from "@/api/axios/user/type";
 
 export interface UseMyProfileSettingsReturn {

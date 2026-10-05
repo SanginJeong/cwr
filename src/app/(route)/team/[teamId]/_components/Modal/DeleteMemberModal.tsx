@@ -1,8 +1,10 @@
-import { useDeleteMember } from "@/api/hooks";
-import { BaseButton, Icon, Modal } from "@/common";
-import { useCheckAdmin } from "@/hooks";
+import useDeleteMember from "@/api/hooks/group/useDeleteMember";
+import BaseButton from "@/common/Button/BaseButton";
+import Icon from "@/common/Icon/Icon";
+import Modal from "@/common/Modal/Modal";
+import useCheckAdmin from "@/hooks/useCheckAdmin";
 import { GroupMember } from "@/types/Group/GroupData";
-import { toastKit } from "@/utils";
+import { toastKit } from "@/utils/toastKit";
 import { useParams } from "next/navigation";
 
 interface DeleteMemberModalProps {

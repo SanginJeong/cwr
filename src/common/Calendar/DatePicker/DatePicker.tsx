@@ -1,7 +1,7 @@
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./DatePicker.css";
-import { DateValue } from "@/types";
+import { DateValue } from "@/types/DatePickerType";
 import Icon from "@/common/Icon/Icon";
 
 /**

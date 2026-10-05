@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { SignUpResponse, SignUpRequest } from "./types";
 
 const postSignup = async (credentials: SignUpRequest): Promise<SignUpResponse> => {

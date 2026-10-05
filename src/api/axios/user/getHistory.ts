@@ -1,4 +1,4 @@
-import { instance } from "@/lib";
+import instance from "@/lib/axios";
 import { GetHistoryResponse } from "./type";
 
 const getHistory = async (): Promise<GetHistoryResponse> => {

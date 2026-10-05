@@ -1,4 +1,4 @@
-import { CommentData } from "@/types";
+import { CommentData } from "@/types/CommentType";
 
 export interface CommentProps {
   comment: CommentData;

@@ -1,4 +1,4 @@
-import { usePatchTaskDetail } from "@/api/hooks";
+import usePatchTaskDetail from "@/api/hooks/task/usePatchTaskDetail";
 import useDeleteTask from "@/api/hooks/task/useDeleteTask";
 
 interface UseTaskListMutationsProps {

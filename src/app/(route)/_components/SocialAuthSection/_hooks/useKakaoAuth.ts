@@ -1,7 +1,7 @@
 "use client";
 
 import KakaoAuthAction from "@/api/actions/kakaoAuth";
-import { toastKit } from "@/utils";
+import { toastKit } from "@/utils/toastKit";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";

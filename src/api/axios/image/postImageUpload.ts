@@ -1,6 +1,6 @@
 import axios from "axios";
-import { instance } from "@/lib";
-import { ApiErrorResponse } from "@/types";
+import instance from "@/lib/axios";
+import { ApiErrorResponse } from "@/types/ApiType";
 
 const postImageUpload = async (file: File): Promise<string> => {
   try {

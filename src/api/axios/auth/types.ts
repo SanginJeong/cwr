@@ -1,4 +1,5 @@
-import { AuthToken, User } from "@/types";
+import { AuthToken } from "@/types/AuthType";
+import { User } from "@/types/UserType";
 
 // 로그인
 export interface LoginRequest {

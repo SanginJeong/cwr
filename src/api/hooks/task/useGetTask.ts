@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { GetTaskRequest } from "@/api/axios/task/_types";
-import { getTask } from "@/api/axios";
+import getTask from "@/api/axios/task/getTask";
 
 const useGetTask = ({ groupId, taskListId, date }: GetTaskRequest) => {
   return useQuery({
