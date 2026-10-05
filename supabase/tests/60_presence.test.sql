@@ -40,7 +40,7 @@ begin
   -- 채널에 메시지가 하나 있어야 select 정책을 확인할 수 있다 (실제로는 Realtime 서버가 넣는다)
   perform public.test_logout();
   perform set_config('realtime.topic', 'team:' || g, false);
-  insert into realtime.messages (extension, payload) values ('presence', '{}');
+  insert into realtime.messages (extension, payload) values ('presence', '{}'), ('broadcast', '{}');
   perform set_config('realtime.topic', 'team:' || other_g, false);
   insert into realtime.messages (extension, payload) values ('presence', '{}');
 
@@ -58,6 +58,8 @@ begin
   perform pg_temp.check('멤버: 자기 팀 채널 구독 가능', pg_temp.can_read('team:' || g));
   perform pg_temp.check('멤버: 자기 팀 채널에 상태 전송 가능', pg_temp.can_track('team:' || g));
   perform pg_temp.check('멤버: 자기가 만든 다른 팀 채널도 가능', pg_temp.can_read('team:' || other_g));
+  perform pg_temp.check('멤버: broadcast 구독 가능 (Allow public access를 끄면 접속 시 검사됨)', exists (
+    select 1 from realtime.messages where extension = 'broadcast' and topic = 'team:' || g));
 
   perform public.test_login(admin);
   perform pg_temp.check('다른 팀 채널은 구독 불가', not pg_temp.can_read('team:' || other_g));
@@ -66,6 +68,8 @@ begin
   perform public.test_login(outsider);
   perform pg_temp.check('외부인: 구독 불가', not pg_temp.can_read('team:' || g));
   perform pg_temp.check('외부인: 상태 전송 불가', not pg_temp.can_track('team:' || g));
+  perform pg_temp.check('외부인: broadcast도 구독 불가', not exists (
+    select 1 from realtime.messages where extension = 'broadcast' and topic = 'team:' || g));
   perform pg_temp.check('형식이 다른 topic은 거부 (캐스팅 에러 없이)',
     not pg_temp.can_read('team:abc') and not pg_temp.can_read('global') and not pg_temp.can_track('team:1;drop'));
 
