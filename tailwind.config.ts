@@ -2,11 +2,8 @@ import { flexCenter, flexColCenter, customShadow } from "./src/shared/config/tai
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/common/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  // FSD 레이어(app/views/widgets/features/entities/shared) 전체를 스캔한다
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     screens: {
       mobile: { max: "430px" }, // 0–430px
