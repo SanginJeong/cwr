@@ -141,7 +141,7 @@ Swagger 기준 53개이고, 이 중 프론트가 실제로 쓰는 것은 약 37�
 
 - [x] 테스트 계정으로 시나리오별로 호출하고 요청/응답을 기록
 - [x] 결과를 `docs/backend-behavior-spec.md`에 정리
-- [ ] ADR-004 작성 (Supabase 전환 결정과 반복 일정 모델링 방식)
+- [x] ADR-004 작성 (Supabase 전환 결정과 반복 일정 모델링 방식) — 초안(Proposed)
 
 ### Phase 2. 스키마와 RLS
 

@@ -44,12 +44,7 @@
   - 조회하는 API(`GET .../tasks?date`, `GET task-lists/{id}?date`, `GET groups/{id}/tasks?date`)는 모두 같은 방식입니다.
 - [추정] 아무도 조회하지 않은 날짜에는 task 행이 없습니다. 그래서 반복 일정을 수정하면 "이미 조회된 날짜"와 "아직 조회되지 않은 날짜"의 결과가 달라집니다(§2.5).
 
-**→ 새 백엔드**: 이 지연 생성 방식이 §2.5처럼 일관성 없는 결과를 만듭니다. 그래서 **가상 task 방식으로 바꾸는 것**을 제안합니다.
-
-- 조회할 때는 규칙으로 계산만 하고 행을 만들지 않습니다.
-- 완료, 수정, 삭제, 댓글처럼 상태가 생길 때만 `tasks`에 행(예외)을 만듭니다.
-- 가상 task의 id는 `recurringId + date`로 식별합니다.
-- 단, 프론트가 `taskId: number`를 전제로 하므로, 첫 상호작용 때 행을 만들고 그 id를 쓰는 방식으로 호환시킵니다. ADR-004에서 결정합니다.
+**→ 새 백엔드**: ~~가상 task 방식~~ → [ADR-004](./decisions/ADR-004-supabase-backend.md) §2에서 **지연 생성 유지 + 멱등 생성 + `is_customized` 플래그로 수정 반영**으로 결정. 가상 task는 숫자 id가 없어서 프론트 흐름을 모두 바꿔야 하기 때문.
 
 ### 2.4 완료 처리
 
@@ -160,12 +155,9 @@
 - [확인] 댓글 목록은 **최신순**이고 커서 방식입니다. 응답은 `{ list, nextCursor }`이고, `nextCursor`는 현재 페이지 마지막 댓글의 `id`입니다. 마지막 페이지면 `null`.
   - 댓글 형태: `{ id, content, createdAt, updatedAt, writer: {id, nickname, image} }` (task 댓글은 `user`, 게시글 댓글은 `writer`로 필드명이 다름)
 
-## 7. 결정이 필요한 것 (ADR-004로)
+## 7. 결정 사항
 
-1. **반복 일정 모델**: 가상 task + 예외 행 방식(제안) vs 기존의 지연 생성 방식 그대로
-2. **ADMIN 탈퇴**: 허용하지 않음 / 다른 멤버에게 ADMIN 넘기기 / 그대로 허용
-3. **history에 soft delete된 task 표시 여부**
-4. **task 삭제 권한**: 멤버 모두(지금과 같음) vs 작성자와 ADMIN만
+[ADR-004](./decisions/ADR-004-supabase-backend.md)에 정리했습니다. 반복 일정 모델(§2), 권한(§3), 탈퇴(§4), 초대(§5), history(§6).
 
 ## 8. 테스트 흔적 정리
 
