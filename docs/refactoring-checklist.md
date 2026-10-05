@@ -31,16 +31,16 @@
 ## Phase 2. 미사용 코드 삭제
 
 - [x] `src/api/axios/auth/refresh/route.ts` (Phase 0에서 이동)
-- [ ] `src/app/(route)/my-history/_components/ScheduleDaySection/` (컴포넌트 + stories)
-- [ ] `src/app/(route)/my-history/_constants/` (`index.ts`, `STYLE_TOKENS.ts`)
-- [ ] `src/app/(route)/dashboard/write/_constants/MAX_IMAGE_SIZE.ts`
-- [ ] `src/stores/store.ts` (빈 store)
-- [ ] `src/constants/` (빈 `index.ts`, `.gitkeep`)
-- [ ] `src/app/(route)/signup/_type/`
-- [ ] `src/app/(route)/my-page/_components/index.ts` (안 쓰는 배럴)
-- [ ] `src/common/Comment/_internal/index.ts` (안 쓰는 배럴)
-- [ ] `src/app/(route)/login/_constants/.gitkeep`, `login/_types/.gitkeep` (빈 폴더)
-- [ ] `src/types/` 중 import되지 않는 타입 파일 확인 후 삭제 (`tsc --noEmit`로 확인)
+- [x] `src/app/(route)/my-history/_components/ScheduleDaySection/` (컴포넌트 + stories)
+- [x] `src/app/(route)/my-history/_constants/` (`index.ts`, `STYLE_TOKENS.ts`)
+- [x] `src/app/(route)/dashboard/write/_constants/MAX_IMAGE_SIZE.ts`
+- [x] `src/stores/store.ts` (빈 store)
+- [x] `src/constants/` (빈 `index.ts`, `.gitkeep`)
+- [x] `src/app/(route)/signup/_type/`
+- [x] `src/app/(route)/my-page/_components/index.ts` (안 쓰는 배럴)
+- [ ] ~~`src/common/Comment/_internal/index.ts`~~ — `CommentItem.stories.tsx`가 사용 중이라 유지
+- [x] `src/app/(route)/login/_constants/.gitkeep`, `login/_types/.gitkeep` (빈 폴더)
+- [x] `src/types/` 중 import되지 않는 타입 파일 삭제 (`DateType`, `ToastType`)
 
 > `src/utils/customPlugins.ts`는 `tailwind.config.ts`가 사용 → **삭제하지 말 것**
 
