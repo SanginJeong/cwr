@@ -1,6 +1,6 @@
 "use client";
 
-import getArticles from "@/entities/article/api/getArticles";
+import getArticles from "./getArticles";
 import { GetArticlesRequest } from "@/shared/api/types/articleApi";
 import { useInfiniteQuery } from "@tanstack/react-query";
 

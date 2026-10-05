@@ -5,4 +5,4 @@ export const metadata: Metadata = {
   description: "게시글을 통해 팀원들과 소통해보세요.",
 };
 
-export { default } from "@/views/board/ui/BoardPage";
+export { BoardPage as default } from "@/views/board";

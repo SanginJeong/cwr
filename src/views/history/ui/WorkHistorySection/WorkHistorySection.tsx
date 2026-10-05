@@ -1,9 +1,9 @@
 import { cn } from "@/shared/lib/cn";
-import EmptyState from "@/shared/ui/empty-state/EmptyState";
-import LoadingSpinner from "@/shared/ui/spinner/LoadingSpinner";
-import TaskListItem from "@/entities/task/ui/TaskListItem/TaskListItem";
+import { EmptyState } from "@/shared/ui/empty-state";
+import { LoadingSpinner } from "@/shared/ui/spinner";
+import { TaskListItem } from "@/entities/task";
 import { GetHistoryResponse } from "@/shared/api/types/userApi";
-import ErrorState from "@/shared/ui/error-state/ErrorState";
+import { ErrorState } from "@/shared/ui/error-state";
 
 interface Props {
   data: GetHistoryResponse;

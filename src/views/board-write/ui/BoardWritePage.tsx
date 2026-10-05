@@ -1,5 +1,5 @@
-import PageLayout from "@/shared/ui/page-layout/PageLayout";
-import ArticleForm from "@/features/article/write-article/ui/ArticleForm";
+import { PageLayout } from "@/shared/ui/page-layout";
+import { ArticleForm } from "@/features/article/write-article";
 
 const DashboardWritePage = () => {
   return (

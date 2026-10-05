@@ -1,8 +1,8 @@
 "use client";
 
 import { FormEvent, useRef, useState } from "react";
-import usePostTeamJoin from "@/features/team/join-team/api/usePostTeamJoin";
-import useGetUser from "@/entities/user/api/useGetUser";
+import usePostTeamJoin from "../api/usePostTeamJoin";
+import { useGetUser } from "@/entities/user";
 
 type UseTeamJoinReturn = {
   token: string;

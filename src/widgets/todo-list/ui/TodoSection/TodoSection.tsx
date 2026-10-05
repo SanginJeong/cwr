@@ -5,18 +5,18 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { addDays, format } from "date-fns";
 import { DateValue } from "@/shared/api/types/DatePickerType";
-import DateItem from "@/shared/ui/date-item/DateItem";
-import DatePicker from "@/shared/ui/date-picker/DatePicker";
-import Icon from "@/shared/ui/icon/Icon";
-import EmptyState from "@/shared/ui/empty-state/EmptyState";
-import LoadingSpinner from "@/shared/ui/spinner/LoadingSpinner";
-import TaskListItem from "@/entities/task/ui/TaskListItem/TaskListItem";
+import { DateItem } from "@/shared/ui/date-item";
+import { DatePicker } from "@/shared/ui/date-picker";
+import { Icon } from "@/shared/ui/icon";
+import { EmptyState } from "@/shared/ui/empty-state";
+import { LoadingSpinner } from "@/shared/ui/spinner";
+import { TaskListItem } from "@/entities/task";
 import { TODO_STYLES } from "../../config/TODO_STYLES";
-import TaskPdfDownloadButton from "@/features/task/export-pdf/ui/TaskPdfDownloadButton/TaskPdfDownloadButton";
-import useTaskMutations from "@/features/task/manage-task/model/useTaskMutations";
-import EditDataModal from "@/features/task/manage-task/ui/EditDataModal/EditDataModal";
+import { TaskPdfDownloadButton } from "@/features/task/export-pdf";
+import { useTaskMutations } from "@/features/task/manage-task";
+import { EditDataModal } from "@/features/task/manage-task";
 import { TaskResponse } from "@/shared/api/types/taskApi";
-import ErrorState from "@/shared/ui/error-state/ErrorState";
+import { ErrorState } from "@/shared/ui/error-state";
 
 interface TodoSectionHeaderProps {
   data: TaskResponse;

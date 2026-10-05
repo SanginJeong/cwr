@@ -5,4 +5,4 @@ export const metadata: Metadata = {
   description: "팀 이름과 이미지를 수정해보세요.",
 };
 
-export { default } from "@/views/team-edit/ui/TeamEditPage";
+export { TeamEditPage as default } from "@/views/team-edit";

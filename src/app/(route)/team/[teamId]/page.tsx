@@ -5,4 +5,4 @@ export const metadata: Metadata = {
   description: "할 일들을 생성하고, 효율적인 업무 관리를 시작해보세요.",
 };
 
-export { default } from "@/views/team/ui/TeamPage";
+export { TeamPage as default } from "@/views/team";

@@ -1,4 +1,4 @@
-import deleteGroup from "@/features/team/delete-team/api/deleteGroup";
+import deleteGroup from "./deleteGroup";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";

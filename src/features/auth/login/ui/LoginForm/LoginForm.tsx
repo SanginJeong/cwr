@@ -2,16 +2,16 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 import useForm from "@/shared/lib/useForm/useForm";
-import useEmailStore from "@/features/auth/login/model/useEmailStore";
-import OverlayLoading from "@/shared/ui/overlay-loading/OverlayLoading";
+import useEmailStore from "../../model/useEmailStore";
+import { OverlayLoading } from "@/shared/ui/overlay-loading";
 import { ValidationRules } from "@/shared/api/types/AuthType";
-import usePostLogin from "@/features/auth/login/api/usePostLogin";
-import ResetPassword from "@/features/auth/login/ui/ResetPassword/ResetPassword";
-import Input from "@/shared/ui/input/Input";
-import InputPassword from "@/shared/ui/input/InputPassword/InputPassword";
-import BaseButton from "@/shared/ui/button/BaseButton";
+import usePostLogin from "../../api/usePostLogin";
+import ResetPassword from "../ResetPassword/ResetPassword";
+import { Input } from "@/shared/ui/input";
+import { InputPassword } from "@/shared/ui/input";
+import { BaseButton } from "@/shared/ui/button";
 import { toastKit } from "@/shared/lib/toastKit";
 import { validateEmail, validatePassword } from "@/shared/lib/Validation";
 

@@ -3,9 +3,9 @@
 import useDropdownClose from "@/shared/lib/useDropdownClose";
 import { MouseEvent, ReactNode, useRef, useState } from "react";
 import { cn } from "@/shared/lib/cn";
-import Icon, { IconKeys } from "@/shared/ui/icon/Icon";
+import { Icon, IconKeys } from "@/shared/ui/icon";
 import { DropdownOption } from "./_types/types";
-import Portal from "@/shared/ui/portal/Portal";
+import { Portal } from "@/shared/ui/portal";
 import { DropdownPlacement, getPositionByPlacement } from "@/shared/lib/getPositionByPlacement";
 
 const PLACEMENT_TRANSFORM: Record<DropdownPlacement, string> = {

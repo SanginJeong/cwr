@@ -1,4 +1,4 @@
-import patchArticleComment from "@/features/article-comment/manage-comment/api/patchArticleComment";
+import patchArticleComment from "./patchArticleComment";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

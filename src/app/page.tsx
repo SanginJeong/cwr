@@ -1,1 +1,1 @@
-export { default } from "@/views/landing/ui/LandingPage";
+export { LandingPage as default } from "@/views/landing";

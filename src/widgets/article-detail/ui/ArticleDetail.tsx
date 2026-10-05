@@ -1,6 +1,6 @@
 import ArticleBody from "./_internal/ArticleBody";
 import ArticleComments from "./_internal/ArticleComments";
-import LinkButton from "@/shared/ui/link-button/LinkButton";
+import { LinkButton } from "@/shared/ui/link-button";
 
 const ArticleDetail = () => {
   return (

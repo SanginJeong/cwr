@@ -1,7 +1,7 @@
-import useDeleteTaskList from "@/features/task-list/manage-task-list/api/useDeleteTaskList";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Icon from "@/shared/ui/icon/Icon";
-import Modal from "@/shared/ui/modal/Modal";
+import useDeleteTaskList from "../api/useDeleteTaskList";
+import { BaseButton } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
+import { Modal } from "@/shared/ui/modal";
 
 interface DeleteTaskListModalProps {
   isOpen: boolean;

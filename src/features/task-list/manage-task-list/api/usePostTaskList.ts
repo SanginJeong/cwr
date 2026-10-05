@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toastKit } from "@/shared/lib/toastKit";
-import postTaskList from "@/features/task-list/manage-task-list/api/postTaskList";
+import postTaskList from "./postTaskList";
 import { PostTaskListRequest } from "@/shared/api/types/taskListApi";
 import { useRouter } from "next/navigation";
 

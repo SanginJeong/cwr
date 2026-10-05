@@ -1,1 +1,1 @@
-export { default } from "@/views/history/ui/HistoryPage";
+export { HistoryPage as default } from "@/views/history";

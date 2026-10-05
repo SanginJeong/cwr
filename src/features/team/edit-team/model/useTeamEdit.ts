@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import useGetGroups from "@/entities/team/api/useGetGroups";
-import usePatchGroup from "@/features/team/edit-team/api/usePatchGroup";
+import { useGetGroups } from "@/entities/team";
+import usePatchGroup from "../api/usePatchGroup";
 import useImageUpload from "@/shared/lib/useImageUpload";
 
 const useTeamEdit = (teamId: number) => {

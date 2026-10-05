@@ -1,4 +1,4 @@
-import postRecurring from "@/features/task/create-task/api/postRecurring";
+import postRecurring from "./postRecurring";
 import { useMutation } from "@tanstack/react-query";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useQueryClient } from "@tanstack/react-query";

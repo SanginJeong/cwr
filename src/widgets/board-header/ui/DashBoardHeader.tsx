@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import Icon from "@/shared/ui/icon/Icon";
-import useArticleSearchStore from "@/features/article/search-article/model/useArticleSearchStore";
+import { Icon } from "@/shared/ui/icon";
+import { useArticleSearchStore } from "@/features/article/search-article";
 import { cn } from "@/shared/lib/cn";
 
 const DashBoardHeader = () => {

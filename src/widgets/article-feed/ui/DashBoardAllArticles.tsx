@@ -1,13 +1,13 @@
 "use client";
 
-import Select from "@/shared/ui/select/Select";
+import { Select } from "@/shared/ui/select";
 import { useState, useEffect, useRef } from "react";
-import FeedArticleItem from "@/entities/article/ui/FeedArticleItem";
-import { SelectOption } from "@/shared/ui/select/_types/types";
-import useArticleSearchStore from "@/features/article/search-article/model/useArticleSearchStore";
+import { FeedArticleItem } from "@/entities/article";
+import { SelectOption } from "@/shared/ui/select";
+import { useArticleSearchStore } from "@/features/article/search-article";
 import useDebounce from "@/shared/lib/useDebounce";
-import useGetArticlesInfinite from "@/entities/article/api/useGetArticlesInfinite";
-import LoadingSpinner from "@/shared/ui/spinner/LoadingSpinner";
+import { useGetArticlesInfinite } from "@/entities/article";
+import { LoadingSpinner } from "@/shared/ui/spinner";
 import { AnimatePresence, motion } from "framer-motion";
 
 const DashBoardAllArticles = () => {

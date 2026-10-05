@@ -9,9 +9,9 @@ import {
   MODAL_FOOTER_STYLE,
   MODAL_OVERLAY_STYLE,
 } from "./MODAL_STYLE";
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 import { ModalProps, ModalContentProps } from "./_types/ModalProps";
-import Portal from "@/shared/ui/portal/Portal";
+import { Portal } from "@/shared/ui/portal";
 
 /**
  * @author sangin

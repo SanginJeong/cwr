@@ -1,4 +1,4 @@
-import postCreateTeam from "@/features/team/create-team/api/postCreateTeam";
+import postCreateTeam from "./postCreateTeam";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";

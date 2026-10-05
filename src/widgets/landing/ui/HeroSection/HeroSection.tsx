@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { cn } from "@/shared/lib/cn";
 import DeviceImage from "../_internal/DeviceImage/DeviceImage";
-import LinkButton from "@/shared/ui/link-button/LinkButton";
+import { LinkButton } from "@/shared/ui/link-button";
 
 interface HeroSectionProps {
   link?: string;

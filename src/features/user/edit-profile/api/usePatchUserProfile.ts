@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import patchUserProfile from "@/features/user/edit-profile/api/patchUserProfile";
+import patchUserProfile from "./patchUserProfile";
 import { ApiErrorResponse } from "@/shared/api/types/ApiType";
 import { toastKit } from "@/shared/lib/toastKit";
 

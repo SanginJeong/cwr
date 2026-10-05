@@ -5,4 +5,4 @@ export const metadata: Metadata = {
   description: "팀을 생성하거나 팀에 참여해보세요.",
 };
 
-export { default } from "@/views/no-team/ui/NoTeamPage";
+export { NoTeamPage as default } from "@/views/no-team";

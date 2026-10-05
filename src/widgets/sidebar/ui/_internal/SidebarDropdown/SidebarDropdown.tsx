@@ -1,4 +1,4 @@
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 import { Membership } from "@/shared/api/types/UserType";
 import { useIsActivePath } from "@/shared/lib/isActivePath";
 import { cn } from "@/shared/lib/cn";

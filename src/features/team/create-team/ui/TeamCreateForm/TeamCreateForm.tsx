@@ -3,10 +3,10 @@
 import { FormEvent } from "react";
 import useDevice from "@/shared/lib/useDevice";
 import useTeamCreation from "../../model/useTeamCreation";
-import OverlayLoading from "@/shared/ui/overlay-loading/OverlayLoading";
-import ProfileEdit from "@/shared/ui/profile/ProfileEdit/ProfileEdit";
-import Input from "@/shared/ui/input/Input";
-import BaseButton from "@/shared/ui/button/BaseButton";
+import { OverlayLoading } from "@/shared/ui/overlay-loading";
+import { ProfileEdit } from "@/shared/ui/profile";
+import { Input } from "@/shared/ui/input";
+import { BaseButton } from "@/shared/ui/button";
 
 const TeamCreateForm = () => {
   const { isMobile } = useDevice();

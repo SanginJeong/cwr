@@ -1,4 +1,4 @@
-import getInvitation from "@/entities/team/api/getInvitation";
+import getInvitation from "./getInvitation";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation } from "@tanstack/react-query";
 

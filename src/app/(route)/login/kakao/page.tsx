@@ -1,1 +1,1 @@
-export { default } from "@/views/kakao-callback/ui/KakaoCallbackPage";
+export { KakaoCallbackPage as default } from "@/views/kakao-callback";

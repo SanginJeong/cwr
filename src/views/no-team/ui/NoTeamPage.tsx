@@ -1,7 +1,7 @@
 import ImgEmptyTeam from "@/shared/assets/images/empty-team.png";
 import Image from "next/image";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import PageLayout from "@/shared/ui/page-layout/PageLayout";
+import { BaseButton } from "@/shared/ui/button";
+import { PageLayout } from "@/shared/ui/page-layout";
 import Link from "next/link";
 
 const EmptyTeamPage = async () => {

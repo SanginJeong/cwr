@@ -1,4 +1,4 @@
-import patchArticle from "@/features/article/edit-article/api/patchArticle";
+import patchArticle from "./patchArticle";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

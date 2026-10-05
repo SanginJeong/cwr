@@ -1,10 +1,6 @@
 import { ReactNode } from "react";
 import { cn } from "@/shared/lib/cn";
-import {
-  BASE_BUTTON_BASE_STYLE,
-  BASE_BUTTON_STYLE_BY_SIZE,
-  BASE_BUTTON_STYLE_BY_VARIANT,
-} from "@/shared/ui/button/BUTTON_STYLES";
+import { BASE_BUTTON_BASE_STYLE, BASE_BUTTON_STYLE_BY_SIZE, BASE_BUTTON_STYLE_BY_VARIANT } from "@/shared/ui/button";
 import Link, { LinkProps } from "next/link";
 
 type ButtonSize = keyof typeof BASE_BUTTON_STYLE_BY_SIZE;

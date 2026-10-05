@@ -10,4 +10,4 @@ export const metadata: Metadata = {
   },
 };
 
-export { default } from "@/views/signup/ui/SignupPage";
+export { SignupPage as default } from "@/views/signup";

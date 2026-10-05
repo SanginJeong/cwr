@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 import { cn } from "@/shared/lib/cn";
 import { SelectOption } from "./_types/types";
 import useDropdownClose from "@/shared/lib/useDropdownClose";

@@ -1,5 +1,5 @@
-import CenteredCardLayout from "@/shared/ui/centered-card-layout/CenteredCardLayout";
-import TeamJoinForm from "@/features/team/join-team/ui/TeamJoinForm/TeamJoinForm";
+import { CenteredCardLayout } from "@/shared/ui/centered-card-layout";
+import { TeamJoinForm } from "@/features/team/join-team";
 
 const TeamJoinPage = () => {
   return (

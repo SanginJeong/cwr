@@ -1,4 +1,4 @@
-import FloatingButton from "@/shared/ui/button/FloatingButton";
+import { FloatingButton } from "@/shared/ui/button";
 import { cn } from "@/shared/lib/cn";
 
 interface PaginationProps {

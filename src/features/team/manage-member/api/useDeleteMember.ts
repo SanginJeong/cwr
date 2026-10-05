@@ -1,4 +1,4 @@
-import deleteMember from "@/features/team/manage-member/api/deleteMember";
+import deleteMember from "./deleteMember";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

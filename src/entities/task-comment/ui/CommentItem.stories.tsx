@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/nextjs";
 import { useState } from "react";
 import CommentItem from "./CommentItem";
 import { CommentData } from "@/shared/api/types/CommentType";
-import Profile from "@/shared/ui/profile/Profile";
+import { Profile } from "@/shared/ui/profile";
 import CommentEdit from "./_internal/CommentEdit/CommentEdit";
 
 const meta: Meta<typeof CommentItem> = {

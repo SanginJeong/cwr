@@ -1,4 +1,4 @@
-import deleteArticle from "@/features/article/delete-article/api/deleteArticle";
+import deleteArticle from "./deleteArticle";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";

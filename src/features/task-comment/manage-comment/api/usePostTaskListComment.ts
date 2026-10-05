@@ -1,4 +1,4 @@
-import postTaskListComment from "@/features/task-comment/manage-comment/api/postTaskListComment";
+import postTaskListComment from "./postTaskListComment";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

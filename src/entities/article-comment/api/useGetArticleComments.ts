@@ -1,4 +1,4 @@
-import getArticleComments from "@/entities/article-comment/api/getArticleComments";
+import getArticleComments from "./getArticleComments";
 import { GetArticleCommentsRequest } from "@/shared/api/types/articleCommentApi";
 import { useQuery } from "@tanstack/react-query";
 

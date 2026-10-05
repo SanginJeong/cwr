@@ -1,4 +1,4 @@
-import LoadingSpinner from "@/shared/ui/spinner/LoadingSpinner";
+import { LoadingSpinner } from "@/shared/ui/spinner";
 
 const OverlayLoading = () => {
   return (

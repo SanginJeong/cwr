@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import Input from "@/shared/ui/input/Input";
-import InputBox from "@/shared/ui/input/InputBox/InputBox";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Icon from "@/shared/ui/icon/Icon";
-import FloatingButton from "@/shared/ui/button/FloatingButton";
+import { Input } from "@/shared/ui/input";
+import { InputBox } from "@/shared/ui/input";
+import { BaseButton } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
+import { FloatingButton } from "@/shared/ui/button";
 import { ChangeEvent, FormEvent, useState } from "react";
-import usePostArticle from "@/features/article/write-article/api/usePostArticle";
+import usePostArticle from "../api/usePostArticle";
 import { INPUT_AREA_STYLE, LABEL_STYLE } from "../config/STYLE";
 import { toastKit } from "@/shared/lib/toastKit";
 import useImageUpload from "@/shared/lib/useImageUpload";

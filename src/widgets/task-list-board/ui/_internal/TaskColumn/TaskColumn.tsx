@@ -1,10 +1,10 @@
 "use client";
 
-import ProgressButton from "@/shared/ui/button/ProgressButton";
+import { ProgressButton } from "@/shared/ui/button";
 import TaskCard from "../TaskCard/TaskCard";
 import { useState } from "react";
 import { TaskList } from "@/shared/api/types/GroupData";
-import CreateTaskListModal from "@/features/task-list/manage-task-list/ui/CreateTaskListModal";
+import { CreateTaskListModal } from "@/features/task-list/manage-task-list";
 
 type ColumnTitle = "할 일" | "진행중" | "완료";
 

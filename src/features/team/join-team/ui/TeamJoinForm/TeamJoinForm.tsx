@@ -1,7 +1,7 @@
 "use client";
 
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Input from "@/shared/ui/input/Input";
+import { BaseButton } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
 import useTeamJoin from "../../model/useTeamJoin";
 
 const TeamJoinForm = () => {

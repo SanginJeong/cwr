@@ -1,6 +1,6 @@
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Input from "@/shared/ui/input/Input";
-import Modal from "@/shared/ui/modal/Modal";
+import { BaseButton } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
+import { Modal } from "@/shared/ui/modal";
 import { FormEvent } from "react";
 
 interface EditDataModalProps {

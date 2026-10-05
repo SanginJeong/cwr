@@ -1,9 +1,9 @@
 import Link from "next/link";
-import FloatingButton from "@/shared/ui/button/FloatingButton";
-import PageLayout from "@/shared/ui/page-layout/PageLayout";
-import DashBoardHeader from "@/widgets/board-header/ui/DashBoardHeader";
-import DashBoardBestArticles from "@/widgets/best-articles/ui/DashBoardBestArticles";
-import DashBoardAllArticles from "@/widgets/article-feed/ui/DashBoardAllArticles";
+import { FloatingButton } from "@/shared/ui/button";
+import { PageLayout } from "@/shared/ui/page-layout";
+import { DashBoardHeader } from "@/widgets/board-header";
+import { DashBoardBestArticles } from "@/widgets/best-articles";
+import { DashBoardAllArticles } from "@/widgets/article-feed";
 
 const DashboardPage = () => {
   return (

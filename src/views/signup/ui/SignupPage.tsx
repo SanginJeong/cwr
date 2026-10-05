@@ -1,6 +1,6 @@
-import SignUpForm from "@/features/auth/signup/ui/SignUpForm/SignUpForm";
-import CenteredCardLayout from "@/shared/ui/centered-card-layout/CenteredCardLayout";
-import SocialAuthSection from "@/features/auth/kakao-login/ui/SocialAuthSection/SocialAuthSection";
+import { SignUpForm } from "@/features/auth/signup";
+import { CenteredCardLayout } from "@/shared/ui/centered-card-layout";
+import { SocialAuthSection } from "@/features/auth/kakao-login";
 
 const SignUpPage = () => {
   return (

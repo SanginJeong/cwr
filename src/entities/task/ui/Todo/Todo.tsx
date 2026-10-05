@@ -2,7 +2,7 @@
 
 import { cn } from "@/shared/lib/cn";
 import { ChangeEvent } from "react";
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 
 /**
  * @author jikwon

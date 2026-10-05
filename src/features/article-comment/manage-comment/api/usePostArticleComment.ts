@@ -1,4 +1,4 @@
-import postArticleComment from "@/features/article-comment/manage-comment/api/postArticleComment";
+import postArticleComment from "./postArticleComment";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

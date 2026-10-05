@@ -1,1 +1,1 @@
-export { default } from "@/views/account/ui/AccountPage";
+export { AccountPage as default } from "@/views/account";

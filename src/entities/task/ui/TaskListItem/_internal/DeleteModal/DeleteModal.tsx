@@ -1,5 +1,5 @@
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Modal from "@/shared/ui/modal/Modal";
+import { BaseButton } from "@/shared/ui/button";
+import { Modal } from "@/shared/ui/modal";
 
 interface DeleteModalProps {
   isOpen: boolean;

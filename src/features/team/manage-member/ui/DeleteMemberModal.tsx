@@ -1,8 +1,8 @@
-import useDeleteMember from "@/features/team/manage-member/api/useDeleteMember";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Icon from "@/shared/ui/icon/Icon";
-import Modal from "@/shared/ui/modal/Modal";
-import useCheckAdmin from "@/entities/user/model/useCheckAdmin";
+import useDeleteMember from "../api/useDeleteMember";
+import { BaseButton } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
+import { Modal } from "@/shared/ui/modal";
+import { useCheckAdmin } from "@/entities/user";
 import { GroupMember } from "@/shared/api/types/GroupData";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useParams } from "next/navigation";

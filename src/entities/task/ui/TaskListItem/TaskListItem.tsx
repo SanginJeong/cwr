@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import Dropdown from "@/shared/ui/dropdown/Dropdown";
-import Icon from "@/shared/ui/icon/Icon";
-import Todo from "@/entities/task/ui/Todo/Todo";
+import { Dropdown } from "@/shared/ui/dropdown";
+import { Icon } from "@/shared/ui/icon";
+import Todo from "../Todo/Todo";
 import type { TaskListItemType } from "@/shared/api/types/TaskListItemType";
 import { cn } from "@/shared/lib/cn";
 import { formatToKoreanDate } from "@/shared/lib/formatDate";
-import { getFrequencyLabel } from "@/entities/task/lib/getFrequencyLabel";
+import { getFrequencyLabel } from "../../lib/getFrequencyLabel";
 import EditModal from "./_internal/EditModal/EditModal";
 import DeleteModal from "./_internal/DeleteModal/DeleteModal";
 import { MyHistoryItem } from "@/shared/api/types/userApi";

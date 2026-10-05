@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { cn } from "@/shared/lib/cn";
 import useAutoHeight from "./_hooks/useAutoHeight";
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 import InputBox from "../InputBox/InputBox";
 
 /**

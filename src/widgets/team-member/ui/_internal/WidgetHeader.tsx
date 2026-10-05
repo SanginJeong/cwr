@@ -1,6 +1,6 @@
 "use client";
 
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 
 interface WidgetHeaderProps {
   memberCount: number;

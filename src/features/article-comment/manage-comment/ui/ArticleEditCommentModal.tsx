@@ -1,8 +1,8 @@
 import { ArticleCommentType } from "@/shared/api/types/ArticleCommentType";
-import usePatchArticleComment from "@/features/article-comment/manage-comment/api/usePatchArticleComment";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Input from "@/shared/ui/input/Input";
-import Modal from "@/shared/ui/modal/Modal";
+import usePatchArticleComment from "../api/usePatchArticleComment";
+import { BaseButton } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
+import { Modal } from "@/shared/ui/modal";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 interface ArticleEditCommentModalProps {

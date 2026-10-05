@@ -2,8 +2,8 @@ import { useRef, useState } from "react";
 import { AxiosError } from "axios";
 import { toastKit } from "@/shared/lib/toastKit";
 import { validateTeamName } from "@/shared/lib/Validation";
-import useGetUser from "@/entities/user/api/useGetUser";
-import usePostCreateTeam from "@/features/team/create-team/api/usePostCreateTeam";
+import { useGetUser } from "@/entities/user";
+import usePostCreateTeam from "../api/usePostCreateTeam";
 import useImageUpload from "@/shared/lib/useImageUpload";
 import { resolveTeamImageUrl } from "../lib/resolveTeamImage";
 

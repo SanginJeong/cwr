@@ -1,6 +1,6 @@
 "use client";
 
-import LoadingSpinner from "@/shared/ui/spinner/LoadingSpinner";
+import { LoadingSpinner } from "@/shared/ui/spinner";
 import dynamic from "next/dynamic";
 
 const MyPageContainer = dynamic(() => import("./MypageContainer"), {

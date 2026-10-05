@@ -1,4 +1,4 @@
-import postArticle from "@/features/article/write-article/api/postArticle";
+import postArticle from "./postArticle";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";

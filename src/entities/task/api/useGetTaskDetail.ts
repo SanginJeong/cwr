@@ -1,4 +1,4 @@
-import getTaskDetail from "@/entities/task/api/getTaskDetail";
+import getTaskDetail from "./getTaskDetail";
 import { GetTaskDetailRequest } from "@/shared/api/types/taskApi";
 import { useQuery } from "@tanstack/react-query";
 

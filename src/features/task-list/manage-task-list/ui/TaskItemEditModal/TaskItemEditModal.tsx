@@ -1,8 +1,8 @@
 import { FormEvent, useState } from "react";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Input from "@/shared/ui/input/Input";
-import Modal from "@/shared/ui/modal/Modal";
-import usePatchTask from "@/features/task-list/manage-task-list/api/usePatchTask";
+import { BaseButton } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
+import { Modal } from "@/shared/ui/modal";
+import usePatchTask from "../../api/usePatchTask";
 
 interface EditTodoModalProps {
   isOpen: boolean;

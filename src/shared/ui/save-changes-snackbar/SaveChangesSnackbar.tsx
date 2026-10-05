@@ -1,5 +1,5 @@
-import Icon from "@/shared/ui/icon/Icon";
-import BaseButton from "@/shared/ui/button/BaseButton";
+import { Icon } from "@/shared/ui/icon";
+import { BaseButton } from "@/shared/ui/button";
 import { cn } from "@/shared/lib/cn";
 
 interface UnsavedSnackbarProps {

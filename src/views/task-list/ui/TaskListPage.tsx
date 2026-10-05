@@ -3,16 +3,16 @@
 import { cn } from "@/shared/lib/cn";
 import { Suspense, use, useState, useSyncExternalStore } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import TodoSection from "@/widgets/todo-list/ui/TodoSection/TodoSection";
-import TodoHeader from "@/widgets/todo-list/ui/TodoHeader/TodoHeader";
-import MakeTodoModal from "@/features/task/create-task/ui/MakeTodoModal/MakeTodoModal";
-import FloatingButton from "@/shared/ui/button/FloatingButton";
-import PageHeaderBar from "@/widgets/page-header-bar/ui/PageHeaderBar";
-import PageLayout from "@/shared/ui/page-layout/PageLayout";
-import DetailPage from "@/widgets/task-detail/ui/DetailPage/DetailPage";
-import useGetGroups from "@/entities/team/api/useGetGroups";
-import useGetTask from "@/entities/task/api/useGetTask";
-import LoadingSpinner from "@/shared/ui/spinner/LoadingSpinner";
+import { TodoSection } from "@/widgets/todo-list";
+import { TodoHeader } from "@/widgets/todo-list";
+import { MakeTodoModal } from "@/features/task/create-task";
+import { FloatingButton } from "@/shared/ui/button";
+import { PageHeaderBar } from "@/widgets/page-header-bar";
+import { PageLayout } from "@/shared/ui/page-layout";
+import { DetailPage } from "@/widgets/task-detail";
+import { useGetGroups } from "@/entities/team";
+import { useGetTask } from "@/entities/task";
+import { LoadingSpinner } from "@/shared/ui/spinner";
 
 const subscribeNoop = () => () => {};
 

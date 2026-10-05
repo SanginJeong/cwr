@@ -1,12 +1,12 @@
 "use client";
 
-import usePatchArticle from "@/features/article/edit-article/api/usePatchArticle";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Input from "@/shared/ui/input/Input";
-import InputBox from "@/shared/ui/input/InputBox/InputBox";
-import Modal from "@/shared/ui/modal/Modal";
-import Icon from "@/shared/ui/icon/Icon";
-import FloatingButton from "@/shared/ui/button/FloatingButton";
+import usePatchArticle from "../api/usePatchArticle";
+import { BaseButton } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
+import { InputBox } from "@/shared/ui/input";
+import { Modal } from "@/shared/ui/modal";
+import { Icon } from "@/shared/ui/icon";
+import { FloatingButton } from "@/shared/ui/button";
 import { ArticleDetail } from "@/shared/api/types/ArticleType";
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";

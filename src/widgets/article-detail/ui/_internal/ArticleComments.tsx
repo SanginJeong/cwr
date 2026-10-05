@@ -1,18 +1,18 @@
 "use client";
 
-import useDeleteArticleComment from "@/features/article-comment/manage-comment/api/useDeleteArticleComment";
-import useGetArticle from "@/entities/article/api/useGetArticle";
-import useGetArticleComments from "@/entities/article-comment/api/useGetArticleComments";
-import useGetUser from "@/entities/user/api/useGetUser";
-import usePostArticleComment from "@/features/article-comment/manage-comment/api/usePostArticleComment";
-import Dropdown from "@/shared/ui/dropdown/Dropdown";
-import InputReply from "@/shared/ui/input/InputReply/InputReply";
-import Profile from "@/shared/ui/profile/Profile";
+import { useDeleteArticleComment } from "@/features/article-comment/manage-comment";
+import { useGetArticle } from "@/entities/article";
+import { useGetArticleComments } from "@/entities/article-comment";
+import { useGetUser } from "@/entities/user";
+import { usePostArticleComment } from "@/features/article-comment/manage-comment";
+import { Dropdown } from "@/shared/ui/dropdown";
+import { InputReply } from "@/shared/ui/input";
+import { Profile } from "@/shared/ui/profile";
 import useDevice from "@/shared/lib/useDevice";
 import { formatTime } from "@/shared/lib/formatTime";
 import { useParams } from "next/navigation";
 import { FormEvent, useState } from "react";
-import ArticleEditCommentModal from "@/features/article-comment/manage-comment/ui/ArticleEditCommentModal";
+import { ArticleEditCommentModal } from "@/features/article-comment/manage-comment";
 import { ArticleCommentType } from "@/shared/api/types/ArticleCommentType";
 
 const ArticleComments = () => {

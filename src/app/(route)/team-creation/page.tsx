@@ -5,4 +5,4 @@ export const metadata: Metadata = {
   description: "팀을 생성하여 팀을 꾸려보세요.",
 };
 
-export { default } from "@/views/team-create/ui/TeamCreatePage";
+export { TeamCreatePage as default } from "@/views/team-create";

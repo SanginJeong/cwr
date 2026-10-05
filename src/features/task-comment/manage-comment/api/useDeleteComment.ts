@@ -1,4 +1,4 @@
-import deleteComment from "@/features/task-comment/manage-comment/api/deleteComment";
+import deleteComment from "./deleteComment";
 import { DeleteTaskListCommentRequest } from "@/shared/api/types/taskCommentApi";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

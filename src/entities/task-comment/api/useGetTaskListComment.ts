@@ -1,4 +1,4 @@
-import getTaskListComment from "@/entities/task-comment/api/getTaskListComment";
+import getTaskListComment from "./getTaskListComment";
 import { GetTaskListCommentRequest } from "@/shared/api/types/taskCommentApi";
 import { useQuery } from "@tanstack/react-query";
 

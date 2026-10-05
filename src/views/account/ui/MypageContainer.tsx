@@ -1,10 +1,10 @@
 "use client";
 
 import { notFound } from "next/navigation";
-import useGetUser from "@/entities/user/api/useGetUser";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import LoadingSpinner from "@/shared/ui/spinner/LoadingSpinner";
-import ErrorState from "@/shared/ui/error-state/ErrorState";
+import { useGetUser } from "@/entities/user";
+import { BaseButton } from "@/shared/ui/button";
+import { LoadingSpinner } from "@/shared/ui/spinner";
+import { ErrorState } from "@/shared/ui/error-state";
 import MyPageContent from "./MyPageContent/MyPageContent";
 
 const MyPageContainer = () => {

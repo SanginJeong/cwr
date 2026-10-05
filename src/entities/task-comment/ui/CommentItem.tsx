@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { cn } from "@/shared/lib/cn";
 import { formatTime } from "@/shared/lib/formatTime";
-import Dropdown from "@/shared/ui/dropdown/Dropdown";
+import { Dropdown } from "@/shared/ui/dropdown";
 import { CommentProps } from "./_types/type";
 import CommentEdit from "./_internal/CommentEdit/CommentEdit";
-import Profile from "@/shared/ui/profile/Profile";
+import { Profile } from "@/shared/ui/profile";
 
 /**
  * @author KimWonSeon

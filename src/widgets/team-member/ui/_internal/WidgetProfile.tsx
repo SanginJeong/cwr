@@ -1,6 +1,6 @@
 "use client";
 
-import ProfileItem from "@/shared/ui/profile/ProfileItem/ProfileItem";
+import { ProfileItem } from "@/shared/ui/profile";
 import { GroupMember } from "@/shared/api/types/GroupData";
 /**
  * @author sangin

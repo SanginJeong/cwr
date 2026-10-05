@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import useForm from "@/shared/lib/useForm/useForm";
-import usePatchUserPassword from "@/features/user/change-password/api/usePatchUserPassword";
-import Input from "@/shared/ui/input/Input";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Modal from "@/shared/ui/modal/Modal";
-import InputPassword from "@/shared/ui/input/InputPassword/InputPassword";
+import { usePatchUserPassword } from "@/features/user/change-password";
+import { Input } from "@/shared/ui/input";
+import { BaseButton } from "@/shared/ui/button";
+import { Modal } from "@/shared/ui/modal";
+import { InputPassword } from "@/shared/ui/input";
 import { validatePassword, validatePasswordConfirm } from "@/shared/lib/Validation";
 
 const PasswordInputSection = () => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { TaskGroupItem, TaskResponse } from "@/shared/api/types/taskApi";
-import { getFrequencyLabel } from "@/entities/task/lib/getFrequencyLabel";
+import { getFrequencyLabel } from "@/entities/task";
 import { Document, Page, Text, View, StyleSheet, Font } from "@react-pdf/renderer";
 import { format } from "date-fns";
 

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useRef } from "react";
 import Link from "next/link";
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 import { cn } from "@/shared/lib/cn";
 import { GetGroupsResponse } from "@/shared/api/types/groupApi";
 import { TaskList } from "@/shared/api/types/GroupData";

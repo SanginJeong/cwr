@@ -1,9 +1,9 @@
 import { cn } from "@/shared/lib/cn";
 import Link from "next/link";
 import { SidebarDropdownProps } from "../../_types/SidebarProps";
-import Dropdown from "@/shared/ui/dropdown/Dropdown";
-import Icon from "@/shared/ui/icon/Icon";
-import Profile from "@/shared/ui/profile/Profile";
+import { Dropdown } from "@/shared/ui/dropdown";
+import { Icon } from "@/shared/ui/icon";
+import { Profile } from "@/shared/ui/profile";
 import SidebarDropdown from "../SidebarDropdown/SidebarDropdown";
 import AddTeamButton from "../AddTeamButton/AddTeamButton";
 import SidebarLink from "../SidebarLink/SidebarLink";

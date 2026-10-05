@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { ApiErrorResponse } from "@/shared/api/types/ApiType";
-import deleteUser from "@/features/user/delete-account/api/deleteUser";
+import deleteUser from "./deleteUser";
 import { toastKit } from "@/shared/lib/toastKit";
 import tokenStorage from "@/shared/api/tokenStorage";
 import { clearAuthCookies } from "@/shared/api/authCookies";

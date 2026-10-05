@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { cn } from "@/shared/lib/cn";
-import useAutoHeight from "@/shared/ui/input/InputReply/_hooks/useAutoHeight";
-import InputBox from "@/shared/ui/input/InputBox/InputBox";
-import BaseButton from "@/shared/ui/button/BaseButton";
+import { useAutoHeight } from "@/shared/ui/input";
+import { InputBox } from "@/shared/ui/input";
+import { BaseButton } from "@/shared/ui/button";
 import { CommentEditProps } from "../../_types/type";
 
 /**

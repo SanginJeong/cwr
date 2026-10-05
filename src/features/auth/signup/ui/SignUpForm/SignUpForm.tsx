@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import useForm from "@/shared/lib/useForm/useForm";
-import usePostSignup from "@/features/auth/signup/api/usePostSignup";
-import OverlayLoading from "@/shared/ui/overlay-loading/OverlayLoading";
-import Input from "@/shared/ui/input/Input";
-import InputPassword from "@/shared/ui/input/InputPassword/InputPassword";
-import BaseButton from "@/shared/ui/button/BaseButton";
+import usePostSignup from "../../api/usePostSignup";
+import { OverlayLoading } from "@/shared/ui/overlay-loading";
+import { Input } from "@/shared/ui/input";
+import { InputPassword } from "@/shared/ui/input";
+import { BaseButton } from "@/shared/ui/button";
 import { validateEmail, validateName, validatePassword, validatePasswordConfirm } from "@/shared/lib/Validation";
 
 const INITIAL_VALUES = {

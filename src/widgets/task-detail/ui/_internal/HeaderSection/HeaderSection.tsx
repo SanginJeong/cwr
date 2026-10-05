@@ -1,14 +1,14 @@
 import { useState } from "react";
-import Dropdown from "@/shared/ui/dropdown/Dropdown";
-import Icon from "@/shared/ui/icon/Icon";
-import Profile from "@/shared/ui/profile/Profile";
+import { Dropdown } from "@/shared/ui/dropdown";
+import { Icon } from "@/shared/ui/icon";
+import { Profile } from "@/shared/ui/profile";
 import { cn } from "@/shared/lib/cn";
 import { formatToKoreanDate } from "@/shared/lib/formatDate";
-import { getFrequencyLabel } from "@/entities/task/lib/getFrequencyLabel";
+import { getFrequencyLabel } from "@/entities/task";
 import { HEADER_STYLES } from "./HEADER_STYLES";
-import EditDataModal from "@/features/task/manage-task/ui/EditDataModal/EditDataModal";
+import { EditDataModal } from "@/features/task/manage-task";
 import { GetTaskDetailResponse } from "@/shared/api/types/taskApi";
-import useTaskMutations from "@/features/task/manage-task/model/useTaskMutations";
+import { useTaskMutations } from "@/features/task/manage-task";
 
 interface HeaderSectionProps {
   data: GetTaskDetailResponse;

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/shared/lib/cn";
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 
 const AddTeamButton = () => {
   return (

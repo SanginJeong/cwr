@@ -1,4 +1,4 @@
-import { DropdownOption } from "@/shared/ui/dropdown/_types/types";
+import { DropdownOption } from "@/shared/ui/dropdown";
 
 export interface BaseProfileProps {
   src: string | null;

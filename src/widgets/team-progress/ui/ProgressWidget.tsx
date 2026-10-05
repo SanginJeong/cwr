@@ -1,16 +1,16 @@
 "use client";
 
-import useDeleteGroup from "@/features/team/delete-team/api/useDeleteGroup";
-import useGetGroups from "@/entities/team/api/useGetGroups";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Dropdown from "@/shared/ui/dropdown/Dropdown";
-import Icon from "@/shared/ui/icon/Icon";
-import Modal from "@/shared/ui/modal/Modal";
-import ProgressBar from "@/shared/ui/progress-bar/ProgressBar";
+import { useDeleteGroup } from "@/features/team/delete-team";
+import { useGetGroups } from "@/entities/team";
+import { BaseButton } from "@/shared/ui/button";
+import { Dropdown } from "@/shared/ui/dropdown";
+import { Icon } from "@/shared/ui/icon";
+import { Modal } from "@/shared/ui/modal";
+import { ProgressBar } from "@/shared/ui/progress-bar";
 import { useParams, useRouter } from "next/navigation";
-import useCheckAdmin from "@/entities/user/model/useCheckAdmin";
+import { useCheckAdmin } from "@/entities/user";
 import { useState } from "react";
-import { getCompletedTaskCount, getUncompletedTaskCount } from "@/entities/task/lib/getTaskCount";
+import { getCompletedTaskCount, getUncompletedTaskCount } from "@/entities/task";
 
 const ProgressWidget = () => {
   const { teamId } = useParams();

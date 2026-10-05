@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { GetTaskRequest } from "@/shared/api/types/taskApi";
-import getTask from "@/entities/task/api/getTask";
+import getTask from "./getTask";
 
 const useGetTask = ({ groupId, taskListId, date }: GetTaskRequest) => {
   return useQuery({

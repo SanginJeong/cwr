@@ -2,10 +2,10 @@
 
 import { FormEvent } from "react";
 import useDevice from "@/shared/lib/useDevice";
-import ProfileEdit from "@/shared/ui/profile/ProfileEdit/ProfileEdit";
-import Input from "@/shared/ui/input/Input";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import FloatingButton from "@/shared/ui/button/FloatingButton";
+import { ProfileEdit } from "@/shared/ui/profile";
+import { Input } from "@/shared/ui/input";
+import { BaseButton } from "@/shared/ui/button";
+import { FloatingButton } from "@/shared/ui/button";
 import useTeamEdit from "../../model/useTeamEdit";
 import { useParams } from "next/navigation";
 

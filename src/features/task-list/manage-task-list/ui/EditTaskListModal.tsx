@@ -1,7 +1,7 @@
-import usePatchTask from "@/features/task-list/manage-task-list/api/usePatchTask";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Input from "@/shared/ui/input/Input";
-import Modal from "@/shared/ui/modal/Modal";
+import usePatchTask from "../api/usePatchTask";
+import { BaseButton } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
+import { Modal } from "@/shared/ui/modal";
 import { TaskList } from "@/shared/api/types/GroupData";
 import { ChangeEvent, useState } from "react";
 

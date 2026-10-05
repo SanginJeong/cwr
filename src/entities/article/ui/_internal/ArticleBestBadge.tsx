@@ -1,4 +1,4 @@
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 
 const ArticleBestBadge = () => {
   return (

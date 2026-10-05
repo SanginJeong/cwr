@@ -1,16 +1,16 @@
 "use client";
 
 import { cn } from "@/shared/lib/cn";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Icon from "@/shared/ui/icon/Icon";
+import { BaseButton } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
 import { useRouter } from "next/navigation";
 import CommentSection from "../_internal/CommentSection/CommentSection";
 import ContentSection from "../_internal/ContentSection/ContentSection";
 import HeaderSection from "../_internal/HeaderSection/HeaderSection";
-import useGetTaskDetail from "@/entities/task/api/useGetTaskDetail";
-import useTaskMutations from "@/features/task/manage-task/model/useTaskMutations";
-import LoadingSpinner from "@/shared/ui/spinner/LoadingSpinner";
-import ErrorState from "@/shared/ui/error-state/ErrorState";
+import { useGetTaskDetail } from "@/entities/task";
+import { useTaskMutations } from "@/features/task/manage-task";
+import { LoadingSpinner } from "@/shared/ui/spinner";
+import { ErrorState } from "@/shared/ui/error-state";
 
 interface DetailPageProps {
   id: number;

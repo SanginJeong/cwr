@@ -1,8 +1,8 @@
 import { useState } from "react";
-import useDeleteUser from "@/features/user/delete-account/api/useDeleteUser";
-import Icon from "@/shared/ui/icon/Icon";
-import Modal from "@/shared/ui/modal/Modal";
-import BaseButton from "@/shared/ui/button/BaseButton";
+import { useDeleteUser } from "@/features/user/delete-account";
+import { Icon } from "@/shared/ui/icon";
+import { Modal } from "@/shared/ui/modal";
+import { BaseButton } from "@/shared/ui/button";
 
 const DeleteAccountButton = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);

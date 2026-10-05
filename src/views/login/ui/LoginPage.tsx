@@ -1,6 +1,6 @@
-import LoginForm from "@/features/auth/login/ui/LoginForm/LoginForm";
-import CenteredCardLayout from "@/shared/ui/centered-card-layout/CenteredCardLayout";
-import SocialAuthSection from "@/features/auth/kakao-login/ui/SocialAuthSection/SocialAuthSection";
+import { LoginForm } from "@/features/auth/login";
+import { CenteredCardLayout } from "@/shared/ui/centered-card-layout";
+import { SocialAuthSection } from "@/features/auth/kakao-login";
 
 const LoginPage = () => {
   return (

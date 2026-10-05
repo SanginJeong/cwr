@@ -1,8 +1,8 @@
 import { StoryObj, Meta } from "@storybook/nextjs";
 import Modal from "./Modal";
-import BaseButton from "@/shared/ui/button/BaseButton";
+import { BaseButton } from "@/shared/ui/button";
 import { useState } from "react";
-import Input from "@/shared/ui/input/Input";
+import { Input } from "@/shared/ui/input";
 
 const meta: Meta<typeof Modal> = {
   title: "common/Modal",

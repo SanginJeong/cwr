@@ -1,8 +1,8 @@
 "use client";
 
-import useGetHistory from "@/entities/user/api/useGetHistory";
-import PageHeaderBar from "@/widgets/page-header-bar/ui/PageHeaderBar";
-import PageLayout from "@/shared/ui/page-layout/PageLayout";
+import { useGetHistory } from "@/entities/user";
+import { PageHeaderBar } from "@/widgets/page-header-bar";
+import { PageLayout } from "@/shared/ui/page-layout";
 import WorkHistorySection from "./WorkHistorySection/WorkHistorySection";
 
 const MyHistoryPage = () => {

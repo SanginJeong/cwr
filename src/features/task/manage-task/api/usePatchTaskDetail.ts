@@ -1,5 +1,5 @@
 import { toastKit } from "@/shared/lib/toastKit";
-import patchTaskDetail from "@/features/task/manage-task/api/patchTaskDetail";
+import patchTaskDetail from "./patchTaskDetail";
 import { PatchTaskDetailRequest } from "@/shared/api/types/taskApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

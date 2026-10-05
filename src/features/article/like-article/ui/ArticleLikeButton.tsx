@@ -1,12 +1,12 @@
 "use client";
 
-import useDeleteArticleLike from "@/features/article/like-article/api/useDeleteArticleLike";
-import useGetArticle from "@/entities/article/api/useGetArticle";
-import usePostArticleLike from "@/features/article/like-article/api/usePostArticleLike";
-import FloatingButton from "@/shared/ui/button/FloatingButton";
-import Icon from "@/shared/ui/icon/Icon";
+import useDeleteArticleLike from "../api/useDeleteArticleLike";
+import { useGetArticle } from "@/entities/article";
+import usePostArticleLike from "../api/usePostArticleLike";
+import { FloatingButton } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
 import { useParams } from "next/navigation";
-import ArticleLike from "@/entities/article/ui/_internal/ArticleLike";
+import { ArticleLike } from "@/entities/article";
 import useDevice from "@/shared/lib/useDevice";
 
 const ArticleLikeButton = () => {

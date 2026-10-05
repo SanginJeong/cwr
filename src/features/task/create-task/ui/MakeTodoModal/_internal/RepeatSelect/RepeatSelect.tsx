@@ -1,4 +1,4 @@
-import Input from "@/shared/ui/input/Input";
+import { Input } from "@/shared/ui/input";
 import { DATE_OPTIONS } from "../../_constants/MODAL_OPTIONS";
 import { cn } from "@/shared/lib/cn";
 import { ChangeEvent } from "react";

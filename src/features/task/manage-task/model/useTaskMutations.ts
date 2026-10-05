@@ -1,5 +1,5 @@
-import usePatchTaskDetail from "@/features/task/manage-task/api/usePatchTaskDetail";
-import useDeleteTask from "@/features/task/manage-task/api/useDeleteTask";
+import usePatchTaskDetail from "../api/usePatchTaskDetail";
+import useDeleteTask from "../api/useDeleteTask";
 
 interface UseTaskListMutationsProps {
   teamId: number;

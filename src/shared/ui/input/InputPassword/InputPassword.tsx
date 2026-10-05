@@ -2,7 +2,7 @@
 
 import { InputHTMLAttributes, useState } from "react";
 import Input from "../Input";
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 
 interface PasswordInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
   label: string;

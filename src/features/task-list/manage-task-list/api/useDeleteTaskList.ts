@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toastKit } from "@/shared/lib/toastKit";
-import deleteTaskList from "@/features/task-list/manage-task-list/api/deleteTaskList";
+import deleteTaskList from "./deleteTaskList";
 import { DeleteTaskListRequest } from "@/shared/api/types/taskListApi";
 
 const useDeleteTaskList = () => {

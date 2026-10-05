@@ -2,13 +2,13 @@
 
 import { ReactNode, useState } from "react";
 import { useRouter } from "next/navigation";
-import Icon from "@/shared/ui/icon/Icon";
-import Modal from "@/shared/ui/modal/Modal";
-import Dropdown from "@/shared/ui/dropdown/Dropdown";
-import BaseButton from "@/shared/ui/button/BaseButton";
+import { Icon } from "@/shared/ui/icon";
+import { Modal } from "@/shared/ui/modal";
+import { Dropdown } from "@/shared/ui/dropdown";
+import { BaseButton } from "@/shared/ui/button";
 import { cn } from "@/shared/lib/cn";
-import LoadingSpinner from "@/shared/ui/spinner/LoadingSpinner";
-import useDeleteGroup from "@/features/team/delete-team/api/useDeleteGroup";
+import { LoadingSpinner } from "@/shared/ui/spinner";
+import { useDeleteGroup } from "@/features/team/delete-team";
 
 /**
  * @author jikwon

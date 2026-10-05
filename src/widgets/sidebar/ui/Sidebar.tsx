@@ -3,8 +3,8 @@
 import { startTransition, useEffect, useState } from "react";
 import SidebarMobile from "./_internal/SidebarMobile/SidebarMobile";
 import SidebarTablet from "./_internal/SidebarTablet/SidebarTablet";
-import useGetUser from "@/entities/user/api/useGetUser";
-import useLogout from "@/features/auth/logout/model/useLogout";
+import { useGetUser } from "@/entities/user";
+import { useLogout } from "@/features/auth/logout";
 import { useRouter } from "next/navigation";
 
 /**

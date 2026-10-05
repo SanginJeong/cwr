@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toastKit } from "@/shared/lib/toastKit";
-import patchTask from "@/features/task-list/manage-task-list/api/patchTask";
+import patchTask from "./patchTask";
 import { PatchTaskRequest } from "@/shared/api/types/taskApi";
 
 const usePatchTask = () => {

@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import postSignup from "@/features/auth/signup/api/signup";
+import postSignup from "./signup";
 import { setAuthCookies } from "@/shared/api/authCookies";
 import { toastKit } from "@/shared/lib/toastKit";
 import tokenStorage from "@/shared/api/tokenStorage";

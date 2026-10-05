@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 import { ArticleListItem } from "@/shared/api/types/ArticleType";
 import ArticleWriter from "./_internal/ArticleWriter";
 import ArticleLike from "./_internal/ArticleLike";

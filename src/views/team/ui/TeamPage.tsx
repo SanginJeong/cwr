@@ -1,7 +1,7 @@
-import PageLayout from "@/shared/ui/page-layout/PageLayout";
-import MemberWidget from "@/widgets/team-member/ui/MemberWidget";
-import ProgressWidget from "@/widgets/team-progress/ui/ProgressWidget";
-import TaskSection from "@/widgets/task-list-board/ui/TaskSection";
+import { PageLayout } from "@/shared/ui/page-layout";
+import { MemberWidget } from "@/widgets/team-member";
+import { ProgressWidget } from "@/widgets/team-progress";
+import { TaskSection } from "@/widgets/task-list-board";
 
 const TeamDetailPage = async () => {
   return (

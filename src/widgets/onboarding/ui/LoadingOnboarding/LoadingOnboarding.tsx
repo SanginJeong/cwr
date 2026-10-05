@@ -3,9 +3,9 @@
 import { Suspense } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
-import LoadingSpinner from "@/shared/ui/spinner/LoadingSpinner";
+import { LoadingSpinner } from "@/shared/ui/spinner";
 
-const OnboardingModal = dynamic(() => import("@/widgets/onboarding/ui/Onboarding/OnboardingModal"), { ssr: false });
+const OnboardingModal = dynamic(() => import("../Onboarding/OnboardingModal"), { ssr: false });
 
 const OnboardingContent = () => {
   const router = useRouter();

@@ -3,10 +3,10 @@
 import { useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import useForm from "@/shared/lib/useForm/useForm";
-import usePatchResetPassword from "@/features/auth/reset-password/api/usePatchResetPassword";
-import InputPassword from "@/shared/ui/input/InputPassword/InputPassword";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import OverlayLoading from "@/shared/ui/overlay-loading/OverlayLoading";
+import usePatchResetPassword from "../../api/usePatchResetPassword";
+import { InputPassword } from "@/shared/ui/input";
+import { BaseButton } from "@/shared/ui/button";
+import { OverlayLoading } from "@/shared/ui/overlay-loading";
 import { toastKit } from "@/shared/lib/toastKit";
 import { validatePassword, validatePasswordConfirm } from "@/shared/lib/Validation";
 

@@ -2,8 +2,8 @@
 
 import { FormEvent } from "react";
 import useDevice from "@/shared/lib/useDevice";
-import ProfileEdit from "@/shared/ui/profile/ProfileEdit/ProfileEdit";
-import Input from "@/shared/ui/input/Input";
+import { ProfileEdit } from "@/shared/ui/profile";
+import { Input } from "@/shared/ui/input";
 
 interface MyProfileFormProps {
   userInfo: {

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { cn } from "@/shared/lib/cn";
 import Image from "next/image";
-import Dropdown from "@/shared/ui/dropdown/Dropdown";
-import Icon from "@/shared/ui/icon/Icon";
+import { Dropdown } from "@/shared/ui/dropdown";
+import { Icon } from "@/shared/ui/icon";
 import { SidebarDropdownProps } from "../../_types/SidebarProps";
 import LeftMobile from "../LeftMobile/LeftMobile";
 

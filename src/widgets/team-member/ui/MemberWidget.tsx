@@ -1,14 +1,14 @@
 "use client";
 
-import useGetGroups from "@/entities/team/api/useGetGroups";
-import FloatingButton from "@/shared/ui/button/FloatingButton";
+import { useGetGroups } from "@/entities/team";
+import { FloatingButton } from "@/shared/ui/button";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import WidgetProfile from "./_internal/WidgetProfile";
 import WidgetHeader from "./_internal/WidgetHeader";
-import DeleteMemberModal from "@/features/team/manage-member/ui/DeleteMemberModal";
+import { DeleteMemberModal } from "@/features/team/manage-member";
 import { GroupMember } from "@/shared/api/types/GroupData";
-import InviteMemberModal from "@/features/team/manage-member/ui/InviteMemberModal";
+import { InviteMemberModal } from "@/features/team/manage-member";
 
 const MemberWidget = () => {
   const [isOpenInviteModal, setIsOpenInviteModal] = useState(false);

@@ -1,7 +1,7 @@
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Input from "@/shared/ui/input/Input";
-import Modal from "@/shared/ui/modal/Modal";
-import usePostTaskList from "@/features/task-list/manage-task-list/api/usePostTaskList";
+import { BaseButton } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
+import { Modal } from "@/shared/ui/modal";
+import usePostTaskList from "../api/usePostTaskList";
 import { useParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 

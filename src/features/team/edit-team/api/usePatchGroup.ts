@@ -1,4 +1,4 @@
-import patchGroup from "@/features/team/edit-team/api/patchGroup";
+import patchGroup from "./patchGroup";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

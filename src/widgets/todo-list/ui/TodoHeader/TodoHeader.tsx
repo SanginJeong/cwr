@@ -1,18 +1,18 @@
 import { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/shared/lib/cn";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Dropdown from "@/shared/ui/dropdown/Dropdown";
-import Icon from "@/shared/ui/icon/Icon";
-import ProgressBadge from "@/shared/ui/progress-badge/ProgressBadge";
-import TaskListCreateModal from "@/features/task-list/manage-task-list/ui/TaskListCreateModal/TaskListCreateModal";
-import TaskItemEditModal from "@/features/task-list/manage-task-list/ui/TaskItemEditModal/TaskItemEditModal";
+import { BaseButton } from "@/shared/ui/button";
+import { Dropdown } from "@/shared/ui/dropdown";
+import { Icon } from "@/shared/ui/icon";
+import { ProgressBadge } from "@/shared/ui/progress-badge";
+import { TaskListCreateModal } from "@/features/task-list/manage-task-list";
+import { TaskItemEditModal } from "@/features/task-list/manage-task-list";
 import { TaskList } from "@/shared/api/types/GroupData";
 import { GetGroupsResponse } from "@/shared/api/types/groupApi";
-import useDeleteTaskList from "@/features/task-list/manage-task-list/api/useDeleteTaskList";
-import EmptyState from "@/shared/ui/empty-state/EmptyState";
-import LoadingSpinner from "@/shared/ui/spinner/LoadingSpinner";
-import ErrorState from "@/shared/ui/error-state/ErrorState";
+import { useDeleteTaskList } from "@/features/task-list/manage-task-list";
+import { EmptyState } from "@/shared/ui/empty-state";
+import { LoadingSpinner } from "@/shared/ui/spinner";
+import { ErrorState } from "@/shared/ui/error-state";
 import useDevice from "@/shared/lib/useDevice";
 import TaskDropdown from "./_internal/TaskDropdown/TaskDropdown";
 

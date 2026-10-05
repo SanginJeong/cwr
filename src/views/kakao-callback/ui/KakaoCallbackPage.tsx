@@ -1,9 +1,9 @@
 "use client";
 
 import { Suspense } from "react";
-import useKakaoAuth from "@/features/auth/kakao-login/model/useKakaoAuth";
-import LoadingSpinner from "@/shared/ui/spinner/LoadingSpinner";
-import OverlayLoading from "@/shared/ui/overlay-loading/OverlayLoading";
+import { useKakaoAuth } from "@/features/auth/kakao-login";
+import { LoadingSpinner } from "@/shared/ui/spinner";
+import { OverlayLoading } from "@/shared/ui/overlay-loading";
 
 const LoginContent = () => {
   const { isLoading } = useKakaoAuth();

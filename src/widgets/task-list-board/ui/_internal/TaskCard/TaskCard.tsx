@@ -1,13 +1,13 @@
-import Dropdown from "@/shared/ui/dropdown/Dropdown";
-import ProgressBadge from "@/shared/ui/progress-badge/ProgressBadge";
-import Todo from "@/entities/task/ui/Todo/Todo";
-import useTaskMutations from "@/features/task/manage-task/model/useTaskMutations";
+import { Dropdown } from "@/shared/ui/dropdown";
+import { ProgressBadge } from "@/shared/ui/progress-badge";
+import { Todo } from "@/entities/task";
+import { useTaskMutations } from "@/features/task/manage-task";
 import { TaskList } from "@/shared/api/types/GroupData";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import DeleteTaskListModal from "@/features/task-list/manage-task-list/ui/DeleteTaskListModal";
-import EditTaskListModal from "@/features/task-list/manage-task-list/ui/EditTaskListModal";
+import { DeleteTaskListModal } from "@/features/task-list/manage-task-list";
+import { EditTaskListModal } from "@/features/task-list/manage-task-list";
 
 const TaskHeader = ({ name, taskList }: { name: string; taskList: TaskList }) => {
   const { teamId } = useParams();

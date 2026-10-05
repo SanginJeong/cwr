@@ -1,4 +1,4 @@
-import Icon, { IconKeys } from "@/shared/ui/icon/Icon";
+import { Icon, IconKeys } from "@/shared/ui/icon";
 import { cn } from "@/shared/lib/cn";
 import { FLOATING_BUTTON_BASE_STYLE } from "./BUTTON_STYLES";
 

@@ -1,4 +1,4 @@
-import getGroups from "@/entities/team/api/getGroups";
+import getGroups from "./getGroups";
 import { GetGroupsRequest } from "@/shared/api/types/groupApi";
 import { useQuery } from "@tanstack/react-query";
 

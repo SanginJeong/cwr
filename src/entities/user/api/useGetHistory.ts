@@ -1,4 +1,4 @@
-import getHistory from "@/entities/user/api/getHistory";
+import getHistory from "./getHistory";
 import { useQuery } from "@tanstack/react-query";
 
 const useGetHistory = () => {

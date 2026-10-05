@@ -1,4 +1,4 @@
-import getArticle from "@/entities/article/api/getArticle";
+import getArticle from "./getArticle";
 import { GetArticleRequest } from "@/shared/api/types/articleApi";
 import { useQuery } from "@tanstack/react-query";
 

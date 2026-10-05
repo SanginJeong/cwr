@@ -1,4 +1,4 @@
-import postArticleLike from "@/features/article/like-article/api/postArticleLike";
+import postArticleLike from "./postArticleLike";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const usePostArticleLike = () => {

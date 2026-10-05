@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/nextjs";
 import Input from "./Input";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Icon from "@/shared/ui/icon/Icon";
+import { BaseButton } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
 
 const meta: Meta<typeof Input> = {
   title: "Common/Input/Input",

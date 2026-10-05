@@ -1,4 +1,4 @@
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 import { PROGRESS_BUTTON_BASE_STYLE } from "./BUTTON_STYLES";
 import { cn } from "@/shared/lib/cn";
 

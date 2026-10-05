@@ -1,7 +1,7 @@
 import { toastKit } from "@/shared/lib/toastKit";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import deleteTask from "@/features/task/manage-task/api/deleteTask";
+import deleteTask from "./deleteTask";
 import { DeleteTaskRequest } from "@/shared/api/types/taskApi";
 
 const useDeleteTask = () => {

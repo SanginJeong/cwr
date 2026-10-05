@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 import { ArticleListItem } from "@/shared/api/types/ArticleType";
 import ArticleLike from "./_internal/ArticleLike";
 

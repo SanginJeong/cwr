@@ -1,8 +1,8 @@
 "use client";
 
-import useGetArticles from "@/entities/article/api/useGetArticles";
-import BestArticleCard from "@/entities/article/ui/BestArticleCard";
-import BestArticleRankItem from "@/entities/article/ui/BestArticleRankItem";
+import { useGetArticles } from "@/entities/article";
+import { BestArticleCard } from "@/entities/article";
+import { BestArticleRankItem } from "@/entities/article";
 import useDevice from "@/shared/lib/useDevice";
 import { useState } from "react";
 import Pagination from "./_internal/Pagination";

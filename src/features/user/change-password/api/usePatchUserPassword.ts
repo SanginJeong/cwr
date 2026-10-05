@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
-import patchUserPassword from "@/features/user/change-password/api/patchUserPassword";
+import patchUserPassword from "./patchUserPassword";
 import { ApiErrorResponse } from "@/shared/api/types/ApiType";
 import { toastKit } from "@/shared/lib/toastKit";
 

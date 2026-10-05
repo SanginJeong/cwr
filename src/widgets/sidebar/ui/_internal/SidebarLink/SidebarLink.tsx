@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { cn } from "@/shared/lib/cn";
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 import { usePathname } from "next/navigation";
 import SidebarTooltip from "../SidebarTooltip/SidebarTooltip";
-import { IconKeys } from "@/shared/ui/icon/Icon";
+import { IconKeys } from "@/shared/ui/icon";
 
 interface SidebarLinkProps {
   title: string;

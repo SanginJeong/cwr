@@ -1,5 +1,5 @@
 import { cn } from "@/shared/lib/cn";
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 
 /**
  * @author sangin

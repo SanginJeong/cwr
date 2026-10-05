@@ -1,10 +1,10 @@
 import { cookies } from "next/headers";
-import HeroSection from "@/widgets/landing/ui/HeroSection/HeroSection";
-import KanbanSection from "@/widgets/landing/ui/KanbanSection/KanbanSection";
-import DetailSection from "@/widgets/landing/ui/DetailSection/DetailSection";
-import CooperationSection from "@/widgets/landing/ui/CooperationSection/CooperationSection";
-import ConversionSection from "@/widgets/landing/ui/ConversionSection/ConversionSection";
-import LandingOnboarding from "@/widgets/onboarding/ui/LoadingOnboarding/LoadingOnboarding";
+import { HeroSection } from "@/widgets/landing";
+import { KanbanSection } from "@/widgets/landing";
+import { DetailSection } from "@/widgets/landing";
+import { CooperationSection } from "@/widgets/landing";
+import { ConversionSection } from "@/widgets/landing";
+import { LoadingOnboarding as LandingOnboarding } from "@/widgets/onboarding";
 
 export default async function Page() {
   const cookieStore = await cookies();

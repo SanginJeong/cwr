@@ -1,6 +1,6 @@
 import Profile from "../Profile";
 import { ProfileItemType } from "../_type/types";
-import Dropdown from "@/shared/ui/dropdown/Dropdown";
+import { Dropdown } from "@/shared/ui/dropdown";
 
 /**
  * @author KimWonSeon

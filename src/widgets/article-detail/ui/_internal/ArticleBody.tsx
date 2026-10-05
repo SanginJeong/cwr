@@ -1,16 +1,16 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import Dropdown from "@/shared/ui/dropdown/Dropdown";
+import { Dropdown } from "@/shared/ui/dropdown";
 import useDevice from "@/shared/lib/useDevice";
-import useDeleteArticle from "@/features/article/delete-article/api/useDeleteArticle";
-import useGetArticle from "@/entities/article/api/useGetArticle";
-import useGetUser from "@/entities/user/api/useGetUser";
-import ArticleTitle from "@/entities/article/ui/_internal/ArticleTitle";
-import ArticleWriter from "@/entities/article/ui/_internal/ArticleWriter";
-import ArticleContent from "@/entities/article/ui/_internal/ArticleContent";
-import ArticleLikeButton from "@/features/article/like-article/ui/ArticleLikeButton";
-import ArticleEditModal from "@/features/article/edit-article/ui/ArticleEditModal";
+import { useDeleteArticle } from "@/features/article/delete-article";
+import { useGetArticle } from "@/entities/article";
+import { useGetUser } from "@/entities/user";
+import { ArticleTitle } from "@/entities/article";
+import { ArticleWriter } from "@/entities/article";
+import { ArticleContent } from "@/entities/article";
+import { ArticleLikeButton } from "@/features/article/like-article";
+import { ArticleEditModal } from "@/features/article/edit-article";
 import { useState } from "react";
 
 const ArticleBody = () => {

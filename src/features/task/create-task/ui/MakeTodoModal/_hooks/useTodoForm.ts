@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { DateValue } from "@/shared/api/types/DatePickerType";
 import { Frequency } from "@/shared/api/types/FrequencyType";
 import { HalfHour } from "@/shared/api/types/TimeType";
-import usePostRecurring from "@/features/task/create-task/api/usePostRecurring";
+import usePostRecurring from "../../../api/usePostRecurring";
 
 interface UseTodoFormProps {
   onClose: () => void;

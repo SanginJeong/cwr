@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { UserData } from "./types";
-import usePatchUserProfile from "@/features/user/edit-profile/api/usePatchUserProfile";
+import { usePatchUserProfile } from "@/features/user/edit-profile";
 import useImageUpload from "@/shared/lib/useImageUpload";
 import { validateName } from "@/shared/lib/Validation";
 import { PatchUserProfileRequest } from "@/shared/api/types/userApi";

@@ -5,4 +5,4 @@ export const metadata: Metadata = {
   description: "공유받은 팀 링크를 입력해 참여할 수 있어요.",
 };
 
-export { default } from "@/views/team-join/ui/TeamJoinPage";
+export { TeamJoinPage as default } from "@/views/team-join";

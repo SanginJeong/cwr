@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { cn } from "@/shared/lib/cn";
 import { UserResponse } from "@/shared/api/types/UserType";
-import CommentItem from "@/entities/task-comment/ui/CommentItem";
-import InputReply from "@/shared/ui/input/InputReply/InputReply";
-import Profile from "@/shared/ui/profile/Profile";
-import useGetTaskListComment from "@/entities/task-comment/api/useGetTaskListComment";
+import { CommentItem } from "@/entities/task-comment";
+import { InputReply } from "@/shared/ui/input";
+import { Profile } from "@/shared/ui/profile";
+import { useGetTaskListComment } from "@/entities/task-comment";
 import { useQueryClient } from "@tanstack/react-query";
-import useDetailCommentMutations from "@/features/task-comment/manage-comment/model/useDetailCommentMutations";
+import { useDetailCommentMutations } from "@/features/task-comment/manage-comment";
 import { GetTaskDetailResponse } from "@/shared/api/types/taskApi";
 
 interface CommentSectionProps {

@@ -1,4 +1,4 @@
-import useGetUser from "@/entities/user/api/useGetUser";
+import useGetUser from "../api/useGetUser";
 import { useParams } from "next/navigation";
 
 const useCheckAdmin = () => {

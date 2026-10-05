@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import postTeamJoin from "@/features/team/join-team/api/postTeamJoin";
+import postTeamJoin from "./postTeamJoin";
 import { PostTeamJoinRequest, PostTeamJoinResponse } from "@/shared/api/types/teamJoinApi";
 import { toastKit } from "@/shared/lib/toastKit";
 

@@ -1,4 +1,4 @@
-import deleteArticleLike from "@/features/article/like-article/api/deleteArticleLike";
+import deleteArticleLike from "./deleteArticleLike";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useDeleteArticleLike = () => {

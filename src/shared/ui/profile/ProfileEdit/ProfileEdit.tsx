@@ -3,7 +3,7 @@
 import { ChangeEvent } from "react";
 import Image from "next/image";
 import { cn } from "@/shared/lib/cn";
-import Icon from "@/shared/ui/icon/Icon";
+import { Icon } from "@/shared/ui/icon";
 import { ProfileEditProps } from "../_type/types";
 import useImageError from "../_hook/useImageError";
 import {

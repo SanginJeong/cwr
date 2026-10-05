@@ -1,5 +1,5 @@
-import PageLayout from "@/shared/ui/page-layout/PageLayout";
-import ArticleDetail from "@/widgets/article-detail/ui/ArticleDetail";
+import { PageLayout } from "@/shared/ui/page-layout";
+import { ArticleDetail } from "@/widgets/article-detail";
 
 const DashBoardDetail = () => {
   return (

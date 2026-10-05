@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { UserResponse } from "@/shared/api/types/UserType";
 import tokenStorage from "@/shared/api/tokenStorage";
-import getUser from "@/entities/user/api/getUser";
+import getUser from "./getUser";
 
 const useGetUser = () => {
   const isLoggedIn = typeof window !== "undefined" && !!tokenStorage.getAccessToken();

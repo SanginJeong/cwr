@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import QueryProviders from "./_providers/QueryProvider";
-import ToasterContainer from "@/shared/ui/toast/Toaster";
-import Sidebar from "@/widgets/sidebar/ui/Sidebar";
+import { Toaster as ToasterContainer } from "@/shared/ui/toast";
+import { Sidebar } from "@/widgets/sidebar";
 
 const pretendard = localFont({
   src: "../../public/fonts/PretendardVariable.woff2",

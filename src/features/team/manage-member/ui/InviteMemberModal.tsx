@@ -1,6 +1,6 @@
-import useGetInvitation from "@/entities/team/api/useGetInvitation";
-import BaseButton from "@/shared/ui/button/BaseButton";
-import Modal from "@/shared/ui/modal/Modal";
+import { useGetInvitation } from "@/entities/team";
+import { BaseButton } from "@/shared/ui/button";
+import { Modal } from "@/shared/ui/modal";
 
 interface InviteMemberModalProps {
   isOpen: boolean;

@@ -1,1 +1,1 @@
-export { default } from "@/views/task-list/ui/TaskListPage";
+export { TaskListPage as default } from "@/views/task-list";

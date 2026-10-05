@@ -1,10 +1,10 @@
 "use client";
 
-import useGetGroups from "@/entities/team/api/useGetGroups";
+import { useGetGroups } from "@/entities/team";
 import TaskColumn from "./_internal/TaskColumn/TaskColumn";
 import { useParams } from "next/navigation";
-import getTaskListStatus from "@/entities/task/lib/getTaskListStatus";
-import { getUncompletedTaskCount } from "@/entities/task/lib/getTaskCount";
+import { getTaskListStatus } from "@/entities/task";
+import { getUncompletedTaskCount } from "@/entities/task";
 
 const TaskSection = () => {
   const { teamId } = useParams();
