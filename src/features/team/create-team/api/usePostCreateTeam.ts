@@ -3,6 +3,7 @@ import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/shared/config/routes";
 
 interface ErrorResponse {
   message: string;
@@ -17,7 +18,7 @@ const usePostCreateTeam = () => {
     mutationFn: postCreateTeam,
     onSuccess: (data) => {
       success("팀 생성 완료");
-      router.push(`/team/${data.id}`);
+      router.push(ROUTES.team(data.id));
 
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },

@@ -2,6 +2,7 @@ import postArticle from "./postArticle";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/shared/config/routes";
 
 const usePostArticle = () => {
   const router = useRouter();
@@ -12,7 +13,7 @@ const usePostArticle = () => {
     onSuccess: (data) => {
       success("게시물 등록을 성공했습니다.");
       queryClient.invalidateQueries({ queryKey: ["articles"] });
-      router.replace(`/dashboard/${data.id}`);
+      router.replace(ROUTES.article(data.id));
     },
     onError: () => {
       error("게시물을 등록하지 못하였습니다.");

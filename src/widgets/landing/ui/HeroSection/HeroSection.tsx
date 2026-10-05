@@ -7,12 +7,13 @@ import { useGSAP } from "@gsap/react";
 import { cn } from "@/shared/lib/cn";
 import DeviceImage from "../_internal/DeviceImage/DeviceImage";
 import { LinkButton } from "@/shared/ui/link-button";
+import { ROUTES } from "@/shared/config/routes";
 
 interface HeroSectionProps {
   link?: string;
 }
 
-const HeroSection = ({ link = "/login" }: HeroSectionProps) => {
+const HeroSection = ({ link = ROUTES.login }: HeroSectionProps) => {
   const container = useRef<HTMLDivElement>(null);
 
   useGSAP(

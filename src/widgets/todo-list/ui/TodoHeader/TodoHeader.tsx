@@ -15,6 +15,7 @@ import { LoadingSpinner } from "@/shared/ui/spinner";
 import { ErrorState } from "@/shared/ui/error-state";
 import useDevice from "@/shared/lib/useDevice";
 import TaskDropdown from "./_internal/TaskDropdown/TaskDropdown";
+import { ROUTES } from "@/shared/config/routes";
 
 const TodoItem = ({ data }: { data: TaskList }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -37,7 +38,7 @@ const TodoItem = ({ data }: { data: TaskList }) => {
           "pc:w-full pc:max-w-full pc:h-[54px]",
         )}
       >
-        <Link href={`/team/${data?.groupId}/task-list/${data?.id}`} className="flex items-center gap-2 flex-1 min-w-0">
+        <Link href={ROUTES.taskList(data?.groupId, data?.id)} className="flex items-center gap-2 flex-1 min-w-0">
           <span className="text-sm-semibold text-text-primary text-nowrap overflow-hidden text-ellipsis">
             {data?.name}
           </span>

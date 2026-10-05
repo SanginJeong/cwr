@@ -6,13 +6,14 @@ import Link from "next/link";
 import SidebarTooltip from "../SidebarTooltip/SidebarTooltip";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { ROUTES } from "@/shared/config/routes";
 
 const DropdownItem = ({ title, id, isOpen }: { title: string; id: string; isOpen: boolean }) => {
-  const isActive = useIsActivePath(`/team/${id}`);
+  const isActive = useIsActivePath(ROUTES.team(id));
 
   return (
     <Link
-      href={`/team/${id}`}
+      href={ROUTES.team(id)}
       className={cn(
         "h-[52px] rounded-xl p-4 flex items-center gap-3 bg-primary",
         isOpen ? "w-full" : "w-[52px]",

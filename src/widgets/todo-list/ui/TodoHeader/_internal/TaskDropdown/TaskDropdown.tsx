@@ -5,6 +5,7 @@ import { cn } from "@/shared/lib/cn";
 import { GetGroupsResponse } from "@/shared/api/types/groupApi";
 import { TaskList } from "@/shared/api/types/GroupData";
 import useDropdownClose from "@/shared/lib/useDropdownClose";
+import { ROUTES } from "@/shared/config/routes";
 
 const TaskDropdownItem = ({ data }: { data: TaskList }) => {
   if (!data) return null;
@@ -12,7 +13,7 @@ const TaskDropdownItem = ({ data }: { data: TaskList }) => {
   return (
     <li key={data.id}>
       <Link
-        href={`/team/${data.groupId}/task-list/${data.id}`}
+        href={ROUTES.taskList(data.groupId, data.id)}
         className={cn(
           "block w-full px-4 py-3 text-left text-sm text-text-primary transition-colors",
           "whitespace-nowrap overflow-hidden text-ellipsis",

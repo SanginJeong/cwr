@@ -14,6 +14,7 @@ import { InputPassword } from "@/shared/ui/input";
 import { BaseButton } from "@/shared/ui/button";
 import { toastKit } from "@/shared/lib/toastKit";
 import { validateEmail, validatePassword } from "@/shared/lib/Validation";
+import { ROUTES } from "@/shared/config/routes";
 
 const loginRules: ValidationRules = {
   email: (value) => validateEmail(value),
@@ -98,7 +99,7 @@ const LoginForm = () => {
           </BaseButton>
           <div className="flex text-md-medium tablet:text-lg-medium">
             <span className="mr-3 text-text-primary">아직 계정이 없으신가요?</span>
-            <Link href="/signup" className="text-brand-primary">
+            <Link href={ROUTES.signup} className="text-brand-primary">
               가입하기
             </Link>
           </div>

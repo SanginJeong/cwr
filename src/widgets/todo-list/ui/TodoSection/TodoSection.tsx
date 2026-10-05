@@ -17,6 +17,7 @@ import { useTaskMutations } from "@/features/task/manage-task";
 import { EditDataModal } from "@/features/task/manage-task";
 import { TaskResponse } from "@/shared/api/types/taskApi";
 import { ErrorState } from "@/shared/ui/error-state";
+import { ROUTES } from "@/shared/config/routes";
 
 interface TodoSectionHeaderProps {
   data: TaskResponse;
@@ -136,7 +137,7 @@ const TodoSection = ({
   };
 
   const onClickTaskListItem = (id: string) => {
-    router.push(`/team/${teamId}/task-list/${taskListId}?task-id=${id}`, { scroll: false });
+    router.push(`${ROUTES.taskList(teamId, taskListId)}?task-id=${id}`, { scroll: false });
   };
 
   const options = (task: { id: number; name: string; description?: string }) => [

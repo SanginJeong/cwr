@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useGetGroups } from "@/entities/team";
 import usePatchGroup from "../api/usePatchGroup";
 import useImageUpload from "@/shared/lib/useImageUpload";
+import { ROUTES } from "@/shared/config/routes";
 
 const useTeamEdit = (teamId: number) => {
   const router = useRouter();
@@ -61,7 +62,7 @@ const useTeamEdit = (teamId: number) => {
         body,
       });
 
-      router.push(`/team/${teamId}`);
+      router.push(ROUTES.team(teamId));
     } finally {
       setIsSubmitting(false);
     }

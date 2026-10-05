@@ -2,6 +2,7 @@ import deleteGroup from "./deleteGroup";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/shared/config/routes";
 
 const useDeleteGroup = () => {
   const { success, error } = toastKit();
@@ -17,7 +18,7 @@ const useDeleteGroup = () => {
       queryClient.invalidateQueries({
         queryKey: ["user"],
       });
-      router.replace("/team");
+      router.replace(ROUTES.teams);
     },
     onError: () => error("팀을 삭제하지 못하였습니다."),
   });

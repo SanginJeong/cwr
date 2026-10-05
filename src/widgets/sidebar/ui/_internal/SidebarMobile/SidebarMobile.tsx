@@ -5,6 +5,7 @@ import { Dropdown } from "@/shared/ui/dropdown";
 import { Icon } from "@/shared/ui/icon";
 import { SidebarDropdownProps } from "../../_types/SidebarProps";
 import LeftMobile from "../LeftMobile/LeftMobile";
+import { ROUTES } from "@/shared/config/routes";
 
 const SidebarMobile = ({ user, isOpen, handleOpenDropdown, options }: SidebarDropdownProps) => {
   return (
@@ -23,7 +24,7 @@ const SidebarMobile = ({ user, isOpen, handleOpenDropdown, options }: SidebarDro
           )}
 
           <Link
-            href="/"
+            href={ROUTES.home}
             aria-label="홈으로 이동"
             className="text-brand-primary font-bold text-5 pr-[22px] flex items-center gap-[2px]"
           >
@@ -46,7 +47,7 @@ const SidebarMobile = ({ user, isOpen, handleOpenDropdown, options }: SidebarDro
             }
           />
         ) : (
-          <Link href="/login" aria-label="로그인 페이지로 이동" className="text-sm font-medium">
+          <Link href={ROUTES.login} aria-label="로그인 페이지로 이동" className="text-sm font-medium">
             로그인
           </Link>
         )}

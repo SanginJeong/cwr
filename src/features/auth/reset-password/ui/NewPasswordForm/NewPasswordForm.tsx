@@ -9,6 +9,7 @@ import { BaseButton } from "@/shared/ui/button";
 import { OverlayLoading } from "@/shared/ui/overlay-loading";
 import { toastKit } from "@/shared/lib/toastKit";
 import { validatePassword, validatePasswordConfirm } from "@/shared/lib/Validation";
+import { ROUTES } from "@/shared/config/routes";
 
 const NewPasswordForm = () => {
   const router = useRouter();
@@ -19,7 +20,7 @@ const NewPasswordForm = () => {
   useEffect(() => {
     if (!token) {
       error("유효하지 않은 접근입니다.");
-      router.replace("/");
+      router.replace(ROUTES.home);
     }
   }, [token, router, error]);
 

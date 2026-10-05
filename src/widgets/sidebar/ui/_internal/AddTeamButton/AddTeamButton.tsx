@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { cn } from "@/shared/lib/cn";
 import { Icon } from "@/shared/ui/icon";
+import { ROUTES } from "@/shared/config/routes";
 
 const AddTeamButton = () => {
   return (
     <Link
-      href="/team-creation"
+      href={ROUTES.teamNew}
       aria-label="팀 추가하기"
       className={cn(
         "w-full px-3 py-2 min-h-[33px] flex-center gap-1 rounded-[8px]",

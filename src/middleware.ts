@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { AUTH_ONLY_ROUTES, PROTECTED_ROUTES, ROUTES } from "@/shared/config/routes";
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("accessToken")?.value;
@@ -7,21 +8,17 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // 이미 로그인한 유저가 로그인/회원가입 페이지 접근 시 차단
-  const authRoutes = ["/login", "/signup", "/reset-password"];
-
-  if (token && authRoutes.includes(pathname)) {
-    return NextResponse.redirect(new URL("/", req.url));
+  if (token && AUTH_ONLY_ROUTES.includes(pathname)) {
+    return NextResponse.redirect(new URL(ROUTES.home, req.url));
   }
 
   // 비로그인 유저 -> 로그인 필요한 페이지 접근 시 차단
-  const protectedRoutes = ["/my-page", "/my-history", "/team", "/team-creation", "/team-join", "/dashboard"];
-
-  if (!token && protectedRoutes.some((route) => pathname.startsWith(route))) {
-    return NextResponse.redirect(new URL("/login", req.url));
+  if (!token && PROTECTED_ROUTES.some((route) => pathname.startsWith(route))) {
+    return NextResponse.redirect(new URL(ROUTES.login, req.url));
   }
 
   // 소속팀 없는 페이지 -> 유저정보 검사 -> 리다이렉트
-  if (token && req.nextUrl.pathname === "/team") {
+  if (token && req.nextUrl.pathname === ROUTES.teams) {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
       headers: { Authorization: `Bearer ${token}` },
       cache: "no-store",
@@ -32,7 +29,7 @@ export async function middleware(req: NextRequest) {
       const groupId = data.memberships?.[0]?.groupId;
 
       if (groupId) {
-        return NextResponse.redirect(new URL(`/team/${groupId}`, req.url));
+        return NextResponse.redirect(new URL(ROUTES.team(groupId), req.url));
       }
     }
   }
@@ -51,7 +48,7 @@ export async function middleware(req: NextRequest) {
     });
 
     if (!res.ok) {
-      return NextResponse.redirect(new URL("/team", req.url));
+      return NextResponse.redirect(new URL(ROUTES.teams, req.url));
     }
   }
 

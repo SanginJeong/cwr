@@ -8,6 +8,7 @@ import SidebarDropdown from "../SidebarDropdown/SidebarDropdown";
 import AddTeamButton from "../AddTeamButton/AddTeamButton";
 import SidebarLink from "../SidebarLink/SidebarLink";
 import { motion } from "framer-motion";
+import { ROUTES } from "@/shared/config/routes";
 
 const SidebarTablet = ({ user, isOpen, handleOpenDropdown, options }: SidebarDropdownProps) => {
   return (
@@ -27,7 +28,7 @@ const SidebarTablet = ({ user, isOpen, handleOpenDropdown, options }: SidebarDro
         )}
       >
         <header className="flex items-center gap-[10px] px-6 py-8 relative">
-          <Link href="/" aria-label="홈으로 이동" className="flex items-center gap-1">
+          <Link href={ROUTES.home} aria-label="홈으로 이동" className="flex items-center gap-1">
             <Icon name="logo" />
             {isOpen && <h2 className="text-brand-primary font-bold text-5 leading-none pr-[22px] m-0">COWORKERS</h2>}
           </Link>
@@ -59,11 +60,11 @@ const SidebarTablet = ({ user, isOpen, handleOpenDropdown, options }: SidebarDro
                   </>
                 )}
 
-                <SidebarLink title="자유게시판" isOpen={isOpen} href="/dashboard" iconName="board" />
+                <SidebarLink title="자유게시판" isOpen={isOpen} href={ROUTES.board} iconName="board" />
                 {isOpen ? (
                   <AddTeamButton />
                 ) : (
-                  <SidebarLink title="팀 추가하기" isOpen={isOpen} href="/team-creation" iconName="plus" />
+                  <SidebarLink title="팀 추가하기" isOpen={isOpen} href={ROUTES.teamNew} iconName="plus" />
                 )}
               </>
             )}
@@ -96,7 +97,7 @@ const SidebarTablet = ({ user, isOpen, handleOpenDropdown, options }: SidebarDro
             ) : (
               <div className="flex items-center gap-3">
                 {isOpen && <Profile src="" alt="" size="lg" />}
-                <Link href="/login">로그인</Link>
+                <Link href={ROUTES.login}>로그인</Link>
               </div>
             )}
           </footer>

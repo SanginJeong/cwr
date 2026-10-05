@@ -7,6 +7,7 @@ import { SidebarProps } from "../../_types/SidebarProps";
 import SidebarLink from "../SidebarLink/SidebarLink";
 import AddTeamButton from "../AddTeamButton/AddTeamButton";
 import MobileMenuItem from "../MobileMenuItem/MobileMenuItem";
+import { ROUTES } from "@/shared/config/routes";
 
 const LeftMobile = ({ isOpen, handleOpenDropdown, user }: SidebarProps) => {
   return (
@@ -47,7 +48,7 @@ const LeftMobile = ({ isOpen, handleOpenDropdown, user }: SidebarProps) => {
             <hr />
 
             <div className="w-full">
-              <SidebarLink title="자유게시판" isOpen={isOpen} href="/dashboard" iconName="board" />
+              <SidebarLink title="자유게시판" isOpen={isOpen} href={ROUTES.board} iconName="board" />
             </div>
             <AddTeamButton />
           </motion.nav>

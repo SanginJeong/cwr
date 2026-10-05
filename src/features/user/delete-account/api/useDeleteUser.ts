@@ -6,6 +6,7 @@ import deleteUser from "./deleteUser";
 import { toastKit } from "@/shared/lib/toastKit";
 import tokenStorage from "@/shared/api/tokenStorage";
 import { clearAuthCookies } from "@/shared/api/authCookies";
+import { ROUTES } from "@/shared/config/routes";
 
 type UseDeleteUserOptions = {
   onSuccess?: () => void;
@@ -26,7 +27,7 @@ const useDeleteUser = (options?: UseDeleteUserOptions) => {
       success("회원 탈퇴가 완료되었습니다.");
       options?.onSuccess?.();
 
-      router.push("/");
+      router.push(ROUTES.home);
     },
     onError: (err: AxiosError<ApiErrorResponse>) => {
       const message = err.response?.data?.message || err.message || "회원 탈퇴에 실패했습니다.";

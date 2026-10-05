@@ -8,6 +8,7 @@ import { Input } from "@/shared/ui/input";
 import { InputPassword } from "@/shared/ui/input";
 import { BaseButton } from "@/shared/ui/button";
 import { validateEmail, validateName, validatePassword, validatePasswordConfirm } from "@/shared/lib/Validation";
+import { ROUTES } from "@/shared/config/routes";
 
 const INITIAL_VALUES = {
   email: "",
@@ -80,7 +81,7 @@ const SignUpForm = () => {
           maxLength={20}
         />
       </div>
-      <Link href="/login" className="w-fit ml-auto mt-3 text-brand-primary text-md-medium tablet:text-lg-medium">
+      <Link href={ROUTES.login} className="w-fit ml-auto mt-3 text-brand-primary text-md-medium tablet:text-lg-medium">
         이미 계정이 있으신가요?
       </Link>
       <div className="text-lg-semibold mt-10">

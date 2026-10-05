@@ -9,6 +9,7 @@ import { BaseButton } from "@/shared/ui/button";
 import { cn } from "@/shared/lib/cn";
 import { LoadingSpinner } from "@/shared/ui/spinner";
 import { useDeleteGroup } from "@/features/team/delete-team";
+import { ROUTES } from "@/shared/config/routes";
 
 /**
  * @author jikwon
@@ -30,7 +31,7 @@ const PageHeaderBar = ({ title, id, isDropdown = true }: PageHeaderBarProps) => 
   const { mutate: deleteGroup, isPending } = useDeleteGroup();
 
   const options = [
-    { label: "수정하기", action: () => router.push(`/team/${id}/edit`) },
+    { label: "수정하기", action: () => router.push(ROUTES.teamEdit(String(id))) },
     { label: "삭제하기", action: () => setIsOpenDeleteModal(true) },
   ];
 

@@ -5,12 +5,13 @@ import { ArticleListItem } from "@/shared/api/types/ArticleType";
 import ArticleWriter from "./_internal/ArticleWriter";
 import ArticleLike from "./_internal/ArticleLike";
 import isValidImageUrl from "./_internal/isValidImageUrl";
+import { ROUTES } from "@/shared/config/routes";
 
 const FeedArticleItem = ({ article }: { article: ArticleListItem }) => {
   const hasImage = !!article.image && isValidImageUrl(article.image);
 
   return (
-    <Link href={`/dashboard/${article.id}`} className="group block">
+    <Link href={ROUTES.article(article.id)} className="group block">
       <article className="flex flex-col gap-3 px-4 py-6 tablet:px-6 transition-colors group-hover:bg-background-secondary/60">
         <ArticleWriter nickname={article.writer.nickname} createdAt={article.createdAt} />
 

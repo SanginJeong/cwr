@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import deleteTask from "./deleteTask";
 import { DeleteTaskRequest } from "@/shared/api/types/taskApi";
+import { ROUTES } from "@/shared/config/routes";
 
 const useDeleteTask = () => {
   const { success, error } = toastKit();
@@ -30,7 +31,7 @@ const useDeleteTask = () => {
         queryKey: ["groups", Number(groupId)],
       });
 
-      router.replace(`/team/${groupId}/task-list/${taskListId}`);
+      router.replace(ROUTES.taskList(groupId, taskListId));
     },
 
     onError: () => {

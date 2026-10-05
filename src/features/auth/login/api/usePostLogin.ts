@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { setAuthCookies } from "@/shared/api/authCookies";
 import tokenStorage from "@/shared/api/tokenStorage";
 import postLogin from "./login";
+import { ROUTES } from "@/shared/config/routes";
 
 const usePostLogin = () => {
   const router = useRouter();
@@ -17,7 +18,7 @@ const usePostLogin = () => {
 
       tokenStorage.setAccessToken(data.accessToken);
 
-      router.replace("/team");
+      router.replace(ROUTES.teams);
     },
     onError: (error) => {
       console.error("로그인 실패", error);

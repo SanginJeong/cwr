@@ -4,6 +4,7 @@ import { PageLayout } from "@/shared/ui/page-layout";
 import { DashBoardHeader } from "@/widgets/board-header";
 import { DashBoardBestArticles } from "@/widgets/best-articles";
 import { DashBoardAllArticles } from "@/widgets/article-feed";
+import { ROUTES } from "@/shared/config/routes";
 
 const DashboardPage = () => {
   return (
@@ -19,7 +20,7 @@ const DashboardPage = () => {
             <DashBoardAllArticles />
           </div>
         </div>
-        <Link href="/dashboard/write" className="block">
+        <Link href={ROUTES.boardNew} className="block">
           <FloatingButton
             iconName="pencil"
             className="fixed right-4 bottom-4 tablet:right-6 tablet:bottom-6 pc:right-10 pc:bottom-10"

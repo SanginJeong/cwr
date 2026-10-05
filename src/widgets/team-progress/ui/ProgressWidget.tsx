@@ -11,6 +11,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useCheckAdmin } from "@/entities/user";
 import { useState } from "react";
 import { getCompletedTaskCount, getUncompletedTaskCount } from "@/entities/task";
+import { ROUTES } from "@/shared/config/routes";
 
 const ProgressWidget = () => {
   const { teamId } = useParams();
@@ -25,7 +26,7 @@ const ProgressWidget = () => {
   const isAdmin = useCheckAdmin();
 
   const DropdownOptions = [
-    { label: "수정하기", action: () => router.push(`/team/${id}/edit`) },
+    { label: "수정하기", action: () => router.push(ROUTES.teamEdit(id)) },
     { label: "삭제하기", action: () => setIsOpenDeleteModal(true) },
   ];
 

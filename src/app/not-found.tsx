@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/shared/lib/cn";
 import { PageEmptyState } from "@/shared/ui/page-empty-state";
+import { ROUTES } from "@/shared/config/routes";
 
 const NotFound = () => {
   return (
@@ -15,7 +16,7 @@ const NotFound = () => {
         }
       >
         <Link
-          href="/"
+          href={ROUTES.home}
           className="px-8 py-3 text-text-inverse bg-brand-primary rounded-xl hover:bg-brand-tertiary transition-colors"
         >
           메인 페이지 이동

@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import patchResetPassword from "./patchResetPassword";
 import { ApiErrorResponse } from "@/shared/api/types/ApiType";
 import { toastKit } from "@/shared/lib/toastKit";
+import { ROUTES } from "@/shared/config/routes";
 
 type UsePatchResetPasswordOptions = {
   onSuccess?: () => void;
@@ -19,7 +20,7 @@ const usePatchResetPassword = (options?: UsePatchResetPasswordOptions) => {
     onSuccess: () => {
       success("비밀번호가 성공적으로 변경되었습니다.");
       options?.onSuccess?.();
-      router.replace("/login");
+      router.replace(ROUTES.login);
     },
     onError: (err: AxiosError<ApiErrorResponse>) => {
       const message = err.response?.data?.message || err.message || "비밀번호 재설정에 실패했습니다.";

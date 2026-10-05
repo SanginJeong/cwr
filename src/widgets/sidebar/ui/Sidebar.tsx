@@ -6,6 +6,7 @@ import SidebarTablet from "./_internal/SidebarTablet/SidebarTablet";
 import { useGetUser } from "@/entities/user";
 import { useLogout } from "@/features/auth/logout";
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/shared/config/routes";
 
 /**
  * @author jikwon
@@ -40,9 +41,9 @@ const Sidebar = () => {
   };
 
   const options = [
-    { label: "마이 히스토리", action: () => router.push("/my-history") },
-    { label: "계정 설정", action: () => router.push("/my-page") },
-    { label: "팀 참여", action: () => router.push("/team-join") },
+    { label: "마이 히스토리", action: () => router.push(ROUTES.history) },
+    { label: "계정 설정", action: () => router.push(ROUTES.account) },
+    { label: "팀 참여", action: () => router.push(ROUTES.teamJoin) },
     { label: "로그아웃", action: logout },
   ];
 

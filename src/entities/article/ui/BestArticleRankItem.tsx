@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Icon } from "@/shared/ui/icon";
 import { ArticleListItem } from "@/shared/api/types/ArticleType";
 import ArticleLike from "./_internal/ArticleLike";
+import { ROUTES } from "@/shared/config/routes";
 
 interface BestArticleRankItemProps {
   article: ArticleListItem;
@@ -11,7 +12,7 @@ interface BestArticleRankItemProps {
 const BestArticleRankItem = ({ article, rank }: BestArticleRankItemProps) => {
   return (
     <Link
-      href={`/dashboard/${article.id}`}
+      href={ROUTES.article(article.id)}
       className="flex gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-background-tertiary"
     >
       <span className="w-5 shrink-0 text-lg-bold text-brand-primary">{rank}</span>

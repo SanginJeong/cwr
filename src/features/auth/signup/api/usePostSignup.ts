@@ -5,6 +5,7 @@ import postSignup from "./signup";
 import { setAuthCookies } from "@/shared/api/authCookies";
 import { toastKit } from "@/shared/lib/toastKit";
 import tokenStorage from "@/shared/api/tokenStorage";
+import { ROUTES } from "@/shared/config/routes";
 
 type ErrorResponse = {
   message?: string;
@@ -37,7 +38,7 @@ const usePostSignup = () => {
         sessionStorage.removeItem("hasSeenOnboarding");
       }
 
-      router.replace("/?onboarding=true");
+      router.replace(`${ROUTES.home}?onboarding=true`);
     },
     onError: (err: AxiosError<ErrorResponse>) => {
       const responseData = err.response?.data;

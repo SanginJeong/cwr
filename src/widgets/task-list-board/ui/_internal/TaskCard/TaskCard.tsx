@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { DeleteTaskListModal } from "@/features/task-list/manage-task-list";
 import { EditTaskListModal } from "@/features/task-list/manage-task-list";
+import { ROUTES } from "@/shared/config/routes";
 
 const TaskHeader = ({ name, taskList }: { name: string; taskList: TaskList }) => {
   const { teamId } = useParams();
@@ -21,7 +22,7 @@ const TaskHeader = ({ name, taskList }: { name: string; taskList: TaskList }) =>
 
   return (
     <div className="flex justify-between items-center h-[25px]">
-      <Link href={`/team/${teamId}/task-list/${taskListId}`} className="text-lg-semibold text-text-primary">
+      <Link href={ROUTES.taskList(String(teamId), taskListId)} className="text-lg-semibold text-text-primary">
         {name}
       </Link>
 

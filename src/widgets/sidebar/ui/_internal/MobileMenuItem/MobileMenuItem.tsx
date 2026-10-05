@@ -3,6 +3,7 @@ import { Membership } from "@/shared/api/types/UserType";
 import { cn } from "@/shared/lib/cn";
 import { useIsActivePath } from "@/shared/lib/isActivePath";
 import Link from "next/link";
+import { ROUTES } from "@/shared/config/routes";
 
 interface MobileMenuItemProps {
   membership: Membership;
@@ -10,11 +11,11 @@ interface MobileMenuItemProps {
 }
 
 const MobileMenuItem = ({ membership, isOpen }: MobileMenuItemProps) => {
-  const isActive = useIsActivePath(`/team/${membership.groupId}`);
+  const isActive = useIsActivePath(ROUTES.team(membership.groupId));
 
   return (
     <Link
-      href={`/team/${membership.groupId}`}
+      href={ROUTES.team(membership.groupId)}
       aria-label={`${membership.group.name} 팀으로 이동`}
       className={cn(
         "w-full min-h-[52px] p-4 flex gap-3 items-center rounded-xl",

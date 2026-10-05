@@ -3,6 +3,7 @@ import Image from "next/image";
 import { BaseButton } from "@/shared/ui/button";
 import { PageLayout } from "@/shared/ui/page-layout";
 import Link from "next/link";
+import { ROUTES } from "@/shared/config/routes";
 
 const EmptyTeamPage = async () => {
   return (
@@ -17,12 +18,12 @@ const EmptyTeamPage = async () => {
         </div>
 
         <div className="w-[186px] flex flex-col gap-2">
-          <Link href="/team-creation">
+          <Link href={ROUTES.teamNew}>
             <BaseButton variant="solid" size="large">
               팀 생성하기
             </BaseButton>
           </Link>
-          <Link href="/team-join">
+          <Link href={ROUTES.teamJoin}>
             <BaseButton variant="outlinedPrimary" size="large">
               팀 참여하기
             </BaseButton>

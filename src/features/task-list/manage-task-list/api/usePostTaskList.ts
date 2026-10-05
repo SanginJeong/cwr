@@ -3,6 +3,7 @@ import { toastKit } from "@/shared/lib/toastKit";
 import postTaskList from "./postTaskList";
 import { PostTaskListRequest } from "@/shared/api/types/taskListApi";
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/shared/config/routes";
 
 const usePostTaskList = () => {
   const router = useRouter();
@@ -21,7 +22,7 @@ const usePostTaskList = () => {
         queryKey: ["groups", Number(groupId)],
       });
 
-      router.replace(`/team/${groupId}/task-list/${id}`);
+      router.replace(ROUTES.taskList(groupId, id));
     },
 
     onError: () => {

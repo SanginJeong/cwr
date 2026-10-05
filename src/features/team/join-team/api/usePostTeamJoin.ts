@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postTeamJoin from "./postTeamJoin";
 import { PostTeamJoinRequest, PostTeamJoinResponse } from "@/shared/api/types/teamJoinApi";
 import { toastKit } from "@/shared/lib/toastKit";
+import { ROUTES } from "@/shared/config/routes";
 
 type UsePostTeamJoinOptions = {
   onSuccess?: (data: PostTeamJoinResponse) => void;
@@ -20,7 +21,7 @@ const usePostTeamJoin = (options?: UsePostTeamJoinOptions) => {
     onSuccess: (data) => {
       success("팀에 성공적으로 참여했습니다!");
       options?.onSuccess?.(data);
-      router.push(`/team/${data.groupId}`);
+      router.push(ROUTES.team(data.groupId));
 
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
@@ -29,7 +30,7 @@ const usePostTeamJoin = (options?: UsePostTeamJoinOptions) => {
 
       if (axiosError.response?.status === 401) {
         error("로그인이 필요합니다.");
-        router.push("/login");
+        router.push(ROUTES.login);
         return;
       }
 

@@ -13,6 +13,7 @@ import { DetailPage } from "@/widgets/task-detail";
 import { useGetGroups } from "@/entities/team";
 import { useGetTask } from "@/entities/task";
 import { LoadingSpinner } from "@/shared/ui/spinner";
+import { ROUTES } from "@/shared/config/routes";
 
 const subscribeNoop = () => () => {};
 
@@ -52,7 +53,7 @@ const TaskListPage = ({ params }: { params: Promise<{ teamId: number; taskListId
     const params = new URLSearchParams(searchParams.toString());
     params.set("w", "true");
 
-    router.push(`/team/${teamId}/task-list/${taskListId}?${params.toString()}`, { scroll: false });
+    router.push(`${ROUTES.taskList(teamId, taskListId)}?${params.toString()}`, { scroll: false });
   };
 
   const onClickDateItem = (date: Date) => {
@@ -61,7 +62,7 @@ const TaskListPage = ({ params }: { params: Promise<{ teamId: number; taskListId
     const params = new URLSearchParams(searchParams.toString());
     params.set("date", date.toISOString());
 
-    router.replace(`/team/${teamId}/task-list/${taskListId}?${params.toString()}`, { scroll: false });
+    router.replace(`${ROUTES.taskList(teamId, taskListId)}?${params.toString()}`, { scroll: false });
   };
 
   return (
@@ -102,7 +103,7 @@ const TaskListPage = ({ params }: { params: Promise<{ teamId: number; taskListId
           onClose={() => {
             const params = new URLSearchParams(searchParams.toString());
             params.delete("w");
-            router.push(`/team/${teamId}/task-list/${taskListId}?${params.toString()}`, { scroll: false });
+            router.push(`${ROUTES.taskList(teamId, taskListId)}?${params.toString()}`, { scroll: false });
           }}
           groupId={teamId}
           taskListId={taskListId}
