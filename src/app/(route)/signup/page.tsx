@@ -1,7 +1,4 @@
-import SignUpForm from "./_components/SignUpForm/SignUpForm";
-import CenteredCardLayout from "../_components/layouts/CenteredCardLayout";
-import SocialAuthSection from "../_components/SocialAuthSection/SocialAuthSection";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Coworkers | 회원가입",
@@ -13,17 +10,4 @@ export const metadata: Metadata = {
   },
 };
 
-const SignUpPage = () => {
-  return (
-    <CenteredCardLayout
-      className="w-full min-w-[343px] tablet:max-h-[800px] tablet:max-w-[550px] my-[35px] pt-[50px] pb-[30px]"
-      title="회원가입"
-      titleClassName="text-xl-bold"
-    >
-      <SignUpForm />
-      <SocialAuthSection mode="signup" />
-    </CenteredCardLayout>
-  );
-};
-
-export default SignUpPage;
+export { default } from "@/views/signup/ui/SignupPage";

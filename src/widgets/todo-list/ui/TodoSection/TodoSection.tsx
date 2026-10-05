@@ -1,0 +1,203 @@
+"use client";
+
+import { cn } from "@/shared/lib/cn";
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { addDays, format } from "date-fns";
+import { DateValue } from "@/shared/api/types/DatePickerType";
+import DateItem from "@/shared/ui/date-item/DateItem";
+import DatePicker from "@/shared/ui/date-picker/DatePicker";
+import Icon from "@/shared/ui/icon/Icon";
+import EmptyState from "@/shared/ui/empty-state/EmptyState";
+import LoadingSpinner from "@/shared/ui/spinner/LoadingSpinner";
+import TaskListItem from "@/entities/task/ui/TaskListItem/TaskListItem";
+import { TODO_STYLES } from "../../config/TODO_STYLES";
+import TaskPdfDownloadButton from "@/features/task/export-pdf/ui/TaskPdfDownloadButton/TaskPdfDownloadButton";
+import useTaskMutations from "@/features/task/manage-task/model/useTaskMutations";
+import EditDataModal from "@/widgets/task-detail/ui/_internal/EditDataModal/EditDataModal";
+import { TaskResponse } from "@/shared/api/types/taskApi";
+import ErrorState from "@/shared/ui/error-state/ErrorState";
+
+interface TodoSectionHeaderProps {
+  data: TaskResponse;
+  selectedDate: Date;
+  onClickMoveWeek: (direction: "prev" | "next") => void;
+  onClickCalendar: (date: Date) => void;
+  sectionName: string;
+}
+
+const TodoSectionHeader = ({
+  data,
+  selectedDate,
+  onClickMoveWeek,
+  onClickCalendar,
+  sectionName,
+}: TodoSectionHeaderProps) => {
+  const monthLabel = format(selectedDate, "yyyy년 M월");
+  const monthDateTime = format(selectedDate, "yyyy-MM");
+  const [isOpenCalendar, setIsOpenCalendar] = useState(false);
+
+  const handleDateSelect = (date: DateValue) => {
+    if (!date) return;
+
+    onClickCalendar(date as Date);
+    setIsOpenCalendar(false);
+  };
+
+  return (
+    <header className="flex items-center justify-between relative">
+      <h3 className="text-2lg-bold text-text-primary flex-1 overflow-hidden text-ellipsis text-nowrap">
+        {sectionName || "로딩중..."}
+      </h3>
+
+      <div className="flex items-center gap-2">
+        <time dateTime={monthDateTime} className="text-sm-medium text-text-primary">
+          {monthLabel}
+        </time>
+        <div className="flex items-center gap-1">
+          <button aria-label="이전 주" className={TODO_STYLES.buttonBase} onClick={() => onClickMoveWeek("prev")}>
+            <Icon name="leftArrow" className={TODO_STYLES.arrowBase} />
+          </button>
+          <button aria-label="다음 주" className={TODO_STYLES.buttonBase} onClick={() => onClickMoveWeek("next")}>
+            <Icon name="rightArrow" className={TODO_STYLES.arrowBase} />
+          </button>
+        </div>
+        <button
+          aria-label="달력 열기"
+          className="size-6 rounded-full bg-background-secondary flex-center"
+          onClick={() => setIsOpenCalendar((prev) => !prev)}
+        >
+          <Icon name="calendar" className={TODO_STYLES.arrowBase} />
+        </button>
+        <TaskPdfDownloadButton data={data} />
+      </div>
+      {isOpenCalendar && (
+        <div className="absolute top-full right-0 mt-2 z-50 w-[300px]">
+          <DatePicker value={selectedDate} onChange={handleDateSelect} />
+        </div>
+      )}
+    </header>
+  );
+};
+
+type WeekDirection = "prev" | "next";
+
+interface TodoSectionProps {
+  sectionName: string;
+  data: TaskResponse;
+  teamId: number;
+  onClickDateItem: (date: Date) => void;
+  selectedDate: Date;
+  taskListId: number;
+  taskStatus: {
+    isPending: boolean;
+    isError: boolean;
+  };
+}
+
+const TodoSection = ({
+  data,
+  teamId,
+  onClickDateItem,
+  selectedDate,
+  taskListId,
+  sectionName,
+  taskStatus,
+}: TodoSectionProps) => {
+  const router = useRouter();
+  const [isEditModal, setIsEditModal] = useState(false);
+  const [editingTask, setEditingTask] = useState<{ id: number; name: string; description?: string } | null>(null);
+  const [editForm, setEditForm] = useState({ name: "", description: "" });
+  const { isPending, isError } = taskStatus;
+
+  const { toggleTaskDone, deleteTask, updateTask } = useTaskMutations({ teamId, taskListId });
+
+  const handleOpenEditModal = (task: { id: number; name: string; description?: string }) => {
+    setEditingTask(task);
+    setEditForm({
+      name: task.name,
+      description: task.description || "",
+    });
+    setIsEditModal(true);
+  };
+
+  const handleEdit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!editingTask) return;
+
+    updateTask(editingTask.id, editForm.name, editForm.description);
+    setIsEditModal(false);
+  };
+
+  const handleMoveWeek = (direction: WeekDirection) => {
+    const diff = direction === "prev" ? -7 : 7;
+    const newDate = addDays(selectedDate, diff);
+    onClickDateItem(newDate);
+  };
+
+  const onClickTaskListItem = (id: string) => {
+    router.push(`/team/${teamId}/task-list/${taskListId}?task-id=${id}`, { scroll: false });
+  };
+
+  const options = (task: { id: number; name: string; description?: string }) => [
+    { label: "수정하기", action: () => handleOpenEditModal(task) },
+    { label: "삭제하기", action: () => deleteTask(task.id) },
+  ];
+
+  return (
+    <>
+      <section
+        className={cn(
+          "bg-background-primary px-[17px] py-[38px] my-[22px] rounded-[20px]",
+          "pc:px-[42px] pc:max-w-[819px] pc:w-full",
+        )}
+      >
+        <TodoSectionHeader
+          data={data}
+          selectedDate={selectedDate}
+          onClickMoveWeek={handleMoveWeek}
+          onClickCalendar={onClickDateItem}
+          sectionName={sectionName}
+        />
+
+        <DateItem onClick={onClickDateItem} selectedDate={selectedDate} />
+
+        <div className="mt-[37px] min-h-[250px] flex-center">
+          {isPending && <LoadingSpinner />}
+          {isError && <ErrorState />}
+          {data?.length === 0 && !isPending && !isError && <EmptyState />}
+
+          {data?.length > 0 && !isPending && !isError && (
+            <ul className="w-full flex flex-col gap-3 self-start">
+              {data?.map((item) => {
+                const isDone = item.doneAt !== null;
+
+                return (
+                  <TaskListItem
+                    key={item.id}
+                    item={item}
+                    onOpenDetail={() => onClickTaskListItem(item.id.toString())}
+                    onToggleTodo={() => toggleTaskDone(item.id, isDone)}
+                    options={options(item)}
+                  />
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      </section>
+
+      {isEditModal && (
+        <EditDataModal
+          isEditModal={isEditModal}
+          setIsEditModal={setIsEditModal}
+          form={editForm}
+          setForm={setEditForm}
+          handleEdit={handleEdit}
+        />
+      )}
+    </>
+  );
+};
+
+export default TodoSection;

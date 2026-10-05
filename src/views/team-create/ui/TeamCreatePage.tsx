@@ -1,0 +1,16 @@
+import CenteredCardLayout from "@/shared/ui/centered-card-layout/CenteredCardLayout";
+import TeamCreateForm from "@/features/team/create-team/ui/TeamCreateForm/TeamCreateForm";
+
+const TeamCreatePage = () => {
+  return (
+    <CenteredCardLayout
+      className="w-full min-w-[343px] max-w-[550px] h-[464px] justify-between tablet:h-[543px] gap-8 pt-[52.5px] pb-[72.5px] tablet:py-[62px]"
+      title="팀 생성하기"
+      titleClassName="w-full text-left text-xl-bold"
+    >
+      <TeamCreateForm />
+    </CenteredCardLayout>
+  );
+};
+
+export default TeamCreatePage;

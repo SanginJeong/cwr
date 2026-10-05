@@ -1,7 +1,4 @@
-import LoginForm from "./_components/LoginForm/LoginForm";
-import CenteredCardLayout from "../_components/layouts/CenteredCardLayout";
-import SocialAuthSection from "../_components/SocialAuthSection/SocialAuthSection";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Coworkers | 로그인 페이지",
@@ -13,17 +10,4 @@ export const metadata: Metadata = {
   },
 };
 
-const LoginPage = () => {
-  return (
-    <CenteredCardLayout
-      className="min-w-[343px] max-h-[670px] max-w-[550px] py-[60px] tablet:py-[70px]"
-      title="로그인"
-      titleClassName="text-xl-bold"
-    >
-      <LoginForm />
-      <SocialAuthSection mode="login" />
-    </CenteredCardLayout>
-  );
-};
-
-export default LoginPage;
+export { default } from "@/views/login/ui/LoginPage";

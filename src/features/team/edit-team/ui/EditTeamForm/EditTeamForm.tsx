@@ -1,0 +1,74 @@
+"use client";
+
+import { FormEvent } from "react";
+import useDevice from "@/shared/lib/useDevice";
+import ProfileEdit from "@/shared/ui/profile/ProfileEdit/ProfileEdit";
+import Input from "@/shared/ui/input/Input";
+import BaseButton from "@/shared/ui/button/BaseButton";
+import FloatingButton from "@/shared/ui/button/FloatingButton";
+import useTeamEdit from "../../model/useTeamEdit";
+import { useParams } from "next/navigation";
+
+const TeamEditForm = () => {
+  const { isMobile } = useDevice();
+  const profileSize = isMobile ? "md" : "lg";
+  const { teamId } = useParams();
+  const id = Number(teamId);
+
+  const {
+    name,
+    errorMessage,
+    preview,
+    isValid,
+    isSubmitting,
+    handleNameChange,
+    handleImageChange,
+    handleSubmit,
+    handleRemoveImage,
+  } = useTeamEdit(id);
+
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    handleSubmit();
+  };
+
+  return (
+    <form onSubmit={onSubmit} className="w-full flex-col-center gap-10">
+      <div className="w-full flex-col-center gap-3 tablet:gap-6">
+        <div className="relative">
+          <ProfileEdit iconType="imgUpload" src={preview || null} onChange={handleImageChange} size={profileSize} />
+          {preview && (
+            <FloatingButton
+              iconName="x"
+              type="button"
+              onClick={handleRemoveImage}
+              className="absolute -top-1 -right-1 size-6"
+            />
+          )}
+        </div>
+        <Input
+          label="팀 이름"
+          type="text"
+          placeholder="팀 이름을 입력해주세요."
+          value={name}
+          onChange={(e) => handleNameChange(e.target.value)}
+          error={errorMessage}
+          minLength={2}
+          maxLength={30}
+        />
+      </div>
+
+      <div className="w-full flex-col-center gap-5">
+        <BaseButton type="submit" variant="solid" size="large" className="w-full" disabled={!isValid || isSubmitting}>
+          {isSubmitting ? "수정 중..." : "수정하기"}
+        </BaseButton>
+
+        <p className="text-xs-regular text-text-default tablet:text-lg-regular text-center">
+          팀 이름은 회사명이나 모임 이름 등으로 설정하면 좋아요.
+        </p>
+      </div>
+    </form>
+  );
+};
+
+export default TeamEditForm;

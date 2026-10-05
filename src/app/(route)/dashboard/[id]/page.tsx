@@ -1,18 +1,8 @@
-import PageLayout from "@/common/PageLayout/PageLayout";
-import ArticleDetail from "./_components/ArticleDetail";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Coworkers | 자유게시판",
   description: "게시글을 통해 팀원들과 소통해보세요.",
 };
 
-const DashBoardDetail = () => {
-  return (
-    <PageLayout>
-      <ArticleDetail />
-    </PageLayout>
-  );
-};
-
-export default DashBoardDetail;
+export { default } from "@/views/board-detail/ui/BoardDetailPage";

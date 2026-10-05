@@ -1,0 +1,32 @@
+import postRecurring from "@/features/task/create-task/api/postRecurring";
+import { useMutation } from "@tanstack/react-query";
+import { toastKit } from "@/shared/lib/toastKit";
+import { useQueryClient } from "@tanstack/react-query";
+import { PostTaskRequest } from "@/shared/api/types/recurringApi";
+
+const usePostRecurring = () => {
+  const { success, error } = toastKit();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ groupId, taskListId, body }: PostTaskRequest) => postRecurring({ groupId, taskListId, body }),
+
+    onSuccess: (_data, variables) => {
+      success("할 일 추가 성공");
+      const { groupId, taskListId } = variables;
+
+      queryClient.invalidateQueries({
+        queryKey: ["task-list", String(groupId), String(taskListId)],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["groups", groupId],
+      });
+    },
+
+    onError: () => {
+      error("할 일 추가 실패");
+    },
+  });
+};
+
+export default usePostRecurring;
