@@ -98,3 +98,20 @@ grant select on storage.buckets to anon, authenticated;
 create function storage.foldername(name text) returns text[] language sql immutable as $$
   select (string_to_array(name, '/'))[1:array_length(string_to_array(name, '/'), 1) - 1];
 $$;
+
+-- Realtime (채널 권한 정책만 흉내 낸다)
+-- 실제 Supabase는 채널에 접속할 때 topic을 realtime.topic()으로 노출하고 realtime.messages의 RLS를 검사한다.
+create schema realtime;
+grant usage on schema realtime to anon, authenticated, service_role;
+create table realtime.messages (
+  id bigint generated always as identity primary key,
+  topic text not null default current_setting('realtime.topic', true),
+  extension text not null,
+  payload jsonb
+);
+alter table realtime.messages enable row level security;
+grant select, insert on realtime.messages to authenticated;
+create function realtime.topic() returns text language sql stable as $$
+  select nullif(current_setting('realtime.topic', true), '');
+$$;
+grant execute on function realtime.topic() to anon, authenticated;

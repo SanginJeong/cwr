@@ -248,6 +248,7 @@ export type Database = {
           id: number
           image: string | null
           nickname: string
+          presence_status: string
           updated_at: string
         }
         Insert: {
@@ -257,6 +258,7 @@ export type Database = {
           id?: never
           image?: string | null
           nickname: string
+          presence_status?: string
           updated_at?: string
         }
         Update: {
@@ -266,6 +268,7 @@ export type Database = {
           id?: never
           image?: string | null
           nickname?: string
+          presence_status?: string
           updated_at?: string
         }
         Relationships: []
@@ -759,6 +762,7 @@ export type Database = {
         Args: { p_task_list_id: number }
         Returns: boolean
       }
+      can_access_team_channel: { Args: { p_topic: string }; Returns: boolean }
       create_group: {
         Args: { p_image?: string; p_name: string }
         Returns: Json
