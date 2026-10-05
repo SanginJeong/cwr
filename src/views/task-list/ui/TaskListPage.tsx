@@ -21,7 +21,9 @@ const TaskListPage = ({ params }: { params: Promise<{ teamId: number; listId: nu
   const { teamId, listId: taskListId } = use(params);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const selectedId = searchParams.get("task-id");
+  // task-id는 구 URL 호환용 (ADR-002)
+  const selectedId = searchParams.get("task") ?? searchParams.get("task-id");
+  const isCreateModalOpen = searchParams.get("modal") === "new-task";
 
   const { data: groups, isPending: isPendingGroup, isError: isErrorGroup } = useGetGroups({ id: Number(teamId) });
   const taskListName = groups?.taskLists?.find((taskList) => taskList.id === Number(taskListId))?.name ?? "";
@@ -51,7 +53,7 @@ const TaskListPage = ({ params }: { params: Promise<{ teamId: number; listId: nu
 
   const onClickFloatingButton = () => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set("w", "true");
+    params.set("modal", "new-task");
 
     router.push(`${ROUTES.taskList(teamId, taskListId)}?${params.toString()}`, { scroll: false });
   };
@@ -97,12 +99,12 @@ const TaskListPage = ({ params }: { params: Promise<{ teamId: number; listId: nu
       />
 
       {selectedId && <DetailPage teamId={teamId} taskListId={taskListId} id={Number(selectedId)} />}
-      {searchParams.get("w") && (
+      {isCreateModalOpen && (
         <MakeTodoModal
-          isOpen={!!searchParams.get("w")}
+          isOpen={isCreateModalOpen}
           onClose={() => {
             const params = new URLSearchParams(searchParams.toString());
-            params.delete("w");
+            params.delete("modal");
             router.push(`${ROUTES.taskList(teamId, taskListId)}?${params.toString()}`, { scroll: false });
           }}
           groupId={teamId}

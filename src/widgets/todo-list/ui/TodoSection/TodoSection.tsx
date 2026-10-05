@@ -137,7 +137,7 @@ const TodoSection = ({
   };
 
   const onClickTaskListItem = (id: string) => {
-    router.push(`${ROUTES.taskList(teamId, taskListId)}?task-id=${id}`, { scroll: false });
+    router.push(`${ROUTES.taskList(teamId, taskListId)}?task=${id}`, { scroll: false });
   };
 
   const options = (task: { id: number; name: string; description?: string }) => [
