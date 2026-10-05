@@ -79,10 +79,19 @@ const Dropdown = ({
             {options.map((option) => (
               <li key={option.label}>
                 <button
-                  className={cn("w-full px-3 py-2 hover:bg-state-200 transition", `text-${textAlign}`)}
+                  className={cn(
+                    "w-full px-3 py-2 hover:bg-state-200 transition",
+                    `text-${textAlign}`,
+                    option.icon && "flex items-center gap-2 text-left",
+                  )}
                   onClick={() => handleOptionClick(option)}
+                  aria-current={option.selected || undefined}
                 >
-                  <span className="text-md-regular text-text-primary">{option.label}</span>
+                  {option.icon}
+                  <span className={cn("text-md-regular text-text-primary", option.icon && "flex-1")}>
+                    {option.label}
+                  </span>
+                  {option.selected && <Icon name="check" className="size-4 tablet:size-4 text-brand-primary" />}
                 </button>
               </li>
             ))}

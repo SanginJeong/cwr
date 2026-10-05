@@ -1,4 +1,5 @@
 import { DropdownOption } from "@/shared/ui/dropdown";
+import { PresenceStatus } from "@/shared/config/presence";
 
 export interface BaseProfileProps {
   src: string | null;
@@ -9,6 +10,8 @@ export interface BaseProfileProps {
 
 export interface ProfileProps extends BaseProfileProps {
   size?: "sm" | "md" | "lg";
+  /** 있으면 오른쪽 아래에 접속 상태 점을 표시한다 */
+  status?: PresenceStatus;
 }
 
 // 프로필 수정 Type

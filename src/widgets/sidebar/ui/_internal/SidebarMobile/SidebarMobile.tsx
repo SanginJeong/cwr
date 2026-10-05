@@ -6,8 +6,9 @@ import { Icon } from "@/shared/ui/icon";
 import { SidebarDropdownProps } from "../../_types/SidebarProps";
 import LeftMobile from "../LeftMobile/LeftMobile";
 import { ROUTES } from "@/shared/config/routes";
+import { StatusDot } from "@/shared/ui/profile";
 
-const SidebarMobile = ({ user, isOpen, handleOpenDropdown, options }: SidebarDropdownProps) => {
+const SidebarMobile = ({ user, isOpen, handleOpenDropdown, options, myStatus }: SidebarDropdownProps) => {
   return (
     <>
       <nav
@@ -37,13 +38,16 @@ const SidebarMobile = ({ user, isOpen, handleOpenDropdown, options }: SidebarDro
             options={options}
             placement="bottom-right"
             image={
-              <Image
-                src={user.image ? user.image : "/TEST_IMG/image-1.jpg"}
-                alt={`${user.nickname} 이미지`}
-                width={28}
-                height={28}
-                className="size-7 rounded-full"
-              />
+              <span className="relative block">
+                <Image
+                  src={user.image ? user.image : "/TEST_IMG/image-1.jpg"}
+                  alt={`${user.nickname} 이미지`}
+                  width={28}
+                  height={28}
+                  className="size-7 rounded-full"
+                />
+                {myStatus && <StatusDot status={myStatus} size="sm" className="absolute -bottom-0.5 -right-0.5" />}
+              </span>
             }
           />
         ) : (
