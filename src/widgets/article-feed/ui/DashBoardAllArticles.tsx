@@ -1,21 +1,19 @@
 "use client";
 
 import { Select } from "@/shared/ui/select";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { FeedArticleItem } from "@/entities/article";
 import { SelectOption } from "@/shared/ui/select";
-import { useArticleSearchStore } from "@/features/article/search-article";
-import useDebounce from "@/shared/lib/useDebounce";
+import { type ArticleOrderBy, useArticleSearchParams } from "@/features/article/search-article";
 import { useGetArticlesInfinite } from "@/entities/article";
 import { LoadingSpinner } from "@/shared/ui/spinner";
 import { AnimatePresence, motion } from "framer-motion";
 
 const DashBoardAllArticles = () => {
-  const [orderBy, setOrderBy] = useState<"recent" | "like">("recent");
-  const { keyword } = useArticleSearchStore();
-  const debouncedValue = useDebounce(keyword, 300);
+  // 검색어는 헤더 입력에서 debounce된 뒤 URL에 반영된다
+  const { keyword, orderBy, setOrderBy } = useArticleSearchParams();
 
-  const options: SelectOption<"recent" | "like">[] = [
+  const options: SelectOption<ArticleOrderBy>[] = [
     { label: "최신순", value: "recent" },
     { label: "좋아요순", value: "like" },
   ];
@@ -28,7 +26,7 @@ const DashBoardAllArticles = () => {
     isLoading,
   } = useGetArticlesInfinite({
     orderBy,
-    keyword: debouncedValue,
+    keyword,
     pageSize: 6,
   });
 

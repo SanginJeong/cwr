@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { FloatingButton } from "@/shared/ui/button";
 import { PageLayout } from "@/shared/ui/page-layout";
 import { DashBoardHeader } from "@/widgets/board-header";
@@ -10,14 +11,19 @@ const DashboardPage = () => {
   return (
     <PageLayout>
       <section className="max-w-[1120px]">
-        <DashBoardHeader />
+        {/* 검색어·정렬을 useSearchParams로 읽으므로 Suspense 경계가 필요하다 */}
+        <Suspense>
+          <DashBoardHeader />
+        </Suspense>
         {/* PC: 피드 + 오른쪽 사이드(베스트), 모바일·태블릿: 베스트 캐러셀 → 피드 */}
         <div className="flex flex-col pc:mt-10 pc:flex-row-reverse pc:items-start pc:justify-between pc:gap-10">
           <aside className="pc:sticky pc:top-10 pc:w-[320px] pc:shrink-0">
             <DashBoardBestArticles />
           </aside>
           <div className="min-w-0 pc:max-w-[680px] pc:flex-1">
-            <DashBoardAllArticles />
+            <Suspense>
+              <DashBoardAllArticles />
+            </Suspense>
           </div>
         </div>
         <Link href={ROUTES.boardNew} className="block">

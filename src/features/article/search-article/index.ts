@@ -1,1 +1,2 @@
-export { default as useArticleSearchStore } from "./model/useArticleSearchStore";
+export { default as useArticleSearchParams } from "./model/useArticleSearchParams";
+export type { ArticleOrderBy } from "./model/useArticleSearchParams";
