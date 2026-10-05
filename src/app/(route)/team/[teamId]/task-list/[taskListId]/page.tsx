@@ -1,13 +1,15 @@
 "use client";
 
 import { cn } from "@/utils";
-import { Suspense, use, useState } from "react";
+import { Suspense, use, useState, useSyncExternalStore } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { TodoSection, TodoHeader, MakeTodoModal } from "./_components";
 import { FloatingButton, PageHeaderBar, PageLayout } from "@/common";
 import { DetailPage } from "./_detail/_components";
 import { useGetGroups, useGetTask } from "@/api/hooks";
 import { LoadingSpinner } from "@/features";
+
+const subscribeNoop = () => () => {};
 
 const TaskListPage = ({ params }: { params: Promise<{ teamId: number; taskListId: number }> }) => {
   const { teamId, taskListId } = use(params);
@@ -34,6 +36,13 @@ const TaskListPage = ({ params }: { params: Promise<{ teamId: number; taskListId
     return new Date(dateParam);
   });
 
+  // selectedDate는 로컬 타임존 기준으로 포맷되므로 서버(UTC)와 날짜가 어긋나지 않게 클라이언트에서만 렌더링
+  const isClient = useSyncExternalStore(
+    subscribeNoop,
+    () => true,
+    () => false,
+  );
+
   const onClickFloatingButton = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("w", "true");
@@ -58,15 +67,19 @@ const TaskListPage = ({ params }: { params: Promise<{ teamId: number; taskListId
 
         <div aria-label="목록 페이지 컨텐츠" className={cn("pc:flex pc:gap-[25px]")}>
           <TodoHeader data={groups} isPending={isPendingGroup} isError={isErrorGroup} groupId={teamId} />
-          <TodoSection
-            sectionName={taskListName}
-            data={taskList ?? []}
-            teamId={teamId}
-            onClickDateItem={onClickDateItem}
-            selectedDate={selectedDate}
-            taskListId={taskListId}
-            taskStatus={{ isPending: isPendingTask, isError: isErrorTask }}
-          />
+          {isClient ? (
+            <TodoSection
+              sectionName={taskListName}
+              data={taskList ?? []}
+              teamId={teamId}
+              onClickDateItem={onClickDateItem}
+              selectedDate={selectedDate}
+              taskListId={taskListId}
+              taskStatus={{ isPending: isPendingTask, isError: isErrorTask }}
+            />
+          ) : (
+            <LoadingSpinner />
+          )}
         </div>
       </PageLayout>
 
