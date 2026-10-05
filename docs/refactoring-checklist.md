@@ -9,12 +9,12 @@
 
 ## Phase 0. 버그 수정 (구조 변경 전에 먼저)
 
-- [ ] **토큰 재발급 라우트가 등록되지 않음**
+- [x] **토큰 재발급 라우트가 등록되지 않음** — `src/app/api/auth/refresh/route.ts`로 이동, 인터셉터는 `/api/auth/refresh` 호출
   - `src/lib/axios.ts`의 401 인터셉터가 `fetch("/auth/refresh-token")`(같은 origin)을 호출하는데, 핸들러가 `src/api/axios/auth/refresh/route.ts`에 있어 Next 라우트가 아님 → 항상 404 → 재발급 실패
   - 수정: `src/app/auth/refresh-token/route.ts`로 이동 (ADR-002 이후엔 `src/app/api/auth/refresh/route.ts`)하고 인터셉터 URL 맞추기
   - 검증: accessToken 쿠키만 삭제 후 API 호출 → 재발급되어 요청이 재시도되는지 확인
-- [ ] **middleware 중복 분기 제거** — `src/middleware.ts` 20행과 23행이 같은 `/team` 비로그인 체크
-- [ ] **게시판 무한스크롤 observer** — `DashBoardAllArticles.tsx`의 effect가 `observerRef.current`를 deps 없이 읽음. 로딩 중 sentinel이 늦게 마운트되면 observer가 붙지 않을 수 있음 → callback ref 또는 `useInfiniteScroll` 훅으로 분리
+- [x] **middleware 중복 분기 제거** — `src/middleware.ts` 20행과 23행이 같은 `/team` 비로그인 체크
+- [x] ~~**게시판 무한스크롤 observer**~~ — 재확인 결과 sentinel `<div ref>`가 항상 마운트되어 있어 문제 없음. 변경 안 함
 - [ ] **게시판 검색어 잔류** — `useArticleSearchStore`의 keyword가 페이지 이탈 후에도 남음 (Phase 4에서 URL 쿼리로 옮기면 함께 해결)
 
 ## Phase 1. 의존성 정리
