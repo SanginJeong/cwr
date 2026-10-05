@@ -36,15 +36,18 @@ const MemberList = ({ groupId, members, onClickDelete }: MemberListProps) => {
   const onlineCount = isSupabase ? members.filter((member) => statusOf(member) !== "offline").length : null;
 
   return (
-    <section aria-labelledby="team-members-title" className="rounded-xl bg-background-primary p-5 flex flex-col gap-4">
+    <section
+      aria-labelledby="team-members-title"
+      className="rounded-[20px] bg-background-primary px-5 py-4 flex flex-col gap-3 pc:flex-1 pc:min-h-0"
+    >
       <header className="flex items-baseline justify-between">
         <h2 id="team-members-title" className="flex gap-2 text-lg-medium text-text-primary">
           멤버 <span className="text-lg-regular text-text-default">{members.length}</span>
         </h2>
         {onlineCount !== null && <span className="text-xs-regular text-text-default">접속 중 {onlineCount}</span>}
       </header>
-      {/* 태블릿·모바일에서는 할 일 목록을 너무 밀어내지 않게 높이를 제한한다 */}
-      <ul className="flex flex-col gap-4 max-h-[260px] overflow-y-auto pc:max-h-none pc:overflow-visible">
+      {/* 멤버가 많아도 진행 상황 카드 높이를 크게 넘기지 않게 스크롤한다 */}
+      <ul className="flex flex-col gap-3 max-h-[200px] overflow-y-auto pr-1">
         {sorted.map((member) => (
           <MemberRow
             key={member.userId}

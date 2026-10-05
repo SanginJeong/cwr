@@ -17,17 +17,22 @@ const InviteCard = ({ groupId }: InviteCardProps) => {
   const canInvite = isAdmin || !isSupabase;
 
   return (
-    <section aria-labelledby="team-invite-title" className="rounded-xl bg-background-primary p-5 flex flex-col gap-3">
-      <h2 id="team-invite-title" className="text-lg-medium text-text-primary">
-        팀 초대하기
-      </h2>
-      <p className="text-md-regular text-text-default">
-        {canInvite ? "초대 링크를 복사해 팀원에게 보내주세요." : "초대 링크는 관리자만 만들 수 있어요."}
-      </p>
+    <section
+      aria-labelledby="team-invite-title"
+      className="rounded-[20px] bg-background-primary px-5 py-4 flex flex-col gap-3"
+    >
+      <div className="flex flex-col gap-1">
+        <h2 id="team-invite-title" className="text-lg-medium text-text-primary">
+          팀 초대하기
+        </h2>
+        <p className="text-sm-medium text-text-default">
+          {canInvite ? "초대 링크를 복사해 팀원에게 보내주세요." : "초대 링크는 관리자만 만들 수 있어요."}
+        </p>
+      </div>
       <BaseButton
         type="button"
         variant="outlinedPrimary"
-        size="large"
+        size="small"
         disabled={!canInvite || isPending}
         onClick={() => copyInvitation({ id: groupId })}
       >
