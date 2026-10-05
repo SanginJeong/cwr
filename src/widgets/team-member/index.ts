@@ -1,1 +1,1 @@
-export { default as MemberWidget } from "./ui/MemberWidget";
+export { default as MemberPanel } from "./ui/MemberPanel";
