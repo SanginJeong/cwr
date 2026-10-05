@@ -150,8 +150,8 @@ Swagger 기준 53개이고, 이 중 프론트가 실제로 쓰는 것은 약 37�
 - [x] RLS: `is_member`, `is_admin`, `can_access_task_list`, `can_access_task` 기준으로 정책 작성
 - [x] 마이그레이션 파일: `supabase/migrations/` (7개)
 - [x] 테스트: `npm run test:db`. PGlite(WASM Postgres)로 마이그레이션을 적용하고 `supabase/tests/*.test.sql` 실행. Docker 없이 동작
-- [ ] 실제 Supabase 프로젝트에 적용 (`supabase db push`). 적용 방법은 [supabase/README.md](../supabase/README.md)
-- [ ] DB 타입 생성 (`supabase gen types`)
+- [x] 실제 Supabase 프로젝트에 적용 (`supabase db push`). 적용 방법은 [supabase/README.md](../supabase/README.md)
+- [x] DB 타입 생성 (`npm run db:types`, 2026-10-06)
 
 ### Phase 3. 프론트 어댑터 계층
 
