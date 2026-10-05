@@ -210,7 +210,11 @@ Swagger 기준 53개이고, 이 중 프론트가 실제로 쓰는 것은 약 37�
 1. [ ] 팀 게시판 ([ADR-005](./decisions/ADR-005-team-board.md))
    - [x] DB: `team_posts`, `team_post_comments`, 조회 뷰, 공지 RPC, RLS, 테스트 (2026-10-06, Supabase 적용 완료)
    - [ ] 화면: 팀 페이지 안의 게시판 목록·상세·작성 (라우트, UI 설계 필요)
-2. [ ] 현재 활동 중: Realtime Presence (팀 채널)
+2. [x] 현재 활동 중 (2026-10-06): 팀마다 비공개 Realtime 채널 `team:{groupId}` + Presence
+   - 상태 3가지(활동 중·자리 비움·오프라인), 10분 입력 없으면 자리 비움, 사이드바 메뉴에서 선택, `profiles.presence_status`에 저장
+   - 팀 페이지의 플로팅 멤버 위젯을 없애고 "팀 초대하기"·"멤버" 패널로 교체
+   - [ ] 대시보드 → Realtime → Settings에서 **Allow public access 끄기** (비공개 채널만 허용)
+   - [ ] 브라우저 QA: 두 계정(다른 브라우저)으로 상태 변경이 서로 보이는지
 3. [ ] 팀 채팅: `chat_messages` + Realtime, 커서 페이지네이션
 4. [ ] ~~AI 주간 리포트~~ **보류 (2026-10-05)**: Claude API가 유료(종량제)라서 보류. 대안 검토 중 (예: LLM 없이 통계 기반 리포트)
 
