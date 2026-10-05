@@ -94,6 +94,8 @@ begin
     json ?& array['id', 'name', 'description', 'date', 'doneAt', 'updatedAt', 'deletedAt', 'displayIndex',
                   'recurringId', 'frequency', 'writer', 'doneBy', 'commentCount']);
   perform pg_temp.check('작성자', (json -> 'writer' ->> 'id')::bigint = me);
+  perform pg_temp.check('상세에 recurring 포함 (groupId, taskListId)',
+    (json -> 'recurring' ->> 'groupId')::bigint = g and (json -> 'recurring' ->> 'taskListId')::bigint = list);
   perform pg_temp.check('get_group에 오늘 할 일 포함',
     jsonb_array_length(public.get_group(g) -> 'taskLists' -> 0 -> 'tasks') = 1);
 
