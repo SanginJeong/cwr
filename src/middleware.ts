@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { AUTH_ONLY_ROUTES, PROTECTED_ROUTES, ROUTES } from "@/shared/config/routes";
 
 // 쿠키 유무로만 리다이렉트한다. 팀 존재 확인 등 API 호출이 필요한 검사는
-// 서버 컴포넌트(views/no-team, app/(route)/team/[teamId]/layout.tsx)에서 한다.
+// 서버 컴포넌트(views/no-team, app/(main)/teams/[teamId]/layout.tsx)에서 한다.
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("accessToken")?.value;
 

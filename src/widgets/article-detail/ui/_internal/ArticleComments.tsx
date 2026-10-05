@@ -16,7 +16,7 @@ import { ArticleEditCommentModal } from "@/features/article-comment/manage-comme
 import { ArticleCommentType } from "@/shared/api/types/ArticleCommentType";
 
 const ArticleComments = () => {
-  const { id } = useParams();
+  const { articleId: id } = useParams();
   const { isPc } = useDevice();
   const articleId = Number(id);
 

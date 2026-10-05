@@ -17,8 +17,8 @@ import { ROUTES } from "@/shared/config/routes";
 
 const subscribeNoop = () => () => {};
 
-const TaskListPage = ({ params }: { params: Promise<{ teamId: number; taskListId: number }> }) => {
-  const { teamId, taskListId } = use(params);
+const TaskListPage = ({ params }: { params: Promise<{ teamId: number; listId: number }> }) => {
+  const { teamId, listId: taskListId } = use(params);
   const router = useRouter();
   const searchParams = useSearchParams();
   const selectedId = searchParams.get("task-id");
@@ -113,7 +113,7 @@ const TaskListPage = ({ params }: { params: Promise<{ teamId: number; taskListId
   );
 };
 
-const Page = ({ params }: { params: Promise<{ teamId: number; taskListId: number }> }) => {
+const Page = ({ params }: { params: Promise<{ teamId: number; listId: number }> }) => {
   return (
     <Suspense fallback={<LoadingSpinner />}>
       <TaskListPage params={params} />

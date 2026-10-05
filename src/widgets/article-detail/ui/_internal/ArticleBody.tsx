@@ -14,7 +14,7 @@ import { ArticleEditModal } from "@/features/article/edit-article";
 import { useState } from "react";
 
 const ArticleBody = () => {
-  const { id } = useParams();
+  const { articleId: id } = useParams();
   const { isPc } = useDevice();
   const articleId = Number(id);
 

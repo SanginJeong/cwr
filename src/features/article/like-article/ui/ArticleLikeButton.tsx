@@ -10,7 +10,7 @@ import { ArticleLike } from "@/entities/article";
 import useDevice from "@/shared/lib/useDevice";
 
 const ArticleLikeButton = () => {
-  const { id } = useParams();
+  const { articleId: id } = useParams();
   const { isPc } = useDevice();
 
   const articleId = Number(id);
