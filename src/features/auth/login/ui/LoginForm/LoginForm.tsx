@@ -8,7 +8,7 @@ import useEmailStore from "@/features/auth/login/model/useEmailStore";
 import OverlayLoading from "@/shared/ui/overlay-loading/OverlayLoading";
 import { ValidationRules } from "@/shared/api/types/AuthType";
 import usePostLogin from "@/features/auth/login/api/usePostLogin";
-import ResetPassword from "@/features/auth/reset-password/ui/ResetPassword/ResetPassword";
+import ResetPassword from "@/features/auth/login/ui/ResetPassword/ResetPassword";
 import Input from "@/shared/ui/input/Input";
 import InputPassword from "@/shared/ui/input/InputPassword/InputPassword";
 import BaseButton from "@/shared/ui/button/BaseButton";

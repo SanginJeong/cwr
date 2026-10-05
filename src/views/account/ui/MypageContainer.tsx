@@ -1,11 +1,11 @@
 "use client";
 
+import { notFound } from "next/navigation";
 import useGetUser from "@/entities/user/api/useGetUser";
 import BaseButton from "@/shared/ui/button/BaseButton";
 import LoadingSpinner from "@/shared/ui/spinner/LoadingSpinner";
 import ErrorState from "@/shared/ui/error-state/ErrorState";
 import MyPageContent from "./MyPageContent/MyPageContent";
-import NotFound from "@/app/not-found";
 
 const MyPageContainer = () => {
   const { data: userData, isLoading, isError, refetch } = useGetUser();
@@ -26,7 +26,7 @@ const MyPageContainer = () => {
   }
 
   if (!userData) {
-    return NotFound();
+    notFound();
   }
 
   return <MyPageContent userData={userData} />;

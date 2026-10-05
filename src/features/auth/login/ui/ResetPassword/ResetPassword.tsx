@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toastKit } from "@/shared/lib/toastKit";
 import useForm from "@/shared/lib/useForm/useForm";
 import { validateEmail } from "@/shared/lib/Validation";
-import usePostResetPassword from "@/features/auth/reset-password/api/usePostResetPassword";
+import usePostResetPassword from "@/features/auth/login/api/usePostResetPassword";
 import Modal from "@/shared/ui/modal/Modal";
 import Input from "@/shared/ui/input/Input";
 import BaseButton from "@/shared/ui/button/BaseButton";

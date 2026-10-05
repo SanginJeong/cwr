@@ -1,4 +1,4 @@
-import usePatchTask from "@/features/task/manage-task/api/usePatchTask";
+import usePatchTask from "@/features/task-list/manage-task-list/api/usePatchTask";
 import BaseButton from "@/shared/ui/button/BaseButton";
 import Input from "@/shared/ui/input/Input";
 import Modal from "@/shared/ui/modal/Modal";

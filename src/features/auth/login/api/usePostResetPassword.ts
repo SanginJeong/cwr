@@ -1,4 +1,4 @@
-import postResetPassword from "@/features/auth/reset-password/api/resetPassword";
+import postResetPassword from "@/features/auth/login/api/resetPassword";
 import { useMutation } from "@tanstack/react-query";
 
 type UsePostResetPwOptions = {

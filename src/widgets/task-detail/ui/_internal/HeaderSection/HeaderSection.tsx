@@ -6,7 +6,7 @@ import { cn } from "@/shared/lib/cn";
 import { formatToKoreanDate } from "@/shared/lib/formatDate";
 import { getFrequencyLabel } from "@/entities/task/lib/getFrequencyLabel";
 import { HEADER_STYLES } from "./HEADER_STYLES";
-import EditDataModal from "../EditDataModal/EditDataModal";
+import EditDataModal from "@/features/task/manage-task/ui/EditDataModal/EditDataModal";
 import { GetTaskDetailResponse } from "@/shared/api/types/taskApi";
 import useTaskMutations from "@/features/task/manage-task/model/useTaskMutations";
 

@@ -1,5 +1,5 @@
 import { toastKit } from "@/shared/lib/toastKit";
-import Toaster from "@/app/_providers/Toaster";
+import Toaster from "@/shared/ui/toast/Toaster";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const BUTTON_STYLE = "px-4 py-2 rounded-md border border-gray-300";

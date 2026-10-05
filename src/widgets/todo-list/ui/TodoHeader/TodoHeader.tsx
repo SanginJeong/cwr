@@ -6,7 +6,7 @@ import Dropdown from "@/shared/ui/dropdown/Dropdown";
 import Icon from "@/shared/ui/icon/Icon";
 import ProgressBadge from "@/shared/ui/progress-badge/ProgressBadge";
 import TaskListCreateModal from "@/features/task-list/manage-task-list/ui/TaskListCreateModal/TaskListCreateModal";
-import TaskItemEditModal from "@/features/task/manage-task/ui/TaskItemEditModal/TaskItemEditModal";
+import TaskItemEditModal from "@/features/task-list/manage-task-list/ui/TaskItemEditModal/TaskItemEditModal";
 import { TaskList } from "@/shared/api/types/GroupData";
 import { GetGroupsResponse } from "@/shared/api/types/groupApi";
 import useDeleteTaskList from "@/features/task-list/manage-task-list/api/useDeleteTaskList";

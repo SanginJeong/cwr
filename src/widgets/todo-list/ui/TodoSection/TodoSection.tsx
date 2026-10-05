@@ -14,7 +14,7 @@ import TaskListItem from "@/entities/task/ui/TaskListItem/TaskListItem";
 import { TODO_STYLES } from "../../config/TODO_STYLES";
 import TaskPdfDownloadButton from "@/features/task/export-pdf/ui/TaskPdfDownloadButton/TaskPdfDownloadButton";
 import useTaskMutations from "@/features/task/manage-task/model/useTaskMutations";
-import EditDataModal from "@/widgets/task-detail/ui/_internal/EditDataModal/EditDataModal";
+import EditDataModal from "@/features/task/manage-task/ui/EditDataModal/EditDataModal";
 import { TaskResponse } from "@/shared/api/types/taskApi";
 import ErrorState from "@/shared/ui/error-state/ErrorState";
 
