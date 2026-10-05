@@ -1,5 +1,7 @@
 # 백엔드 재구성 계획: 제공 API → Supabase + BFF
 
+> 전체 현황과 남은 일은 [roadmap.md](./roadmap.md)에 정리했습니다.
+>
 > 상태: **계획 (Draft)**. Phase 1(동작 명세)이 끝나면 ADR-004로 결정을 확정합니다.
 > 작성일: 2026-10-05
 
@@ -213,9 +215,9 @@ Swagger 기준 53개이고, 이 중 프론트가 실제로 쓰는 것은 약 37�
 2. [x] 현재 활동 중 (2026-10-06): 팀마다 비공개 Realtime 채널 `team:{groupId}` + Presence
    - 상태 3가지(활동 중·자리 비움·오프라인), 10분 입력 없으면 자리 비움, 사이드바 메뉴에서 선택, `profiles.presence_status`에 저장
    - 팀 페이지의 플로팅 멤버 위젯을 없애고 "팀 초대하기"·"멤버" 패널로 교체
-   - [ ] 대시보드 → Realtime → Settings에서 **Allow public access 끄기** (비공개 채널만 허용)
+   - [ ] 대시보드 → Realtime → Settings에서 **Allow public access 끄기** (비공개 채널만 허용). 끄면 broadcast 권한도 검사해서 정책을 맞춤 (`20261006000003_team_channel_broadcast.sql`)
    - [ ] 브라우저 QA: 두 계정(다른 브라우저)으로 상태 변경이 서로 보이는지
-3. [ ] 팀 채팅: `chat_messages` + Realtime, 커서 페이지네이션
+3. [ ] 팀 채팅: 목업 UI만 완료(`widgets/team-chat`). 설계·구현 계획은 [roadmap.md](./roadmap.md) §6
 4. [ ] ~~AI 주간 리포트~~ **보류 (2026-10-05)**: Claude API가 유료(종량제)라서 보류. 대안 검토 중 (예: LLM 없이 통계 기반 리포트)
 
 ## 7. 리스크
