@@ -2,7 +2,7 @@
 
 import { Select } from "@/common";
 import { useState, useEffect, useRef } from "react";
-import DefaultArticleCard from "../../../../(route)/dashboard/_components/Article/DefaultArticleCard";
+import FeedArticleItem from "../../../../(route)/dashboard/_components/Article/FeedArticleItem";
 import { SelectOption } from "@/common/Select/_types/types";
 import { useArticleSearchStore } from "@/stores";
 import { useDebounce } from "@/hooks";
@@ -56,13 +56,13 @@ const DashBoardAllArticles = () => {
   }, [fetchNextPage, hasNextPage]);
 
   return (
-    <div className="mt-10">
-      <div className="max-w-[1074px] mx-auto flex items-center justify-between">
+    <div className="mt-10 pc:mt-0">
+      <div className="flex items-center justify-between">
         <h3 className="text-text-primary text-xl-bold">전체</h3>
         <Select value={orderBy} options={options} onChange={setOrderBy} />
       </div>
 
-      <ul className="mt-10 grid grid-cols-1 pc:grid-cols-2 gap-4">
+      <ul className="mt-6 -mx-4 tablet:-mx-[26px] pc:mx-0 flex flex-col divide-y divide-border-primary border-y border-border-primary">
         <AnimatePresence>
           {articles?.pages.map((page) =>
             page.list.map((article) => (
@@ -73,7 +73,7 @@ const DashBoardAllArticles = () => {
                 transition={{ duration: 0.7, delay: 0.2 }}
                 viewport={{ once: true, amount: 0.5 }}
               >
-                <DefaultArticleCard article={article} />
+                <FeedArticleItem article={article} />
               </motion.li>
             )),
           )}

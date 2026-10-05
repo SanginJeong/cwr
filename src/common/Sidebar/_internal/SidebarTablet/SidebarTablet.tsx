@@ -19,7 +19,7 @@ const SidebarTablet = ({ user, isOpen, handleOpenDropdown, options }: SidebarDro
     >
       <aside
         className={cn(
-          "flex-col sticky top-0 h-[100vh] border-r border-background-tertiary z-[10]",
+          "flex-col sticky top-0 h-[100vh] border-r border-border-primary z-[10]",
           isOpen ? "w-[270px]" : "w-[72px]",
           "hidden tablet:flex pc:flex",
         )}
@@ -35,7 +35,7 @@ const SidebarTablet = ({ user, isOpen, handleOpenDropdown, options }: SidebarDro
             onClick={() => handleOpenDropdown(isOpen)}
             className={cn(
               "ml-auto rounded-full bg-background-primary",
-              isOpen ? "size-7" : "p-1 -mx-1.5 border border-background-tertiary",
+              isOpen ? "size-7" : "p-1 -mx-1.5 border border-border-primary",
             )}
           >
             {isOpen ? (
@@ -69,7 +69,7 @@ const SidebarTablet = ({ user, isOpen, handleOpenDropdown, options }: SidebarDro
 
           <footer
             className={cn(
-              "w-full shrink-0 border-t border-background-tertiary pt-5 pb-6 flex items-center gap-[10px]",
+              "w-full shrink-0 border-t border-border-primary pt-5 pb-6 flex items-center gap-[10px]",
               !isOpen && "flex-center",
             )}
           >

@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html,
+  body {
+    @apply bg-background-secondary;
+    color-scheme: dark;
+  }
+}
+
 @layer utilities {
   /* 스크롤바 숨기기 */
   .hide-scrollbar {

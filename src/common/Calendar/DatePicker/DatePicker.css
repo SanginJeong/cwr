@@ -1,6 +1,6 @@
 /* 캘린더 전체 */
 .react-calendar {
-  @apply border-none w-[250px] flex-col-center;
+  @apply border-none bg-transparent text-text-primary w-[250px] flex-col-center;
 }
 
 /* 캘린더 네비게이션 */
@@ -61,6 +61,12 @@
   @apply px-[10px] py-[7.5px] rounded-[8px] text-md-regular text-nowrap flex-none min-w-[35px] h-[32px];
 }
 
+/* 캘린더 타일 hover (react-calendar 기본 밝은 회색 덮어쓰기) */
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  @apply bg-background-tertiary;
+}
+
 /* 캘린더 오늘 타일 */
 .react-calendar__tile--now {
   @apply bg-transparent text-brand-primary;
@@ -68,10 +74,10 @@
 
 /* 캘린더 오늘 타일 hover */
 .react-calendar__tile--now:hover {
-  @apply hover:bg-gray-300;
+  @apply hover:bg-background-tertiary;
 }
 
 /* 캘린더 선택된 타일 */
 .react-calendar__tile--active {
-  @apply !bg-brand-primary !text-brand-secondary;
+  @apply !bg-brand-primary !text-text-inverse;
 }

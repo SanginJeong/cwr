@@ -83,7 +83,7 @@ const InputBox = ({
         required={required}
         rows={config.rows}
         className={cn(
-          "w-full h-full rounded-lg border px-4 py-3 border-background-tertiary",
+          "w-full h-full rounded-lg border bg-transparent px-4 py-3 border-border-primary",
           "placeholder:text-text-default text-text-primary text-md-regular",
           "tablet:text-lg-regular pc:text-lg-regular",
           "resize-none overflow-y-auto",

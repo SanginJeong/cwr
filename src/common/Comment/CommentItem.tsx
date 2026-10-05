@@ -53,7 +53,7 @@ const CommentItem = ({ comment, showKebab = false, className, onDelete, onUpdate
 
   if (isEditing) {
     return (
-      <li className={cn("w-full py-2.5 px-5 flex gap-4 bg-icon-inverse", "tablet:px-7 pc:py-4 pc:px-10", className)}>
+      <li className={cn("w-full py-2.5 px-5 flex gap-4 bg-background-primary", "tablet:px-7 pc:py-4 pc:px-10", className)}>
         <div className="flex-shrink-0">
           <Profile src={user.image} alt={`${user.nickname} 프로필`} size="md" />
         </div>
