@@ -155,10 +155,14 @@ Swagger 기준 53개이고, 이 중 프론트가 실제로 쓰는 것은 약 37�
 
 ### Phase 3. 프론트 어댑터 계층
 
-- [ ] 각 `entities/*/api`, `features/*/api` 함수의 **시그니처와 반환 타입을 그대로 유지**하고, 구현만 Supabase로 교체
-- [ ] Supabase 응답을 기존 타입으로 바꾸는 mapper를 엔티티별로 작성
-- [ ] 환경변수 `NEXT_PUBLIC_BACKEND=legacy|supabase`로 전환할 수 있게 함 (개발 중 비교용)
-- [ ] 인증 교체: 쿠키 기반 middleware, `/api/auth/refresh`, 카카오 콜백을 `@supabase/ssr` 기반으로 변경
+- [ ] 각 `entities/*/api`, `features/*/api` 함수의 **시그니처와 반환 타입을 그대로 유지**하고, 구현만 Supabase로 교체 → 인증·내 정보 완료, 나머지는 Phase 4
+  - 규칙: 기존 파일 옆에 `*.supabase.ts`를 두고 훅에서 `isSupabase`로 고른다. Phase 5에서 legacy 파일을 지운다
+- [x] Supabase 응답을 기존 타입으로 바꾸는 mapper (`shared/api/supabase/mappers/`) — user 완료
+- [x] 환경변수 `NEXT_PUBLIC_BACKEND=supabase`로 전환 (`shared/config/backend.ts`). 미설정이면 기존 API
+- [x] 인증 교체: middleware(세션 갱신 + `getClaims`), 서버 컴포넌트 조회(`shared/api/serverApi.ts`), 카카오·재설정 메일 콜백(`app/auth/callback`)
+- [x] 로그아웃 상태 동작 확인 (보호 경로 리다이렉트, 잘못된 콜백 처리). 실제 DB에서 RPC 흐름을 트랜잭션으로 실행 후 롤백해 확인
+- [ ] 브라우저에서 로그인 상태 수동 QA (이메일 가입·로그인, 카카오, 로그아웃, 비밀번호 재설정, 회원 탈퇴)
+- [ ] `/api/auth/refresh`, `tokenStorage`, `authCookies`는 legacy 전용. Phase 5에서 삭제
 
 ### Phase 4. 도메인별 구현 (난이도가 낮은 순서)
 
