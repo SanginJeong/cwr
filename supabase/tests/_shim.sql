@@ -42,13 +42,15 @@ end $$;
 
 -- 해당 사용자로 로그인한 상태로 전환. null이면 비로그인(anon)
 create function public.test_login(p_profile_id bigint) returns void language plpgsql as $$
+declare v_auth uuid;
 begin
+  execute 'reset role';
+  select auth_id into v_auth from public.profiles where id = p_profile_id;
   if p_profile_id is null then
     perform set_config('request.jwt.claims', '{}', false);
     execute 'set role anon';
   else
-    perform set_config('request.jwt.claims',
-      jsonb_build_object('sub', (select auth_id from public.profiles where id = p_profile_id))::text, false);
+    perform set_config('request.jwt.claims', jsonb_build_object('sub', v_auth)::text, false);
     execute 'set role authenticated';
   end if;
 end $$;
@@ -57,6 +59,24 @@ create function public.test_logout() returns void language plpgsql as $$
 begin
   execute 'reset role';
   perform set_config('request.jwt.claims', '{}', false);
+end $$;
+
+-- SQL을 실행하고 에러 코드를 돌려준다. 에러가 없으면 null
+create function public.test_error(p_sql text) returns text language plpgsql as $$
+begin
+  execute p_sql;
+  return null;
+exception when others then
+  return sqlstate;
+end $$;
+
+-- SQL을 실행하고 영향받은 행 수를 돌려준다 (RLS로 조용히 걸러지는 UPDATE/DELETE 확인용)
+create function public.test_row_count(p_sql text) returns bigint language plpgsql as $$
+declare n bigint;
+begin
+  execute p_sql;
+  get diagnostics n = row_count;
+  return n;
 end $$;
 
 -- Storage (버킷과 정책만 흉내 낸다)
