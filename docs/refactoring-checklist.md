@@ -62,22 +62,25 @@
 
 ## Phase 4. 라우트 재설계 ([ADR-002](./decisions/ADR-002-route-restructure.md))
 
-- [ ] 4-1. `shared/config/routes.ts`에 경로 상수/빌더 정의, 하드코딩된 `href`·`router.push` 전부 교체
-- [ ] 4-2. `src/app`을 route group `(public)` / `(auth)` / `(main)`으로 재구성, `/dashboard` 두 폴더 분산 해소
-- [ ] 4-3. URL 변경 + `next.config.ts` `redirects()`로 구 URL 호환 (처음엔 `permanent: false`)
-- [ ] 4-4. middleware의 보호 경로 목록을 `routes.ts` 상수 기반으로 변경
-- [ ] 4-5. 쿼리 파라미터 정리 — `?task-id=` → `?task=`, `?w=true` → `?modal=new-task`, `?date=`는 ISO 문자열 대신 `yyyy-MM-dd`
-- [ ] 4-6. 게시판 검색어를 Zustand → `?q=` 쿼리로 (`useArticleSearchStore` 삭제)
-- [ ] 4-7. **변경하면 안 되는 URL 확인**
-  - `/reset-password?token=` — 비밀번호 재설정 메일 링크가 이 경로를 씀 (`ResetPassword.tsx`가 `redirectUrl = origin`을 보냄)
-  - `/login/kakao` — 카카오 콘솔에 등록된 Redirect URI(`NEXT_PUBLIC_KAKAO_REDIRECT_LOGIN_URI`). 바꾸려면 콘솔·env·Vercel 환경변수를 같이 수정
-- [ ] 4-8. 전 플로우 수동 점검: 가입 → 온보딩 → 팀 생성 → 목록 생성 → 할 일 생성/상세/삭제 → PDF → 게시판 글쓰기/상세/삭제 → 계정 설정 → 로그아웃 → 카카오 로그인 → 비밀번호 재설정
+- [x] 4-1. `shared/config/routes.ts`에 경로 상수/빌더 정의, 하드코딩된 `href`·`router.push` 55곳 교체
+- [x] 4-2. `src/app`을 route group `(public)` / `(auth)` / `(main)`으로 재구성, `/dashboard` 두 폴더 분산 해소
+  - `(auth)/layout.tsx`로 `CenteredCardLayout` 공통화는 보류 (각 페이지가 이미 감싸고 있어 동작 차이 없음)
+- [x] 4-3. URL 변경 + `next.config.ts` `redirects()`로 구 URL 호환 (`permanent: false`)
+  - [ ] 배포 후 문제 없으면 `permanent: true`로 변경, 한 릴리스 뒤 제거
+- [x] 4-4. middleware는 쿠키 검사만. 팀 존재 확인 → `app/(main)/teams/[teamId]/layout.tsx`, 첫 팀 리다이렉트 → `views/no-team`
+- [x] 4-5. 쿼리 파라미터 정리 — `?task-id=` → `?task=` (구 이름도 읽음), `?w=true` → `?modal=new-task`
+  - [ ] `?date=`를 `yyyy-MM-dd`로 바꾸는 건 **보류**: 값이 API에 그대로 전달되고, 주 이동 시 현재 시각이 포함된 ISO가 전송됨. 서버의 날짜 해석(UTC 기준 여부)을 확인한 뒤 진행
+- [x] 4-6. 게시판 검색어·정렬을 Zustand → `?q=`, `?sort=like` 쿼리로 (`useArticleSearchStore` 삭제)
+- [x] 4-7. **변경하면 안 되는 URL 유지 확인** — `/reset-password?token=`, `/login/kakao`
+- [ ] 4-8. 전 플로우 수동 점검 (실제 계정 필요): 가입 → 온보딩 → 팀 생성 → 목록 생성 → 할 일 생성/상세/삭제 → PDF → 게시판 글쓰기/상세/삭제 → 계정 설정 → 로그아웃 → 카카오 로그인 → 비밀번호 재설정
+  - 자동 확인한 것: 비로그인/가짜 토큰으로 전 페이지 렌더링·런타임 에러 0, 구 URL redirect, 보호 경로 redirect, 잘못된 팀 ID redirect, 게시판 검색/정렬 URL 반영
+  - 자동 확인 못 한 것: 실제 토큰이 필요한 `/teams/[teamId]/**` 화면, `/teams` → 첫 팀 redirect, 각종 mutation 후 이동
 
 ---
 
 ## 완료 조건
 
-- [ ] `npm run build`, `npm run build-storybook`, `npm run lint` 통과
-- [ ] FSD import 규칙 lint 위반 0
-- [ ] 구 URL 접속 시 새 URL로 리다이렉트
-- [ ] `user-flowchart.html`을 새 구조 기준으로 갱신
+- [x] `npm run build`, `npm run build-storybook`, `npm run lint` 통과 (lint는 기존 warning 17건만 남음)
+- [x] FSD import 규칙 lint 위반 0
+- [x] 구 URL 접속 시 새 URL로 리다이렉트
+- [x] `user-flowchart.html`을 새 구조 기준으로 갱신

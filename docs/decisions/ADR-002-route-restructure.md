@@ -181,3 +181,10 @@ async redirects() {
 - `(auth)` layout이 `CenteredCardLayout`을 맡아서 각 페이지의 중복이 줄어듦
 - Sidebar는 지금처럼 root layout에 둠. 로그인 화면에서 Sidebar를 숨길지는 별도로 결정
 - 구 URL redirect 규칙은 최소 한 릴리스 동안 유지한 뒤 정리
+
+## 구현 메모 (2026-10-05)
+
+- **`?date=`는 바꾸지 않았습니다.** 이 값은 `getTask` API에 그대로 전달됩니다. 날짜 칸을 클릭하면 로컬 자정의 ISO가, 주 이동 버튼을 누르면 현재 시각이 포함된 ISO가 전송됩니다. `yyyy-MM-dd`로 바꾸면 KST에서 서버가 받는 날짜가 하루 어긋날 수 있습니다. 서버의 날짜 해석을 확인한 뒤 진행합니다.
+- **게시판 검색은 `router.replace`를 씁니다.** 검색어 입력마다 history가 쌓이지 않게 하기 위해서입니다. 그래서 뒤로가기를 누르면 이전 검색어가 아니라 이전 페이지로 이동합니다. 새로고침과 링크 공유 시에는 검색 상태가 유지됩니다.
+- **`(auth)/layout.tsx`는 만들지 않았습니다.** 각 인증 페이지가 이미 `CenteredCardLayout`을 직접 쓰고 있어서, 옮겨도 동작은 같고 diff만 커집니다.
+- **동적 세그먼트 이름도 바꿨습니다.** `[taskListId]`는 `[listId]`, `[id]`는 `[articleId]`입니다. `useParams()`를 쓰는 곳은 구조 분해 이름을 맞췄습니다(`const { articleId: id } = useParams()`).
