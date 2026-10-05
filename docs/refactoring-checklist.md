@@ -19,18 +19,18 @@
 
 ## Phase 1. 의존성 정리
 
-- [ ] `dayjs` 제거 — `src/utils/formatDate.ts` 한 곳뿐. `date-fns`의 `format(date, "yyyy년 M월 d일")`로 교체 후 `npm uninstall dayjs`
-- [ ] `web-vitals` 제거 또는 개발 전용으로 — `DashBoardHeader.tsx`의 INP 콘솔 로깅이 프로덕션 번들에 포함됨
-- [ ] `@tanstack/react-query-devtools` → `devDependencies`로 이동
-- [ ] `svgo` 제거 (어디서도 참조 안 함)
-- [ ] `babel-plugin-react-compiler` — `next.config.ts`에 `reactCompiler: true`를 켜거나, 안 쓸 거면 제거
-- [ ] 애니메이션 라이브러리 단일화 검토 — `gsap`+`@gsap/react`(랜딩 섹션 5개만) vs `framer-motion`(Sidebar·온보딩·게시판)
+- [x] `dayjs` 제거 — `src/utils/formatDate.ts` 한 곳뿐. `date-fns`의 `format(date, "yyyy년 M월 d일")`로 교체 후 `npm uninstall dayjs`
+- [x] ~~`web-vitals` 제거 또는 개발 전용으로~~ — 재확인 결과 이미 `NODE_ENV === "development"`일 때만 dynamic import. 유지
+- [x] `@tanstack/react-query-devtools` → `devDependencies`로 이동
+- [x] `svgo` 제거 (어디서도 참조 안 함)
+- [x] `babel-plugin-react-compiler` 제거 (켜는 건 동작 변경이라 별도 작업으로)
+- [x] 애니메이션 라이브러리 단일화 검토 → [ADR-003](./decisions/ADR-003-keep-gsap-for-landing.md): 랜딩 gsap 유지 — `gsap`+`@gsap/react`(랜딩 섹션 5개만) vs `framer-motion`(Sidebar·온보딩·게시판)
   - 랜딩의 ScrollTrigger 효과를 framer-motion `useScroll`/`whileInView`로 옮길 수 있으면 gsap 2개 제거
   - 결정 내용은 ADR-003으로 남길 것
 
 ## Phase 2. 미사용 코드 삭제
 
-- [ ] `src/api/axios/auth/refresh/route.ts` (Phase 0에서 이동했다면 원본 삭제)
+- [x] `src/api/axios/auth/refresh/route.ts` (Phase 0에서 이동)
 - [ ] `src/app/(route)/my-history/_components/ScheduleDaySection/` (컴포넌트 + stories)
 - [ ] `src/app/(route)/my-history/_constants/` (`index.ts`, `STYLE_TOKENS.ts`)
 - [ ] `src/app/(route)/dashboard/write/_constants/MAX_IMAGE_SIZE.ts`
