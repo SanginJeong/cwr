@@ -145,10 +145,12 @@ Swagger 기준 53개이고, 이 중 프론트가 실제로 쓰는 것은 약 37�
 
 ### Phase 2. 스키마와 RLS
 
-- [ ] 테이블: `profiles`, `groups`, `memberships`, `task_lists`, `recurrings`, `tasks`, `task_comments`, `articles`, `article_likes`, `article_comments`, `invitations`
-- [ ] 반복 일정 모델: `recurrings`(규칙)와 `tasks`(실제 행, 날짜별 예외)를 두고, 조회 함수에서 가상 task를 계산한 뒤 병합. Phase 1 결과에 따라 확정
-- [ ] RLS: "그룹 멤버인지"를 확인하는 함수(`is_member(group_id)`, `is_admin(group_id)`)를 기준으로 정책 작성
-- [ ] 마이그레이션 파일은 `supabase/migrations/`에서 Supabase CLI로 관리
+- [x] 테이블: `profiles`, `groups`, `memberships`, `task_lists`, `recurrings`, `tasks`, `task_comments`, `articles`, `article_likes`, `article_comments`, `invitations`
+- [x] 반복 일정 모델: ADR-004 §2 (조회할 때 멱등 생성 + `is_customized`)
+- [x] RLS: `is_member`, `is_admin`, `can_access_task_list`, `can_access_task` 기준으로 정책 작성
+- [x] 마이그레이션 파일: `supabase/migrations/` (7개)
+- [x] 테스트: `npm run test:db`. PGlite(WASM Postgres)로 마이그레이션을 적용하고 `supabase/tests/*.test.sql` 실행. Docker 없이 동작
+- [ ] 실제 Supabase 프로젝트에 적용 (`supabase db push`). 적용 방법은 [supabase/README.md](../supabase/README.md)
 - [ ] DB 타입 생성 (`supabase gen types`)
 
 ### Phase 3. 프론트 어댑터 계층
