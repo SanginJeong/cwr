@@ -1,6 +1,6 @@
 # 백엔드 재구성 계획: 제공 API → Supabase + BFF
 
-> 전체 현황과 남은 일은 [roadmap.md](./roadmap.md)에 정리했습니다.
+> **2026-10-06부터 HR 서비스로 방향을 바꿨습니다.** Phase 5(전환)와 Phase 6(새 기능)은 [roadmap.md](./roadmap.md)의 H0~H6으로 대체됩니다. 이 문서는 Supabase 전환(Phase 1~4)의 기록입니다.
 >
 > 상태: **계획 (Draft)**. Phase 1(동작 명세)이 끝나면 ADR-004로 결정을 확정합니다.
 > 작성일: 2026-10-05
