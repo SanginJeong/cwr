@@ -1,3 +1,4 @@
+/* eslint-disable no-console -- 터미널에 결과를 출력하는 CLI 스크립트 */
 // supabase/migrations를 PGlite(WASM Postgres)에 적용하고 supabase/tests/*.test.sql을 실행한다.
 // Docker나 Supabase 프로젝트 없이 스키마와 RLS를 검증하기 위한 스크립트.
 //
