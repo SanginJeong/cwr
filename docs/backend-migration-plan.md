@@ -161,7 +161,11 @@ Swagger 기준 53개이고, 이 중 프론트가 실제로 쓰는 것은 약 37�
 - [x] 환경변수 `NEXT_PUBLIC_BACKEND=supabase`로 전환 (`shared/config/backend.ts`). 미설정이면 기존 API
 - [x] 인증 교체: middleware(세션 갱신 + `getClaims`), 서버 컴포넌트 조회(`shared/api/serverApi.ts`), 카카오·재설정 메일 콜백(`app/auth/callback`)
 - [x] 로그아웃 상태 동작 확인 (보호 경로 리다이렉트, 잘못된 콜백 처리). 실제 DB에서 RPC 흐름을 트랜잭션으로 실행 후 롤백해 확인
-- [ ] 브라우저에서 로그인 상태 수동 QA (이메일 가입·로그인, 카카오, 로그아웃, 비밀번호 재설정, 회원 탈퇴)
+- [x] 브라우저에서 로그인 상태 수동 QA: 이메일 가입·로그인, 로그아웃, 비밀번호 재설정, 회원 탈퇴 통과 (2026-10-05)
+- [ ] **카카오 로그인 (보류, 나중에 처리)**: Supabase 모드에서 버튼을 눌러도 로그인이 되지 않음
+  - 확인한 것: Supabase 설정은 정상. 같은 요청을 직접 만들면 `/auth/v1/authorize` → 카카오 로그인 화면으로 302(scope 3개, redirect_uri 정상)
+  - 이상한 점: 앱에서 테스트한 시간대에 `auth.flow_state`에 PKCE 흐름이 생기지 않음 → 브라우저 요청이 Supabase까지 가지 않았을 가능성
+  - 다음에 볼 것: 버튼 클릭 시 증상(무반응/콘솔 에러, `?error=auth_callback`으로 복귀, KOE 코드, `/login/kakao`로 이동) 확인부터
 - [ ] `/api/auth/refresh`, `tokenStorage`, `authCookies`는 legacy 전용. Phase 5에서 삭제
 
 ### Phase 4. 도메인별 구현 (난이도가 낮은 순서)
