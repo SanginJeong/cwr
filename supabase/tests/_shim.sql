@@ -94,6 +94,7 @@ create table storage.objects (
 );
 alter table storage.objects enable row level security;
 grant select, insert, delete on storage.objects to authenticated;
+grant select on storage.buckets to anon, authenticated;
 create function storage.foldername(name text) returns text[] language sql immutable as $$
   select (string_to_array(name, '/'))[1:array_length(string_to_array(name, '/'), 1) - 1];
 $$;
