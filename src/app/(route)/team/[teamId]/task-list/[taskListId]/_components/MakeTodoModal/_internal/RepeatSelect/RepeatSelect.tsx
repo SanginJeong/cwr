@@ -11,7 +11,7 @@ const RepeatOptionItem = ({ label, selected, onClick }: { label: string; selecte
         "flex-1 py-3 rounded-xl text-md-medium border transition-colors",
         selected
           ? "border-brand-primary bg-brand-primary text-white hover:bg-brand-primary/80"
-          : "border-border-primary bg-background-primary text-text-default hover:bg-gray-200",
+          : "border-border-primary bg-background-primary text-text-default hover:bg-background-tertiary",
       )}
     >
       {label}

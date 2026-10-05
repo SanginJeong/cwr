@@ -30,7 +30,7 @@ const ProgressBadge = ({ total, current }: ProgressBadgeProps) => {
       <span
         className="inline-block size-[10px] tablet:size-[12px] rounded-full"
         style={{
-          background: `conic-gradient(#4F7DFF ${progress}%, #E5E7EB ${progress}%)`,
+          background: `conic-gradient(#4F7DFF ${progress}%, #334155 ${progress}%)`,
           mask: "radial-gradient(closest-side, transparent 60%, black 60%)",
           WebkitMask: "radial-gradient(closest-side, transparent 60%, black 60%)",
         }}

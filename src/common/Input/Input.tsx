@@ -19,7 +19,7 @@ interface InputProps extends ComponentPropsWithRef<"input"> {
 }
 
 const variantClasses: Record<InputVariant, string> = {
-  default: "border-background-tertiary focus:border-primary",
+  default: "border-border-primary focus:border-primary",
   error: "border-status-danger focus:border-status-danger",
 };
 
@@ -61,7 +61,7 @@ const Input = ({
           type={type}
           disabled={disabled}
           className={cn(
-            "w-full rounded-lg border px-4 py-3 text-md-regular",
+            "w-full rounded-lg border bg-transparent px-4 py-3 text-md-regular",
             "tablet:text-lg-regular pc:text-lg-regular",
             "placeholder:text-gray-400 placeholder:text-lg-regular",
             "focus:border-interaction-pressed",

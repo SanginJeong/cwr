@@ -44,7 +44,7 @@ const KanbanSection = () => {
   );
 
   return (
-    <section ref={container} className="w-full py-[45px] tablet:py-[80px] pc:py-[100px] bg-icon-inverse">
+    <section ref={container} className="w-full py-[45px] tablet:py-[80px] pc:py-[100px] bg-background-primary">
       <div className="w-full pc:max-w-[1920px] pc:mx-auto">
         <div className="mx-auto flex flex-col tablet:gap-6 pc:gap-[100px] pc:flex-row pc:justify-center">
           <div className="feature-block">

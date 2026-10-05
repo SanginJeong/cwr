@@ -22,11 +22,11 @@ const SidebarLink = ({ title, isOpen, href = "dashboard", iconName = "board" }: 
         href={href}
         aria-label={title}
         className={cn(
-          "h-[52px] rounded-xl p-4 flex items-center gap-3 bg-white",
+          "h-[52px] rounded-xl p-4 flex items-center gap-3 bg-background-primary",
           isOpen ? "w-full" : "w-[52px]",
           isActive
             ? "bg-blue-50 text-brand-primary"
-            : "bg-transparent text-text-primary hover:bg-gray-100 transition-colors",
+            : "bg-transparent text-text-primary hover:bg-background-tertiary transition-colors",
         )}
       >
         <Icon

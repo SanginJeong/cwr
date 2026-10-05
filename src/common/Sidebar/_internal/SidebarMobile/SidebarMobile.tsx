@@ -10,7 +10,7 @@ const SidebarMobile = ({ user, isOpen, handleOpenDropdown, options }: SidebarDro
     <>
       <nav
         className={cn(
-          "sticky top-0 z-20 flex items-center justify-between bg-white px-4 py-3",
+          "sticky top-0 z-20 flex items-center justify-between bg-background-primary px-4 py-3",
           "tablet:hidden pc:hidden",
         )}
       >

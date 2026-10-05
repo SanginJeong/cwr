@@ -33,7 +33,7 @@ const CommentEdit = ({ initialComment, onClose, className, onSubmit }: CommentEd
   };
 
   return (
-    <div className={cn("w-full flex flex-col items-end bg-icon-inverse", className)}>
+    <div className={cn("w-full flex flex-col items-end bg-background-primary", className)}>
       <InputBox
         ref={textareaRef}
         value={comment}
@@ -41,7 +41,7 @@ const CommentEdit = ({ initialComment, onClose, className, onSubmit }: CommentEd
         placeholder="댓글을 입력해주세요."
         size="sm"
         maxLength={250}
-        textareaClassName="border-none p-0 bg-icon-inverse rounded-none tablet:text-md-regular pc:text-md-regular"
+        textareaClassName="border-none p-0 bg-background-primary rounded-none tablet:text-md-regular pc:text-md-regular"
       />
       <div className="flex justify-end gap-2 mt-2">
         <BaseButton variant="outlinedSecondary" size="small" onClick={handleCancel} className="w-[48px] h-[32px]">

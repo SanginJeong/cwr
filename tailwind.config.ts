@@ -18,7 +18,7 @@ const config: Config = {
       colors: {
         brand: {
           primary: "#5189FA",
-          secondary: "#EEF3FF",
+          secondary: "#1E2F55",
           tertiary: "#315296",
         },
         point: {
@@ -31,10 +31,10 @@ const config: Config = {
           yellow: "#EAB308",
         },
         background: {
-          primary: "#FFFFFF",
-          secondary: "#F1F5F9",
-          tertiary: "#E2E8F0",
-          inverse: "#FFFFFF",
+          primary: "#1E293B", // 카드·사이드바 등 표면
+          secondary: "#0F172A", // 페이지 배경
+          tertiary: "#334155", // hover·강조 표면
+          inverse: "#1E293B",
         },
         interaction: {
           inactive: "#94A3B8",
@@ -43,31 +43,35 @@ const config: Config = {
           focus: "#416EC8",
         },
         border: {
-          primary: "#E2E8F0",
-          secondary: "#CBD5E1",
+          primary: "#334155",
+          secondary: "#475569",
         },
         text: {
-          primary: "#1E293B",
-          secondary: "#334155",
-          tertiary: "#0F172A",
-          default: "#64748B",
-          inverse: "#FFFFFF",
-          disabled: "#94A3B8",
+          primary: "#F1F5F9",
+          secondary: "#CBD5E1",
+          tertiary: "#F8FAFC",
+          default: "#94A3B8",
+          inverse: "#FFFFFF", // brand·danger 등 채색 배경 위 텍스트
+          disabled: "#64748B",
         },
         status: {
           danger: "#FC4B4B",
         },
         icon: {
-          primary: "#64748B",
+          primary: "#94A3B8",
           inverse: "#F8FAFC",
           brand: "#74A1FB",
         },
         state: {
-          200: "#e2e8f0",
-          300: "#CBD5E1",
+          200: "#334155",
+          300: "#475569",
           400: "#94A3B8",
-          600: "#475569",
+          600: "#CBD5E1",
         },
+      },
+
+      borderColor: {
+        DEFAULT: "#334155", // 색 지정 없는 `border` 클래스 기본값 (border.primary)
       },
 
       fontFamily: {

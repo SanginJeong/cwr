@@ -40,7 +40,7 @@ const InputReply = ({ value, onChange, isSubmitting, className }: InputReplyProp
   }, [value, resetHeight]);
 
   return (
-    <div className={cn("w-full border border-background-tertiary border-x-0 flex items-end gap-4", className)}>
+    <div className={cn("w-full border border-border-primary border-x-0 flex items-end gap-4", className)}>
       <InputBox
         id="reply"
         ref={textareaRef}

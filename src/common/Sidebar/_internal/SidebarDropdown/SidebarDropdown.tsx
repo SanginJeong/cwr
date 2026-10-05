@@ -18,7 +18,7 @@ const DropdownItem = ({ title, id, isOpen }: { title: string; id: string; isOpen
         isOpen ? "w-full" : "w-[52px]",
         isActive
           ? "bg-blue-50 text-brand-primary"
-          : "bg-transparent text-text-primary hover:bg-gray-100 transition-colors",
+          : "bg-transparent text-text-primary hover:bg-background-tertiary transition-colors",
       )}
     >
       <div className="relative flex items-center justify-center">
@@ -34,13 +34,13 @@ const SidebarDropdown = ({ isOpen, membership }: { isOpen: boolean; membership: 
   const [open, setOpen] = useState(false);
 
   return (
-    <section className="group w-full rounded-xl bg-white">
+    <section className="group w-full rounded-xl bg-background-primary">
       <button
         onClick={() => setOpen((v) => !v)}
         className={cn(
           "w-full px-4 h-[52px] flex items-center justify-between cursor-pointer rounded-xl select-none",
-          "hover:bg-gray-100 transition-colors",
-          open && "bg-gray-50",
+          "hover:bg-background-tertiary transition-colors",
+          open && "bg-background-secondary",
         )}
       >
         <span className="flex items-center gap-3">
