@@ -1,79 +1,259 @@
 <!doctype html>
 <html lang="ko">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Coworkers 유저 플로우</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    --bg: #f7f7f5; --surface: #ffffff; --border: #e3e3df; --text: #1d1d1b; --muted: #6b6b66;
-    --accent: #10b981; --warn: #d97706; --danger: #dc2626; --info: #2563eb;
-    --chip: #f0f0ec; --unused-bg: #fff7ed;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #121212; --surface: #1c1c1c; --border: #2e2e2e; --text: #ececea; --muted: #9a9a94;
-      --accent: #34d399; --warn: #fbbf24; --danger: #f87171; --info: #60a5fa;
-      --chip: #262626; --unused-bg: #2a2014;
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #121212; --surface: #1c1c1c; --border: #2e2e2e; --text: #ececea; --muted: #9a9a94;
-    --accent: #34d399; --warn: #fbbf24; --danger: #f87171; --info: #60a5fa;
-    --chip: #262626; --unused-bg: #2a2014;
-  }
-  * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.6 "Noto Sans KR", system-ui, sans-serif; }
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 16px 80px; }
-  h1 { font-size: 28px; margin: 0 0 4px; }
-  h2 { font-size: 20px; margin: 48px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
-  h3 { font-size: 16px; margin: 0 0 6px; }
-  p.lead { color: var(--muted); margin: 0 0 16px; }
-  code, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 12.5px; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
-  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--muted); margin: 8px 0 12px; }
-  .legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; background: var(--c); border: 1px dashed var(--b, transparent); }
-  #flow { overflow-x: auto; }
-  #flow svg { max-width: none !important; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
-  .route { font-family: "JetBrains Mono", monospace; font-weight: 500; color: var(--accent); }
-  .chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
-  .chip { background: var(--chip); border-radius: 999px; padding: 1px 9px; font-size: 12px; font-family: "JetBrains Mono", monospace; }
-  .chip.warn { color: var(--warn); }
-  .chip.danger { color: var(--danger); }
-  .note { font-size: 13px; color: var(--muted); margin-top: 6px; }
-  .tablewrap { overflow-x: auto; }
-  table { border-collapse: collapse; width: 100%; background: var(--surface); font-size: 13px; }
-  th, td { border: 1px solid var(--border); padding: 6px 8px; text-align: center; white-space: nowrap; }
-  th:first-child, td:first-child { text-align: left; position: sticky; left: 0; background: var(--surface); }
-  thead th { font-family: "JetBrains Mono", monospace; font-weight: 500; font-size: 11.5px; writing-mode: vertical-rl; transform: rotate(180deg); height: 150px; }
-  thead th:first-child { writing-mode: horizontal-tb; transform: none; }
-  td.y { color: var(--accent); font-weight: 700; }
-  td.g { color: var(--info); }
-  td.d { color: var(--warn); }
-  .unused { background: var(--unused-bg); }
-  ul.findings { padding-left: 18px; margin: 0; }
-  ul.findings li { margin-bottom: 10px; }
-  .tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 0 7px; border-radius: 4px; margin-right: 6px; border: 1px solid currentColor; }
-  .tag.danger { color: var(--danger); } .tag.warn { color: var(--warn); } .tag.info { color: var(--info); }
-  footer { margin-top: 48px; color: var(--muted); font-size: 12px; }
-</style>
-</head>
-<body>
-<div class="wrap">
-  <h1>Coworkers 유저 플로우 &amp; 페이지별 의존성</h1>
-  <p class="lead">의존성 정리를 위한 1단계 자료 · 2026-10-05 · <code>main@050a061</code> 기준 · 각 page.tsx 로부터 import 그래프를 추적(배럴 export는 실제 사용 심볼만 따라감)해 도달하는 npm 패키지를 집계했습니다. <code>*.stories.tsx</code>는 집계에서 제외.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Coworkers 유저 플로우</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f7f7f5;
+        --surface: #ffffff;
+        --border: #e3e3df;
+        --text: #1d1d1b;
+        --muted: #6b6b66;
+        --accent: #10b981;
+        --warn: #d97706;
+        --danger: #dc2626;
+        --info: #2563eb;
+        --chip: #f0f0ec;
+        --unused-bg: #fff7ed;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #121212;
+          --surface: #1c1c1c;
+          --border: #2e2e2e;
+          --text: #ececea;
+          --muted: #9a9a94;
+          --accent: #34d399;
+          --warn: #fbbf24;
+          --danger: #f87171;
+          --info: #60a5fa;
+          --chip: #262626;
+          --unused-bg: #2a2014;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #121212;
+        --surface: #1c1c1c;
+        --border: #2e2e2e;
+        --text: #ececea;
+        --muted: #9a9a94;
+        --accent: #34d399;
+        --warn: #fbbf24;
+        --danger: #f87171;
+        --info: #60a5fa;
+        --chip: #262626;
+        --unused-bg: #2a2014;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          15px/1.6 "Noto Sans KR",
+          system-ui,
+          sans-serif;
+      }
+      .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 32px 16px 80px;
+      }
+      h1 {
+        font-size: 28px;
+        margin: 0 0 4px;
+      }
+      h2 {
+        font-size: 20px;
+        margin: 48px 0 12px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--border);
+      }
+      h3 {
+        font-size: 16px;
+        margin: 0 0 6px;
+      }
+      p.lead {
+        color: var(--muted);
+        margin: 0 0 16px;
+      }
+      code,
+      .mono {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 12.5px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 16px;
+      }
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        font-size: 13px;
+        color: var(--muted);
+        margin: 8px 0 12px;
+      }
+      .legend span::before {
+        content: "";
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+        margin-right: 6px;
+        vertical-align: -1px;
+        background: var(--c);
+        border: 1px dashed var(--b, transparent);
+      }
+      #flow {
+        overflow-x: auto;
+      }
+      #flow svg {
+        max-width: none !important;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 12px;
+      }
+      .route {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 500;
+        color: var(--accent);
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 8px;
+      }
+      .chip {
+        background: var(--chip);
+        border-radius: 999px;
+        padding: 1px 9px;
+        font-size: 12px;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .chip.warn {
+        color: var(--warn);
+      }
+      .chip.danger {
+        color: var(--danger);
+      }
+      .note {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .tablewrap {
+        overflow-x: auto;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        background: var(--surface);
+        font-size: 13px;
+      }
+      th,
+      td {
+        border: 1px solid var(--border);
+        padding: 6px 8px;
+        text-align: center;
+        white-space: nowrap;
+      }
+      th:first-child,
+      td:first-child {
+        text-align: left;
+        position: sticky;
+        left: 0;
+        background: var(--surface);
+      }
+      thead th {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 500;
+        font-size: 11.5px;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        height: 150px;
+      }
+      thead th:first-child {
+        writing-mode: horizontal-tb;
+        transform: none;
+      }
+      td.y {
+        color: var(--accent);
+        font-weight: 700;
+      }
+      td.g {
+        color: var(--info);
+      }
+      td.d {
+        color: var(--warn);
+      }
+      .unused {
+        background: var(--unused-bg);
+      }
+      ul.findings {
+        padding-left: 18px;
+        margin: 0;
+      }
+      ul.findings li {
+        margin-bottom: 10px;
+      }
+      .tag {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 0 7px;
+        border-radius: 4px;
+        margin-right: 6px;
+        border: 1px solid currentColor;
+      }
+      .tag.danger {
+        color: var(--danger);
+      }
+      .tag.warn {
+        color: var(--warn);
+      }
+      .tag.info {
+        color: var(--info);
+      }
+      footer {
+        margin-top: 48px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Coworkers 유저 플로우 &amp; 페이지별 의존성</h1>
+      <p class="lead">
+        의존성 정리를 위한 1단계 자료 · 2026-10-05 · <code>main@050a061</code> 기준 · 각 page.tsx 로부터 import 그래프를
+        추적(배럴 export는 실제 사용 심볼만 따라감)해 도달하는 npm 패키지를 집계했습니다. <code>*.stories.tsx</code>는
+        집계에서 제외.
+      </p>
 
-  <h2>1. 유저 플로우차트</h2>
-  <div class="legend">
-    <span style="--c:#10b98133">공개 페이지</span>
-    <span style="--c:#2563eb33">로그인 필요 (middleware 보호)</span>
-    <span style="--c:#d9770633">전역 레이아웃 / 미들웨어</span>
-    <span style="--c:transparent;--b:#dc2626">미사용 · 동작 안 하는 코드 (점선)</span>
-  </div>
-  <div class="card" id="flow"><pre class="mermaid">
+      <h2>1. 유저 플로우차트</h2>
+      <div class="legend">
+        <span style="--c: #10b98133">공개 페이지</span>
+        <span style="--c: #2563eb33">로그인 필요 (middleware 보호)</span>
+        <span style="--c: #d9770633">전역 레이아웃 / 미들웨어</span>
+        <span style="--c: transparent; --b: #dc2626">미사용 · 동작 안 하는 코드 (점선)</span>
+      </div>
+      <div class="card" id="flow">
+        <pre class="mermaid">
 flowchart LR
   classDef pub fill:#10b98122,stroke:#10b981,color:inherit
   classDef auth fill:#2563eb22,stroke:#2563eb,color:inherit
@@ -165,145 +345,642 @@ flowchart LR
 
   MP -- "회원 탈퇴" --> LAND
   MH -- "팀 삭제(공용 PageHeaderBar)" --> TEAM
-  </pre></div>
-  <p class="note">점선 화살표는 사이드바/미들웨어처럼 어느 페이지에서든 일어나는 이동입니다. 로그아웃(useLogout)은 어디서든 <code>/login</code>으로 보냅니다.</p>
+  </pre>
+      </div>
+      <p class="note">
+        점선 화살표는 사이드바/미들웨어처럼 어느 페이지에서든 일어나는 이동입니다. 로그아웃(useLogout)은 어디서든
+        <code>/login</code>으로 보냅니다.
+      </p>
 
-  <h2>2. 페이지 × 라이브러리 매트릭스</h2>
-  <p class="lead">● 페이지 트리에서 직접 사용 · ○ 전역 레이아웃을 통해서만 로드 · △ 정리 대상 후보. <code>react</code>/<code>react-dom</code>/<code>next</code>, <code>clsx</code>+<code>tailwind-merge</code>(<code>cn</code> 유틸)는 거의 모든 페이지에서 쓰여 생략했습니다.</p>
-  <div class="tablewrap">
-  <table>
-    <thead><tr>
-      <th>페이지</th><th>@tanstack/react-query</th><th>axios</th><th>zustand</th><th>react-hot-toast</th><th>framer-motion</th><th>gsap</th><th>@gsap/react</th><th>date-fns</th><th>dayjs</th><th>react-calendar</th><th>@react-pdf/renderer</th><th>web-vitals</th><th>react-query-devtools</th>
-    </tr></thead>
-    <tbody>
-      <tr><td><span class="route">layout.tsx</span> (전역)</td><td class="y">●</td><td class="y">●</td><td></td><td class="y">●</td><td class="y">●</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="d">△</td></tr>
-      <tr><td><span class="route">middleware.ts</span></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td><span class="route">/</span></td><td class="g">○</td><td class="g">○</td><td></td><td class="g">○</td><td class="y">●</td><td class="d">△</td><td class="d">△</td><td></td><td></td><td></td><td></td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">/login</span></td><td class="y">●</td><td class="y">●</td><td class="y">●</td><td class="y">●</td><td class="g">○</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">/login/kakao</span></td><td class="y">●</td><td class="g">○</td><td></td><td class="y">●</td><td class="g">○</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">/signup</span></td><td class="y">●</td><td class="y">●</td><td></td><td class="y">●</td><td class="g">○</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">/reset-password</span></td><td class="y">●</td><td class="y">●</td><td></td><td class="y">●</td><td class="g">○</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">/team</span></td><td class="g">○</td><td class="g">○</td><td></td><td class="g">○</td><td class="g">○</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">/team-creation</span></td><td class="y">●</td><td class="y">●</td><td></td><td class="y">●</td><td class="g">○</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">/team-join</span></td><td class="y">●</td><td class="y">●</td><td></td><td class="y">●</td><td class="g">○</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">/team/[teamId]</span></td><td class="y">●</td><td class="y">●</td><td></td><td class="y">●</td><td class="g">○</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">/team/[teamId]/edit</span></td><td class="y">●</td><td class="y">●</td><td></td><td class="y">●</td><td class="g">○</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">/team/…/task-list/[taskListId]</span></td><td class="y">●</td><td class="y">●</td><td></td><td class="y">●</td><td class="g">○</td><td></td><td></td><td class="y">●</td><td class="d">△</td><td class="y">●</td><td class="y">●</td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">/dashboard</span></td><td class="y">●</td><td class="y">●</td><td class="y">●</td><td class="g">○</td><td class="y">●</td><td></td><td></td><td></td><td></td><td></td><td></td><td class="d">△</td><td class="g">○</td></tr>
-      <tr><td><span class="route">/dashboard/write</span></td><td class="y">●</td><td class="y">●</td><td></td><td class="y">●</td><td class="g">○</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">/dashboard/[id]</span></td><td class="y">●</td><td class="y">●</td><td></td><td class="y">●</td><td class="g">○</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">/my-page</span></td><td class="y">●</td><td class="y">●</td><td></td><td class="y">●</td><td class="g">○</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">/my-history</span></td><td class="y">●</td><td class="y">●</td><td></td><td class="y">●</td><td class="g">○</td><td></td><td></td><td></td><td class="d">△</td><td></td><td></td><td></td><td class="g">○</td></tr>
-      <tr><td><span class="route">not-found</span></td><td class="g">○</td><td class="g">○</td><td></td><td class="g">○</td><td class="g">○</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="g">○</td></tr>
-    </tbody>
-  </table>
-  </div>
+      <h2>2. 페이지 × 라이브러리 매트릭스</h2>
+      <p class="lead">
+        ● 페이지 트리에서 직접 사용 · ○ 전역 레이아웃을 통해서만 로드 · △ 정리 대상 후보.
+        <code>react</code>/<code>react-dom</code>/<code>next</code>, <code>clsx</code>+<code>tailwind-merge</code>(<code
+          >cn</code
+        >
+        유틸)는 거의 모든 페이지에서 쓰여 생략했습니다.
+      </p>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th>페이지</th>
+              <th>@tanstack/react-query</th>
+              <th>axios</th>
+              <th>zustand</th>
+              <th>react-hot-toast</th>
+              <th>framer-motion</th>
+              <th>gsap</th>
+              <th>@gsap/react</th>
+              <th>date-fns</th>
+              <th>dayjs</th>
+              <th>react-calendar</th>
+              <th>@react-pdf/renderer</th>
+              <th>web-vitals</th>
+              <th>react-query-devtools</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="route">layout.tsx</span> (전역)</td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td></td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="d">△</td>
+            </tr>
+            <tr>
+              <td><span class="route">middleware.ts</span></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><span class="route">/</span></td>
+              <td class="g">○</td>
+              <td class="g">○</td>
+              <td></td>
+              <td class="g">○</td>
+              <td class="y">●</td>
+              <td class="d">△</td>
+              <td class="d">△</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/login</span></td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/login/kakao</span></td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td></td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/signup</span></td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td></td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/reset-password</span></td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td></td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/team</span></td>
+              <td class="g">○</td>
+              <td class="g">○</td>
+              <td></td>
+              <td class="g">○</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/team-creation</span></td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td></td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/team-join</span></td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td></td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/team/[teamId]</span></td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td></td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/team/[teamId]/edit</span></td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td></td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/team/…/task-list/[taskListId]</span></td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td></td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td class="y">●</td>
+              <td class="d">△</td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/dashboard</span></td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td class="y">●</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="d">△</td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/dashboard/write</span></td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td></td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/dashboard/[id]</span></td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td></td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/my-page</span></td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td></td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">/my-history</span></td>
+              <td class="y">●</td>
+              <td class="y">●</td>
+              <td></td>
+              <td class="y">●</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="d">△</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+            <tr>
+              <td><span class="route">not-found</span></td>
+              <td class="g">○</td>
+              <td class="g">○</td>
+              <td></td>
+              <td class="g">○</td>
+              <td class="g">○</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="g">○</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-  <h2>3. 페이지별 상세 (라이브러리가 들어오는 파일)</h2>
-  <div class="grid">
-    <div class="card"><h3><span class="route">app/layout.tsx</span> 전역</h3>
-      <div class="chips"><span class="chip">next/font/local</span><span class="chip">@tanstack/react-query</span><span class="chip warn">@tanstack/react-query-devtools</span><span class="chip">react-hot-toast</span><span class="chip">framer-motion</span><span class="chip">axios</span></div>
-      <p class="note"><code>providers.tsx</code>(QueryClient, Devtools) · <code>lib/toaster.tsx</code> · <code>common/Sidebar</code> → SidebarTablet/LeftMobile/SidebarDropdown 에서 framer-motion · <code>useGetUser</code> → axios</p></div>
-    <div class="card"><h3><span class="route">middleware.ts</span></h3>
-      <div class="chips"><span class="chip">next/server</span><span class="chip">fetch</span></div>
-      <p class="note">보호 경로: /my-page, /my-history, /team*, /dashboard*. <code>/team</code> 진입 시 <code>GET /user</code>로 첫 소속팀으로 리다이렉트, <code>/team/:id</code>마다 <code>GET /groups/:id</code> 존재 확인. <code>/team</code> 비로그인 체크가 중복(20·23행).</p></div>
-    <div class="card"><h3><span class="route">/</span> 랜딩</h3>
-      <div class="chips"><span class="chip warn">gsap</span><span class="chip warn">gsap/ScrollTrigger</span><span class="chip warn">@gsap/react</span><span class="chip">framer-motion</span><span class="chip">next/headers</span><span class="chip">next/dynamic</span></div>
-      <p class="note">_landing/* 섹션 5개가 gsap 사용 · <code>LoadingOnboarding</code> → OnboardingModal(dynamic, ssr:false)에서 framer-motion</p></div>
-    <div class="card"><h3><span class="route">/login</span></h3>
-      <div class="chips"><span class="chip">@tanstack/react-query</span><span class="chip">axios</span><span class="chip">zustand</span><span class="chip">zustand/middleware</span><span class="chip">react-hot-toast</span><span class="chip">next/headers</span></div>
-      <p class="note">LoginForm(useEmailStore: 이메일 기억) · ResetPassword 모달(usePostResetPassword) · SocialAuthSection(Kakao authorize URL) · setAuthCookies(server action)</p></div>
-    <div class="card"><h3><span class="route">/login/kakao</span></h3>
-      <div class="chips"><span class="chip">@tanstack/react-query</span><span class="chip">next/headers</span><span class="chip">react-hot-toast</span></div>
-      <p class="note">useKakaoAuth → <code>api/actions/kakaoAuth.ts</code> (Server Action, fetch)</p></div>
-    <div class="card"><h3><span class="route">/signup</span></h3>
-      <div class="chips"><span class="chip">@tanstack/react-query</span><span class="chip">axios</span><span class="chip">react-hot-toast</span><span class="chip">next/headers</span></div>
-      <p class="note">SignUpForm · usePostSignup → 성공 시 <code>/?onboarding=true</code></p></div>
-    <div class="card"><h3><span class="route">/reset-password</span></h3>
-      <div class="chips"><span class="chip">@tanstack/react-query</span><span class="chip">axios</span><span class="chip">react-hot-toast</span></div>
-      <p class="note">NewPasswordForm · usePatchResetPassword → /login</p></div>
-    <div class="card"><h3><span class="route">/team</span></h3>
-      <div class="chips"><span class="chip">next/image</span><span class="chip">next/link</span></div>
-      <p class="note">소속팀 없음 안내. 팀이 있으면 middleware가 먼저 리다이렉트.</p></div>
-    <div class="card"><h3><span class="route">/team-creation</span></h3>
-      <div class="chips"><span class="chip">@tanstack/react-query</span><span class="chip">axios</span><span class="chip">react-hot-toast</span><span class="chip">api.dicebear.com</span></div>
-      <p class="note">useTeamCreation · useImageUpload · resolveTeamImage(기본 이미지 = dicebear URL)</p></div>
-    <div class="card"><h3><span class="route">/team-join</span></h3>
-      <div class="chips"><span class="chip">@tanstack/react-query</span><span class="chip">axios</span><span class="chip">react-hot-toast</span></div>
-      <p class="note">useTeamJoin → usePostTeamJoin</p></div>
-    <div class="card"><h3><span class="route">/team/[teamId]</span></h3>
-      <div class="chips"><span class="chip">@tanstack/react-query</span><span class="chip">axios</span><span class="chip">react-hot-toast</span><span class="chip">react-dom (Portal)</span></div>
-      <p class="note">MemberWidget(초대·추방 모달) · ProgressWidget · TaskSection(목록 CRUD 모달)</p></div>
-    <div class="card"><h3><span class="route">/team/[teamId]/edit</span></h3>
-      <div class="chips"><span class="chip">@tanstack/react-query</span><span class="chip">axios</span><span class="chip">react-hot-toast</span></div>
-      <p class="note">EditTeamForm · useTeamEdit · usePatchGroup</p></div>
-    <div class="card"><h3><span class="route">/team/…/task-list/[taskListId]</span></h3>
-      <div class="chips"><span class="chip">@tanstack/react-query</span><span class="chip">axios</span><span class="chip">date-fns</span><span class="chip">date-fns/locale</span><span class="chip warn">dayjs</span><span class="chip">react-calendar</span><span class="chip">@react-pdf/renderer</span><span class="chip">next/dynamic</span><span class="chip">react-hot-toast</span></div>
-      <p class="note">가장 무거운 페이지(약 167개 모듈). date-fns: TodoSection·DateItem·PDF / dayjs: utils/formatDate (MakeTodoModal·HeaderSection·TaskListItem) / react-calendar: common/Calendar/DatePicker / react-pdf: TaskPdfDownloadButton(dynamic). 상세는 <code>?task-id=</code> 쿼리로 같은 페이지에서 열림.</p></div>
-    <div class="card"><h3><span class="route">/dashboard</span></h3>
-      <div class="chips"><span class="chip">@tanstack/react-query</span><span class="chip">axios</span><span class="chip">zustand</span><span class="chip">framer-motion</span><span class="chip danger">web-vitals/attribution</span></div>
-      <p class="note">파일 위치가 <code>src/app/dashboard</code>(page·layout)와 <code>src/app/(route)/dashboard</code>(_components·[id]·write)로 쪼개져 있음. DashBoardHeader 안에서 web-vitals INP를 console에 찍는 디버그 코드가 프로덕션에도 포함.</p></div>
-    <div class="card"><h3><span class="route">/dashboard/write</span></h3>
-      <div class="chips"><span class="chip">@tanstack/react-query</span><span class="chip">axios</span><span class="chip">react-hot-toast</span></div>
-      <p class="note">ArticleForm · useImageUpload · usePostArticle</p></div>
-    <div class="card"><h3><span class="route">/dashboard/[id]</span></h3>
-      <div class="chips"><span class="chip">@tanstack/react-query</span><span class="chip">axios</span><span class="chip">react-hot-toast</span><span class="chip">react-dom (Portal)</span></div>
-      <p class="note">ArticleBody · ArticleComments · ArticleLikeButton · 수정 모달</p></div>
-    <div class="card"><h3><span class="route">/my-page</span></h3>
-      <div class="chips"><span class="chip">@tanstack/react-query</span><span class="chip">axios</span><span class="chip">react-hot-toast</span><span class="chip">next/dynamic</span></div>
-      <p class="note">MypageContainer(dynamic) · 프로필/비밀번호 수정 · 회원 탈퇴</p></div>
-    <div class="card"><h3><span class="route">/my-history</span></h3>
-      <div class="chips"><span class="chip">@tanstack/react-query</span><span class="chip">axios</span><span class="chip warn">dayjs</span><span class="chip">react-hot-toast</span></div>
-      <p class="note">WorkHistorySection · useGetHistory. 공용 PageHeaderBar 경유로 useDeleteGroup까지 끌려옴.</p></div>
-  </div>
+      <h2>3. 페이지별 상세 (라이브러리가 들어오는 파일)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3><span class="route">app/layout.tsx</span> 전역</h3>
+          <div class="chips">
+            <span class="chip">next/font/local</span><span class="chip">@tanstack/react-query</span
+            ><span class="chip warn">@tanstack/react-query-devtools</span><span class="chip">react-hot-toast</span
+            ><span class="chip">framer-motion</span><span class="chip">axios</span>
+          </div>
+          <p class="note">
+            <code>providers.tsx</code>(QueryClient, Devtools) · <code>lib/toaster.tsx</code> ·
+            <code>common/Sidebar</code> → SidebarTablet/LeftMobile/SidebarDropdown 에서 framer-motion ·
+            <code>useGetUser</code> → axios
+          </p>
+        </div>
+        <div class="card">
+          <h3><span class="route">middleware.ts</span></h3>
+          <div class="chips"><span class="chip">next/server</span><span class="chip">fetch</span></div>
+          <p class="note">
+            보호 경로: /my-page, /my-history, /team*, /dashboard*. <code>/team</code> 진입 시 <code>GET /user</code>로
+            첫 소속팀으로 리다이렉트, <code>/team/:id</code>마다 <code>GET /groups/:id</code> 존재 확인.
+            <code>/team</code> 비로그인 체크가 중복(20·23행).
+          </p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/</span> 랜딩</h3>
+          <div class="chips">
+            <span class="chip warn">gsap</span><span class="chip warn">gsap/ScrollTrigger</span
+            ><span class="chip warn">@gsap/react</span><span class="chip">framer-motion</span
+            ><span class="chip">next/headers</span><span class="chip">next/dynamic</span>
+          </div>
+          <p class="note">
+            _landing/* 섹션 5개가 gsap 사용 · <code>LoadingOnboarding</code> → OnboardingModal(dynamic, ssr:false)에서
+            framer-motion
+          </p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/login</span></h3>
+          <div class="chips">
+            <span class="chip">@tanstack/react-query</span><span class="chip">axios</span
+            ><span class="chip">zustand</span><span class="chip">zustand/middleware</span
+            ><span class="chip">react-hot-toast</span><span class="chip">next/headers</span>
+          </div>
+          <p class="note">
+            LoginForm(useEmailStore: 이메일 기억) · ResetPassword 모달(usePostResetPassword) · SocialAuthSection(Kakao
+            authorize URL) · setAuthCookies(server action)
+          </p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/login/kakao</span></h3>
+          <div class="chips">
+            <span class="chip">@tanstack/react-query</span><span class="chip">next/headers</span
+            ><span class="chip">react-hot-toast</span>
+          </div>
+          <p class="note">useKakaoAuth → <code>api/actions/kakaoAuth.ts</code> (Server Action, fetch)</p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/signup</span></h3>
+          <div class="chips">
+            <span class="chip">@tanstack/react-query</span><span class="chip">axios</span
+            ><span class="chip">react-hot-toast</span><span class="chip">next/headers</span>
+          </div>
+          <p class="note">SignUpForm · usePostSignup → 성공 시 <code>/?onboarding=true</code></p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/reset-password</span></h3>
+          <div class="chips">
+            <span class="chip">@tanstack/react-query</span><span class="chip">axios</span
+            ><span class="chip">react-hot-toast</span>
+          </div>
+          <p class="note">NewPasswordForm · usePatchResetPassword → /login</p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/team</span></h3>
+          <div class="chips"><span class="chip">next/image</span><span class="chip">next/link</span></div>
+          <p class="note">소속팀 없음 안내. 팀이 있으면 middleware가 먼저 리다이렉트.</p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/team-creation</span></h3>
+          <div class="chips">
+            <span class="chip">@tanstack/react-query</span><span class="chip">axios</span
+            ><span class="chip">react-hot-toast</span><span class="chip">api.dicebear.com</span>
+          </div>
+          <p class="note">useTeamCreation · useImageUpload · resolveTeamImage(기본 이미지 = dicebear URL)</p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/team-join</span></h3>
+          <div class="chips">
+            <span class="chip">@tanstack/react-query</span><span class="chip">axios</span
+            ><span class="chip">react-hot-toast</span>
+          </div>
+          <p class="note">useTeamJoin → usePostTeamJoin</p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/team/[teamId]</span></h3>
+          <div class="chips">
+            <span class="chip">@tanstack/react-query</span><span class="chip">axios</span
+            ><span class="chip">react-hot-toast</span><span class="chip">react-dom (Portal)</span>
+          </div>
+          <p class="note">MemberWidget(초대·추방 모달) · ProgressWidget · TaskSection(목록 CRUD 모달)</p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/team/[teamId]/edit</span></h3>
+          <div class="chips">
+            <span class="chip">@tanstack/react-query</span><span class="chip">axios</span
+            ><span class="chip">react-hot-toast</span>
+          </div>
+          <p class="note">EditTeamForm · useTeamEdit · usePatchGroup</p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/team/…/task-list/[taskListId]</span></h3>
+          <div class="chips">
+            <span class="chip">@tanstack/react-query</span><span class="chip">axios</span
+            ><span class="chip">date-fns</span><span class="chip">date-fns/locale</span
+            ><span class="chip warn">dayjs</span><span class="chip">react-calendar</span
+            ><span class="chip">@react-pdf/renderer</span><span class="chip">next/dynamic</span
+            ><span class="chip">react-hot-toast</span>
+          </div>
+          <p class="note">
+            가장 무거운 페이지(약 167개 모듈). date-fns: TodoSection·DateItem·PDF / dayjs: utils/formatDate
+            (MakeTodoModal·HeaderSection·TaskListItem) / react-calendar: common/Calendar/DatePicker / react-pdf:
+            TaskPdfDownloadButton(dynamic). 상세는 <code>?task-id=</code> 쿼리로 같은 페이지에서 열림.
+          </p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/dashboard</span></h3>
+          <div class="chips">
+            <span class="chip">@tanstack/react-query</span><span class="chip">axios</span
+            ><span class="chip">zustand</span><span class="chip">framer-motion</span
+            ><span class="chip danger">web-vitals/attribution</span>
+          </div>
+          <p class="note">
+            파일 위치가 <code>src/app/dashboard</code>(page·layout)와
+            <code>src/app/(route)/dashboard</code>(_components·[id]·write)로 쪼개져 있음. DashBoardHeader 안에서
+            web-vitals INP를 console에 찍는 디버그 코드가 프로덕션에도 포함.
+          </p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/dashboard/write</span></h3>
+          <div class="chips">
+            <span class="chip">@tanstack/react-query</span><span class="chip">axios</span
+            ><span class="chip">react-hot-toast</span>
+          </div>
+          <p class="note">ArticleForm · useImageUpload · usePostArticle</p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/dashboard/[id]</span></h3>
+          <div class="chips">
+            <span class="chip">@tanstack/react-query</span><span class="chip">axios</span
+            ><span class="chip">react-hot-toast</span><span class="chip">react-dom (Portal)</span>
+          </div>
+          <p class="note">ArticleBody · ArticleComments · ArticleLikeButton · 수정 모달</p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/my-page</span></h3>
+          <div class="chips">
+            <span class="chip">@tanstack/react-query</span><span class="chip">axios</span
+            ><span class="chip">react-hot-toast</span><span class="chip">next/dynamic</span>
+          </div>
+          <p class="note">MypageContainer(dynamic) · 프로필/비밀번호 수정 · 회원 탈퇴</p>
+        </div>
+        <div class="card">
+          <h3><span class="route">/my-history</span></h3>
+          <div class="chips">
+            <span class="chip">@tanstack/react-query</span><span class="chip">axios</span
+            ><span class="chip warn">dayjs</span><span class="chip">react-hot-toast</span>
+          </div>
+          <p class="note">WorkHistorySection · useGetHistory. 공용 PageHeaderBar 경유로 useDeleteGroup까지 끌려옴.</p>
+        </div>
+      </div>
 
-  <h2>4. 미사용 코드 목록</h2>
-  <div class="tablewrap">
-  <table>
-    <thead><tr><th>파일</th><th style="writing-mode:horizontal-tb;transform:none;height:auto">상태</th></tr></thead>
-    <tbody>
-      <tr class="unused"><td class="mono">src/api/axios/auth/refresh/route.ts</td><td style="text-align:left">Route Handler인데 <code>app/</code> 밖에 있어 등록되지 않음 (아래 ① 참고)</td></tr>
-      <tr class="unused"><td class="mono">src/app/(route)/my-history/_components/ScheduleDaySection/ScheduleDaySection.tsx</td><td style="text-align:left">어디서도 import 안 됨 (stories만 존재)</td></tr>
-      <tr class="unused"><td class="mono">src/app/(route)/my-history/_constants/{index,STYLE_TOKENS}.ts</td><td style="text-align:left">import 안 됨</td></tr>
-      <tr class="unused"><td class="mono">src/app/(route)/dashboard/write/_constants/MAX_IMAGE_SIZE.ts</td><td style="text-align:left">import 안 됨</td></tr>
-      <tr class="unused"><td class="mono">src/stores/store.ts</td><td style="text-align:left">주석뿐인 빈 zustand store</td></tr>
-      <tr class="unused"><td class="mono">src/constants/index.ts</td><td style="text-align:left">빈 파일</td></tr>
-      <tr class="unused"><td class="mono">src/app/(route)/signup/_type/{index,type}.ts</td><td style="text-align:left">import 안 됨 (폼 타입은 <code>@/types</code> 사용)</td></tr>
-      <tr class="unused"><td class="mono">src/app/(route)/my-page/_components/index.ts</td><td style="text-align:left">배럴이 사용되지 않음 (각 파일을 직접 import)</td></tr>
-      <tr class="unused"><td class="mono">src/common/Comment/_internal/index.ts</td><td style="text-align:left">배럴이 사용되지 않음</td></tr>
-      <tr><td class="mono">src/utils/customPlugins.ts</td><td style="text-align:left">앱 코드에선 미사용이지만 <code>tailwind.config.ts</code>가 사용 → 유지</td></tr>
-    </tbody>
-  </table>
-  </div>
+      <h2>4. 미사용 코드 목록</h2>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th>파일</th>
+              <th style="writing-mode: horizontal-tb; transform: none; height: auto">상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="unused">
+              <td class="mono">src/api/axios/auth/refresh/route.ts</td>
+              <td style="text-align: left">
+                Route Handler인데 <code>app/</code> 밖에 있어 등록되지 않음 (아래 ① 참고)
+              </td>
+            </tr>
+            <tr class="unused">
+              <td class="mono">src/app/(route)/my-history/_components/ScheduleDaySection/ScheduleDaySection.tsx</td>
+              <td style="text-align: left">어디서도 import 안 됨 (stories만 존재)</td>
+            </tr>
+            <tr class="unused">
+              <td class="mono">src/app/(route)/my-history/_constants/{index,STYLE_TOKENS}.ts</td>
+              <td style="text-align: left">import 안 됨</td>
+            </tr>
+            <tr class="unused">
+              <td class="mono">src/app/(route)/dashboard/write/_constants/MAX_IMAGE_SIZE.ts</td>
+              <td style="text-align: left">import 안 됨</td>
+            </tr>
+            <tr class="unused">
+              <td class="mono">src/stores/store.ts</td>
+              <td style="text-align: left">주석뿐인 빈 zustand store</td>
+            </tr>
+            <tr class="unused">
+              <td class="mono">src/constants/index.ts</td>
+              <td style="text-align: left">빈 파일</td>
+            </tr>
+            <tr class="unused">
+              <td class="mono">src/app/(route)/signup/_type/{index,type}.ts</td>
+              <td style="text-align: left">import 안 됨 (폼 타입은 <code>@/types</code> 사용)</td>
+            </tr>
+            <tr class="unused">
+              <td class="mono">src/app/(route)/my-page/_components/index.ts</td>
+              <td style="text-align: left">배럴이 사용되지 않음 (각 파일을 직접 import)</td>
+            </tr>
+            <tr class="unused">
+              <td class="mono">src/common/Comment/_internal/index.ts</td>
+              <td style="text-align: left">배럴이 사용되지 않음</td>
+            </tr>
+            <tr>
+              <td class="mono">src/utils/customPlugins.ts</td>
+              <td style="text-align: left">앱 코드에선 미사용이지만 <code>tailwind.config.ts</code>가 사용 → 유지</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-  <h2>5. 의존성 정리 포인트</h2>
-  <div class="card">
-  <ul class="findings">
-    <li><span class="tag danger">버그</span><b>① 토큰 재발급 경로가 존재하지 않음.</b> <code>lib/axios.ts</code>의 401 인터셉터는 <code>fetch("/auth/refresh-token")</code>을 같은 origin으로 호출하지만, 이를 처리할 <code>route.ts</code>가 <code>src/api/axios/auth/refresh/</code>에 있어 Next 라우트로 등록되지 않습니다. 재발급이 항상 실패해 404 → 로그인 만료 처리로 이어질 가능성이 큽니다. <code>src/app/auth/refresh-token/route.ts</code>로 옮기거나 인터셉터를 백엔드 URL로 직접 호출하도록 바꿔야 합니다.</li>
-    <li><span class="tag warn">중복</span><b>날짜 라이브러리 2개 — date-fns + dayjs.</b> dayjs는 <code>utils/formatDate.ts</code>의 <code>format("YYYY년 M월 D일")</code> 한 곳뿐. date-fns <code>format(date, "yyyy년 M월 d일")</code>로 교체하면 dayjs 제거 가능.</li>
-    <li><span class="tag warn">중복</span><b>애니메이션 라이브러리 2개 — gsap(+@gsap/react) + framer-motion.</b> gsap은 랜딩 섹션 5개에서만, framer-motion은 Sidebar(전 페이지)·온보딩·게시판. 하나로 통일하면 번들에서 한쪽 제거 가능(랜딩의 ScrollTrigger 효과를 framer-motion <code>useScroll</code>/<code>whileInView</code>로 옮길 수 있는지가 관건).</li>
-    <li><span class="tag warn">정리</span><b>web-vitals</b>는 DashBoardHeader의 INP 콘솔 로깅용 디버그 코드에서만 사용. 제거하거나 <code>process.env.NODE_ENV === "development"</code>로 가드.</li>
-    <li><span class="tag info">위치</span><b>@tanstack/react-query-devtools</b>는 <code>dependencies</code>에 있음. 프로덕션 빌드에선 자동으로 빠지지만 성격상 <code>devDependencies</code>가 맞습니다.</li>
-    <li><span class="tag info">devDeps</span><b>svgo</b>는 어떤 설정·스크립트에서도 참조되지 않음. <b>babel-plugin-react-compiler</b>는 설치만 되어 있고 <code>next.config.ts</code>에 <code>reactCompiler</code> 설정이 없어 동작하지 않음 → 켜든지 제거.</li>
-    <li><span class="tag info">구조</span><b>/dashboard 라우트가 두 폴더로 분산</b> — <code>app/dashboard/</code>(page·layout) vs <code>app/(route)/dashboard/</code>([id]·write·_components). <code>app/dashboard/layout.tsx</code>는 [id]·write에는 적용되지 않습니다.</li>
-    <li><span class="tag info">유지</span>react-calendar(DatePicker), @react-pdf/renderer(dynamic import), axios, zustand(2개 store), react-hot-toast, clsx·tailwind-merge는 실제 사용 중이고 각각 대체재 중복 없음.</li>
-  </ul>
-  </div>
+      <h2>5. 의존성 정리 포인트</h2>
+      <div class="card">
+        <ul class="findings">
+          <li>
+            <span class="tag danger">버그</span><b>① 토큰 재발급 경로가 존재하지 않음.</b> <code>lib/axios.ts</code>의
+            401 인터셉터는 <code>fetch("/auth/refresh-token")</code>을 같은 origin으로 호출하지만, 이를 처리할
+            <code>route.ts</code>가 <code>src/api/axios/auth/refresh/</code>에 있어 Next 라우트로 등록되지 않습니다.
+            재발급이 항상 실패해 404 → 로그인 만료 처리로 이어질 가능성이 큽니다.
+            <code>src/app/auth/refresh-token/route.ts</code>로 옮기거나 인터셉터를 백엔드 URL로 직접 호출하도록 바꿔야
+            합니다.
+          </li>
+          <li>
+            <span class="tag warn">중복</span><b>날짜 라이브러리 2개 — date-fns + dayjs.</b> dayjs는
+            <code>utils/formatDate.ts</code>의 <code>format("YYYY년 M월 D일")</code> 한 곳뿐. date-fns
+            <code>format(date, "yyyy년 M월 d일")</code>로 교체하면 dayjs 제거 가능.
+          </li>
+          <li>
+            <span class="tag warn">중복</span
+            ><b>애니메이션 라이브러리 2개 — gsap(+@gsap/react) + framer-motion.</b> gsap은 랜딩 섹션 5개에서만,
+            framer-motion은 Sidebar(전 페이지)·온보딩·게시판. 하나로 통일하면 번들에서 한쪽 제거 가능(랜딩의
+            ScrollTrigger 효과를 framer-motion <code>useScroll</code>/<code>whileInView</code>로 옮길 수 있는지가 관건).
+          </li>
+          <li>
+            <span class="tag warn">정리</span><b>web-vitals</b>는 DashBoardHeader의 INP 콘솔 로깅용 디버그 코드에서만
+            사용. 제거하거나 <code>process.env.NODE_ENV === "development"</code>로 가드.
+          </li>
+          <li>
+            <span class="tag info">위치</span><b>@tanstack/react-query-devtools</b>는 <code>dependencies</code>에 있음.
+            프로덕션 빌드에선 자동으로 빠지지만 성격상 <code>devDependencies</code>가 맞습니다.
+          </li>
+          <li>
+            <span class="tag info">devDeps</span><b>svgo</b>는 어떤 설정·스크립트에서도 참조되지 않음.
+            <b>babel-plugin-react-compiler</b>는 설치만 되어 있고 <code>next.config.ts</code>에
+            <code>reactCompiler</code> 설정이 없어 동작하지 않음 → 켜든지 제거.
+          </li>
+          <li>
+            <span class="tag info">구조</span><b>/dashboard 라우트가 두 폴더로 분산</b> —
+            <code>app/dashboard/</code>(page·layout) vs <code>app/(route)/dashboard/</code>([id]·write·_components).
+            <code>app/dashboard/layout.tsx</code>는 [id]·write에는 적용되지 않습니다.
+          </li>
+          <li>
+            <span class="tag info">유지</span>react-calendar(DatePicker), @react-pdf/renderer(dynamic import), axios,
+            zustand(2개 store), react-hot-toast, clsx·tailwind-merge는 실제 사용 중이고 각각 대체재 중복 없음.
+          </li>
+        </ul>
+      </div>
 
-  <footer>생성 방법: 각 page/layout/middleware 엔트리에서 정적 import·dynamic import를 추적하는 스크립트로 집계. 런타임 조건부 렌더링은 구분하지 않으므로 "도달 가능" 기준입니다.</footer>
-</div>
+      <footer>
+        생성 방법: 각 page/layout/middleware 엔트리에서 정적 import·dynamic import를 추적하는 스크립트로 집계. 런타임
+        조건부 렌더링은 구분하지 않으므로 "도달 가능" 기준입니다.
+      </footer>
+    </div>
 
-<script type="module">
-  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-  const dark = document.documentElement.dataset.theme === "dark" ||
-    (document.documentElement.dataset.theme !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
-  mermaid.initialize({
-    startOnLoad: true,
-    theme: dark ? "dark" : "default",
-    securityLevel: "loose",
-    flowchart: { htmlLabels: true, curve: "basis", nodeSpacing: 30, rankSpacing: 60 },
-    themeVariables: { fontFamily: "Noto Sans KR, system-ui, sans-serif", fontSize: "13px" },
-  });
-</script>
-</body>
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+      const dark =
+        document.documentElement.dataset.theme === "dark" ||
+        (document.documentElement.dataset.theme !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: dark ? "dark" : "default",
+        securityLevel: "loose",
+        flowchart: { htmlLabels: true, curve: "basis", nodeSpacing: 30, rankSpacing: 60 },
+        themeVariables: { fontFamily: "Noto Sans KR, system-ui, sans-serif", fontSize: "13px" },
+      });
+    </script>
+  </body>
 </html>

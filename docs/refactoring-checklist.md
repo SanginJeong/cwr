@@ -46,15 +46,19 @@
 
 ## Phase 3. FSD 폴더 구조 전환 ([ADR-001](./decisions/ADR-001-fsd-folder-structure.md))
 
-- [ ] 3-1. 레이어 골격 생성 + `tsconfig` path alias + import 규칙 lint(steiger 또는 `eslint-plugin-boundaries`) 도입
-- [ ] 3-2. `shared` 이동 — `common/*` UI, `features/*`(EmptyState 등 범용 UI), `lib/*`, `utils/*`, `hooks/*`(범용), `assets/`
-- [ ] 3-3. `entities` 이동 — user, team(group), task-list, task, task-comment, article, article-comment (api 함수 + 쿼리 훅 + 타입 + 표시용 UI)
-- [ ] 3-4. `features` 이동 — 사용자 행동 단위 (로그인, 팀 생성, 할 일 생성, 좋아요 …)
-- [ ] 3-5. `widgets` 이동 — Sidebar, PageHeaderBar, 팀 위젯, 할 일 섹션, 게시글 피드, 랜딩 섹션
-- [ ] 3-6. `views` 생성 — 라우트별 화면 조립. `src/app/**/page.tsx`는 `views`를 re-export하는 한 줄짜리로
-- [ ] 3-7. 거대 배럴(`@/common`, `@/api/hooks`, `@/utils`) 제거 → 슬라이스별 `index.ts`만 공개 API로
-- [ ] 3-8. 상대경로로 라우트 폴더를 넘나드는 import 0개 확인 (예: `DashBoardAllArticles.tsx`의 `../../../../(route)/dashboard/...`)
-- [ ] 3-9. Storybook `stories` 경로 glob 업데이트 (`.storybook/main.ts`)
+- [x] 3-1. 레이어 골격 생성 + `tsconfig` path alias + import 규칙 lint 도입 → 새 의존성 없이 `eslint.config.mjs`의 `no-restricted-imports`로 구현
+- [x] 3-2. `shared` 이동 — `common/*` UI, `features/*`(EmptyState 등 범용 UI), `lib/*`, `utils/*`, `hooks/*`(범용), `assets/`
+- [x] 3-3. `entities` 이동 — user, team(group), task-list, task, task-comment, article, article-comment (api 함수 + 쿼리 훅 + 타입 + 표시용 UI)
+- [x] 3-4. `features` 이동 — 사용자 행동 단위 (로그인, 팀 생성, 할 일 생성, 좋아요 …)
+- [x] 3-5. `widgets` 이동 — Sidebar, PageHeaderBar, 팀 위젯, 할 일 섹션, 게시글 피드, 랜딩 섹션
+- [x] 3-6. `views` 생성 — 라우트별 화면 조립. `src/app/**/page.tsx`는 `views`를 re-export하는 한 줄짜리로
+- [x] 3-7. 거대 배럴(`@/common`, `@/api/hooks`, `@/utils`) 제거 → 슬라이스별 `index.ts`만 공개 API로
+- [x] 3-8. 상대경로로 라우트 폴더를 넘나드는 import 0개 확인 (예: `DashBoardAllArticles.tsx`의 `../../../../(route)/dashboard/...`)
+- [x] 3-9. Storybook `stories` 경로 glob 확인 (`src/**`라 변경 불필요)
+
+- [x] 3-10. 이동 후 레이어 규칙 위반 5건 정리 (ADR-001 "구현 메모" 참고)
+- [x] 3-11. `madge --circular` 순환 import 0건, headless Chrome으로 전 페이지 런타임 에러 0건 확인
+  - ⚠️ `/team/[teamId]/**`는 실제 토큰이 필요해 자동 확인 못 함 → 로그인 후 수동 확인 필요
 
 ## Phase 4. 라우트 재설계 ([ADR-002](./decisions/ADR-002-route-restructure.md))
 

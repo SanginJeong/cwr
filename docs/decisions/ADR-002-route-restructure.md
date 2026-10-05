@@ -1,9 +1,11 @@
 # ADR-002: 라우트(URL)와 app 폴더 재설계
 
 ## Status
+
 Accepted
 
 ## Date
+
 2026-10-05
 
 ## Context
@@ -22,29 +24,30 @@ Accepted
 
 ### 1. URL 매핑
 
-| 현재 | 변경 | 비고 |
-|---|---|---|
-| `/` | `/` | |
-| `/login` | `/login` | |
-| `/login/kakao` | `/login/kakao` | **유지**: 카카오 콘솔의 Redirect URI |
-| `/signup` | `/signup` | |
-| `/reset-password?token=` | `/reset-password?token=` | **유지**: 재설정 메일 링크 |
-| `/team` | `/teams` | 소속 팀이 없을 때의 안내. 팀이 있으면 첫 팀으로 이동 |
-| `/team-creation` | `/teams/new` | |
-| `/team-join` | `/teams/join` | |
-| `/team/[teamId]` | `/teams/[teamId]` | |
-| `/team/[teamId]/edit` | `/teams/[teamId]/edit` | |
-| `/team/[teamId]/task-list/[taskListId]` | `/teams/[teamId]/lists/[listId]` | |
-| `?task-id=12` | `?task=12` | 할 일 상세 패널 |
-| `?w=true` | `?modal=new-task` | 할 일 생성 모달 |
-| `?date=<ISO>` | `?date=2026-10-05` | 타임존 문제도 함께 줄어듦 (커밋 050a061 참고) |
-| `/dashboard` | `/board` | 검색어는 Zustand에서 `?q=`, 정렬은 `?sort=like`로 |
-| `/dashboard/write` | `/board/new` | |
-| `/dashboard/[id]` | `/board/[articleId]` | |
-| `/my-page` | `/account` | |
-| `/my-history` | `/history` | |
+| 현재                                    | 변경                             | 비고                                                 |
+| --------------------------------------- | -------------------------------- | ---------------------------------------------------- |
+| `/`                                     | `/`                              |                                                      |
+| `/login`                                | `/login`                         |                                                      |
+| `/login/kakao`                          | `/login/kakao`                   | **유지**: 카카오 콘솔의 Redirect URI                 |
+| `/signup`                               | `/signup`                        |                                                      |
+| `/reset-password?token=`                | `/reset-password?token=`         | **유지**: 재설정 메일 링크                           |
+| `/team`                                 | `/teams`                         | 소속 팀이 없을 때의 안내. 팀이 있으면 첫 팀으로 이동 |
+| `/team-creation`                        | `/teams/new`                     |                                                      |
+| `/team-join`                            | `/teams/join`                    |                                                      |
+| `/team/[teamId]`                        | `/teams/[teamId]`                |                                                      |
+| `/team/[teamId]/edit`                   | `/teams/[teamId]/edit`           |                                                      |
+| `/team/[teamId]/task-list/[taskListId]` | `/teams/[teamId]/lists/[listId]` |                                                      |
+| `?task-id=12`                           | `?task=12`                       | 할 일 상세 패널                                      |
+| `?w=true`                               | `?modal=new-task`                | 할 일 생성 모달                                      |
+| `?date=<ISO>`                           | `?date=2026-10-05`               | 타임존 문제도 함께 줄어듦 (커밋 050a061 참고)        |
+| `/dashboard`                            | `/board`                         | 검색어는 Zustand에서 `?q=`, 정렬은 `?sort=like`로    |
+| `/dashboard/write`                      | `/board/new`                     |                                                      |
+| `/dashboard/[id]`                       | `/board/[articleId]`             |                                                      |
+| `/my-page`                              | `/account`                       |                                                      |
+| `/my-history`                           | `/history`                       |                                                      |
 
 규칙은 세 가지입니다.
+
 - 컬렉션은 복수형으로 씁니다 (`/teams`).
 - 생성은 `/new`, 수정은 `/edit`으로 씁니다.
 - 화면 상태(모달, 선택된 항목, 필터)는 쿼리 파라미터에 둡니다.
@@ -147,21 +150,25 @@ async redirects() {
 ## Alternatives Considered
 
 ### URL은 그대로 두고 폴더만 정리
+
 - Pros: 외부 링크·북마크 영향 없음, 작업량이 적음
 - Cons: `/dashboard`=게시판, `/team-creation` 같은 불일치가 계속 남음
 - Rejected: redirects로 호환할 수 있어 URL 변경 비용이 낮음
 
 ### 할 일 상세를 Intercepting + Parallel Route로 (`/teams/[teamId]/lists/[listId]/tasks/[taskId]`)
+
 - Pros: 상세가 독립 URL이 되고, 새로고침하면 전체 페이지로 열 수 있음
 - Cons: `@modal` 슬롯과 `(.)` 인터셉트 폴더가 생겨 구조가 복잡해짐. 지금의 쿼리 방식으로도 딥링크는 이미 됨
 - Rejected (보류): 상세 화면을 단독 페이지로 보여줄 필요가 생기면 다시 검토
 
 ### `/login/kakao` → `/oauth/kakao/callback`
+
 - Pros: 의미가 더 명확함
 - Cons: 카카오 개발자 콘솔, `.env`, Vercel 환경변수를 동시에 바꿔야 하고, 배포 타이밍이 어긋나면 로그인이 깨짐
 - Rejected: 얻는 것에 비해 위험이 큼
 
 ### 팀을 `/[teamId]`처럼 최상위 경로로
+
 - Pros: URL이 짧아짐
 - Cons: `/login`, `/board` 같은 정적 경로와 같은 단계에서 충돌함
 - Rejected
