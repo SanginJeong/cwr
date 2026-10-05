@@ -494,6 +494,106 @@ export type Database = {
           },
         ]
       }
+      team_post_comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: number
+          post_id: number
+          updated_at: string
+          writer_id: number | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: never
+          post_id: number
+          updated_at?: string
+          writer_id?: number | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: never
+          post_id?: number
+          updated_at?: string
+          writer_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "team_post_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "team_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_post_comments_writer_id_fkey"
+            columns: ["writer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_posts: {
+        Row: {
+          content: string
+          created_at: string
+          group_id: number
+          id: number
+          image: string | null
+          is_notice: boolean
+          title: string
+          updated_at: string
+          writer_id: number | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          group_id: number
+          id?: never
+          image?: string | null
+          is_notice?: boolean
+          title: string
+          updated_at?: string
+          writer_id?: number | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          group_id?: number
+          id?: never
+          image?: string | null
+          is_notice?: boolean
+          title?: string
+          updated_at?: string
+          writer_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_posts_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_posts_writer_id_fkey"
+            columns: ["writer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       article_comment_view: {
@@ -578,6 +678,73 @@ export type Database = {
           {
             foreignKeyName: "task_comments_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_post_comment_view: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          id: number | null
+          post_id: number | null
+          updated_at: string | null
+          writer_id: number | null
+          writer_image: string | null
+          writer_nickname: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "team_post_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "team_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_post_comments_writer_id_fkey"
+            columns: ["writer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_post_view: {
+        Row: {
+          comment_count: number | null
+          content: string | null
+          created_at: string | null
+          group_id: number | null
+          id: number | null
+          image: string | null
+          is_notice: boolean | null
+          title: string | null
+          updated_at: string | null
+          writer_id: number | null
+          writer_image: string | null
+          writer_nickname: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_posts_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_posts_writer_id_fkey"
+            columns: ["writer_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -685,6 +852,10 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      set_team_post_notice: {
+        Args: { p_is_notice: boolean; p_post_id: number }
+        Returns: undefined
+      }
       task_json: {
         Args: { p_task: Database["public"]["Tables"]["tasks"]["Row"] }
         Returns: Json
@@ -693,6 +864,7 @@ export type Database = {
         Args: { p_date?: string; p_task_list_id: number }
         Returns: Json
       }
+      team_post_group_id: { Args: { p_post_id: number }; Returns: number }
       today_kst: { Args: never; Returns: string }
       update_my_profile: {
         Args: { p_image?: string; p_nickname?: string }
