@@ -44,8 +44,8 @@ const LoginForm = () => {
           onSuccess: () => {
             success("로그인되었습니다.");
           },
-          onError: () => {
-            error("이메일 혹은 비밀번호를 확인해주세요.");
+          onError: (err) => {
+            error(err.message || "이메일 혹은 비밀번호를 확인해주세요.");
           },
         },
       );
