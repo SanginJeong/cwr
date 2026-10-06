@@ -29,3 +29,17 @@ export const canAccessTeamOnServer = async (teamId: string): Promise<boolean | n
   const { data: group } = await supabase.from("groups").select("id").eq("id", Number(teamId)).maybeSingle();
   return !!group;
 };
+
+/** 내가 볼 수 있는 첫 번째 팀. 인사담당자는 소속이 없어도 회사의 모든 팀을 본다 (RLS) */
+export const getServerFirstVisibleTeamId = async (): Promise<number | null> => {
+  const supabase = await getServerSupabase();
+  const { data } = await supabase.from("groups").select("id").order("id").limit(1).maybeSingle();
+  return data?.id ?? null;
+};
+
+/** 인사담당자인지. 비로그인이거나 실패하면 false */
+export const isServerHrAdmin = async (): Promise<boolean> => {
+  const supabase = await getServerSupabase();
+  const { data } = await supabase.rpc("is_hr_admin");
+  return data === true;
+};

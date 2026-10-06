@@ -1,6 +1,5 @@
 import { LoginForm } from "@/features/auth/login";
 import { CenteredCardLayout } from "@/shared/ui/centered-card-layout";
-import { SocialAuthSection } from "@/features/auth/kakao-login";
 
 const LoginPage = () => {
   return (
@@ -10,7 +9,6 @@ const LoginPage = () => {
       titleClassName="text-xl-bold"
     >
       <LoginForm />
-      <SocialAuthSection mode="login" />
     </CenteredCardLayout>
   );
 };

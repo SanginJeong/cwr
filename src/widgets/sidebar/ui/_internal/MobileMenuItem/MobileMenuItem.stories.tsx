@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import type { Membership } from "@/shared/api/types/UserType";
 import MobileMenuItem from "./MobileMenuItem";
 
 const meta: Meta<typeof MobileMenuItem> = {
@@ -14,21 +13,11 @@ const meta: Meta<typeof MobileMenuItem> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const mockMembership = {
-  groupId: "1239",
-  group: {
-    teamId: "1",
-    updatedAt: "2025-11-01T12:00:00Z",
-    createdAt: "2025-05-01T09:30:00Z",
-    image: "/TEST_IMG/image-1.jpg",
-    name: "CodeIt",
-    id: 101,
-  },
-} as unknown as Membership;
+const mockTeam = { id: 101, name: "CodeIt" };
 
 export const Open: Story = {
   args: {
-    membership: mockMembership,
+    team: mockTeam,
     isOpen: true,
   },
   decorators: [
@@ -42,7 +31,7 @@ export const Open: Story = {
 
 export const Close: Story = {
   args: {
-    membership: mockMembership,
+    team: mockTeam,
     isOpen: false,
   },
   decorators: [

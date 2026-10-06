@@ -36,13 +36,13 @@ export interface PatchGroupRequest {
 
 export type PatchGroupResponse = Group;
 
-export interface GetInvitationRequest {
-  id: number;
-}
-
-export type GetInvitationResponse = string;
-
 export interface DeleteMemberRequest {
   id: number;
   memberUserId: number;
+}
+
+/** 사이드바 팀 목록 등 이름만 필요한 곳 */
+export interface TeamSummary {
+  id: number;
+  name: string;
 }

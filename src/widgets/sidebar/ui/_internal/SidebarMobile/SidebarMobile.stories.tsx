@@ -38,7 +38,13 @@ const meta: Meta<typeof SidebarMobile> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const TEAMS_MOCK = [
+  { id: 101, name: "CodeIt" },
+  { id: 102, name: "디자인팀" },
+];
+
 const USER_MOCK_DATA = {
+  companyRole: "EMPLOYEE" as const,
   teamId: "1",
   image: "/TEST_IMG/image-1.jpg",
   nickname: "안해나",
@@ -86,6 +92,8 @@ const InteractiveTemplate: Story = {
   args: {
     isOpen: false,
     user: USER_MOCK_DATA,
+    teams: TEAMS_MOCK,
+    isHrAdmin: false,
   },
   render: function Render(args) {
     const [isOpen, setIsOpen] = useState(args.isOpen);
@@ -121,6 +129,8 @@ export const Default: Story = {
     ...InteractiveTemplate.args,
     isOpen: true,
     user: USER_MOCK_DATA,
+    teams: TEAMS_MOCK,
+    isHrAdmin: false,
   },
 };
 
@@ -130,5 +140,7 @@ export const NoUser: Story = {
     ...InteractiveTemplate.args,
     isOpen: true,
     user: null,
+    teams: [],
+    isHrAdmin: false,
   },
 };

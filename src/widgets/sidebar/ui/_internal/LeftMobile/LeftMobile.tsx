@@ -9,7 +9,7 @@ import AddTeamButton from "../AddTeamButton/AddTeamButton";
 import MobileMenuItem from "../MobileMenuItem/MobileMenuItem";
 import { ROUTES } from "@/shared/config/routes";
 
-const LeftMobile = ({ isOpen, handleOpenDropdown, user }: SidebarProps) => {
+const LeftMobile = ({ isOpen, handleOpenDropdown, teams, isHrAdmin }: SidebarProps) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -41,8 +41,8 @@ const LeftMobile = ({ isOpen, handleOpenDropdown, user }: SidebarProps) => {
               aria-label="사이드바 닫기"
             />
 
-            {user?.memberships.map((membership) => (
-              <MobileMenuItem key={membership.groupId} membership={membership} isOpen={isOpen} />
+            {teams.map((team) => (
+              <MobileMenuItem key={team.id} team={team} isOpen={isOpen} />
             ))}
 
             <hr />
@@ -50,7 +50,7 @@ const LeftMobile = ({ isOpen, handleOpenDropdown, user }: SidebarProps) => {
             <div className="w-full">
               <SidebarLink title="자유게시판" isOpen={isOpen} href={ROUTES.board} iconName="board" />
             </div>
-            <AddTeamButton />
+            {isHrAdmin && <AddTeamButton />}
           </motion.nav>
         </>
       )}

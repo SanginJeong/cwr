@@ -15,7 +15,7 @@ const usePostCreateTeam = () => {
       success("팀 생성 완료");
       router.push(ROUTES.team(data.id));
 
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["groups", "visible"] });
     },
     onError: (err: Error) => {
       const message = err.message || "팀 생성에 실패했습니다.";

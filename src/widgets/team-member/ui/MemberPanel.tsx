@@ -5,11 +5,10 @@ import { useParams } from "next/navigation";
 import { useGetGroups } from "@/entities/team";
 import { DeleteMemberModal } from "@/features/team/manage-member";
 import { GroupMember } from "@/shared/api/types/GroupData";
-import InviteCard from "./_internal/InviteCard";
 import MemberList from "./_internal/MemberList";
 
 /**
- * 팀 페이지의 "팀 초대하기"와 "멤버" 영역.
+ * 팀 페이지의 "멤버" 영역. 초대 링크는 없다 (멤버 배정은 인사담당자, ADR-006).
  * PC에서는 진행 상황 오른쪽, 태블릿·모바일에서는 진행 상황 아래에 놓인다 (views/team).
  */
 const MemberPanel = () => {
@@ -26,7 +25,6 @@ const MemberPanel = () => {
       aria-label="팀 멤버"
       className="w-full pc:w-[320px] shrink-0 grid gap-4 tablet:grid-cols-2 pc:flex pc:flex-col"
     >
-      <InviteCard groupId={groupId} />
       <MemberList groupId={groupId} members={group.members} onClickDelete={setSelectedMember} />
 
       <DeleteMemberModal

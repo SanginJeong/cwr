@@ -10,7 +10,7 @@ interface MemberRowProps {
   member: GroupMember;
   groupId: number;
   myUserId?: number;
-  /** 있으면 내보내기 메뉴를 보여준다 (관리자가 MEMBER를 볼 때) */
+  /** 있으면 팀에서 제외하는 메뉴를 보여준다 (인사담당자가 볼 때, ADR-006) */
   onClickDelete?: (member: GroupMember) => void;
 }
 
@@ -26,7 +26,7 @@ const MemberRow = ({ member, groupId, myUserId, onClickDelete }: MemberRowProps)
           <span className="truncate">{member.userName}</span>
           {isMe && <span className="text-xs-regular text-text-default">(나)</span>}
           {member.role === "ADMIN" && (
-            <span className="shrink-0 rounded px-1.5 text-xs-medium bg-brand-secondary text-icon-brand">관리자</span>
+            <span className="shrink-0 rounded px-1.5 text-xs-medium bg-brand-secondary text-icon-brand">팀장</span>
           )}
         </p>
         <p className="text-xs-regular text-text-secondary truncate">
@@ -37,7 +37,7 @@ const MemberRow = ({ member, groupId, myUserId, onClickDelete }: MemberRowProps)
         <Dropdown
           iconName="kebab"
           iconClassName="size-4 tablet:size-4"
-          options={[{ label: "내보내기", action: () => onClickDelete(member) }]}
+          options={[{ label: "팀에서 제외", action: () => onClickDelete(member) }]}
           placement="bottom-right"
         />
       )}

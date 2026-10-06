@@ -12,7 +12,7 @@ import { ReactNode } from "react";
  * ```tsx
  * <CenteredCardLayout className="min-w-[343px] min-h-[692px] max-h-[840px] max-w-[550px]">
  *  <h1>로그인</h1>
- *  <SignUpForm />
+ *  <LoginForm />
  *  <SocialSingUp />
  * </CenteredCardLayout>
  */

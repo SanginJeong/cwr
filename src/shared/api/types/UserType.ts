@@ -24,8 +24,12 @@ export interface Membership {
   userId: number;
 }
 
+/** 회사 역할 (ADR-006). 팀장은 회사 역할이 아니라 팀마다의 memberships.role = "ADMIN" */
+export type CompanyRole = "HR_ADMIN" | "EMPLOYEE";
+
 export interface User {
-  /** 사용자가 고른 접속 상태. Supabase 모드에서만 온다 */
+  companyRole: CompanyRole;
+  /** 사용자가 고른 접속 상태 */
   presenceStatus?: PresenceStatus;
   teamId: string;
   image: string;

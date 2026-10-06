@@ -6,7 +6,6 @@ import { SaveChangesSnackbar } from "@/shared/ui/save-changes-snackbar";
 import { CenteredCardLayout } from "@/shared/ui/centered-card-layout";
 import { OverlayLoading } from "@/shared/ui/overlay-loading";
 import MyProfileForm from "../MyProfileForm/MyProfileForm";
-import DeleteAccountButton from "../DeleteAccountButton/DeleteAccountButton";
 import PasswordInputSection from "../PasswordInputSection/PasswordInputSection";
 import useMyProfileSettings from "../../model/useMyProfileSettings";
 
@@ -60,7 +59,6 @@ const MyPageContent = ({ userData }: { userData: UserData }) => {
         }}
       />
       <PasswordInputSection />
-      <DeleteAccountButton />
     </CenteredCardLayout>
   );
 };

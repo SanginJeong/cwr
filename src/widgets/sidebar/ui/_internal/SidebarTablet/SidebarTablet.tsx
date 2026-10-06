@@ -10,7 +10,15 @@ import SidebarLink from "../SidebarLink/SidebarLink";
 import { motion } from "framer-motion";
 import { ROUTES } from "@/shared/config/routes";
 
-const SidebarTablet = ({ user, isOpen, handleOpenDropdown, options, myStatus }: SidebarDropdownProps) => {
+const SidebarTablet = ({
+  user,
+  teams,
+  isHrAdmin,
+  isOpen,
+  handleOpenDropdown,
+  options,
+  myStatus,
+}: SidebarDropdownProps) => {
   return (
     <motion.div
       initial={false}
@@ -53,19 +61,20 @@ const SidebarTablet = ({ user, isOpen, handleOpenDropdown, options, myStatus }: 
           <section className="w-full flex-1 min-h-0 flex flex-col items-center justify-start gap-3">
             {user && (
               <>
-                {user.memberships.length > 0 && (
+                {teams.length > 0 && (
                   <>
-                    <SidebarDropdown isOpen={isOpen} membership={user.memberships} />
+                    <SidebarDropdown isOpen={isOpen} teams={teams} />
                     <hr className={cn("w-full text-background-tertiary", !isOpen && "hidden")} />
                   </>
                 )}
 
                 <SidebarLink title="자유게시판" isOpen={isOpen} href={ROUTES.board} iconName="board" />
-                {isOpen ? (
-                  <AddTeamButton />
-                ) : (
-                  <SidebarLink title="팀 추가하기" isOpen={isOpen} href={ROUTES.teamNew} iconName="plus" />
-                )}
+                {isHrAdmin &&
+                  (isOpen ? (
+                    <AddTeamButton />
+                  ) : (
+                    <SidebarLink title="팀 추가하기" isOpen={isOpen} href={ROUTES.teamNew} iconName="plus" />
+                  ))}
               </>
             )}
           </section>
@@ -87,7 +96,7 @@ const SidebarTablet = ({ user, isOpen, handleOpenDropdown, options, myStatus }: 
                       <div className="flex flex-col items-start gap-[2px]">
                         <span className="text-text-primary text-lg-medium truncate max-w-[120px]">{user.nickname}</span>
                         <span className="text-slate-400 text-md-medium truncate max-w-[120px]">
-                          {user.memberships?.[0]?.group?.name ?? "소속없음"}
+                          {isHrAdmin ? "인사담당자" : (user.memberships?.[0]?.group?.name ?? "소속없음")}
                         </span>
                       </div>
                     )}

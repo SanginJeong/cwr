@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/shared/ui/icon";
 import useForm from "@/shared/lib/useForm/useForm";
@@ -14,7 +13,6 @@ import { InputPassword } from "@/shared/ui/input";
 import { BaseButton } from "@/shared/ui/button";
 import { toastKit } from "@/shared/lib/toastKit";
 import { validateEmail, validatePassword } from "@/shared/lib/Validation";
-import { ROUTES } from "@/shared/config/routes";
 
 const loginRules: ValidationRules = {
   email: (value) => validateEmail(value),
@@ -97,12 +95,8 @@ const LoginForm = () => {
           <BaseButton type="submit" variant="solid" size="large" disabled={!meta.isValid || meta.isLoading}>
             {meta.isLoading ? "로그인 중..." : "로그인"}
           </BaseButton>
-          <div className="flex text-md-medium tablet:text-lg-medium">
-            <span className="mr-3 text-text-primary">아직 계정이 없으신가요?</span>
-            <Link href={ROUTES.signup} className="text-brand-primary">
-              가입하기
-            </Link>
-          </div>
+          {/* 공개 가입은 없다. 계정은 인사담당자가 만든다 (ADR-006) */}
+          <p className="text-md-medium text-text-default">계정이 없다면 인사담당자에게 문의해주세요.</p>
         </div>
       </form>
       <ResetPassword isOpen={isOpen} onClose={() => setIsOpen(false)} />

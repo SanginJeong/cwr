@@ -8,7 +8,15 @@ import LeftMobile from "../LeftMobile/LeftMobile";
 import { ROUTES } from "@/shared/config/routes";
 import { StatusDot } from "@/shared/ui/profile";
 
-const SidebarMobile = ({ user, isOpen, handleOpenDropdown, options, myStatus }: SidebarDropdownProps) => {
+const SidebarMobile = ({
+  user,
+  teams,
+  isHrAdmin,
+  isOpen,
+  handleOpenDropdown,
+  options,
+  myStatus,
+}: SidebarDropdownProps) => {
   return (
     <>
       <nav
@@ -57,7 +65,13 @@ const SidebarMobile = ({ user, isOpen, handleOpenDropdown, options, myStatus }: 
         )}
       </nav>
 
-      <LeftMobile isOpen={isOpen} handleOpenDropdown={handleOpenDropdown} user={user} />
+      <LeftMobile
+        isOpen={isOpen}
+        handleOpenDropdown={handleOpenDropdown}
+        user={user}
+        teams={teams}
+        isHrAdmin={isHrAdmin}
+      />
     </>
   );
 };

@@ -165,45 +165,6 @@ export type Database = {
         }
         Relationships: []
       }
-      invitations: {
-        Row: {
-          created_at: string
-          created_by: number | null
-          expires_at: string
-          group_id: number
-          token: string
-        }
-        Insert: {
-          created_at?: string
-          created_by?: number | null
-          expires_at?: string
-          group_id: number
-          token?: string
-        }
-        Update: {
-          created_at?: string
-          created_by?: number | null
-          expires_at?: string
-          group_id?: number
-          token?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "invitations_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "invitations_group_id_fkey"
-            columns: ["group_id"]
-            isOneToOne: false
-            referencedRelation: "groups"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       memberships: {
         Row: {
           created_at: string
@@ -243,30 +204,36 @@ export type Database = {
       profiles: {
         Row: {
           auth_id: string
+          company_role: string
           created_at: string
           email: string
           id: number
           image: string | null
+          is_active: boolean
           nickname: string
           presence_status: string
           updated_at: string
         }
         Insert: {
           auth_id: string
+          company_role?: string
           created_at?: string
           email: string
           id?: never
           image?: string | null
+          is_active?: boolean
           nickname: string
           presence_status?: string
           updated_at?: string
         }
         Update: {
           auth_id?: string
+          company_role?: string
           created_at?: string
           email?: string
           id?: never
           image?: string | null
+          is_active?: boolean
           nickname?: string
           presence_status?: string
           updated_at?: string
@@ -756,7 +723,6 @@ export type Database = {
       }
     }
     Functions: {
-      accept_invitation: { Args: { p_token: string }; Returns: Json }
       can_access_task: { Args: { p_task_id: number }; Returns: boolean }
       can_access_task_list: {
         Args: { p_task_list_id: number }
@@ -767,7 +733,6 @@ export type Database = {
         Args: { p_image?: string; p_name: string }
         Returns: Json
       }
-      create_invitation: { Args: { p_group_id: number }; Returns: string }
       create_recurring: {
         Args: {
           p_description?: string
@@ -781,7 +746,6 @@ export type Database = {
         Returns: Json
       }
       current_profile_id: { Args: never; Returns: number }
-      delete_account: { Args: never; Returns: undefined }
       delete_task: { Args: { p_task_id: number }; Returns: undefined }
       get_group: { Args: { p_group_id: number }; Returns: Json }
       get_me: { Args: never; Returns: Json }
@@ -790,11 +754,12 @@ export type Database = {
         Args: { p_group: Database["public"]["Tables"]["groups"]["Row"] }
         Returns: Json
       }
+      is_active_profile: { Args: { p_profile_id: number }; Returns: boolean }
       is_admin: { Args: { p_group_id: number }; Returns: boolean }
+      is_hr_admin: { Args: never; Returns: boolean }
       is_member: { Args: { p_group_id: number }; Returns: boolean }
       is_nickname_available: { Args: { p_nickname: string }; Returns: boolean }
       kst_midnight: { Args: { p_date: string }; Returns: string }
-      leave_group: { Args: { p_group_id: number }; Returns: undefined }
       member_json: {
         Args: {
           p_membership: Database["public"]["Tables"]["memberships"]["Row"]
@@ -855,6 +820,10 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      set_employee_active: {
+        Args: { p_active: boolean; p_user_id: number }
+        Returns: string
       }
       set_team_post_notice: {
         Args: { p_is_notice: boolean; p_post_id: number }
