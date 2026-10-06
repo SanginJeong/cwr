@@ -69,14 +69,14 @@
   - 초대 RPC·테이블 제거. 기록 보존을 위해 회원 탈퇴(`delete_account`)·팀 나가기(`leave_group`)도 제거
   - 새 계정은 비활성으로 시작 (공개 가입을 안 꺼도 아무것도 못 함)
 - [x] 직원 등록 BFF `POST /api/admin/employees`, 퇴사 처리 BFF `PATCH /api/admin/employees/[userId]` (Auth ban). 화면은 H5
-- [ ] **(직접)** `supabase db push` → `npm run db:types` (지금 `database.types.ts`는 손으로 맞춰 둠)
-- [ ] **(직접)** Supabase Auth의 "Allow new users to sign up" 끄기, Kakao provider 끄기
-- [ ] **(직접)** `.env.local`·Vercel에 `SUPABASE_SERVICE_ROLE_KEY` 추가, 첫 인사담당자 SQL로 지정 ([supabase/README.md](../supabase/README.md) §5)
+- [x] `supabase db push` → `npm run db:types` (손으로 맞춘 타입과 같음)
+- [x] Supabase Auth의 "Allow new users to sign up" 끄기, Kakao provider 끄기
+- [x] `.env`에 `SUPABASE_SERVICE_ROLE_KEY` 추가, 첫 인사담당자 SQL로 지정 ([supabase/README.md](../supabase/README.md) §5). Vercel 환경변수는 H6 배포 때
 - [x] 화면에서 제거: 회원가입, 팀 참여(`/teams/join`), 팀 페이지의 초대 카드, 카카오 버튼, 회원 탈퇴
   - 팀 만들기(`/teams/new`)는 지우지 않고 **인사담당자 전용**으로 남김 (H5에 팀 생성 화면이 없어서, ADR-006)
   - 팀 수정·삭제, "팀에서 제외" 메뉴도 인사담당자에게만. 사이드바 팀 목록은 인사담당자에게 전체
 - [x] 테스트: 역할별 권한 (직원·팀장·인사담당자·퇴사자) `supabase/tests/15_company_roles.test.sql`, 기존 테스트를 새 권한에 맞게 수정 (9/9 통과)
-- [ ] 브라우저 QA (db push 후): 인사담당자·팀장·직원으로 로그인해 사이드바·팀 페이지 메뉴 확인, BFF로 직원 등록·퇴사·복직
+- [x] 브라우저 QA: 인사담당자·팀장·퇴사자 13개 항목 통과, 버그 3건 수정 ([QA 결과](./qa/2026-10-06-h1-roles-qa.md))
 
 ### H2. 근태 도메인 (3~4일)
 
