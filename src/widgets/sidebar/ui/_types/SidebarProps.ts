@@ -9,6 +9,8 @@ export interface SidebarProps {
   teams: TeamSummary[];
   /** 팀 추가하기 버튼을 보여줄지 (ADR-006) */
   isHrAdmin: boolean;
+  /** 휴가 승인 메뉴 (팀장·인사담당자). 없으면 메뉴를 숨긴다 */
+  review?: { label: string; pendingCount: number };
   isOpen: boolean;
   handleOpenDropdown: (prev: boolean) => void;
 }

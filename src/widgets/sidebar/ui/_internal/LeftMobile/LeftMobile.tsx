@@ -10,7 +10,7 @@ import MobileMenuItem from "../MobileMenuItem/MobileMenuItem";
 import { ROUTES } from "@/shared/config/routes";
 import { ClockCard } from "@/features/attendance/clock";
 
-const LeftMobile = ({ isOpen, handleOpenDropdown, user, teams, isHrAdmin }: SidebarProps) => {
+const LeftMobile = ({ isOpen, handleOpenDropdown, user, teams, isHrAdmin, review }: SidebarProps) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -56,6 +56,18 @@ const LeftMobile = ({ isOpen, handleOpenDropdown, user, teams, isHrAdmin }: Side
             <div className="w-full">
               <SidebarLink title="자유게시판" isOpen={isOpen} href={ROUTES.board} iconName="board" />
             </div>
+            {review && (
+              <div className="w-full flex flex-col gap-1">
+                <span className="px-3 text-xs-semibold text-text-disabled">{review.label}</span>
+                <SidebarLink
+                  title="휴가 승인"
+                  isOpen={isOpen}
+                  href={ROUTES.approvals}
+                  iconName="check"
+                  badge={review.pendingCount}
+                />
+              </div>
+            )}
             {isHrAdmin && <AddTeamButton />}
           </motion.nav>
         </>
