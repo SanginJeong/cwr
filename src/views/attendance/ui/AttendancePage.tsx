@@ -11,6 +11,7 @@ import {
 } from "@/entities/attendance";
 import { useGetUser } from "@/entities/user";
 import { ClockCard } from "@/features/attendance/clock";
+import { RequestLeaveModal } from "@/features/attendance/request-leave";
 import { formatMonthLabel, monthRange, shiftMonth, toMonthKey } from "@/shared/lib/calendar";
 import { toKstDateString } from "@/shared/lib/kstDate";
 import { Icon } from "@/shared/ui/icon";
@@ -25,6 +26,7 @@ import LeaveSection from "./LeaveSection";
  */
 const AttendancePage = () => {
   const [month, setMonth] = useState(() => toMonthKey(toKstDateString(new Date())));
+  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
   const { from, to } = monthRange(month);
 
   const { data: me } = useGetUser();
@@ -106,12 +108,31 @@ const AttendancePage = () => {
               </div>
               <aside className="w-full pc:w-[340px] shrink-0 flex flex-col gap-4">
                 <ClockCard variant="panel" />
-                <LeaveSection leaves={sortedLeaves} isLoading={isLeavesLoading} />
+                <LeaveSection
+                  leaves={sortedLeaves}
+                  isLoading={isLeavesLoading}
+                  action={
+                    <button
+                      type="button"
+                      onClick={() => setIsLeaveModalOpen(true)}
+                      className="h-9 px-3.5 rounded-[10px] bg-brand-primary text-md-semibold text-text-inverse hover:bg-interaction-hover"
+                    >
+                      휴가 신청
+                    </button>
+                  }
+                />
               </aside>
             </div>
           </>
         )}
       </div>
+
+      <RequestLeaveModal
+        isOpen={isLeaveModalOpen}
+        onClose={() => setIsLeaveModalOpen(false)}
+        today={today}
+        leaves={leaves}
+      />
     </PageLayout>
   );
 };
