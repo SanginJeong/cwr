@@ -61,7 +61,7 @@ const SidebarTablet = ({
         </header>
 
         <nav className={cn("w-full flex-1 min-h-0 flex flex-col justify-between", isOpen ? "px-6" : "px-[10px]")}>
-          <section className="w-full flex-1 min-h-0 flex flex-col items-center justify-start gap-3">
+          <section className="w-full flex-1 min-h-0 flex flex-col items-center justify-start gap-3 overflow-y-auto pb-3">
             {user && (
               <>
                 {isOpen && <ClockCard variant="sidebar" className="w-full" />}
