@@ -16,3 +16,5 @@ export type { ClockState } from "./lib/describe";
 export * from "./api/attendance.supabase";
 export { attendanceKeys, useAttendanceRange, useLeaveRequests, useTodayAttendance } from "./api/queries";
 export type * from "./model/types";
+export { default as AttendanceChip, CHIP_DOT, CHIP_LABEL, CHIP_STYLE } from "./ui/AttendanceChip";
+export type { ChipKind } from "./ui/AttendanceChip";

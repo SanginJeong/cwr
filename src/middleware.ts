@@ -17,11 +17,11 @@ export async function middleware(req: NextRequest) {
     return redirect;
   };
 
-  // 이미 로그인한 유저가 로그인/회원가입 페이지 접근 시 차단
+  // 이미 로그인한 유저가 로그인 페이지에 오면 첫 화면(내 근태)으로
   // Supabase는 재설정 메일 링크로 로그인된 상태에서 새 비밀번호를 입력하므로 재설정 페이지는 열어 둔다
   const authOnlyRoutes = AUTH_ONLY_ROUTES.filter((route) => route !== ROUTES.resetPassword);
   if (isLoggedIn && authOnlyRoutes.includes(pathname)) {
-    return redirectTo(ROUTES.home);
+    return redirectTo(ROUTES.attendance);
   }
 
   // 비로그인 유저 -> 로그인 필요한 페이지 접근 시 차단
