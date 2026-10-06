@@ -862,10 +862,7 @@ export type Database = {
       }
     }
     Functions: {
-      admin_employees: {
-        Args: { p_from: string; p_to: string }
-        Returns: Json
-      }
+      admin_employees: { Args: { p_from: string; p_to: string }; Returns: Json }
       admin_policies: { Args: never; Returns: Json }
       admin_update_employee: {
         Args: {
@@ -995,8 +992,8 @@ export type Database = {
         Args: { p_date: string; p_reason?: string }
         Returns: Json
       }
-      require_login: { Args: never; Returns: number }
       require_hr_admin: { Args: never; Returns: number }
+      require_login: { Args: never; Returns: number }
       require_task: {
         Args: { p_task_id: number }
         Returns: {
