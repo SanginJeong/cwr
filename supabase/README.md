@@ -97,28 +97,34 @@ npm run db:types   # 연결된 프로젝트의 스키마로 src/shared/api/supab
 
 ## 프론트에서 호출할 때
 
-| 기존 API                                    | Supabase                                                             |
-| ------------------------------------------- | -------------------------------------------------------------------- |
-| `GET /user`                                 | `rpc('get_me')`                                                      |
-| `GET /groups/{id}`                          | `rpc('get_group', { p_group_id })`                                   |
-| `POST /groups`                              | `rpc('create_group', { p_name, p_image })` (인사담당자만)            |
-| `PATCH /groups/{id}`, `DELETE /groups/{id}` | `from('groups').update/delete` (인사담당자만)                        |
-| `DELETE /groups/{id}/member/{userId}`       | `from('memberships').delete()` (인사담당자만)                        |
-| 멤버 배정·팀장 지정                         | `from('memberships').insert/update({ role })` (인사담당자만)         |
-| 직원 등록                                   | `POST /api/admin/employees` (BFF)                                    |
-| 퇴사 처리·복직                              | `PATCH /api/admin/employees/{userId}` (BFF)                          |
-| `POST/PATCH/DELETE task-lists`              | `from('task_lists')`                                                 |
-| `GET .../tasks?date`                        | `rpc('tasks_for_date', { p_task_list_id, p_date })`                  |
-| `GET .../tasks/{id}`                        | `rpc('get_task', { p_task_id })`                                     |
-| `PATCH .../tasks/{id}`                      | `rpc('update_task', { p_task_id, p_name, p_description, p_done })`   |
-| `DELETE .../tasks/{id}`                     | `rpc('delete_task', { p_task_id })`                                  |
-| `POST .../recurring`                        | `rpc('create_recurring', {...})`                                     |
-| `GET /user/history`                         | `rpc('user_history')`                                                |
-| task 댓글                                   | 조회 `from('task_comment_view')`, 쓰기 `from('task_comments')`       |
-| 게시글                                      | 조회 `from('article_view')`, 쓰기 `from('articles')`                 |
-| 게시글 좋아요                               | `from('article_likes').insert/delete`                                |
-| 게시글 댓글                                 | 조회 `from('article_comment_view')`, 쓰기 `from('article_comments')` |
-| `POST /images/upload`                       | `storage.from('images').upload('{auth uid}/{파일}', file)`           |
+| 기존 API                                    | Supabase                                                                                          |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `GET /user`                                 | `rpc('get_me')`                                                                                   |
+| `GET /groups/{id}`                          | `rpc('get_group', { p_group_id })`                                                                |
+| `POST /groups`                              | `rpc('create_group', { p_name, p_image })` (인사담당자만)                                         |
+| `PATCH /groups/{id}`, `DELETE /groups/{id}` | `from('groups').update/delete` (인사담당자만)                                                     |
+| `DELETE /groups/{id}/member/{userId}`       | `from('memberships').delete()` (인사담당자만)                                                     |
+| 멤버 배정·팀장 지정                         | `from('memberships').insert/update({ role })` (인사담당자만)                                      |
+| 직원 등록                                   | `POST /api/admin/employees` (BFF)                                                                 |
+| 출근 / 퇴근                                 | `rpc('clock_in')` / `rpc('clock_out')`                                                            |
+| 근태 조회 (엔진 입력)                       | `rpc('attendance_range', { p_from, p_to, p_user_id? })`                                           |
+| 팀 근태 (팀장·인사담당자)                   | `rpc('team_attendance_range', { p_group_id, p_from, p_to })`                                      |
+| 휴가 신청 / 취소 / 승인·반려                | `rpc('request_leave')` / `rpc('cancel_leave')` / `rpc('decide_leave')`                            |
+| 휴가 목록                                   | `from('leave_requests')` (본인·팀장·인사담당자 RLS)                                               |
+| 근태 정책                                   | `from('policies')` (쓰기는 인사담당자), `rpc('set_default_policy')`, `rpc('set_employee_policy')` |
+| 퇴사 처리·복직                              | `PATCH /api/admin/employees/{userId}` (BFF)                                                       |
+| `POST/PATCH/DELETE task-lists`              | `from('task_lists')`                                                                              |
+| `GET .../tasks?date`                        | `rpc('tasks_for_date', { p_task_list_id, p_date })`                                               |
+| `GET .../tasks/{id}`                        | `rpc('get_task', { p_task_id })`                                                                  |
+| `PATCH .../tasks/{id}`                      | `rpc('update_task', { p_task_id, p_name, p_description, p_done })`                                |
+| `DELETE .../tasks/{id}`                     | `rpc('delete_task', { p_task_id })`                                                               |
+| `POST .../recurring`                        | `rpc('create_recurring', {...})`                                                                  |
+| `GET /user/history`                         | `rpc('user_history')`                                                                             |
+| task 댓글                                   | 조회 `from('task_comment_view')`, 쓰기 `from('task_comments')`                                    |
+| 게시글                                      | 조회 `from('article_view')`, 쓰기 `from('articles')`                                              |
+| 게시글 좋아요                               | `from('article_likes').insert/delete`                                                             |
+| 게시글 댓글                                 | 조회 `from('article_comment_view')`, 쓰기 `from('article_comments')`                              |
+| `POST /images/upload`                       | `storage.from('images').upload('{auth uid}/{파일}', file)`                                        |
 
 - RLS에 막힌 update/delete는 **에러 없이 0건**으로 끝납니다. `.select()`로 결과 행을 받아서 비어 있으면 403/404로 처리하세요.
 - RPC 에러 코드: `42501` → 403, `PT404` → 404, `P0001` → 400 (메시지를 그대로 보여줘도 되는 문장). `P0002`는 PostgREST가 HTTP 500으로 돌려주므로 쓰지 않는다
