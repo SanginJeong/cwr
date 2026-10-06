@@ -5,7 +5,6 @@ import type { RealtimeChannel } from "@supabase/supabase-js";
 import { useGetUser } from "@/entities/user";
 import { selectMyStatus, usePresenceStore } from "@/entities/presence";
 import { getSupabase } from "@/shared/api/supabase/client";
-import { isSupabase } from "@/shared/config/backend";
 import type { PresenceStatus } from "@/shared/config/presence";
 import useIdleDetection from "./useIdleDetection";
 
@@ -34,7 +33,7 @@ const usePresenceSync = () => {
   const myStatusRef = useRef(myStatus);
   myStatusRef.current = myStatus;
 
-  const enabled = isSupabase && !!user;
+  const enabled = !!user;
   useIdleDetection(enabled);
 
   // 다른 기기에서 고른 상태를 이어받는다
@@ -48,7 +47,7 @@ const usePresenceSync = () => {
   const groupIdsKey = user?.memberships.map((m) => m.groupId).join(",") ?? "";
 
   useEffect(() => {
-    if (!isSupabase || !userId) return;
+    if (!userId) return;
 
     const supabase = getSupabase();
     const groupIds = groupIdsKey ? groupIdsKey.split(",").map(Number) : [];

@@ -31,9 +31,21 @@ interface SelectProps<T> {
   onChange: (value: T) => void;
   className?: string;
   textAlign?: "left" | "center";
+  /**
+   * overlay(기본): 목록이 아래 내용 위에 뜬다.
+   * inline: 목록이 문서 흐름 안에 펼쳐져 아래 내용을 밀어낸다. 스크롤되는 모달 안에서 잘리지 않게 할 때.
+   */
+  menuPlacement?: "overlay" | "inline";
 }
 
-const Select = <T,>({ value, options, onChange, className, textAlign = "left" }: SelectProps<T>) => {
+const Select = <T,>({
+  value,
+  options,
+  onChange,
+  className,
+  textAlign = "left",
+  menuPlacement = "overlay",
+}: SelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement | null>(null);
 
@@ -70,7 +82,12 @@ const Select = <T,>({ value, options, onChange, className, textAlign = "left" }:
       </button>
 
       {isOpen && (
-        <ul className="absolute left-0 top-full mt-1 w-full bg-background-primary border rounded-xl shadow-md">
+        <ul
+          className={cn(
+            "mt-1 w-full bg-background-primary border rounded-xl shadow-md",
+            menuPlacement === "overlay" && "absolute left-0 top-full",
+          )}
+        >
           {options.map((option) => (
             <li key={option.label}>
               <button

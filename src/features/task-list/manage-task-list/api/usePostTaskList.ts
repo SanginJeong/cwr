@@ -17,7 +17,7 @@ const usePostTaskList = () => {
       const { id } = data;
       const { groupId } = variables;
 
-      success("할 일 추가 성공");
+      success("목록 추가 성공");
       queryClient.invalidateQueries({
         queryKey: ["groups", Number(groupId)],
       });
@@ -26,7 +26,7 @@ const usePostTaskList = () => {
     },
 
     onError: () => {
-      error("할 일 추가 실패");
+      error("목록 추가 실패");
     },
   });
 };

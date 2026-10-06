@@ -21,7 +21,6 @@
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.109.0",
     "@tanstack/react-query": "^5.90.5",
-    "axios": "^1.13.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.23.24",

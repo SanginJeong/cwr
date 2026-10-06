@@ -3,7 +3,6 @@
 import { selectMyStatus, usePresenceStore } from "@/entities/presence";
 import { useCheckAdmin, useGetUser } from "@/entities/user";
 import { GroupMember } from "@/shared/api/types/GroupData";
-import { isSupabase } from "@/shared/config/backend";
 import { PresenceStatus } from "@/shared/config/presence";
 import MemberRow from "./MemberRow";
 
@@ -25,15 +24,12 @@ const MemberList = ({ groupId, members, onClickDelete }: MemberListProps) => {
     member.userId === me?.id ? myStatus : (teamStatuses?.[member.userId] ?? "offline");
 
   // 활동 중 → 자리 비움 → 오프라인, 같은 상태면 관리자 먼저
-  const sorted = isSupabase
-    ? [...members].sort(
-        (a, b) =>
-          STATUS_ORDER[statusOf(a)] - STATUS_ORDER[statusOf(b)] ||
-          Number(b.role === "ADMIN") - Number(a.role === "ADMIN"),
-      )
-    : members;
+  const sorted = [...members].sort(
+    (a, b) =>
+      STATUS_ORDER[statusOf(a)] - STATUS_ORDER[statusOf(b)] || Number(b.role === "ADMIN") - Number(a.role === "ADMIN"),
+  );
 
-  const onlineCount = isSupabase ? members.filter((member) => statusOf(member) !== "offline").length : null;
+  const onlineCount = members.filter((member) => statusOf(member) !== "offline").length;
 
   return (
     <section
@@ -44,7 +40,7 @@ const MemberList = ({ groupId, members, onClickDelete }: MemberListProps) => {
         <h2 id="team-members-title" className="flex gap-2 text-lg-medium text-text-primary">
           멤버 <span className="text-lg-regular text-text-default">{members.length}</span>
         </h2>
-        {onlineCount !== null && <span className="text-xs-regular text-text-default">접속 중 {onlineCount}</span>}
+        <span className="text-xs-regular text-text-default">접속 중 {onlineCount}</span>
       </header>
       {/* 멤버가 많아도 진행 상황 카드 높이를 크게 넘기지 않게 스크롤한다 */}
       <ul className="flex flex-col gap-3 max-h-[200px] overflow-y-auto pr-1">

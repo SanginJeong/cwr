@@ -1,4 +1,4 @@
-import { AxiosError } from "axios";
+import { ApiError } from "@/shared/api/supabase/errors";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postTeamJoin from "./postTeamJoin";
@@ -16,7 +16,7 @@ const usePostTeamJoin = (options?: UsePostTeamJoinOptions) => {
   const queryClient = useQueryClient();
   const { success, error } = toastKit();
 
-  return useMutation<PostTeamJoinResponse, AxiosError, PostTeamJoinRequest>({
+  return useMutation<PostTeamJoinResponse, Error, PostTeamJoinRequest>({
     mutationFn: postTeamJoin,
     onSuccess: (data) => {
       success("팀에 성공적으로 참여했습니다!");
@@ -25,28 +25,17 @@ const usePostTeamJoin = (options?: UsePostTeamJoinOptions) => {
 
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
-    onError: (errors) => {
-      const axiosError = errors as AxiosError<{ message?: string }>;
-
-      if (axiosError.response?.status === 401) {
+    onError: (err) => {
+      if (err instanceof ApiError && (err.status === 401 || err.status === 403)) {
         error("로그인이 필요합니다.");
         router.push(ROUTES.login);
         return;
       }
 
-      if (axiosError.response?.status === 404) {
-        error("유효하지 않은 팀 링크입니다.");
-        return;
-      }
+      // 잘못된·만료된 링크, 이미 참여한 팀 등은 서버가 사용자용 문장으로 알려준다 (accept_invitation)
+      error(err.message || "팀 참여에 실패했습니다.");
 
-      if (axiosError.response?.status === 409) {
-        error("이미 참여한 팀입니다.");
-        return;
-      }
-
-      error(axiosError.response?.data?.message || "팀 참여에 실패했습니다.");
-
-      options?.onError?.(axiosError);
+      options?.onError?.(err);
     },
   });
 };

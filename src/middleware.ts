@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { AUTH_ONLY_ROUTES, PROTECTED_ROUTES, ROUTES } from "@/shared/config/routes";
-import { isSupabase } from "@/shared/config/backend";
 import { updateSupabaseSession } from "@/shared/api/supabase/middleware";
 
 // 로그인 여부로만 리다이렉트한다. 팀 존재 확인 등 API 호출이 필요한 검사는
@@ -9,14 +8,7 @@ import { updateSupabaseSession } from "@/shared/api/supabase/middleware";
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  let response = NextResponse.next();
-  let isLoggedIn: boolean;
-
-  if (isSupabase) {
-    ({ response, isLoggedIn } = await updateSupabaseSession(req));
-  } else {
-    isLoggedIn = !!req.cookies.get("accessToken")?.value;
-  }
+  const { response, isLoggedIn } = await updateSupabaseSession(req);
 
   const redirectTo = (path: string) => {
     const redirect = NextResponse.redirect(new URL(path, req.url));
@@ -27,9 +19,7 @@ export async function middleware(req: NextRequest) {
 
   // 이미 로그인한 유저가 로그인/회원가입 페이지 접근 시 차단
   // Supabase는 재설정 메일 링크로 로그인된 상태에서 새 비밀번호를 입력하므로 재설정 페이지는 열어 둔다
-  const authOnlyRoutes = isSupabase
-    ? AUTH_ONLY_ROUTES.filter((route) => route !== ROUTES.resetPassword)
-    : AUTH_ONLY_ROUTES;
+  const authOnlyRoutes = AUTH_ONLY_ROUTES.filter((route) => route !== ROUTES.resetPassword);
   if (isLoggedIn && authOnlyRoutes.includes(pathname)) {
     return redirectTo(ROUTES.home);
   }

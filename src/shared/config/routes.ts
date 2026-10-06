@@ -7,7 +7,6 @@ type Id = number | string;
 export const ROUTES = {
   home: "/",
   login: "/login",
-  kakaoCallback: "/login/kakao",
   /** Supabase 인증 콜백 (카카오, 비밀번호 재설정 메일). app/auth/callback/route.ts */
   authCallback: "/auth/callback",
   signup: "/signup",

@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/config/routes";
 import { usePresenceStatusOptions } from "@/features/presence/set-status";
 import { selectMyStatus, usePresenceStore } from "@/entities/presence";
-import { isSupabase } from "@/shared/config/backend";
 
 /**
  * @author jikwon
@@ -46,7 +45,7 @@ const Sidebar = () => {
   };
 
   const options = [
-    // 접속 상태 선택 (Supabase 모드에서만)
+    // 접속 상태 선택
     ...statusOptions,
     { label: "마이 히스토리", action: () => router.push(ROUTES.history) },
     { label: "계정 설정", action: () => router.push(ROUTES.account) },
@@ -61,14 +60,14 @@ const Sidebar = () => {
         isOpen={isOpen}
         handleOpenDropdown={handleOpenDropdown}
         options={options}
-        myStatus={isSupabase ? myStatus : undefined}
+        myStatus={myStatus}
       />
       <SidebarMobile
         user={user || null}
         isOpen={isOpen}
         handleOpenDropdown={handleOpenDropdown}
         options={options}
-        myStatus={isSupabase ? myStatus : undefined}
+        myStatus={myStatus}
       />
     </>
   );

@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import { AxiosError } from "axios";
 import { toastKit } from "@/shared/lib/toastKit";
 import { validateTeamName } from "@/shared/lib/Validation";
 import { useGetUser } from "@/entities/user";
@@ -63,12 +62,8 @@ const useTeamCreation = (): UseCreateTeamFlowReturn => {
             isSubmittingRef.current = false;
             setIsSubmitting(false);
 
-            if (err instanceof AxiosError && err.response?.status === 409) {
-              setErrorMessage("이미 존재하는 팀 이름입니다.");
-            } else {
-              const message = err instanceof Error ? err.message : "팀 생성에 실패했습니다.";
-              error(message);
-            }
+            // 같은 이름의 팀은 서버에서 허용한다 (내 팀 안의 중복은 validateTeamName이 미리 막음)
+            error(err instanceof Error ? err.message : "팀 생성에 실패했습니다.");
           },
         },
       );
