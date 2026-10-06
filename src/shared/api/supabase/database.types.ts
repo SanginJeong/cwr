@@ -863,6 +863,16 @@ export type Database = {
         Args: { p_from: string; p_to: string; p_user_id?: number }
         Returns: Json
       }
+      attendance_range_json: {
+        Args: { p_from: string; p_to: string; p_user_id: number }
+        Returns: Json
+      }
+      attendance_record_json: {
+        Args: {
+          p_record: Database["public"]["Tables"]["attendance_records"]["Row"]
+        }
+        Returns: Json
+      }
       can_access_task: { Args: { p_task_id: number }; Returns: boolean }
       can_access_task_list: {
         Args: { p_task_list_id: number }
@@ -899,6 +909,27 @@ export type Database = {
         Returns: Json
       }
       delete_task: { Args: { p_task_id: number }; Returns: undefined }
+      effective_policy: {
+        Args: { p_user_id: number }
+        Returns: {
+          core_end: string | null
+          core_start: string | null
+          created_at: string
+          grace_minutes: number | null
+          id: number
+          is_default: boolean
+          name: string
+          type: string
+          updated_at: string
+          work_start: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "policies"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       get_group: { Args: { p_group_id: number }; Returns: Json }
       get_me: { Args: never; Returns: Json }
       get_task: { Args: { p_task_id: number }; Returns: Json }
@@ -914,6 +945,12 @@ export type Database = {
       is_team_leader_of: { Args: { p_user_id: number }; Returns: boolean }
       kst_midnight: { Args: { p_date: string }; Returns: string }
       kst_naive_iso: { Args: { p_at: string }; Returns: string }
+      leave_request_json: {
+        Args: {
+          p_request: Database["public"]["Tables"]["leave_requests"]["Row"]
+        }
+        Returns: Json
+      }
       member_json: {
         Args: {
           p_membership: Database["public"]["Tables"]["memberships"]["Row"]
@@ -927,6 +964,10 @@ export type Database = {
           p_recurring: Database["public"]["Tables"]["recurrings"]["Row"]
         }
         Returns: boolean
+      }
+      policy_json: {
+        Args: { p_policy: Database["public"]["Tables"]["policies"]["Row"] }
+        Returns: Json
       }
       recurring_json: {
         Args: { p_recurring: Database["public"]["Tables"]["recurrings"]["Row"] }
