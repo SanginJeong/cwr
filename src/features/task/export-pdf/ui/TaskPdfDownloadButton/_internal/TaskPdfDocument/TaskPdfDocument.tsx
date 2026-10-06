@@ -81,9 +81,10 @@ const TaskPdfDocument = ({ data }: TaskPdfDocumentProps) => {
           <View key={task.id} style={styles.taskItem}>
             <Text style={styles.taskTitle}>{task.name}</Text>
             <Text style={styles.taskMeta}>날짜: {date}</Text>
-            <Text style={styles.taskMeta}>생성자: {task.writer.nickname}</Text>
+            <Text style={styles.taskMeta}>생성자: {task.writer?.nickname ?? "탈퇴한 사용자"}</Text>
             <Text style={styles.taskMeta}>작업 반복: {getFrequencyLabel(task.frequency)}</Text>
-            {task.description && <Text style={styles.taskDescription}>상세 설명: {task.description}</Text>}
+            {/* && 대신 삼항: 설명이 ""이면 && 결과 ""가 <Text> 밖에 그려져 react-pdf가 터진다 */}
+            {task.description ? <Text style={styles.taskDescription}>상세 설명: {task.description}</Text> : null}
           </View>
         ))}
       </Page>
