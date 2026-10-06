@@ -48,8 +48,8 @@ const AttendancePage = () => {
             {policy && range && (
               <p className="text-md-regular text-text-default">
                 근태 정책: <strong className="font-semibold text-text-secondary">{range.policy.name}</strong>
-                {" · "}
-                {policy.typeLabel}
+                {/* 정책 이름이 유형 이름과 같으면("자율 출퇴근") 한 번만 */}
+                {range.policy.name !== policy.typeLabel && ` · ${policy.typeLabel}`}
                 {policy.hours && ` · ${policy.hours}`} · {policy.rule}
               </p>
             )}

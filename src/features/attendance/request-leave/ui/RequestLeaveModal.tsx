@@ -44,7 +44,7 @@ const RequestLeaveModal = ({ isOpen, onClose, today, leaves }: RequestLeaveModal
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={close} className="gap-5 pt-8 pb-6 px-6">
+    <Modal isOpen={isOpen} onClose={close} className="gap-5 pt-8 pb-6 px-6 max-h-[92vh] overflow-y-auto">
       <Modal.CloseIcon onClose={close} />
       <div className="flex-col-center gap-1.5 text-center">
         <h2 className="text-2lg-semibold text-text-primary">휴가 신청</h2>

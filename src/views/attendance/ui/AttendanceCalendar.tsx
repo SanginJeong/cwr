@@ -42,7 +42,19 @@ const AttendanceCalendar = ({ month, today, evaluations, records, leaves }: Atte
 
           return (
             <>
-              {kind && <AttendanceChip kind={kind} />}
+              {kind && (
+                <>
+                  {/* 모바일은 칸이 좁아 색 막대만, 태블릿부터 글자 칩 (범례로 구분) */}
+                  <span className={cn("tablet:hidden h-1.5 w-full rounded-full", CHIP_DOT[kind])}>
+                    <span className="sr-only">{CHIP_LABEL[kind]}</span>
+                  </span>
+                  <AttendanceChip
+                    kind={kind}
+                    label={kind === "PENDING" ? "대기" : undefined}
+                    className="hidden tablet:inline-block"
+                  />
+                </>
+              )}
               {work && !day.isWeekend && (
                 <span className="hidden tablet:block text-xs-regular text-text-default truncate">
                   {formatClockTime(work.clockInAt)} – {work.clockOutAt ? formatClockTime(work.clockOutAt) : "근무 중"}

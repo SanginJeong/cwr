@@ -103,7 +103,9 @@ const ClockCard = ({ variant = "sidebar", className }: ClockCardProps) => {
             <>
               {state === "DONE"
                 ? `${formatDuration(minutes)} 근무했어요. `
-                : `${formatDuration(minutes)}째 근무 중이에요. `}
+                : minutes < 1
+                  ? "방금 출근했어요. "
+                  : `${formatDuration(minutes)}째 근무 중이에요. `}
               오늘은{" "}
               <strong className={status === "LATE" ? "text-point-orange" : "text-icon-brand"}>
                 {STATUS_LABEL[status]}
