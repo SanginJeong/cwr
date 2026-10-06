@@ -2,6 +2,7 @@
 
 import { selectMyStatus, usePresenceStore } from "@/entities/presence";
 import { useGetUser, useIsHrAdmin } from "@/entities/user";
+import type { MemberToday } from "@/entities/attendance";
 import { GroupMember } from "@/shared/api/types/GroupData";
 import { PresenceStatus } from "@/shared/config/presence";
 import MemberRow from "./MemberRow";
@@ -11,10 +12,12 @@ const STATUS_ORDER: Record<PresenceStatus, number> = { online: 0, away: 1, offli
 interface MemberListProps {
   groupId: number;
   members: GroupMember[];
+  /** 팀장·인사담당자에게만 있다 */
+  attendanceByUser?: Map<number, MemberToday>;
   onClickDelete: (member: GroupMember) => void;
 }
 
-const MemberList = ({ groupId, members, onClickDelete }: MemberListProps) => {
+const MemberList = ({ groupId, members, attendanceByUser, onClickDelete }: MemberListProps) => {
   const isHrAdmin = useIsHrAdmin();
   const { data: me } = useGetUser();
   const teamStatuses = usePresenceStore((state) => state.teams[groupId]);
@@ -50,6 +53,7 @@ const MemberList = ({ groupId, members, onClickDelete }: MemberListProps) => {
             member={member}
             groupId={groupId}
             myUserId={me?.id}
+            attendance={attendanceByUser?.get(member.userId)}
             onClickDelete={isHrAdmin ? onClickDelete : undefined}
           />
         ))}
