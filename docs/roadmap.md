@@ -44,10 +44,13 @@
 
 근태 기능은 Supabase에만 만든다. 그래서 기존 API 분기를 먼저 정리해야 새 기능마다 두 모드를 신경 쓰지 않는다.
 
-- [ ] 로그인 상태 QA ([Phase 4 체크리스트](./backend-migration-plan.md)) + 이미지 업로드
-- [ ] QA 버그 수정 → `feat/supabase-backend` PR·머지
+- [x] 로그인 상태 QA + 이미지 업로드: 57개 항목 통과, 버그 8건 수정 ([QA 결과](./qa/2026-10-06-supabase-qa.md))
+- [x] QA 버그 수정
+- [ ] `feat/supabase-backend` PR·머지
+- [ ] QA 중 올린 Storage 이미지 16개 삭제 (대시보드)
+- [ ] QA에서 나온 결정 3가지: "할 일 추가" 문구(실제로는 목록 추가), 할 일 수정 시 설명 필수 여부, 반복 설정 선택지가 모달에서 잘림
 - [ ] **기존 API 코드 제거** (원래 Phase 5를 앞당김): `*.supabase.ts` 옆의 기존 파일, `instance.ts`, `tokenStorage`, `authCookies`, `serverFetch`, `/api/auth/refresh`, `/login/kakao`, `NEXT_PUBLIC_BACKEND` 분기
-- [ ] Supabase Realtime의 "Allow public access" 꺼져 있는지 확인
+- [x] Supabase Realtime의 "Allow public access" 꺼져 있는지 확인 (꺼진 상태 기준으로 정책을 맞춤, 마이그레이션 `..._team_channel_broadcast`)
 - [ ] ADR-004 Accepted
 
 ### H1. 역할과 계정 (2~3일)
