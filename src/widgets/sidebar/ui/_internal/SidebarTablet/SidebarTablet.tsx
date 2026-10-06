@@ -9,6 +9,7 @@ import AddTeamButton from "../AddTeamButton/AddTeamButton";
 import SidebarLink from "../SidebarLink/SidebarLink";
 import { motion } from "framer-motion";
 import { ROUTES } from "@/shared/config/routes";
+import { ClockCard } from "@/features/attendance/clock";
 
 const SidebarTablet = ({
   user,
@@ -61,6 +62,8 @@ const SidebarTablet = ({
           <section className="w-full flex-1 min-h-0 flex flex-col items-center justify-start gap-3">
             {user && (
               <>
+                {isOpen && <ClockCard variant="sidebar" className="w-full" />}
+                <SidebarLink title="내 근태" isOpen={isOpen} href={ROUTES.attendance} iconName="calendar" />
                 {teams.length > 0 && (
                   <>
                     <SidebarDropdown isOpen={isOpen} teams={teams} />

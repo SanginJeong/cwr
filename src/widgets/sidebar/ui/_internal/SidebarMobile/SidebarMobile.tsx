@@ -7,6 +7,7 @@ import { SidebarDropdownProps } from "../../_types/SidebarProps";
 import LeftMobile from "../LeftMobile/LeftMobile";
 import { ROUTES } from "@/shared/config/routes";
 import { StatusDot } from "@/shared/ui/profile";
+import { ClockStatusPill } from "@/features/attendance/clock";
 
 const SidebarMobile = ({
   user,
@@ -42,22 +43,25 @@ const SidebarMobile = ({
           </Link>
         </div>
         {user ? (
-          <Dropdown
-            options={options}
-            placement="bottom-right"
-            image={
-              <span className="relative block">
-                <Image
-                  src={user.image ? user.image : "/TEST_IMG/image-1.jpg"}
-                  alt={`${user.nickname} 이미지`}
-                  width={28}
-                  height={28}
-                  className="size-7 rounded-full"
-                />
-                {myStatus && <StatusDot status={myStatus} size="sm" className="absolute -bottom-0.5 -right-0.5" />}
-              </span>
-            }
-          />
+          <div className="flex items-center gap-3">
+            <ClockStatusPill />
+            <Dropdown
+              options={options}
+              placement="bottom-right"
+              image={
+                <span className="relative block">
+                  <Image
+                    src={user.image ? user.image : "/TEST_IMG/image-1.jpg"}
+                    alt={`${user.nickname} 이미지`}
+                    width={28}
+                    height={28}
+                    className="size-7 rounded-full"
+                  />
+                  {myStatus && <StatusDot status={myStatus} size="sm" className="absolute -bottom-0.5 -right-0.5" />}
+                </span>
+              }
+            />
+          </div>
         ) : (
           <Link href={ROUTES.login} aria-label="로그인 페이지로 이동" className="text-sm font-medium">
             로그인
