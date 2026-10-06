@@ -29,7 +29,11 @@ export const PATCH = async (request: NextRequest, { params }: { params: Promise<
   });
   if (error || !authId) {
     const apiError = toApiError(error ?? { message: "" }, "퇴사 처리에 실패했습니다.");
-    return errorResponse(apiError.status, apiError.status === 404 ? "직원을 찾을 수 없습니다." : apiError.message);
+    const messageByStatus: Record<number, string> = {
+      403: "인사담당자만 이용할 수 있습니다.",
+      404: "직원을 찾을 수 없습니다.",
+    };
+    return errorResponse(apiError.status, messageByStatus[apiError.status] ?? apiError.message);
   }
 
   const { error: banError } = await getAdminSupabase().auth.admin.updateUserById(authId, {
