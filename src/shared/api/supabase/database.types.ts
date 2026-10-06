@@ -332,6 +332,7 @@ export type Database = {
           company_role: string
           created_at: string
           email: string
+          hired_on: string
           id: number
           image: string | null
           is_active: boolean
@@ -345,6 +346,7 @@ export type Database = {
           company_role?: string
           created_at?: string
           email: string
+          hired_on?: string
           id?: never
           image?: string | null
           is_active?: boolean
@@ -358,6 +360,7 @@ export type Database = {
           company_role?: string
           created_at?: string
           email?: string
+          hired_on?: string
           id?: never
           image?: string | null
           is_active?: boolean

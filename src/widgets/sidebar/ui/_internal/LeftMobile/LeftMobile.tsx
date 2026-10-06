@@ -8,8 +8,9 @@ import SidebarLink from "../SidebarLink/SidebarLink";
 import AddTeamButton from "../AddTeamButton/AddTeamButton";
 import MobileMenuItem from "../MobileMenuItem/MobileMenuItem";
 import { ROUTES } from "@/shared/config/routes";
+import { ClockCard } from "@/features/attendance/clock";
 
-const LeftMobile = ({ isOpen, handleOpenDropdown, teams, isHrAdmin }: SidebarProps) => {
+const LeftMobile = ({ isOpen, handleOpenDropdown, user, teams, isHrAdmin }: SidebarProps) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -40,6 +41,11 @@ const LeftMobile = ({ isOpen, handleOpenDropdown, teams, isHrAdmin }: SidebarPro
               onClick={() => handleOpenDropdown(isOpen)}
               aria-label="사이드바 닫기"
             />
+
+            {user && <ClockCard variant="sidebar" />}
+            <div className="w-full">
+              <SidebarLink title="내 근태" isOpen={isOpen} href={ROUTES.attendance} iconName="calendar" />
+            </div>
 
             {teams.map((team) => (
               <MobileMenuItem key={team.id} team={team} isOpen={isOpen} />

@@ -9,9 +9,9 @@ import { ROUTES } from "@/shared/config/routes";
 export const GET = async (request: NextRequest) => {
   const { searchParams, origin } = request.nextUrl;
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? ROUTES.teams;
+  const next = searchParams.get("next") ?? ROUTES.attendance;
   // 외부 주소로 보내지 않는다 (//evil.com 같은 값 차단)
-  const safeNext = next.startsWith("/") && !next.startsWith("//") ? next : ROUTES.teams;
+  const safeNext = next.startsWith("/") && !next.startsWith("//") ? next : ROUTES.attendance;
 
   if (code) {
     const supabase = await getServerSupabase();

@@ -15,14 +15,18 @@ export const toEnginePolicy = (policy: PolicyInfo): Policy => {
 
 /**
  * attendance_range 응답을 [from, to] 일별 판정으로 바꾼다.
- * 판정은 저장하지 않고 화면에서 매번 계산한다 (ADR-007). 기준 날짜는 서버가 준 today
+ * 판정은 저장하지 않고 화면에서 매번 계산한다 (ADR-007). 기준 날짜는 서버가 준 today.
+ * 입사일 전은 판정 대상이 아니다 (null). 엔진은 입사일을 모르므로 여기서 거른다
  */
 export const evaluateAttendance = (
-  range: Pick<AttendanceRange, "records" | "policy">,
+  range: Pick<AttendanceRange, "records" | "policy" | "hiredOn">,
   from: string,
   to: string,
   today: string,
-): DailyEvaluation[] => evaluateRange(range.records, toEnginePolicy(range.policy), from, to, today);
+): DailyEvaluation[] =>
+  evaluateRange(range.records, toEnginePolicy(range.policy), from, to, today).map((evaluation) =>
+    evaluation.date < range.hiredOn ? { date: evaluation.date, status: null } : evaluation,
+  );
 
 export type AttendanceSummary = Record<AttendanceStatus, number>;
 

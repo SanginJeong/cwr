@@ -10,7 +10,8 @@ const usePostLogin = () => {
   return useMutation({
     mutationFn: loginWithSupabase,
     onSuccess: () => {
-      router.replace(ROUTES.teams);
+      // 로그인 후 첫 화면은 내 근태 (roadmap H3)
+      router.replace(ROUTES.attendance);
     },
   });
 };

@@ -183,6 +183,7 @@ begin
     json -> 'policy' ->> 'type' = 'FIXED' and json -> 'policy' ->> 'workStart' = '09:00'
     and (json -> 'policy' ->> 'graceMinutes')::int = 10);
   perform pg_temp.check('today는 서버의 KST 날짜', json ->> 'today' = public.today_kst()::text);
+  perform pg_temp.check('hiredOn: 새 계정은 등록한 날(KST)', json ->> 'hiredOn' = public.today_kst()::text);
   perform pg_temp.check('기록: WORK 2개 + 승인된 휴가만 LEAVE (반려·대기는 없음)',
     jsonb_array_length(json -> 'records') = 3
     and json -> 'records' -> 2 ->> 'kind' = 'LEAVE' and json -> 'records' -> 2 ->> 'date' = '2026-06-03');

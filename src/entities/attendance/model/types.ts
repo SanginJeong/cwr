@@ -7,6 +7,8 @@ export type PolicyInfo = Policy & { id: number; name: string; isDefault: boolean
 /** attendance_range RPC 응답. records는 엔진 입력 그대로 (KST naive ISO, 승인된 휴가만 LEAVE) */
 export interface AttendanceRange {
   userId: number;
+  /** 입사일 "YYYY-MM-DD". 이전 날짜는 판정하지 않는다 */
+  hiredOn: string;
   policy: PolicyInfo;
   records: DayRecord[];
   /** 서버의 KST 날짜 "YYYY-MM-DD". 엔진의 기준 날짜로 쓴다 (브라우저 시계를 믿지 않는다) */

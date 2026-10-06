@@ -10,6 +10,8 @@ export const ROUTES = {
   /** Supabase 인증 콜백 (비밀번호 재설정 메일). app/auth/callback/route.ts */
   authCallback: "/auth/callback",
   resetPassword: "/reset-password",
+  /** 내 근태. 로그인 후 첫 화면 (roadmap H3) */
+  attendance: "/attendance",
   teams: "/teams",
   /** 인사담당자만 (ADR-006) */
   teamNew: "/teams/new",
@@ -27,4 +29,10 @@ export const ROUTES = {
 export const AUTH_ONLY_ROUTES: string[] = [ROUTES.login, ROUTES.resetPassword];
 
 /** 비로그인 상태에서 접근하면 로그인으로 보내는 경로 (prefix 매칭) */
-export const PROTECTED_ROUTES: string[] = [ROUTES.account, ROUTES.history, ROUTES.teams, ROUTES.board];
+export const PROTECTED_ROUTES: string[] = [
+  ROUTES.attendance,
+  ROUTES.account,
+  ROUTES.history,
+  ROUTES.teams,
+  ROUTES.board,
+];
