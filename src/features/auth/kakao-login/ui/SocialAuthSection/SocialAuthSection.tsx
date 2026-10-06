@@ -1,6 +1,9 @@
 "use client";
 
 import { Icon } from "@/shared/ui/icon";
+import { isSupabase } from "@/shared/config/backend";
+import { getSupabase } from "@/shared/api/supabase/client";
+import { ROUTES } from "@/shared/config/routes";
 
 const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
 const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_LOGIN_URI;
@@ -12,6 +15,14 @@ interface SocialAuthSectionProps {
 
 const SocialAuthSection = ({ mode = "login" }: SocialAuthSectionProps) => {
   const hadnleKakaoClick = () => {
+    if (isSupabase) {
+      const next = encodeURIComponent(ROUTES.teams);
+      void getSupabase().auth.signInWithOAuth({
+        provider: "kakao",
+        options: { redirectTo: `${window.location.origin}${ROUTES.authCallback}?next=${next}` },
+      });
+      return;
+    }
     window.location.href = kakaoLoginLink;
   };
 

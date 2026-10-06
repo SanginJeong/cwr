@@ -3,6 +3,9 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { ApiErrorResponse } from "@/shared/api/types/ApiType";
 import deleteUser from "./deleteUser";
+import deleteUserWithSupabase from "./deleteUser.supabase";
+import { isSupabase } from "@/shared/config/backend";
+import { ApiError } from "@/shared/api/supabase/errors";
 import { toastKit } from "@/shared/lib/toastKit";
 import tokenStorage from "@/shared/api/tokenStorage";
 import { clearAuthCookies } from "@/shared/api/authCookies";
@@ -18,7 +21,7 @@ const useDeleteUser = (options?: UseDeleteUserOptions) => {
   const { success, error } = toastKit();
 
   return useMutation({
-    mutationFn: deleteUser,
+    mutationFn: isSupabase ? deleteUserWithSupabase : deleteUser,
     onSuccess: async () => {
       await clearAuthCookies();
 
@@ -29,8 +32,10 @@ const useDeleteUser = (options?: UseDeleteUserOptions) => {
 
       router.push(ROUTES.home);
     },
-    onError: (err: AxiosError<ApiErrorResponse>) => {
-      const message = err.response?.data?.message || err.message || "회원 탈퇴에 실패했습니다.";
+    onError: (err: AxiosError<ApiErrorResponse> | ApiError) => {
+      const message =
+        (err instanceof ApiError ? err.message : err.response?.data?.message || err.message) ||
+        "회원 탈퇴에 실패했습니다.";
       error(message);
       options?.onError?.(message);
     },

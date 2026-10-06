@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import QueryProviders from "./_providers/QueryProvider";
+import PresenceProvider from "./_providers/PresenceProvider";
 import { Toaster as ToasterContainer } from "@/shared/ui/toast";
 import { Sidebar } from "@/widgets/sidebar";
 
@@ -30,6 +31,7 @@ export default function RootLayout({
     <html lang="ko" className={pretendard.className} suppressHydrationWarning>
       <body className="flex flex-col tablet:flex-row pc:flex-row">
         <QueryProviders>
+          <PresenceProvider />
           <Sidebar />
           <main className="flex-1 min-w-0 bg-background-secondary">{children}</main>
           <ToasterContainer />

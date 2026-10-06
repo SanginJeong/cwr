@@ -10,7 +10,8 @@ const QueryProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* 오른쪽 아래는 팀 채팅 버튼 자리라서 위로 옮긴다 (개발 모드에서만 보임) */}
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-right" />
     </QueryClientProvider>
   );
 };

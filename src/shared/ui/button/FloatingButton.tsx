@@ -17,14 +17,26 @@ interface FloatingButtonProps {
   iconClassName?: string;
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
+  /** 없으면 아이콘 이름으로 만든다 */
+  ariaLabel?: string;
+  ariaExpanded?: boolean;
 }
 
-const FloatingButton = ({ iconName, iconClassName, className, type = "button", onClick }: FloatingButtonProps) => {
+const FloatingButton = ({
+  iconName,
+  iconClassName,
+  className,
+  type = "button",
+  onClick,
+  ariaLabel,
+  ariaExpanded,
+}: FloatingButtonProps) => {
   return (
     <button
       type={type}
       onClick={onClick}
-      aria-label={`${iconName} 버튼`}
+      aria-label={ariaLabel ?? `${iconName} 버튼`}
+      aria-expanded={ariaExpanded}
       className={cn(FLOATING_BUTTON_BASE_STYLE, className)}
     >
       <Icon name={iconName} className={cn("text-text-inverse", iconClassName)} />

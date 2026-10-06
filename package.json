@@ -11,11 +11,15 @@
     "build-storybook": "storybook build",
     "prepare": "husky",
     "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
-    "build-all": "npm run build && npm run build-storybook"
+    "build-all": "npm run build && npm run build-storybook",
+    "test:db": "node scripts/test-db.mjs",
+    "db:types": "npx supabase gen types typescript --linked --schema public > src/shared/api/supabase/database.types.ts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@react-pdf/renderer": "^4.3.1",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.109.0",
     "@tanstack/react-query": "^5.90.5",
     "axios": "^1.13.1",
     "clsx": "^2.1.1",
@@ -33,6 +37,7 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.2",
+    "@electric-sql/pglite": "^0.5.8",
     "@storybook/addon-a11y": "^10.0.2",
     "@storybook/addon-docs": "^10.0.2",
     "@storybook/nextjs": "^10.0.3",

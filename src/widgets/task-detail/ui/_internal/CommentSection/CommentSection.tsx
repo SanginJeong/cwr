@@ -19,7 +19,6 @@ const CommentSection = ({ data }: CommentSectionProps) => {
 
   const { data: commentData } = useGetTaskListComment({ taskId: data.id });
   const myData = queryClient.getQueryData<UserResponse>(["user"]);
-  const myComment = myData?.id === data.writer.id;
 
   const { postCommentPending, deleteComment, handleUpdateComment, handleSubmitComment } = useDetailCommentMutations({
     groupId: data.recurring.groupId,
@@ -39,7 +38,7 @@ const CommentSection = ({ data }: CommentSectionProps) => {
           <span className={cn("text-lg-bold text-brand-primary", "tablet:text-2lg-bold")}>{data.commentCount}</span>
         </div>
         <form aria-label="댓글 작성" onSubmit={handleSubmitComment} className="flex items-center gap-3 w-full">
-          <Profile src={data.writer.image} />
+          <Profile src={myData?.image || null} />
           <InputReply value={commentValue} onChange={setCommentValue} isSubmitting={postCommentPending} />
         </form>
       </section>
@@ -49,7 +48,8 @@ const CommentSection = ({ data }: CommentSectionProps) => {
           <CommentItem
             key={comment.id}
             comment={comment}
-            showKebab={myComment}
+            // 수정·삭제는 댓글 작성자만 (할 일 작성자가 아니라)
+            showKebab={myData?.id === comment.userId}
             onDelete={() => deleteComment({ taskId: data.id, commentId: comment.id })}
             onUpdate={(commentId, newContent) => handleUpdateComment(commentId, newContent)}
           />

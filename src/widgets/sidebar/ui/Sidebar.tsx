@@ -7,6 +7,9 @@ import { useGetUser } from "@/entities/user";
 import { useLogout } from "@/features/auth/logout";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/config/routes";
+import { usePresenceStatusOptions } from "@/features/presence/set-status";
+import { selectMyStatus, usePresenceStore } from "@/entities/presence";
+import { isSupabase } from "@/shared/config/backend";
 
 /**
  * @author jikwon
@@ -31,6 +34,8 @@ const Sidebar = () => {
 
   const { data: user } = useGetUser();
   const { logout } = useLogout();
+  const statusOptions = usePresenceStatusOptions();
+  const myStatus = usePresenceStore(selectMyStatus);
 
   const handleOpenDropdown = () => {
     const newOpenState = !isOpen;
@@ -41,6 +46,8 @@ const Sidebar = () => {
   };
 
   const options = [
+    // 접속 상태 선택 (Supabase 모드에서만)
+    ...statusOptions,
     { label: "마이 히스토리", action: () => router.push(ROUTES.history) },
     { label: "계정 설정", action: () => router.push(ROUTES.account) },
     { label: "팀 참여", action: () => router.push(ROUTES.teamJoin) },
@@ -49,8 +56,20 @@ const Sidebar = () => {
 
   return (
     <>
-      <SidebarTablet user={user || null} isOpen={isOpen} handleOpenDropdown={handleOpenDropdown} options={options} />
-      <SidebarMobile user={user || null} isOpen={isOpen} handleOpenDropdown={handleOpenDropdown} options={options} />
+      <SidebarTablet
+        user={user || null}
+        isOpen={isOpen}
+        handleOpenDropdown={handleOpenDropdown}
+        options={options}
+        myStatus={isSupabase ? myStatus : undefined}
+      />
+      <SidebarMobile
+        user={user || null}
+        isOpen={isOpen}
+        handleOpenDropdown={handleOpenDropdown}
+        options={options}
+        myStatus={isSupabase ? myStatus : undefined}
+      />
     </>
   );
 };

@@ -10,6 +10,8 @@ import { OverlayLoading } from "@/shared/ui/overlay-loading";
 import { toastKit } from "@/shared/lib/toastKit";
 import { validatePassword, validatePasswordConfirm } from "@/shared/lib/Validation";
 import { ROUTES } from "@/shared/config/routes";
+import { isSupabase } from "@/shared/config/backend";
+import { getSupabase } from "@/shared/api/supabase/client";
 
 const NewPasswordForm = () => {
   const router = useRouter();
@@ -18,6 +20,18 @@ const NewPasswordForm = () => {
   const { error } = toastKit();
 
   useEffect(() => {
+    // Supabase: 메일 링크를 거쳐 오면 /auth/callback에서 세션이 만들어져 있다. 토큰 대신 세션을 확인한다
+    if (isSupabase) {
+      void getSupabase()
+        .auth.getUser()
+        .then(({ data }) => {
+          if (!data.user) {
+            error("재설정 링크가 만료되었거나 유효하지 않습니다. 다시 요청해주세요.");
+            router.replace(ROUTES.login);
+          }
+        });
+      return;
+    }
     if (!token) {
       error("유효하지 않은 접근입니다.");
       router.replace(ROUTES.home);
@@ -37,7 +51,7 @@ const NewPasswordForm = () => {
       password: ["passwordConfirm"],
     },
     onSubmit: async (values) => {
-      if (!token) {
+      if (!token && !isSupabase) {
         error("토큰이 유효하지 않습니다.");
         throw new Error("Token missing");
       }
@@ -45,7 +59,7 @@ const NewPasswordForm = () => {
       await resetPassword({
         password: values.password,
         passwordConfirmation: values.passwordConfirm,
-        token,
+        token: token ?? "",
       });
     },
   });

@@ -10,7 +10,7 @@ import SidebarLink from "../SidebarLink/SidebarLink";
 import { motion } from "framer-motion";
 import { ROUTES } from "@/shared/config/routes";
 
-const SidebarTablet = ({ user, isOpen, handleOpenDropdown, options }: SidebarDropdownProps) => {
+const SidebarTablet = ({ user, isOpen, handleOpenDropdown, options, myStatus }: SidebarDropdownProps) => {
   return (
     <motion.div
       initial={false}
@@ -82,7 +82,7 @@ const SidebarTablet = ({ user, isOpen, handleOpenDropdown, options }: SidebarDro
                 placement="top-left"
                 image={
                   <div className="flex items-center gap-3">
-                    <Profile src={user?.image} alt={user?.nickname} size="lg" />
+                    <Profile src={user?.image} alt={user?.nickname} size="lg" status={myStatus} />
                     {isOpen && (
                       <div className="flex flex-col items-start gap-[2px]">
                         <span className="text-text-primary text-lg-medium truncate max-w-[120px]">{user.nickname}</span>

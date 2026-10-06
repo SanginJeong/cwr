@@ -10,10 +10,12 @@ const useDeleteGroup = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteGroup,
-    onSuccess: () => {
+    onSuccess: (_data, { id }) => {
       success("팀을 성공적으로 삭제 하였습니다.");
+      // 삭제한 팀은 다시 조회하지 않는다 (이동 전까지 화면에 남아 있어 404가 난다)
       queryClient.invalidateQueries({
         queryKey: ["groups"],
+        predicate: (query) => query.queryKey[1] !== id,
       });
       queryClient.invalidateQueries({
         queryKey: ["user"],

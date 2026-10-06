@@ -54,6 +54,12 @@ const config: Config = {
         status: {
           danger: "#FC4B4B",
         },
+        // 접속 상태 점 (shared/config/presence.ts)
+        presence: {
+          online: "#22C55E",
+          away: "#EAB308",
+          offline: "#FC4B4B",
+        },
         icon: {
           primary: "#94A3B8",
           inverse: "#F8FAFC",

@@ -13,12 +13,14 @@ export const REPEAT_OPTIONS: { label: string; value: Frequency }[] = [
   { label: "월 반복", value: "MONTHLY" },
 ];
 
+// 값은 서버 규칙(0 = 일요일, JS Date#getDay와 같음)을 따른다. 보이는 순서만 월요일부터.
+// (docs/backend-behavior-spec.md §2.2)
 export const DATE_OPTIONS = [
-  { label: "월", value: 0 },
-  { label: "화", value: 1 },
-  { label: "수", value: 2 },
-  { label: "목", value: 3 },
-  { label: "금", value: 4 },
-  { label: "토", value: 5 },
-  { label: "일", value: 6 },
+  { label: "월", value: 1 },
+  { label: "화", value: 2 },
+  { label: "수", value: 3 },
+  { label: "목", value: 4 },
+  { label: "금", value: 5 },
+  { label: "토", value: 6 },
+  { label: "일", value: 0 },
 ] as const;

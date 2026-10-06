@@ -1,3 +1,5 @@
+import type { PresenceStatus } from "@/shared/config/presence";
+
 /**
  * @author jikwon
  * @description 유저와 관련된 타입 정의입니다.
@@ -23,6 +25,8 @@ export interface Membership {
 }
 
 export interface User {
+  /** 사용자가 고른 접속 상태. Supabase 모드에서만 온다 */
+  presenceStatus?: PresenceStatus;
   teamId: string;
   image: string;
   nickname: string;
