@@ -882,6 +882,7 @@ export type Database = {
         Returns: boolean
       }
       can_access_team_channel: { Args: { p_topic: string }; Returns: boolean }
+      can_decide_leave_of: { Args: { p_user_id: number }; Returns: boolean }
       can_view_attendance: { Args: { p_user_id: number }; Returns: boolean }
       cancel_leave: { Args: { p_request_id: number }; Returns: undefined }
       check_attendance_range: {
@@ -1023,6 +1024,7 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      review_leave_requests: { Args: { p_pending?: boolean }; Returns: Json }
       set_default_policy: { Args: { p_policy_id: number }; Returns: undefined }
       set_employee_active: {
         Args: { p_active: boolean; p_user_id: number }
@@ -1045,6 +1047,10 @@ export type Database = {
         Returns: Json
       }
       team_attendance_range: {
+        Args: { p_from: string; p_group_id: number; p_to: string }
+        Returns: Json
+      }
+      team_leave_calendar: {
         Args: { p_from: string; p_group_id: number; p_to: string }
         Returns: Json
       }
