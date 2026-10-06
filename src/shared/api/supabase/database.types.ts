@@ -141,6 +141,41 @@ export type Database = {
           },
         ]
       }
+      attendance_records: {
+        Row: {
+          clock_in_at: string
+          clock_out_at: string | null
+          created_at: string
+          date: string
+          id: number
+          user_id: number
+        }
+        Insert: {
+          clock_in_at: string
+          clock_out_at?: string | null
+          created_at?: string
+          date: string
+          id?: never
+          user_id: number
+        }
+        Update: {
+          clock_in_at?: string
+          clock_out_at?: string | null
+          created_at?: string
+          date?: string
+          id?: never
+          user_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_records_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       groups: {
         Row: {
           created_at: string
@@ -164,6 +199,57 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      leave_requests: {
+        Row: {
+          created_at: string
+          date: string
+          decided_at: string | null
+          decided_by: number | null
+          id: number
+          reason: string | null
+          status: string
+          updated_at: string
+          user_id: number
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          decided_at?: string | null
+          decided_by?: number | null
+          id?: never
+          reason?: string | null
+          status?: string
+          updated_at?: string
+          user_id: number
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          decided_at?: string | null
+          decided_by?: number | null
+          id?: never
+          reason?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leave_requests_decided_by_fkey"
+            columns: ["decided_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leave_requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       memberships: {
         Row: {
@@ -201,6 +287,45 @@ export type Database = {
           },
         ]
       }
+      policies: {
+        Row: {
+          core_end: string | null
+          core_start: string | null
+          created_at: string
+          grace_minutes: number | null
+          id: number
+          is_default: boolean
+          name: string
+          type: string
+          updated_at: string
+          work_start: string | null
+        }
+        Insert: {
+          core_end?: string | null
+          core_start?: string | null
+          created_at?: string
+          grace_minutes?: number | null
+          id?: never
+          is_default?: boolean
+          name: string
+          type: string
+          updated_at?: string
+          work_start?: string | null
+        }
+        Update: {
+          core_end?: string | null
+          core_start?: string | null
+          created_at?: string
+          grace_minutes?: number | null
+          id?: never
+          is_default?: boolean
+          name?: string
+          type?: string
+          updated_at?: string
+          work_start?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           auth_id: string
@@ -211,6 +336,7 @@ export type Database = {
           image: string | null
           is_active: boolean
           nickname: string
+          policy_id: number | null
           presence_status: string
           updated_at: string
         }
@@ -223,6 +349,7 @@ export type Database = {
           image?: string | null
           is_active?: boolean
           nickname: string
+          policy_id?: number | null
           presence_status?: string
           updated_at?: string
         }
@@ -235,10 +362,19 @@ export type Database = {
           image?: string | null
           is_active?: boolean
           nickname?: string
+          policy_id?: number | null
           presence_status?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_policy_id_fkey"
+            columns: ["policy_id"]
+            isOneToOne: false
+            referencedRelation: "policies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       recurrings: {
         Row: {
@@ -723,12 +859,34 @@ export type Database = {
       }
     }
     Functions: {
+      attendance_range: {
+        Args: { p_from: string; p_to: string; p_user_id?: number }
+        Returns: Json
+      }
+      attendance_range_json: {
+        Args: { p_from: string; p_to: string; p_user_id: number }
+        Returns: Json
+      }
+      attendance_record_json: {
+        Args: {
+          p_record: Database["public"]["Tables"]["attendance_records"]["Row"]
+        }
+        Returns: Json
+      }
       can_access_task: { Args: { p_task_id: number }; Returns: boolean }
       can_access_task_list: {
         Args: { p_task_list_id: number }
         Returns: boolean
       }
       can_access_team_channel: { Args: { p_topic: string }; Returns: boolean }
+      can_view_attendance: { Args: { p_user_id: number }; Returns: boolean }
+      cancel_leave: { Args: { p_request_id: number }; Returns: undefined }
+      check_attendance_range: {
+        Args: { p_from: string; p_to: string }
+        Returns: undefined
+      }
+      clock_in: { Args: never; Returns: Json }
+      clock_out: { Args: never; Returns: Json }
       create_group: {
         Args: { p_image?: string; p_name: string }
         Returns: Json
@@ -746,7 +904,32 @@ export type Database = {
         Returns: Json
       }
       current_profile_id: { Args: never; Returns: number }
+      decide_leave: {
+        Args: { p_approve: boolean; p_request_id: number }
+        Returns: Json
+      }
       delete_task: { Args: { p_task_id: number }; Returns: undefined }
+      effective_policy: {
+        Args: { p_user_id: number }
+        Returns: {
+          core_end: string | null
+          core_start: string | null
+          created_at: string
+          grace_minutes: number | null
+          id: number
+          is_default: boolean
+          name: string
+          type: string
+          updated_at: string
+          work_start: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "policies"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       get_group: { Args: { p_group_id: number }; Returns: Json }
       get_me: { Args: never; Returns: Json }
       get_task: { Args: { p_task_id: number }; Returns: Json }
@@ -759,7 +942,15 @@ export type Database = {
       is_hr_admin: { Args: never; Returns: boolean }
       is_member: { Args: { p_group_id: number }; Returns: boolean }
       is_nickname_available: { Args: { p_nickname: string }; Returns: boolean }
+      is_team_leader_of: { Args: { p_user_id: number }; Returns: boolean }
       kst_midnight: { Args: { p_date: string }; Returns: string }
+      kst_naive_iso: { Args: { p_at: string }; Returns: string }
+      leave_request_json: {
+        Args: {
+          p_request: Database["public"]["Tables"]["leave_requests"]["Row"]
+        }
+        Returns: Json
+      }
       member_json: {
         Args: {
           p_membership: Database["public"]["Tables"]["memberships"]["Row"]
@@ -774,8 +965,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      policy_json: {
+        Args: { p_policy: Database["public"]["Tables"]["policies"]["Row"] }
+        Returns: Json
+      }
       recurring_json: {
         Args: { p_recurring: Database["public"]["Tables"]["recurrings"]["Row"] }
+        Returns: Json
+      }
+      request_leave: {
+        Args: { p_date: string; p_reason?: string }
         Returns: Json
       }
       require_login: { Args: never; Returns: number }
@@ -821,9 +1020,14 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      set_default_policy: { Args: { p_policy_id: number }; Returns: undefined }
       set_employee_active: {
         Args: { p_active: boolean; p_user_id: number }
         Returns: string
+      }
+      set_employee_policy: {
+        Args: { p_policy_id: number; p_user_id: number }
+        Returns: undefined
       }
       set_team_post_notice: {
         Args: { p_is_notice: boolean; p_post_id: number }
@@ -835,6 +1039,10 @@ export type Database = {
       }
       tasks_for_date: {
         Args: { p_date?: string; p_task_list_id: number }
+        Returns: Json
+      }
+      team_attendance_range: {
+        Args: { p_from: string; p_group_id: number; p_to: string }
         Returns: Json
       }
       team_post_group_id: { Args: { p_post_id: number }; Returns: number }

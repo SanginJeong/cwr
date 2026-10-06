@@ -1,7 +1,7 @@
 # 로드맵: Coworkers → HR 서비스
 
 > 갱신일: 2026-10-06 · 와이어프레임: https://claude.ai/artifact/PeoX24f7U5aopY7hLwUEih (비공개)
-> 이전 기록: [backend-migration-plan.md](./backend-migration-plan.md) (Supabase 전환), [ADR-004](./decisions/ADR-004-supabase-backend.md), [ADR-005](./decisions/ADR-005-team-board.md), [ADR-006](./decisions/ADR-006-company-roles.md)
+> 이전 기록: [backend-migration-plan.md](./backend-migration-plan.md) (Supabase 전환), [ADR-004](./decisions/ADR-004-supabase-backend.md), [ADR-005](./decisions/ADR-005-team-board.md), [ADR-006](./decisions/ADR-006-company-roles.md), [ADR-007](./decisions/ADR-007-attendance.md)
 
 ## 0. 방향 (인터뷰로 확정, 2026-10-06)
 
@@ -80,20 +80,27 @@
 
 ### H2. 근태 도메인 (3~4일)
 
-- [ ] **정책 엔진 이식**: HR-platform `lib/policy-engine` → `src/entities/attendance/lib/policy-engine` (순수 함수 그대로, 현재 시각은 인자로)
-- [ ] **Vitest 도입**과 엔진 단위 테스트 (경계값: 유예 정확히 N분, 코어 시작 정각, 자정 근처, 주말, 오늘·미래 날짜)
-- [ ] DB
-  - `policies` (자율 / 코어타임 / 고정, 타입이 정해진 nullable 컬럼)
+브랜치 `feat/h2-attendance`. 마이그레이션 `20261006000006_attendance`. 결정 기록 [ADR-007](./decisions/ADR-007-attendance.md) (Proposed)
+
+- [x] **정책 엔진 이식**: HR-platform `lib/policy-engine` → `src/entities/attendance/lib/policy-engine` (순수 함수 그대로, 현재 날짜는 인자로)
+- [x] **Vitest 도입**(`npm test`)과 엔진 단위 테스트 37개 (기존 34 + 자정 근처 3) + 판정 헬퍼 5개
+- [x] DB
+  - `policies` (자율 / 코어타임 / 고정, 유형별 칸은 CHECK로 강제). 기본 정책 하나(`is_default`, 시드: 자율 출퇴근)
+  - `profiles.policy_id` (H1에서 미룬 것. null이면 기본 정책)
   - `attendance_records` (직원·날짜당 하나, 출근·퇴근 시각)
-  - `leave_requests` (대기 / 승인 / 반려, 결정한 사람·시각)
-- [ ] RPC
-  - `clock_in` / `clock_out`: **서버 시각**(KST) 기준. 하루에 한 번
-  - `request_leave` / `cancel_leave`: 오늘 이후, 하루 단위, 대기 중일 때만 취소
-  - `decide_leave`: 신청자 팀의 팀장 또는 인사담당자. **먼저 처리한 결정이 적용**됨
-  - `attendance_range(user, from, to)`: 기록 + 승인된 휴가를 엔진 입력 형태로
-- [ ] RLS: 본인 기록은 본인, 팀원 기록은 팀장, 전체는 인사담당자
-- [ ] 판정은 저장하지 않고 엔진으로 계산한다 (정책을 바꾸면 지난 기록도 다시 판정됨)
-- [ ] DB 테스트: 출퇴근 규칙, 휴가 승인 권한, 동시 승인·반려
+  - `leave_requests` (대기 / 승인 / 반려, 결정한 사람·시각. 반려된 날짜는 다시 신청 가능)
+- [x] RPC
+  - `clock_in` / `clock_out`: **서버 시각**(KST) 기준. 하루에 한 번. 퇴근은 그날 기록에만 (야간 근무는 범위 밖)
+  - `request_leave` / `cancel_leave`: **내일부터, 평일**, 하루 단위, 대기 중일 때만 취소
+  - `decide_leave`: 신청자 팀의 팀장 또는 인사담당자, 본인 신청 제외. **먼저 처리한 결정이 적용**됨
+  - `attendance_range(from, to, user?)`: 기록 + 승인된 휴가를 엔진 입력 형태로 + 적용 정책 + 서버 기준 `today`
+  - 추가: `team_attendance_range`(팀장 화면용, 퇴사자 제외), `set_default_policy`, `set_employee_policy`
+- [x] RLS: 본인 기록은 본인, 팀원 기록은 팀장, 전체는 인사담당자 (`can_view_attendance`)
+- [x] 판정은 저장하지 않고 엔진으로 계산한다 (`entities/attendance`의 `evaluateAttendance`, `summarizeAttendance`)
+- [x] DB 테스트 `70_attendance.test.sql` 62개 항목: 정책 제약, 출퇴근 규칙, 휴가 승인 권한, 결정 후 재결정 거부, 퇴사자 (10/10 파일 통과)
+  - 동시 승인·반려는 PGlite가 연결 하나라 **순서대로만** 확인. 실제 동시성은 `where status = 'PENDING'` + 행 잠금 (ADR-007)
+- [x] 프론트 연결부: `entities/attendance/api` (RPC 호출, 응답 타입). 화면은 H3~H5
+- [x] `supabase db push` → `npm run db:types` (손으로 맞춘 타입과 같음)
 
 ### H3. 직원 화면 (3일)
 
@@ -133,7 +140,7 @@
 
 | 항목                            | 상태           | 메모                                  |
 | ------------------------------- | -------------- | ------------------------------------- |
-| 팀 채팅                         | 목업 UI만      | 설계 항목은 아래. ADR-007로           |
+| 팀 채팅                         | 목업 UI만      | 설계 항목은 아래. ADR-008로           |
 | 팀 게시판 화면                  | DB만 (ADR-005) | 회사 공지로 바꿀지 다시 검토          |
 | 정책 변경 미리보기 / 시뮬레이터 | 하지 않기로 함 | 엔진이 순수 함수라 나중에 붙이기 쉬움 |
 | 주간 리포트                     | 보류           | LLM 없이 통계로 (완료율, 근태, 기여)  |
@@ -149,12 +156,12 @@
 
 ## 4. 이월된 확인 사항
 
-| 항목                                                                       | 할 일                                                         |
-| -------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| 접속 상태: 브라우저 두 개, 10분 자동 자리 비움, 여러 탭, 재접속, 토큰 갱신 | H0 QA 때 함께                                                 |
-| DB 테스트가 실제 Supabase가 아니라 PGlite + 흉내 환경에서만 돎             | H2에서 테스트가 늘어나니 Supabase 로컬(Docker) 도입 여부 결정 |
-| 새 컴포넌트 Storybook 스토리 없음 (StatusDot, MemberPanel, TeamChatWidget) | H3~H5에서 새 UI와 함께                                        |
-| 카카오 로그인                                                              | H1에서 제거함                                                 |
+| 항목                                                                       | 할 일                                                                                            |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| 접속 상태: 브라우저 두 개, 10분 자동 자리 비움, 여러 탭, 재접속, 토큰 갱신 | H0 QA 때 함께                                                                                    |
+| DB 테스트가 실제 Supabase가 아니라 PGlite + 흉내 환경에서만 돎             | H2 결정: PGlite 유지 (Docker 없이 수 초에 끝남). 동시성처럼 PGlite로 못 보는 것만 원격 QA로 확인 |
+| 새 컴포넌트 Storybook 스토리 없음 (StatusDot, MemberPanel, TeamChatWidget) | H3~H5에서 새 UI와 함께                                                                           |
+| 카카오 로그인                                                              | H1에서 제거함                                                                                    |
 
 > **정정 기록**: Supabase 전환 Phase 3 때 "Supabase 모드로 띄워 확인했다"고 했지만, `.env` 끝에 줄바꿈이 없어서 실제로는 기존 API 모드였습니다. 결과는 두 모드에서 같아 틀리지 않았습니다. 2026-10-06 화면 확인은 Supabase 모드로 제대로 실행했습니다.
 
