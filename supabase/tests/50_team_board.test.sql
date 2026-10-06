@@ -14,19 +14,14 @@ declare
   other bigint := public.test_signup('tb-other@test.com', '다른팀원');
   outsider bigint := public.test_signup('tb-out@test.com', '외부인');
   g bigint;
-  token text;
   admin_post bigint;
   member_post bigint;
   member_comment bigint;
   v record;
 begin
-  perform public.test_login(admin);
-  g := (public.create_group('개발팀') ->> 'id')::bigint;
-  token := public.create_invitation(g);
-  perform public.test_login(member);
-  perform public.accept_invitation(token);
-  perform public.test_login(other);
-  perform public.accept_invitation(token);
+  g := public.test_create_team('개발팀', admin);
+  perform public.test_add_member(g, member);
+  perform public.test_add_member(g, other);
 
   -- ── 작성 ──
   perform public.test_login(admin);
@@ -86,18 +81,18 @@ begin
   perform pg_temp.check('ADMIN: 남의 댓글 삭제 가능', public.test_row_count(format(
     'delete from public.team_post_comments where id = %s', member_comment)) = 1);
 
-  -- ── 탈퇴 (ADR-005 §4) ──
-  perform public.test_login(member);
-  perform public.delete_account();
+  -- ── 퇴사 (ADR-006: 회원 탈퇴 대신 비활성화) ──
+  perform public.test_logout();
+  update public.profiles set is_active = false where id = member;
   perform public.test_login(admin);
   select * into v from public.team_post_view where id = member_post;
-  perform pg_temp.check('작성자가 탈퇴해도 글은 남고 작성자만 비워짐', v.id = member_post and v.writer_id is null and v.writer_nickname is null);
-  perform pg_temp.check('ADMIN: 탈퇴한 사람의 글 삭제 가능', public.test_row_count(format(
+  perform pg_temp.check('작성자가 퇴사해도 글과 작성자 이름이 남음', v.id = member_post and v.writer_nickname = '팀원');
+  perform pg_temp.check('ADMIN: 퇴사한 사람의 글 삭제 가능', public.test_row_count(format(
     'delete from public.team_posts where id = %s', member_post)) = 1);
 
-  -- ── 팀 삭제 ──
-  delete from public.groups where id = g;
+  -- ── 팀 삭제 (인사담당자가 한다. 여기서는 권한 확인 없이) ──
   perform public.test_logout();
+  delete from public.groups where id = g;
   perform pg_temp.check('팀을 삭제하면 글도 삭제', not exists (select 1 from public.team_posts where group_id = g));
 
 end $$;

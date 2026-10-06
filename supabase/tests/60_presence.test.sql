@@ -28,14 +28,10 @@ declare
   outsider bigint := public.test_signup('pr-out@test.com', '외부인');
   g bigint;
   other_g bigint;
-  token text;
 begin
-  perform public.test_login(admin);
-  g := (public.create_group('개발팀') ->> 'id')::bigint;
-  token := public.create_invitation(g);
-  perform public.test_login(member);
-  perform public.accept_invitation(token);
-  other_g := (public.create_group('다른팀') ->> 'id')::bigint;
+  g := public.test_create_team('개발팀', admin);
+  perform public.test_add_member(g, member);
+  other_g := public.test_create_team('다른팀', member);
 
   -- 채널에 메시지가 하나 있어야 select 정책을 확인할 수 있다 (실제로는 Realtime 서버가 넣는다)
   perform public.test_logout();
@@ -57,7 +53,7 @@ begin
   -- ── 팀 채널 ──
   perform pg_temp.check('멤버: 자기 팀 채널 구독 가능', pg_temp.can_read('team:' || g));
   perform pg_temp.check('멤버: 자기 팀 채널에 상태 전송 가능', pg_temp.can_track('team:' || g));
-  perform pg_temp.check('멤버: 자기가 만든 다른 팀 채널도 가능', pg_temp.can_read('team:' || other_g));
+  perform pg_temp.check('멤버: 팀장인 다른 팀 채널도 가능', pg_temp.can_read('team:' || other_g));
   perform pg_temp.check('멤버: broadcast 구독 가능 (Allow public access를 끄면 접속 시 검사됨)', exists (
     select 1 from realtime.messages where extension = 'broadcast' and topic = 'team:' || g));
 

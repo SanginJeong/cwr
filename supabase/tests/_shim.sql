@@ -29,15 +29,37 @@ alter default privileges in schema public grant execute on functions to anon, au
 
 -- 테스트 헬퍼 ------------------------------------------------------------
 
--- 가입: auth.users에 넣으면 트리거가 profiles를 만든다. profile id를 돌려준다
-create function public.test_signup(p_email text, p_nickname text, p_provider text default 'email')
+-- 직원 등록: auth.users에 넣으면 트리거가 profiles를 만든다. profile id를 돌려준다
+-- 새 계정은 비활성으로 생기므로, 직원 등록 BFF처럼 활성화하고 회사 역할을 정한다
+create function public.test_signup(
+  p_email text, p_nickname text, p_provider text default 'email', p_company_role text default 'EMPLOYEE'
+)
 returns bigint language plpgsql as $$
 declare v_auth uuid;
 begin
   insert into auth.users (email, raw_user_meta_data, raw_app_meta_data)
   values (p_email, jsonb_build_object('nickname', p_nickname), jsonb_build_object('provider', p_provider))
   returning id into v_auth;
+  update public.profiles set is_active = true, company_role = p_company_role where auth_id = v_auth;
   return (select id from public.profiles where auth_id = v_auth);
+end $$;
+
+-- 팀을 만들고 팀장(ADMIN)을 배정한다. 실제로는 인사담당자가 하는 일을 권한 확인 없이 준비용으로
+create function public.test_create_team(p_name text, p_leader bigint default null)
+returns bigint language plpgsql security definer as $$
+declare v_group bigint;
+begin
+  insert into public.groups (name) values (p_name) returning id into v_group;
+  if p_leader is not null then
+    insert into public.memberships (group_id, user_id, role) values (v_group, p_leader, 'ADMIN');
+  end if;
+  return v_group;
+end $$;
+
+create function public.test_add_member(p_group_id bigint, p_user_id bigint, p_role text default 'MEMBER')
+returns void language plpgsql security definer as $$
+begin
+  insert into public.memberships (group_id, user_id, role) values (p_group_id, p_user_id, p_role);
 end $$;
 
 -- 해당 사용자로 로그인한 상태로 전환. null이면 비로그인(anon)
