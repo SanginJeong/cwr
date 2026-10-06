@@ -5,6 +5,7 @@ import type { AttendanceRange } from "../model/types";
 // attendance_range RPC 응답 예시 (2026-06-01 월 ~ 06-07 일)
 const range: AttendanceRange = {
   userId: 1,
+  hiredOn: "2026-05-01",
   policy: { id: 2, name: "9시 고정", isDefault: false, type: "FIXED", workStart: "09:00", graceMinutes: 10 },
   records: [
     { date: "2026-06-01", kind: "WORK", clockInAt: "2026-06-01T09:05:00", clockOutAt: "2026-06-01T18:00:00" },
@@ -50,6 +51,19 @@ describe("evaluateAttendance", () => {
     const autonomous = { ...range, policy: { id: 1, name: "자율", isDefault: true, type: "AUTONOMOUS" as const } };
     expect(evaluateAttendance(autonomous, "2026-06-02", "2026-06-02", range.today)).toEqual([
       { date: "2026-06-02", status: "ON_TIME" },
+    ]);
+  });
+});
+
+describe("입사일", () => {
+  it("입사 전 평일은 결근이 아니라 판정 대상 아님 (null)", () => {
+    const newcomer = { ...range, hiredOn: "2026-06-04" };
+    expect(evaluateAttendance(newcomer, "2026-06-01", "2026-06-05", range.today)).toEqual([
+      { date: "2026-06-01", status: null },
+      { date: "2026-06-02", status: null },
+      { date: "2026-06-03", status: null },
+      { date: "2026-06-04", status: "ABSENT" }, // 입사일부터 판정
+      { date: "2026-06-05", status: null }, // 오늘, 출근 전
     ]);
   });
 });
