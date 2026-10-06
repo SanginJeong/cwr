@@ -22,7 +22,12 @@ const ArticleComments = () => {
 
   const { data: userInfo } = useGetUser();
   const { data: article } = useGetArticle({ articleId });
-  const { data: articleComments } = useGetArticleComments({ articleId });
+  const {
+    data: articleComments,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetArticleComments({ articleId });
   const { mutate: postArticleComment } = usePostArticleComment();
   const { mutate: deleteArticleComment } = useDeleteArticleComment();
 
@@ -86,6 +91,17 @@ const ArticleComments = () => {
           </li>
         ))}
       </ul>
+
+      {hasNextPage && (
+        <button
+          type="button"
+          onClick={() => fetchNextPage()}
+          disabled={isFetchingNextPage}
+          className="self-center h-11 px-6 rounded-xl border border-border-secondary text-md-semibold text-text-secondary hover:bg-background-tertiary disabled:opacity-60"
+        >
+          {isFetchingNextPage ? "불러오는 중..." : "댓글 더보기"}
+        </button>
+      )}
 
       <ArticleEditCommentModal
         comment={selectedComment}
