@@ -1,12 +1,9 @@
 "use client";
 
 import { toastKit } from "@/shared/lib/toastKit";
-import tokenStorage from "@/shared/api/tokenStorage";
-import { clearAuthCookies } from "@/shared/api/authCookies";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/config/routes";
-import { isSupabase } from "@/shared/config/backend";
 import { getSupabase } from "@/shared/api/supabase/client";
 
 const useLogout = () => {
@@ -15,13 +12,7 @@ const useLogout = () => {
   const { success } = toastKit();
 
   const logout = async () => {
-    if (isSupabase) {
-      await getSupabase().auth.signOut();
-    } else {
-      await clearAuthCookies();
-
-      tokenStorage.clearTokens();
-    }
+    await getSupabase().auth.signOut();
 
     queryClient.setQueryData(["user"], null);
 

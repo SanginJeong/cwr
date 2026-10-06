@@ -1,7 +1,5 @@
-import { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import patchUserProfile from "./patchUserProfile";
-import { ApiErrorResponse } from "@/shared/api/types/ApiType";
 import { toastKit } from "@/shared/lib/toastKit";
 
 type UsePatchUserProfileOptions = {
@@ -22,8 +20,8 @@ const usePatchUserProfile = (options?: UsePatchUserProfileOptions) => {
 
       options?.onSuccess?.();
     },
-    onError: (err: AxiosError<ApiErrorResponse>) => {
-      const message = err.response?.data?.message || err.message || "프로필 변경에 실패했습니다.";
+    onError: (err: Error) => {
+      const message = err.message || "프로필 변경에 실패했습니다.";
       error(message);
       options?.onError?.(message);
     },

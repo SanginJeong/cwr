@@ -1,13 +1,8 @@
 "use client";
 
 import { Icon } from "@/shared/ui/icon";
-import { isSupabase } from "@/shared/config/backend";
 import { getSupabase } from "@/shared/api/supabase/client";
 import { ROUTES } from "@/shared/config/routes";
-
-const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
-const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_LOGIN_URI;
-const kakaoLoginLink = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
 interface SocialAuthSectionProps {
   mode?: "login" | "signup";
@@ -15,15 +10,11 @@ interface SocialAuthSectionProps {
 
 const SocialAuthSection = ({ mode = "login" }: SocialAuthSectionProps) => {
   const hadnleKakaoClick = () => {
-    if (isSupabase) {
-      const next = encodeURIComponent(ROUTES.teams);
-      void getSupabase().auth.signInWithOAuth({
-        provider: "kakao",
-        options: { redirectTo: `${window.location.origin}${ROUTES.authCallback}?next=${next}` },
-      });
-      return;
-    }
-    window.location.href = kakaoLoginLink;
+    const next = encodeURIComponent(ROUTES.teams);
+    void getSupabase().auth.signInWithOAuth({
+      provider: "kakao",
+      options: { redirectTo: `${window.location.origin}${ROUTES.authCallback}?next=${next}` },
+    });
   };
 
   const actionText = mode === "login" ? "간편 로그인하기" : "간편 회원가입하기";
