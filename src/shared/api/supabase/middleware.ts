@@ -3,7 +3,7 @@ import type { Database } from "./database.types";
 import { NextResponse, type NextRequest } from "next/server";
 
 /**
- * middleware에서 Supabase 세션을 갱신하고 로그인 여부를 돌려준다.
+ * proxy(src/proxy.ts)에서 Supabase 세션을 갱신하고 로그인 여부를 돌려준다.
  * 만료된 access token은 여기서 refresh되어 응답 쿠키에 다시 쓰인다.
  * 리다이렉트할 때도 이 response의 쿠키를 옮겨야 세션이 유지된다.
  */

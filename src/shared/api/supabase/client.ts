@@ -4,7 +4,7 @@ import type { Database } from "./database.types";
 
 /**
  * 브라우저(클라이언트 컴포넌트, 훅)에서 쓰는 Supabase 클라이언트.
- * 세션은 쿠키에 저장되어 서버 컴포넌트·middleware와 공유된다.
+ * 세션은 쿠키에 저장되어 서버 컴포넌트·proxy와 공유된다.
  */
 let client: SupabaseClient<Database> | undefined;
 

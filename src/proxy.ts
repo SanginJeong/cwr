@@ -3,9 +3,9 @@ import type { NextRequest } from "next/server";
 import { AUTH_ONLY_ROUTES, HR_ADMIN_ROUTES, PROTECTED_ROUTES, ROUTES } from "@/shared/config/routes";
 import { updateSupabaseSession } from "@/shared/api/supabase/middleware";
 
-// 로그인 여부로 리다이렉트하고, /admin 아래만 인사담당자인지 DB로 확인한다.
+// Next 16의 proxy (예전 middleware). 로그인 여부로 리다이렉트하고, /admin 아래만 인사담당자인지 DB로 확인한다.
 // 팀 존재 확인 등 나머지 검사는 서버 컴포넌트(views/no-team, app/(main)/teams/[teamId]/layout.tsx 등)에서 한다.
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   const { response, isLoggedIn, supabase } = await updateSupabaseSession(req);

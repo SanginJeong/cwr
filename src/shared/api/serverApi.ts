@@ -8,7 +8,7 @@ import type { UserResponse } from "@/shared/api/types/UserType";
  * 서버 컴포넌트에서 쓰는 조회.
  */
 
-/** 로그인 쿠키가 있는지만 본다 (검증은 middleware가 한다) */
+/** 로그인 쿠키가 있는지만 본다 (검증은 proxy가 한다) */
 export const hasServerSession = async (): Promise<boolean> => {
   const cookieStore = await cookies();
   return cookieStore.getAll().some(({ name }) => /^sb-.+-auth-token(\.0)?$/.test(name));
