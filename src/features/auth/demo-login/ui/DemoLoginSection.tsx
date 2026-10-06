@@ -8,10 +8,11 @@ import { toastKit } from "@/shared/lib/toastKit";
 
 type DemoRole = "hr" | "leader" | "employee";
 
-const ROLES: { role: DemoRole; title: string; description: string }[] = [
-  { role: "hr", title: "인사담당자", description: "구성원·근태 정책·회사 전체 휴가" },
-  { role: "leader", title: "팀장", description: "팀 근태와 휴가 승인" },
-  { role: "employee", title: "직원", description: "출퇴근과 휴가 신청" },
+// 조사(로/으로)가 달라서 버튼 문구를 그대로 적는다
+const ROLES: { role: DemoRole; label: string; description: string }[] = [
+  { role: "hr", label: "인사담당자로 보기", description: "구성원·정책·회사 휴가" },
+  { role: "leader", label: "팀장으로 보기", description: "팀 근태와 휴가 승인" },
+  { role: "employee", label: "직원으로 보기", description: "출퇴근과 휴가 신청" },
 ];
 
 /**
@@ -56,7 +57,7 @@ const DemoLoginSection = () => {
         <hr className="flex-1 border-border-primary" />
       </div>
       <div className="grid grid-cols-1 tablet:grid-cols-3 gap-2">
-        {ROLES.map(({ role, title, description }) => (
+        {ROLES.map(({ role, label, description }) => (
           <button
             key={role}
             type="button"
@@ -65,7 +66,7 @@ const DemoLoginSection = () => {
             className="min-h-[64px] rounded-xl border border-border-secondary px-3 py-2.5 text-left tablet:text-center flex flex-col gap-0.5 hover:border-brand-primary hover:bg-brand-primary/10 disabled:opacity-50"
           >
             <span className="text-lg-semibold text-text-primary">
-              {pendingRole === role ? "들어가는 중..." : `${title}로 보기`}
+              {pendingRole === role ? "들어가는 중..." : label}
             </span>
             <span className="text-xs-regular text-text-default">{description}</span>
           </button>
