@@ -100,7 +100,7 @@
 - [x] DB 테스트 `70_attendance.test.sql` 62개 항목: 정책 제약, 출퇴근 규칙, 휴가 승인 권한, 결정 후 재결정 거부, 퇴사자 (10/10 파일 통과)
   - 동시 승인·반려는 PGlite가 연결 하나라 **순서대로만** 확인. 실제 동시성은 `where status = 'PENDING'` + 행 잠금 (ADR-007)
 - [x] 프론트 연결부: `entities/attendance/api` (RPC 호출, 응답 타입). 화면은 H3~H5
-- [ ] **(직접)** `supabase db push` → `npm run db:types` (지금 `database.types.ts`는 손으로 맞춰 둠)
+- [x] `supabase db push` → `npm run db:types` (손으로 맞춘 타입과 같음)
 
 ### H3. 직원 화면 (3일)
 
