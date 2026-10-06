@@ -13,7 +13,7 @@ const SidebarMobile = ({
   user,
   teams,
   isHrAdmin,
-  review,
+  managementMenu,
   isOpen,
   handleOpenDropdown,
   options,
@@ -76,7 +76,7 @@ const SidebarMobile = ({
         user={user}
         teams={teams}
         isHrAdmin={isHrAdmin}
-        review={review}
+        managementMenu={managementMenu}
       />
     </>
   );

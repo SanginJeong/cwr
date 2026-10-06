@@ -7,6 +7,7 @@ import { Profile } from "@/shared/ui/profile";
 import SidebarDropdown from "../SidebarDropdown/SidebarDropdown";
 import AddTeamButton from "../AddTeamButton/AddTeamButton";
 import SidebarLink from "../SidebarLink/SidebarLink";
+import ManagementMenuSection from "../ManagementMenuSection/ManagementMenuSection";
 import { motion } from "framer-motion";
 import { ROUTES } from "@/shared/config/routes";
 import { ClockCard } from "@/features/attendance/clock";
@@ -15,7 +16,7 @@ const SidebarTablet = ({
   user,
   teams,
   isHrAdmin,
-  review,
+  managementMenu,
   isOpen,
   handleOpenDropdown,
   options,
@@ -60,7 +61,7 @@ const SidebarTablet = ({
         </header>
 
         <nav className={cn("w-full flex-1 min-h-0 flex flex-col justify-between", isOpen ? "px-6" : "px-[10px]")}>
-          <section className="w-full flex-1 min-h-0 flex flex-col items-center justify-start gap-3">
+          <section className="w-full flex-1 min-h-0 flex flex-col items-center justify-start gap-3 overflow-y-auto pb-3">
             {user && (
               <>
                 {isOpen && <ClockCard variant="sidebar" className="w-full" />}
@@ -73,18 +74,7 @@ const SidebarTablet = ({
                 )}
 
                 <SidebarLink title="자유게시판" isOpen={isOpen} href={ROUTES.board} iconName="board" />
-                {review && (
-                  <div className="w-full flex flex-col gap-1">
-                    {isOpen && <span className="px-3 text-xs-semibold text-text-disabled">{review.label}</span>}
-                    <SidebarLink
-                      title="휴가 승인"
-                      isOpen={isOpen}
-                      href={ROUTES.approvals}
-                      iconName="check"
-                      badge={review.pendingCount}
-                    />
-                  </div>
-                )}
+                {managementMenu && <ManagementMenuSection menu={managementMenu} isOpen={isOpen} />}
                 {isHrAdmin &&
                   (isOpen ? (
                     <AddTeamButton />

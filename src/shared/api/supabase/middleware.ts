@@ -28,5 +28,5 @@ export const updateSupabaseSession = async (request: NextRequest) => {
   // getClaims는 JWT 서명을 검증한다 (쿠키 값을 그대로 믿지 않음)
   const { data } = await supabase.auth.getClaims();
 
-  return { response, isLoggedIn: !!data?.claims };
+  return { response, isLoggedIn: !!data?.claims, supabase };
 };

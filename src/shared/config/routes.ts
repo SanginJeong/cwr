@@ -14,6 +14,10 @@ export const ROUTES = {
   attendance: "/attendance",
   /** 휴가 승인. 팀장·인사담당자 (roadmap H4) */
   approvals: "/approvals",
+  /** 인사담당자 (roadmap H5). middleware가 /admin 아래를 막는다 */
+  adminMembers: "/admin/members",
+  adminPolicies: "/admin/policies",
+  adminApprovals: "/admin/approvals",
   teams: "/teams",
   /** 인사담당자만 (ADR-006) */
   teamNew: "/teams/new",
@@ -34,8 +38,12 @@ export const AUTH_ONLY_ROUTES: string[] = [ROUTES.login, ROUTES.resetPassword];
 export const PROTECTED_ROUTES: string[] = [
   ROUTES.attendance,
   ROUTES.approvals,
+  "/admin",
   ROUTES.account,
   ROUTES.history,
   ROUTES.teams,
   ROUTES.board,
 ];
+
+/** 인사담당자만 들어갈 수 있는 경로 (prefix 매칭). middleware가 is_hr_admin으로 확인한다 */
+export const HR_ADMIN_ROUTES: string[] = ["/admin"];
