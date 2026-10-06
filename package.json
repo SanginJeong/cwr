@@ -12,6 +12,8 @@
     "prepare": "husky",
     "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
     "build-all": "npm run build && npm run build-storybook",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:db": "node scripts/test-db.mjs",
     "db:types": "npx supabase gen types typescript --linked --schema public > src/shared/api/supabase/database.types.ts"
   },
@@ -58,7 +60,8 @@
     "prettier": "^3.6.2",
     "storybook": "^10.0.2",
     "tailwindcss": "^3.4.18",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.11"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
