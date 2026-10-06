@@ -147,9 +147,10 @@
 - [x] `vercel.json` 리전 `icn1`, 크론
 - [x] `middleware.ts` → `proxy.ts` (Next 16)
 - [x] README를 HR 서비스 소개로 다시 쓰기 (팀 프로젝트 시절 README는 `docs/legacy-readme.md`)
-- [ ] **(직접)** 데모 데이터 첫 시드 ([supabase/README.md](../supabase/README.md) §6)
-- [ ] **(직접)** Vercel 배포: 환경변수, Supabase Auth URL 설정 ([supabase/README.md](../supabase/README.md) §8)
-- [ ] 배포 후 README의 [배포 주소] 채우기, 데모 로그인 3종 QA
+- [x] 데모 데이터 첫 시드 ([supabase/README.md](../supabase/README.md) §6)
+- [x] Vercel 배포: https://cwr-one.vercel.app (리전 icn1 확인, 리셋 크론은 인증 없으면 401)
+- [x] README에 배포 주소, 배포 사이트에서 데모 로그인 확인
+- [x] 배포 후 수정: 모바일 휴가 승인이 표 가로 스크롤이라 승인·반려 버튼이 화면 밖에 숨던 것 → 모바일은 카드
 
 ## 3. 나중에 (첫 완성본 이후)
 
