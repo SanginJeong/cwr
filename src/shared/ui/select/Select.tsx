@@ -48,8 +48,11 @@ const Select = <T,>({ value, options, onChange, className, textAlign = "left" }:
 
   return (
     <div className="relative inline-block" ref={selectRef}>
+      {/* 접근 이름은 보이는 선택값. 폼 안에서도 제출하지 않게 type="button" */}
       <button
-        aria-label="선택 버튼"
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
         className={cn(
           "flex justify-between items-center min-w-[110px] tablet:min-w-[120px] h-[44px] px-[10px] py-[14px] bg-background-primary border border-border-primary rounded-xl",
           className,
@@ -71,7 +74,8 @@ const Select = <T,>({ value, options, onChange, className, textAlign = "left" }:
           {options.map((option) => (
             <li key={option.label}>
               <button
-                aria-label="선택 메뉴"
+                type="button"
+                aria-current={option.value === value || undefined}
                 className={cn("w-full px-3 py-2 hover:bg-state-200 transition", `text-${textAlign}`)}
                 onClick={() => handleSelect(option)}
               >
