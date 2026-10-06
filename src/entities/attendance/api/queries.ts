@@ -1,6 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { toKstDateString } from "@/shared/lib/kstDate";
-import { getAttendanceRange, getLeaveRequests } from "./attendance.supabase";
+import {
+  getAttendanceRange,
+  getLeaveRequests,
+  getReviewLeaveRequests,
+  getTeamAttendanceRange,
+  getTeamLeaveCalendar,
+} from "./attendance.supabase";
 import type { LeaveStatus } from "../model/types";
 
 /** 출퇴근·휴가 결정 뒤에는 attendanceKeys.all을 무효화한다 */
@@ -10,6 +16,10 @@ export const attendanceKeys = {
     [...attendanceKeys.all, "range", params.userId ?? "me", params.from, params.to] as const,
   leaves: (params: { userId?: number; status?: LeaveStatus; from?: string; to?: string }) =>
     [...attendanceKeys.all, "leaves", params] as const,
+  review: (pending: boolean) => [...attendanceKeys.all, "review", pending] as const,
+  team: (params: { groupId: number; from: string; to: string }) => [...attendanceKeys.all, "team", params] as const,
+  teamLeaves: (params: { groupId: number; from: string; to: string }) =>
+    [...attendanceKeys.all, "teamLeaves", params] as const,
 };
 
 export const useAttendanceRange = (params: { from: string; to: string; userId?: number }, enabled = true) =>
@@ -38,6 +48,32 @@ export const useLeaveRequests = (
   useQuery({
     queryKey: attendanceKeys.leaves(params),
     queryFn: () => getLeaveRequests(params),
+    enabled,
+    staleTime: 1000 * 60,
+  });
+
+/** 휴가 승인 목록. 사이드바 배지도 대기 목록의 길이를 쓴다 */
+export const useReviewLeaveRequests = (pending: boolean, enabled = true) =>
+  useQuery({
+    queryKey: attendanceKeys.review(pending),
+    queryFn: () => getReviewLeaveRequests(pending),
+    enabled,
+    staleTime: 1000 * 30,
+  });
+
+/** 팀 근태 (팀장·인사담당자). 오늘 카드는 from = to = 오늘 */
+export const useTeamAttendanceRange = (params: { groupId: number; from: string; to: string }, enabled = true) =>
+  useQuery({
+    queryKey: attendanceKeys.team(params),
+    queryFn: () => getTeamAttendanceRange(params),
+    enabled,
+    staleTime: 1000 * 60,
+  });
+
+export const useTeamLeaveCalendar = (params: { groupId: number; from: string; to: string }, enabled = true) =>
+  useQuery({
+    queryKey: attendanceKeys.teamLeaves(params),
+    queryFn: () => getTeamLeaveCalendar(params),
     enabled,
     staleTime: 1000 * 60,
   });

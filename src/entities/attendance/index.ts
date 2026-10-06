@@ -14,7 +14,17 @@ export {
 } from "./lib/describe";
 export type { ClockState } from "./lib/describe";
 export * from "./api/attendance.supabase";
-export { attendanceKeys, useAttendanceRange, useLeaveRequests, useTodayAttendance } from "./api/queries";
+export {
+  attendanceKeys,
+  useAttendanceRange,
+  useLeaveRequests,
+  useReviewLeaveRequests,
+  useTeamAttendanceRange,
+  useTeamLeaveCalendar,
+  useTodayAttendance,
+} from "./api/queries";
+export { getMemberToday, summarizeTeamToday } from "./lib/teamToday";
+export type { MemberToday, TeamTodayKind } from "./lib/teamToday";
 export type * from "./model/types";
 export { default as AttendanceChip, CHIP_DOT, CHIP_LABEL, CHIP_STYLE } from "./ui/AttendanceChip";
 export type { ChipKind } from "./ui/AttendanceChip";

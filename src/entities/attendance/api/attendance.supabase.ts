@@ -1,6 +1,14 @@
 import { getSupabase } from "@/shared/api/supabase/client";
 import { toApiError } from "@/shared/api/supabase/errors";
-import type { AttendanceRange, AttendanceRecord, LeaveRequest, LeaveStatus, TeamAttendanceRange } from "../model/types";
+import type {
+  AttendanceRange,
+  AttendanceRecord,
+  LeaveRequest,
+  LeaveStatus,
+  ReviewLeaveRequest,
+  TeamAttendanceRange,
+  TeamLeaveCalendar,
+} from "../model/types";
 
 /**
  * 근태 RPC (supabase/migrations/20261006000006_attendance.sql, ADR-007).
@@ -96,4 +104,22 @@ export const getLeaveRequests = async (params: {
       createdAt: row.created_at,
     }),
   );
+};
+
+/** 내가 결정할 수 있는 휴가 신청 (팀장: 팀원, 인사담당자: 전체). pending=false면 처리된 최근 100건 */
+export const getReviewLeaveRequests = async (pending: boolean) => {
+  const { data, error } = await getSupabase().rpc("review_leave_requests", { p_pending: pending });
+  if (error) throw toApiError(error, "휴가 신청을 불러오지 못했습니다.");
+  return asJson<ReviewLeaveRequest[]>(data);
+};
+
+/** 팀의 대기·승인 휴가 (팀장·인사담당자) */
+export const getTeamLeaveCalendar = async (params: { groupId: number; from: string; to: string }) => {
+  const { data, error } = await getSupabase().rpc("team_leave_calendar", {
+    p_group_id: params.groupId,
+    p_from: params.from,
+    p_to: params.to,
+  });
+  if (error) throw toApiError(error, "팀 휴가를 불러오지 못했습니다.");
+  return asJson<TeamLeaveCalendar>(data);
 };

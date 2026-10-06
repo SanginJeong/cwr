@@ -46,3 +46,26 @@ export interface LeaveRequest {
   decidedAt: string | null;
   createdAt: string;
 }
+
+/** review_leave_requests RPC 항목 (휴가 승인 화면) */
+export interface ReviewLeaveRequest extends Omit<LeaveRequest, "decidedBy"> {
+  userName: string;
+  userImage: string | null;
+  decidedByName: string | null;
+  /** 신청자의 소속 팀 이름 */
+  teams: string[];
+  /** 신청자와 같은 팀에 있는 다른 사람의 같은 날 휴가 (대기·승인) */
+  overlaps: { userName: string; status: Extract<LeaveStatus, "PENDING" | "APPROVED"> }[];
+}
+
+/** team_leave_calendar RPC 응답 */
+export interface TeamLeaveCalendar {
+  today: string;
+  leaves: {
+    id: number;
+    date: string;
+    userId: number;
+    userName: string;
+    status: Extract<LeaveStatus, "PENDING" | "APPROVED">;
+  }[];
+}
