@@ -1,4 +1,4 @@
-import { randomBytes } from "node:crypto";
+import { randomInt } from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { getAdminSupabase } from "@/shared/api/supabase/admin";
 import type { CompanyRole } from "@/shared/api/types/UserType";
@@ -7,8 +7,25 @@ import { errorResponse, requireHrAdmin } from "../_lib/response";
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const COMPANY_ROLES: CompanyRole[] = ["HR_ADMIN", "EMPLOYEE"];
 
-/** 임시 비밀번호: 영문 대소문자·숫자 12자. 응답으로 한 번만 보여준다 */
-const createTemporaryPassword = () => randomBytes(9).toString("base64url").replace(/[-_]/g, "x");
+const LETTERS = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
+const DIGITS = "23456789";
+const SYMBOLS = "!@#$%^&*";
+const pick = (chars: string) => chars[randomInt(chars.length)];
+
+/**
+ * 임시 비밀번호 12자. 응답으로 한 번만 보여준다.
+ * 앱의 비밀번호 규칙(PW_REGX: 영문·숫자·특수문자)을 만족하도록 종류마다 하나 이상 넣고 섞는다.
+ * 헷갈리는 글자(l, I, O, 0, 1)는 뺀다.
+ */
+const createTemporaryPassword = () => {
+  const all = LETTERS + DIGITS + SYMBOLS;
+  const chars = [pick(LETTERS), pick(DIGITS), pick(SYMBOLS), ...Array.from({ length: 9 }, () => pick(all))];
+  for (let i = chars.length - 1; i > 0; i--) {
+    const j = randomInt(i + 1);
+    [chars[i], chars[j]] = [chars[j], chars[i]];
+  }
+  return chars.join("");
+};
 
 /**
  * 직원 등록 (ADR-006). 인사담당자만.

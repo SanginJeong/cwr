@@ -12,11 +12,12 @@ import { Input } from "@/shared/ui/input";
 import { InputPassword } from "@/shared/ui/input";
 import { BaseButton } from "@/shared/ui/button";
 import { toastKit } from "@/shared/lib/toastKit";
-import { validateEmail, validatePassword } from "@/shared/lib/Validation";
+import { validateEmail, validatePasswordForLogin } from "@/shared/lib/Validation";
 
 const loginRules: ValidationRules = {
   email: (value) => validateEmail(value),
-  password: (value) => validatePassword(value),
+  // 형식 규칙은 비밀번호를 정할 때만 본다. 로그인은 빈 값만 막는다 (임시 비밀번호 등)
+  password: (value) => validatePasswordForLogin(value),
 };
 
 const LoginForm = () => {
