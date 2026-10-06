@@ -1,13 +1,8 @@
 import postCreateTeam from "./postCreateTeam";
 import { toastKit } from "@/shared/lib/toastKit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/config/routes";
-
-interface ErrorResponse {
-  message: string;
-}
 
 const usePostCreateTeam = () => {
   const router = useRouter();
@@ -22,8 +17,8 @@ const usePostCreateTeam = () => {
 
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
-    onError: (err: AxiosError<ErrorResponse>) => {
-      const message = err.response?.data?.message || err.message || "팀 생성에 실패했습니다.";
+    onError: (err: Error) => {
+      const message = err.message || "팀 생성에 실패했습니다.";
       error(message);
     },
   });

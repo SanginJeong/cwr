@@ -1,7 +1,4 @@
-import postResetPassword from "./resetPassword";
 import sendResetPasswordEmailWithSupabase from "./resetPassword.supabase";
-import { isSupabase } from "@/shared/config/backend";
-import { ResetPasswordRequest } from "@/shared/api/types/authApi";
 import { useMutation } from "@tanstack/react-query";
 
 type UsePostResetPwOptions = {
@@ -11,10 +8,7 @@ type UsePostResetPwOptions = {
 
 const usePostResetPw = (options?: UsePostResetPwOptions) => {
   return useMutation({
-    mutationFn: async (request: ResetPasswordRequest) => {
-      if (isSupabase) await sendResetPasswordEmailWithSupabase(request);
-      else await postResetPassword(request);
-    },
+    mutationFn: sendResetPasswordEmailWithSupabase,
     onSuccess: () => {
       options?.onSuccess?.();
     },

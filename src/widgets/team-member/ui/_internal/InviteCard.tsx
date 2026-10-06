@@ -2,7 +2,6 @@
 
 import { useGetInvitation } from "@/entities/team";
 import { useCheckAdmin } from "@/entities/user";
-import { isSupabase } from "@/shared/config/backend";
 import { BaseButton } from "@/shared/ui/button";
 
 interface InviteCardProps {
@@ -13,8 +12,8 @@ const InviteCard = ({ groupId }: InviteCardProps) => {
   const isAdmin = useCheckAdmin();
   const { mutate: copyInvitation, isPending } = useGetInvitation();
 
-  // Supabase에서는 관리자만 초대 링크를 만들 수 있다 (ADR-004 §3). 기존 API는 누구나 가능
-  const canInvite = isAdmin || !isSupabase;
+  // 관리자만 초대 링크를 만들 수 있다 (ADR-004 §3)
+  const canInvite = isAdmin;
 
   return (
     <section
