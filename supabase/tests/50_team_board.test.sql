@@ -49,7 +49,7 @@ begin
   perform pg_temp.check('외부인: 댓글 작성 불가', public.test_error(format(
     'insert into public.team_post_comments (post_id, content) values (%s, %L)', member_post, 'x')) = '42501');
   perform pg_temp.check('외부인: 공지 지정 불가 (404)', public.test_error(format(
-    'select public.set_team_post_notice(%s, true)', admin_post)) = 'P0002');
+    'select public.set_team_post_notice(%s, true)', admin_post)) = 'PT404');
 
   -- ── 비로그인 ──
   perform public.test_login(null);

@@ -35,22 +35,22 @@ begin
   -- ── 멤버가 아닌 사람 ──
   perform public.test_login(outsider);
   perform pg_temp.check('외부인: 그룹이 안 보임', not exists (select 1 from public.groups where id = g));
-  perform pg_temp.check('외부인: get_group은 404', public.test_error(format('select public.get_group(%s)', g)) = 'P0002');
+  perform pg_temp.check('외부인: get_group은 404', public.test_error(format('select public.get_group(%s)', g)) = 'PT404');
   perform pg_temp.check('외부인: 할 일 조회 404',
-    public.test_error(format('select public.tasks_for_date(%s, null)', list)) = 'P0002');
+    public.test_error(format('select public.tasks_for_date(%s, null)', list)) = 'PT404');
   perform pg_temp.check('외부인: 댓글이 안 보임', not exists (select 1 from public.task_comments));
   perform pg_temp.check('외부인: 그룹 이름 수정 불가 (기존 API는 가능)',
     public.test_row_count(format('update public.groups set name = %L where id = %s', 'hack', g)) = 0);
   perform pg_temp.check('외부인: 할 일 목록 생성 불가 (기존 API는 가능)',
     public.test_error(format('insert into public.task_lists (group_id, name) values (%s, %L)', g, 'x')) = '42501');
   perform pg_temp.check('외부인: 할 일 완료 불가 (기존 API는 가능)',
-    public.test_error(format('select public.update_task(%s, p_done => true)', task)) = 'P0002');
+    public.test_error(format('select public.update_task(%s, p_done => true)', task)) = 'PT404');
   perform pg_temp.check('외부인: 댓글 작성 불가 (기존 API는 가능)',
     public.test_error(format('insert into public.task_comments (task_id, content) values (%s, %L)', task, 'x')) = '42501');
   perform pg_temp.check('외부인: 초대 토큰 발급 불가 (기존 API는 가능)',
-    public.test_error(format('select public.create_invitation(%s)', g)) = 'P0002');
+    public.test_error(format('select public.create_invitation(%s)', g)) = 'PT404');
   perform pg_temp.check('외부인: 반복 일정 생성 불가',
-    public.test_error(format('select public.create_recurring(%s, %L, %L)', list, 'x', 'DAILY')) = 'P0002');
+    public.test_error(format('select public.create_recurring(%s, %L, %L)', list, 'x', 'DAILY')) = 'PT404');
 
   -- ── 일반 멤버 ──
   perform public.test_login(member);

@@ -113,4 +113,4 @@ npm run db:types   # 연결된 프로젝트의 스키마로 src/shared/api/supab
 | `POST /images/upload`                       | `storage.from('images').upload('{auth uid}/{파일}', file)`           |
 
 - RLS에 막힌 update/delete는 **에러 없이 0건**으로 끝납니다. `.select()`로 결과 행을 받아서 비어 있으면 403/404로 처리하세요.
-- RPC 에러 코드: `42501` → 403, `P0002` → 404, `P0001` → 400 (메시지를 그대로 보여줘도 되는 문장)
+- RPC 에러 코드: `42501` → 403, `PT404` → 404, `P0001` → 400 (메시지를 그대로 보여줘도 되는 문장). `P0002`는 PostgREST가 HTTP 500으로 돌려주므로 쓰지 않는다

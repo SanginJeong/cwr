@@ -140,7 +140,7 @@ begin
   perform public.update_task(t1, p_done => true);
   perform public.delete_task(t1);
   perform pg_temp.check('task 삭제: 그 날짜에서 사라지고 다시 생기지 않음', pg_temp.names(list, d) not like '%한번%');
-  perform pg_temp.check('task 삭제: 단건 조회 404', public.test_error(format('select public.get_task(%s)', t1)) = 'P0002');
+  perform pg_temp.check('task 삭제: 단건 조회 404', public.test_error(format('select public.get_task(%s)', t1)) = 'PT404');
   perform pg_temp.check('task 삭제: history에서 빠짐 (ADR-004 §6)',
     not exists (select 1 from jsonb_array_elements(public.user_history() -> 'tasksDone') h where (h ->> 'id')::bigint = t1));
 

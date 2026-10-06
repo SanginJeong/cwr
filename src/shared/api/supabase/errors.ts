@@ -2,7 +2,8 @@
  * Supabase 에러를 화면에 보여줄 수 있는 Error로 바꾼다.
  *
  * RPC 에러 코드 (supabase/README.md)
- *   42501 → 403, P0002 → 404, P0001 → 400 (메시지가 사용자용 문장)
+ *   42501 → 403, PT404 → 404, P0001 → 400 (메시지가 사용자용 문장)
+ *   (P0002는 PostgREST가 HTTP 500으로 돌려줘서 PT404로 바꿨다. 20261006000004_not_found_404.sql)
  */
 export class ApiError extends Error {
   constructor(
@@ -24,7 +25,7 @@ interface SupabaseErrorLike {
 
 const STATUS_BY_CODE: Record<string, number> = {
   "42501": 403,
-  P0002: 404,
+  PT404: 404,
   P0001: 400,
   "23505": 409,
 };
