@@ -48,7 +48,8 @@
 - [x] QA 버그 수정
 - [ ] PR 머지: [#3 Supabase 전환](https://github.com/SanginJeong/cwr/pull/3) → 기존 API 제거 PR (#3 위에 쌓음)
 - [ ] QA 중 올린 Storage 이미지 25개 삭제 (대시보드 → Storage → images)
-- [ ] QA에서 나온 결정 3가지: "할 일 추가" 문구(실제로는 목록 추가), 할 일 수정 시 설명 필수 여부, 반복 설정 선택지가 모달에서 잘림
+- [x] QA에서 나온 결정 3가지 반영 (2026-10-06): "목록 추가"로 문구 변경, 할 일 수정 시 설명 선택, 반복 설정 선택지가 잘리지 않게
+  - 함께 고친 버그: 설명을 지우면 PDF 다운로드(react-pdf)가 페이지 에러를 냄
 - [x] **기존 API 코드 제거** (브랜치 `feat/remove-legacy-api`): 분기 52개 파일 정리, axios·토큰 쿠키·`/api/auth/refresh`·`/login/kakao`·백엔드 스위치 삭제. 회귀 QA 59개 항목 통과
   - 함께 고친 버그: 게시글 이미지가 Supabase 주소라서 화면에 안 나오던 문제 (`isValidImageUrl`)
 - [x] Supabase Realtime의 "Allow public access" 꺼져 있는지 확인 (꺼진 상태 기준으로 정책을 맞춤, 마이그레이션 `..._team_channel_broadcast`)
