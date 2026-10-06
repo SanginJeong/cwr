@@ -1,7 +1,7 @@
 "use client";
 
 import { selectMyStatus, usePresenceStore } from "@/entities/presence";
-import { useCheckAdmin, useGetUser } from "@/entities/user";
+import { useGetUser, useIsHrAdmin } from "@/entities/user";
 import { GroupMember } from "@/shared/api/types/GroupData";
 import { PresenceStatus } from "@/shared/config/presence";
 import MemberRow from "./MemberRow";
@@ -15,7 +15,7 @@ interface MemberListProps {
 }
 
 const MemberList = ({ groupId, members, onClickDelete }: MemberListProps) => {
-  const isAdmin = useCheckAdmin();
+  const isHrAdmin = useIsHrAdmin();
   const { data: me } = useGetUser();
   const teamStatuses = usePresenceStore((state) => state.teams[groupId]);
   const myStatus = usePresenceStore(selectMyStatus);
@@ -23,7 +23,7 @@ const MemberList = ({ groupId, members, onClickDelete }: MemberListProps) => {
   const statusOf = (member: GroupMember): PresenceStatus =>
     member.userId === me?.id ? myStatus : (teamStatuses?.[member.userId] ?? "offline");
 
-  // 활동 중 → 자리 비움 → 오프라인, 같은 상태면 관리자 먼저
+  // 활동 중 → 자리 비움 → 오프라인, 같은 상태면 팀장 먼저
   const sorted = [...members].sort(
     (a, b) =>
       STATUS_ORDER[statusOf(a)] - STATUS_ORDER[statusOf(b)] || Number(b.role === "ADMIN") - Number(a.role === "ADMIN"),
@@ -50,7 +50,7 @@ const MemberList = ({ groupId, members, onClickDelete }: MemberListProps) => {
             member={member}
             groupId={groupId}
             myUserId={me?.id}
-            onClickDelete={isAdmin && member.role !== "ADMIN" ? onClickDelete : undefined}
+            onClickDelete={isHrAdmin ? onClickDelete : undefined}
           />
         ))}
       </ul>

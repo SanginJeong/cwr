@@ -7,13 +7,12 @@ type Id = number | string;
 export const ROUTES = {
   home: "/",
   login: "/login",
-  /** Supabase 인증 콜백 (카카오, 비밀번호 재설정 메일). app/auth/callback/route.ts */
+  /** Supabase 인증 콜백 (비밀번호 재설정 메일). app/auth/callback/route.ts */
   authCallback: "/auth/callback",
-  signup: "/signup",
   resetPassword: "/reset-password",
   teams: "/teams",
+  /** 인사담당자만 (ADR-006) */
   teamNew: "/teams/new",
-  teamJoin: "/teams/join",
   team: (teamId: Id) => `/teams/${teamId}`,
   teamEdit: (teamId: Id) => `/teams/${teamId}/edit`,
   taskList: (teamId: Id, listId: Id) => `/teams/${teamId}/lists/${listId}`,
@@ -25,7 +24,7 @@ export const ROUTES = {
 } as const;
 
 /** 로그인 상태에서 접근하면 홈으로 보내는 경로 */
-export const AUTH_ONLY_ROUTES: string[] = [ROUTES.login, ROUTES.signup, ROUTES.resetPassword];
+export const AUTH_ONLY_ROUTES: string[] = [ROUTES.login, ROUTES.resetPassword];
 
 /** 비로그인 상태에서 접근하면 로그인으로 보내는 경로 (prefix 매칭) */
 export const PROTECTED_ROUTES: string[] = [ROUTES.account, ROUTES.history, ROUTES.teams, ROUTES.board];

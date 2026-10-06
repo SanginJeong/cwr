@@ -3,7 +3,7 @@ import { getServerSupabase } from "@/shared/api/supabase/server";
 import { ROUTES } from "@/shared/config/routes";
 
 /**
- * Supabase 인증 콜백 (카카오 로그인, 비밀번호 재설정 메일 링크).
+ * Supabase 인증 콜백 (비밀번호 재설정 메일 링크).
  * ?code=를 세션으로 바꿔 쿠키에 저장한 뒤 ?next=로 보낸다.
  */
 export const GET = async (request: NextRequest) => {

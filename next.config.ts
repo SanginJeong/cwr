@@ -7,7 +7,12 @@ const supabaseHost = process.env.NEXT_PUBLIC_SUPABASE_URL
 
 const nextConfig: NextConfig = {
   images: {
+    // 팀 이미지를 고르지 않으면 dicebear SVG를 기본 이미지로 쓴다 (features/team/create-team/lib/resolveTeamImage.ts)
+    // SVG 안의 스크립트가 실행되지 않게 Next 문서의 권장 CSP를 함께 둔다
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
+      { protocol: "https", hostname: "api.dicebear.com", port: "", pathname: "/9.x/**" },
       ...(supabaseHost
         ? [{ protocol: "https" as const, hostname: supabaseHost, port: "", pathname: "/storage/v1/object/public/**" }]
         : []),
@@ -19,7 +24,6 @@ const nextConfig: NextConfig = {
     return [
       { source: "/team", destination: "/teams", permanent: false },
       { source: "/team-creation", destination: "/teams/new", permanent: false },
-      { source: "/team-join", destination: "/teams/join", permanent: false },
       { source: "/team/:teamId/task-list/:listId", destination: "/teams/:teamId/lists/:listId", permanent: false },
       { source: "/team/:teamId/edit", destination: "/teams/:teamId/edit", permanent: false },
       { source: "/team/:teamId", destination: "/teams/:teamId", permanent: false },

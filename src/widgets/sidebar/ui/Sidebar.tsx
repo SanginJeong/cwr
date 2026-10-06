@@ -4,6 +4,7 @@ import { startTransition, useEffect, useState } from "react";
 import SidebarMobile from "./_internal/SidebarMobile/SidebarMobile";
 import SidebarTablet from "./_internal/SidebarTablet/SidebarTablet";
 import { useGetUser } from "@/entities/user";
+import { useGetVisibleTeams } from "@/entities/team";
 import { useLogout } from "@/features/auth/logout";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/config/routes";
@@ -32,6 +33,11 @@ const Sidebar = () => {
   const router = useRouter();
 
   const { data: user } = useGetUser();
+  const isHrAdmin = user?.companyRole === "HR_ADMIN";
+  const { data: allTeams } = useGetVisibleTeams({ enabled: isHrAdmin });
+  const teams = isHrAdmin
+    ? (allTeams ?? [])
+    : (user?.memberships.map(({ groupId, group }) => ({ id: groupId, name: group.name })) ?? []);
   const { logout } = useLogout();
   const statusOptions = usePresenceStatusOptions();
   const myStatus = usePresenceStore(selectMyStatus);
@@ -49,7 +55,6 @@ const Sidebar = () => {
     ...statusOptions,
     { label: "마이 히스토리", action: () => router.push(ROUTES.history) },
     { label: "계정 설정", action: () => router.push(ROUTES.account) },
-    { label: "팀 참여", action: () => router.push(ROUTES.teamJoin) },
     { label: "로그아웃", action: logout },
   ];
 
@@ -57,6 +62,8 @@ const Sidebar = () => {
     <>
       <SidebarTablet
         user={user || null}
+        teams={teams}
+        isHrAdmin={isHrAdmin}
         isOpen={isOpen}
         handleOpenDropdown={handleOpenDropdown}
         options={options}
@@ -64,6 +71,8 @@ const Sidebar = () => {
       />
       <SidebarMobile
         user={user || null}
+        teams={teams}
+        isHrAdmin={isHrAdmin}
         isOpen={isOpen}
         handleOpenDropdown={handleOpenDropdown}
         options={options}

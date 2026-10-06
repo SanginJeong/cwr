@@ -25,7 +25,6 @@ export interface RpcJsonReturns {
   user_history: { tasksDone: TaskJson[] };
   create_group: { id: number; name: string; image: string | null; createdAt: string; updatedAt: string };
   create_recurring: Recurring;
-  accept_invitation: { groupId: number };
   update_my_profile: { id: number; nickname: string; image: string | null };
 }
 

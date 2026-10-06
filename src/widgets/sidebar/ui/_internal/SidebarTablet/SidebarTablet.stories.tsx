@@ -28,7 +28,13 @@ const meta: Meta<typeof SidebarTablet> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const TEAMS_MOCK = [
+  { id: 101, name: "CodeIt" },
+  { id: 102, name: "디자인팀" },
+];
+
 const USER_MOCK_DATA = {
+  companyRole: "EMPLOYEE" as const,
   teamId: "1",
   image: "/TEST_IMG/image-1.jpg",
   nickname: "안해나",
@@ -76,6 +82,18 @@ export const Default: Story = {
   args: {
     isOpen: true,
     user: USER_MOCK_DATA,
+    teams: TEAMS_MOCK,
+    isHrAdmin: false,
+  },
+};
+
+/** 인사담당자: 회사의 모든 팀과 팀 추가하기 버튼 */
+export const HrAdmin: Story = {
+  args: {
+    isOpen: true,
+    user: { ...USER_MOCK_DATA, companyRole: "HR_ADMIN", memberships: [] },
+    teams: TEAMS_MOCK,
+    isHrAdmin: true,
   },
 };
 
@@ -83,5 +101,7 @@ export const NoUser: Story = {
   args: {
     isOpen: true,
     user: null,
+    teams: [],
+    isHrAdmin: false,
   },
 };

@@ -5,12 +5,13 @@ import { PageLayout } from "@/shared/ui/page-layout";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/shared/config/routes";
-import { getServerMe } from "@/shared/api/serverApi";
+import { getServerFirstVisibleTeamId, getServerMe } from "@/shared/api/serverApi";
 
 const EmptyTeamPage = async () => {
-  // 소속 팀이 있으면 첫 번째 팀으로 보낸다
+  // 소속 팀이 있으면 첫 번째 팀으로 보낸다. 인사담당자는 소속이 없어도 회사의 첫 팀으로
   const user = await getServerMe();
-  const groupId = user?.memberships?.[0]?.groupId;
+  const isHrAdmin = user?.companyRole === "HR_ADMIN";
+  const groupId = isHrAdmin ? await getServerFirstVisibleTeamId() : user?.memberships?.[0]?.groupId;
   if (groupId) redirect(ROUTES.team(groupId));
 
   return (
@@ -19,23 +20,30 @@ const EmptyTeamPage = async () => {
         <div className="flex-col-center gap-8">
           <Image src={ImgEmptyTeam} alt="그룹 없음 이미지" placeholder="empty" />
           <p className="flex-col-center gap-1 text-md-medium text-text-default">
-            <span>아직 소속된 팀이 없습니다.</span>
-            <span>팀을 생성하거나 팀에 참여해보세요.</span>
+            {/* 팀 배정은 인사담당자가 한다 (ADR-006) */}
+            {isHrAdmin ? (
+              <>
+                <span>아직 회사에 팀이 없습니다.</span>
+                <span>첫 팀을 만들어보세요.</span>
+              </>
+            ) : (
+              <>
+                <span>아직 소속된 팀이 없습니다.</span>
+                <span>팀 배정은 인사담당자에게 문의해주세요.</span>
+              </>
+            )}
           </p>
         </div>
 
-        <div className="w-[186px] flex flex-col gap-2">
-          <Link href={ROUTES.teamNew}>
-            <BaseButton variant="solid" size="large">
-              팀 생성하기
-            </BaseButton>
-          </Link>
-          <Link href={ROUTES.teamJoin}>
-            <BaseButton variant="outlinedPrimary" size="large">
-              팀 참여하기
-            </BaseButton>
-          </Link>
-        </div>
+        {isHrAdmin && (
+          <div className="w-[186px]">
+            <Link href={ROUTES.teamNew}>
+              <BaseButton variant="solid" size="large">
+                팀 생성하기
+              </BaseButton>
+            </Link>
+          </div>
+        )}
       </section>
     </PageLayout>
   );

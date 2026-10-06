@@ -9,11 +9,11 @@ const useDeleteMember = () => {
     mutationKey: ["deleteMember"],
     mutationFn: deleteMember,
     onSuccess: () => {
-      success("팀원을 성공적으로 내보냈습니다.");
+      success("팀에서 제외했습니다.");
       queryClient.invalidateQueries({ queryKey: ["groups"] });
     },
     onError: () => {
-      error("팀원을 내보내지 못했습니다.");
+      error("팀에서 제외하지 못했습니다.");
     },
   });
 };

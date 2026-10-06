@@ -34,6 +34,12 @@ type Story = StoryObj<typeof meta>;
 const InteractiveTemplate: Story = {
   args: {
     isOpen: false,
+    user: null,
+    teams: [
+      { id: 101, name: "CodeIt" },
+      { id: 102, name: "디자인팀" },
+    ],
+    isHrAdmin: false,
   },
   render: function Render(args) {
     const [isOpen, setIsOpen] = useState(args.isOpen);
@@ -55,6 +61,7 @@ const InteractiveTemplate: Story = {
 export const Default: Story = {
   ...InteractiveTemplate,
   args: {
+    ...InteractiveTemplate.args,
     isOpen: true,
     handleOpenDropdown: () => {},
   },

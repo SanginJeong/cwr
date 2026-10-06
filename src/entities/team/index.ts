@@ -1,2 +1,2 @@
 export { default as useGetGroups } from "./api/useGetGroups";
-export { default as useGetInvitation } from "./api/useGetInvitation";
+export { default as useGetVisibleTeams } from "./api/useGetVisibleTeams";

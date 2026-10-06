@@ -18,19 +18,15 @@ declare
   list bigint;
   task bigint;
   admin_comment bigint;
-  token text;
 begin
-  -- 준비: 팀장이 그룹을 만들고 팀원을 초대한다
+  -- 준비: 팀장과 팀원이 배정된 팀 (배정은 인사담당자가 한다. 15_company_roles에서 확인)
+  g := public.test_create_team('개발팀', admin);
+  perform public.test_add_member(g, member);
   perform public.test_login(admin);
-  g := (public.create_group('개발팀') ->> 'id')::bigint;
   insert into public.task_lists (group_id, name) values (g, '할 일') returning id into list;
   perform public.create_recurring(list, '매일', 'DAILY');
   task := (public.tasks_for_date(list, public.today_kst()) -> 0 ->> 'id')::bigint;
   insert into public.task_comments (task_id, content) values (task, '팀장 댓글') returning id into admin_comment;
-  token := public.create_invitation(g);
-
-  perform public.test_login(member);
-  perform public.accept_invitation(token);
 
   -- ── 멤버가 아닌 사람 ──
   perform public.test_login(outsider);
@@ -47,8 +43,6 @@ begin
     public.test_error(format('select public.update_task(%s, p_done => true)', task)) = 'PT404');
   perform pg_temp.check('외부인: 댓글 작성 불가 (기존 API는 가능)',
     public.test_error(format('insert into public.task_comments (task_id, content) values (%s, %L)', task, 'x')) = '42501');
-  perform pg_temp.check('외부인: 초대 토큰 발급 불가 (기존 API는 가능)',
-    public.test_error(format('select public.create_invitation(%s)', g)) = 'PT404');
   perform pg_temp.check('외부인: 반복 일정 생성 불가',
     public.test_error(format('select public.create_recurring(%s, %L, %L)', list, 'x', 'DAILY')) = 'PT404');
 
@@ -61,8 +55,6 @@ begin
     public.test_row_count(format('delete from public.groups where id = %s', g)) = 0);
   perform pg_temp.check('멤버: 팀장 강퇴 불가 (기존 API는 가능)',
     public.test_row_count(format('delete from public.memberships where group_id = %s and user_id = %s', g, admin)) = 0);
-  perform pg_temp.check('멤버: 초대 토큰 발급 불가',
-    public.test_error(format('select public.create_invitation(%s)', g)) = '42501');
   perform pg_temp.check('멤버: 할 일 목록 생성 가능',
     public.test_error(format('insert into public.task_lists (group_id, name) values (%s, %L)', g, '멤버 목록')) is null);
   perform pg_temp.check('멤버: 할 일 완료 가능',
@@ -88,10 +80,10 @@ begin
 
   -- ── 팀장 ──
   perform public.test_login(admin);
-  perform pg_temp.check('팀장: 그룹 수정 가능',
-    public.test_row_count(format('update public.groups set name = %L where id = %s', '개발1팀', g)) = 1);
-  perform pg_temp.check('팀장: 멤버 강퇴 가능',
-    public.test_row_count(format('delete from public.memberships where group_id = %s and user_id = %s', g, member)) = 1);
+  perform pg_temp.check('팀장: 그룹 수정 불가 (인사담당자만, ADR-006)',
+    public.test_row_count(format('update public.groups set name = %L where id = %s', '개발1팀', g)) = 0);
+  perform pg_temp.check('팀장: 멤버 내보내기 불가 (인사담당자만, ADR-006)',
+    public.test_row_count(format('delete from public.memberships where group_id = %s and user_id = %s', g, member)) = 0);
 
   -- ── 비로그인 ──
   perform public.test_login(null);

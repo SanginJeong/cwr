@@ -9,6 +9,6 @@ export const deleteMemberWithSupabase = async (groupId: number, memberUserId: nu
     .eq("group_id", groupId)
     .eq("user_id", memberUserId)
     .select("user_id");
-  if (error) throw toApiError(error, "멤버를 내보내지 못했습니다.");
-  assertAffected(data, "관리자만 멤버를 내보낼 수 있습니다. 관리자는 내보낼 수 없습니다.");
+  if (error) throw toApiError(error, "팀에서 제외하지 못했습니다.");
+  assertAffected(data, "인사담당자만 팀에서 제외할 수 있습니다.");
 };

@@ -1,9 +1,14 @@
 import { User } from "@/shared/api/types/UserType";
+import { TeamSummary } from "@/shared/api/types/groupApi";
 import { DropdownOption } from "@/shared/ui/dropdown";
 import type { PresenceStatus } from "@/shared/config/presence";
 
 export interface SidebarProps {
   user: User | null;
+  /** 사이드바에 보여줄 팀. 인사담당자는 전체, 그 외에는 소속 팀 */
+  teams: TeamSummary[];
+  /** 팀 추가하기 버튼을 보여줄지 (ADR-006) */
+  isHrAdmin: boolean;
   isOpen: boolean;
   handleOpenDropdown: (prev: boolean) => void;
 }

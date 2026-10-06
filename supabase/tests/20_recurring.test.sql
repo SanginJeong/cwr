@@ -38,8 +38,8 @@ declare
   json jsonb;
   ok boolean;
 begin
+  g := public.test_create_team('팀', me);
   perform public.test_login(me);
-  g := (public.create_group('팀') ->> 'id')::bigint;
   insert into public.task_lists (group_id, name) values (g, '목록') returning id into list;
 
   -- ── 생성 ──

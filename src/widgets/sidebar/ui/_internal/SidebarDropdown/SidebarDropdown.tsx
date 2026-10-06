@@ -1,5 +1,5 @@
 import { Icon } from "@/shared/ui/icon";
-import { Membership } from "@/shared/api/types/UserType";
+import { TeamSummary } from "@/shared/api/types/groupApi";
 import { useIsActivePath } from "@/shared/lib/isActivePath";
 import { cn } from "@/shared/lib/cn";
 import Link from "next/link";
@@ -31,7 +31,7 @@ const DropdownItem = ({ title, id, isOpen }: { title: string; id: string; isOpen
   );
 };
 
-const SidebarDropdown = ({ isOpen, membership }: { isOpen: boolean; membership: Membership[] }) => {
+const SidebarDropdown = ({ isOpen, teams }: { isOpen: boolean; teams: TeamSummary[] }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -62,9 +62,9 @@ const SidebarDropdown = ({ isOpen, membership }: { isOpen: boolean; membership: 
             transition={{ duration: 0.2, ease: "easeOut" }}
           >
             <ul className="flex flex-col gap-2 mt-2">
-              {membership.map((item) => (
-                <li key={item.group.id}>
-                  <DropdownItem title={item.group.name} id={item.group.id.toString()} isOpen={isOpen} />
+              {teams.map((team) => (
+                <li key={team.id}>
+                  <DropdownItem title={team.name} id={team.id.toString()} isOpen={isOpen} />
                 </li>
               ))}
             </ul>

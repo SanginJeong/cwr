@@ -8,7 +8,7 @@ import { Icon } from "@/shared/ui/icon";
 import { Modal } from "@/shared/ui/modal";
 import { ProgressBar } from "@/shared/ui/progress-bar";
 import { useParams, useRouter } from "next/navigation";
-import { useCheckAdmin } from "@/entities/user";
+import { useIsHrAdmin } from "@/entities/user";
 import { useState } from "react";
 import { getCompletedTaskCount, getUncompletedTaskCount } from "@/entities/task";
 import { ROUTES } from "@/shared/config/routes";
@@ -23,7 +23,8 @@ const ProgressWidget = () => {
 
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
-  const isAdmin = useCheckAdmin();
+  // 팀 수정·삭제는 인사담당자만 (ADR-006)
+  const isHrAdmin = useIsHrAdmin();
 
   const DropdownOptions = [
     { label: "수정하기", action: () => router.push(ROUTES.teamEdit(id)) },
@@ -74,7 +75,7 @@ const ProgressWidget = () => {
         <ProgressBar percent={progressPercent} />
       </div>
 
-      {isAdmin && (
+      {isHrAdmin && (
         <div className="absolute right-[26px] top-[32px] pc:bottom-[30px] pc:top-auto leading-none">
           <Dropdown iconName="setting" placement="bottom-right" options={DropdownOptions} />
         </div>
