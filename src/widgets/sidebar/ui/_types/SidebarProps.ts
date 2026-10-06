@@ -2,6 +2,12 @@ import { User } from "@/shared/api/types/UserType";
 import { TeamSummary } from "@/shared/api/types/groupApi";
 import { DropdownOption } from "@/shared/ui/dropdown";
 import type { PresenceStatus } from "@/shared/config/presence";
+import type { IconKeys } from "@/shared/ui/icon";
+
+export interface ManagementMenu {
+  label: string;
+  links: { title: string; href: string; iconName: IconKeys; badge?: number }[];
+}
 
 export interface SidebarProps {
   user: User | null;
@@ -9,8 +15,8 @@ export interface SidebarProps {
   teams: TeamSummary[];
   /** 팀 추가하기 버튼을 보여줄지 (ADR-006) */
   isHrAdmin: boolean;
-  /** 휴가 승인 메뉴 (팀장·인사담당자). 없으면 메뉴를 숨긴다 */
-  review?: { label: string; pendingCount: number };
+  /** 관리 메뉴: 팀장은 "팀장 · 휴가 승인", 인사담당자는 "인사 관리 · 구성원·정책·휴가 승인". 없으면 숨긴다 */
+  managementMenu?: ManagementMenu;
   isOpen: boolean;
   handleOpenDropdown: (prev: boolean) => void;
 }

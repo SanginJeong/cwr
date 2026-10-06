@@ -11,6 +11,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/config/routes";
 import { usePresenceStatusOptions } from "@/features/presence/set-status";
 import { selectMyStatus, usePresenceStore } from "@/entities/presence";
+import type { ManagementMenu } from "./_types/SidebarProps";
 
 /**
  * @author jikwon
@@ -48,12 +49,24 @@ const Sidebar = () => {
   const teams = isHrAdmin
     ? (allTeams ?? [])
     : (user?.memberships.map(({ groupId, group }) => ({ id: groupId, name: group.name })) ?? []);
-  // 휴가 승인: 팀장(어느 팀이든 ADMIN)과 인사담당자. 배지는 대기 건수
+  // 관리 메뉴: 인사담당자는 인사 관리 전체, 팀장(어느 팀이든 ADMIN)은 휴가 승인. 배지는 대기 건수
   const isLeader = user?.memberships.some((m) => m.role === "ADMIN") ?? false;
   const { data: pendingReviews } = useReviewLeaveRequests(true, isLeader || isHrAdmin);
-  const review =
-    isLeader || isHrAdmin
-      ? { label: isHrAdmin ? "인사 관리" : "팀장", pendingCount: pendingReviews?.length ?? 0 }
+  const pendingCount = pendingReviews?.length ?? 0;
+  const managementMenu: ManagementMenu | undefined = isHrAdmin
+    ? {
+        label: "인사 관리",
+        links: [
+          { title: "구성원 관리", href: ROUTES.adminMembers, iconName: "user" },
+          { title: "근태 정책", href: ROUTES.adminPolicies, iconName: "setting" },
+          { title: "휴가 승인", href: ROUTES.adminApprovals, iconName: "check", badge: pendingCount },
+        ],
+      }
+    : isLeader
+      ? {
+          label: "팀장",
+          links: [{ title: "휴가 승인", href: ROUTES.approvals, iconName: "check", badge: pendingCount }],
+        }
       : undefined;
   const { logout } = useLogout();
   const statusOptions = usePresenceStatusOptions();
@@ -81,7 +94,7 @@ const Sidebar = () => {
         user={user || null}
         teams={teams}
         isHrAdmin={isHrAdmin}
-        review={review}
+        managementMenu={managementMenu}
         isOpen={isOpen}
         handleOpenDropdown={handleOpenDropdown}
         options={options}
@@ -91,7 +104,7 @@ const Sidebar = () => {
         user={user || null}
         teams={teams}
         isHrAdmin={isHrAdmin}
-        review={review}
+        managementMenu={managementMenu}
         isOpen={isMobileOpen}
         handleOpenDropdown={() => setIsMobileOpen((open) => !open)}
         options={options}
