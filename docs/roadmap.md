@@ -1,7 +1,7 @@
 # 로드맵: Coworkers → HR 서비스
 
 > 갱신일: 2026-10-06 · 와이어프레임: https://claude.ai/artifact/PeoX24f7U5aopY7hLwUEih (비공개)
-> 이전 기록: [backend-migration-plan.md](./backend-migration-plan.md) (Supabase 전환), [ADR-004](./decisions/ADR-004-supabase-backend.md), [ADR-005](./decisions/ADR-005-team-board.md)
+> 이전 기록: [backend-migration-plan.md](./backend-migration-plan.md) (Supabase 전환), [ADR-004](./decisions/ADR-004-supabase-backend.md), [ADR-005](./decisions/ADR-005-team-board.md), [ADR-006](./decisions/ADR-006-company-roles.md)
 
 ## 0. 방향 (인터뷰로 확정, 2026-10-06)
 
@@ -58,17 +58,25 @@
 
 ### H1. 역할과 계정 (2~3일)
 
-- [ ] **ADR-006**: 회사 하나 + 3단계 역할 + 인사담당자가 직원 등록 (이 로드맵 0번을 결정 기록으로)
-- [ ] DB
-  - `profiles`에 `company_role`(`HR_ADMIN` / `EMPLOYEE`), `is_active`(퇴사), `policy_id` 추가
+브랜치 `feat/h1-roles-accounts`. 마이그레이션 `20261006000005_company_roles`
+
+- [x] **ADR-006** (Proposed, 리뷰 필요): 회사 하나 + 3단계 역할 + 인사담당자가 직원 등록
+- [x] DB
+  - `profiles`에 `company_role`(`HR_ADMIN` / `EMPLOYEE`), `is_active`(퇴사) 추가. **`policy_id`는 `policies` 테이블과 함께 H2로**
   - 팀장 = 기존 `memberships.role = 'ADMIN'`을 그대로 쓰고, 화면 문구만 "관리자" → "팀장"
-  - 헬퍼 `is_hr_admin()`. 팀 생성·수정·삭제와 멤버 배정은 인사담당자 권한으로 변경
-  - 퇴사 처리된 직원은 로그인·목록·판정에서 제외 (기록은 보존)
-  - 초대 RPC·테이블 제거
-- [ ] 직원 등록: Route Handler(BFF)에서 service role로 `auth.admin.createUser` (임시 비밀번호). service role 키는 서버 환경변수에만 둔다
-- [ ] Supabase Auth의 "Allow new users to sign up" 끄기
-- [ ] 화면에서 제거: 회원가입, 팀 만들기(`/teams/new`), 팀 참여(`/teams/join`), 팀 페이지의 초대 카드, 카카오 버튼
-- [ ] 테스트: 역할별 권한 (직원·팀장·인사담당자·퇴사자)
+  - 헬퍼 `is_hr_admin()`. 팀 생성·수정·삭제와 멤버 배정은 인사담당자 권한으로 변경. 인사담당자는 `is_member`로 모든 팀을 본다
+  - 퇴사 처리된 직원은 `current_profile_id()`에서 막히고 팀 멤버 목록에서 빠진다 (기록은 보존). 근태 판정 제외는 H2
+  - 초대 RPC·테이블 제거. 기록 보존을 위해 회원 탈퇴(`delete_account`)·팀 나가기(`leave_group`)도 제거
+  - 새 계정은 비활성으로 시작 (공개 가입을 안 꺼도 아무것도 못 함)
+- [x] 직원 등록 BFF `POST /api/admin/employees`, 퇴사 처리 BFF `PATCH /api/admin/employees/[userId]` (Auth ban). 화면은 H5
+- [ ] **(직접)** `supabase db push` → `npm run db:types` (지금 `database.types.ts`는 손으로 맞춰 둠)
+- [ ] **(직접)** Supabase Auth의 "Allow new users to sign up" 끄기, Kakao provider 끄기
+- [ ] **(직접)** `.env.local`·Vercel에 `SUPABASE_SERVICE_ROLE_KEY` 추가, 첫 인사담당자 SQL로 지정 ([supabase/README.md](../supabase/README.md) §5)
+- [x] 화면에서 제거: 회원가입, 팀 참여(`/teams/join`), 팀 페이지의 초대 카드, 카카오 버튼, 회원 탈퇴
+  - 팀 만들기(`/teams/new`)는 지우지 않고 **인사담당자 전용**으로 남김 (H5에 팀 생성 화면이 없어서, ADR-006)
+  - 팀 수정·삭제, "팀에서 제외" 메뉴도 인사담당자에게만. 사이드바 팀 목록은 인사담당자에게 전체
+- [x] 테스트: 역할별 권한 (직원·팀장·인사담당자·퇴사자) `supabase/tests/15_company_roles.test.sql`, 기존 테스트를 새 권한에 맞게 수정 (9/9 통과)
+- [ ] 브라우저 QA (db push 후): 인사담당자·팀장·직원으로 로그인해 사이드바·팀 페이지 메뉴 확인, BFF로 직원 등록·퇴사·복직
 
 ### H2. 근태 도메인 (3~4일)
 
@@ -146,7 +154,7 @@
 | 접속 상태: 브라우저 두 개, 10분 자동 자리 비움, 여러 탭, 재접속, 토큰 갱신 | H0 QA 때 함께                                                 |
 | DB 테스트가 실제 Supabase가 아니라 PGlite + 흉내 환경에서만 돎             | H2에서 테스트가 늘어나니 Supabase 로컬(Docker) 도입 여부 결정 |
 | 새 컴포넌트 Storybook 스토리 없음 (StatusDot, MemberPanel, TeamChatWidget) | H3~H5에서 새 UI와 함께                                        |
-| 카카오 로그인                                                              | H1에서 제거하므로 원인 조사는 하지 않음                       |
+| 카카오 로그인                                                              | H1에서 제거함                                                 |
 
 > **정정 기록**: Supabase 전환 Phase 3 때 "Supabase 모드로 띄워 확인했다"고 했지만, `.env` 끝에 줄바꿈이 없어서 실제로는 기존 API 모드였습니다. 결과는 두 모드에서 같아 틀리지 않았습니다. 2026-10-06 화면 확인은 Supabase 모드로 제대로 실행했습니다.
 
