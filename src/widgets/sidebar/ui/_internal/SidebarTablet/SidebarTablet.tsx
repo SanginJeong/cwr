@@ -15,6 +15,7 @@ const SidebarTablet = ({
   user,
   teams,
   isHrAdmin,
+  review,
   isOpen,
   handleOpenDropdown,
   options,
@@ -72,6 +73,18 @@ const SidebarTablet = ({
                 )}
 
                 <SidebarLink title="자유게시판" isOpen={isOpen} href={ROUTES.board} iconName="board" />
+                {review && (
+                  <div className="w-full flex flex-col gap-1">
+                    {isOpen && <span className="px-3 text-xs-semibold text-text-disabled">{review.label}</span>}
+                    <SidebarLink
+                      title="휴가 승인"
+                      isOpen={isOpen}
+                      href={ROUTES.approvals}
+                      iconName="check"
+                      badge={review.pendingCount}
+                    />
+                  </div>
+                )}
                 {isHrAdmin &&
                   (isOpen ? (
                     <AddTeamButton />

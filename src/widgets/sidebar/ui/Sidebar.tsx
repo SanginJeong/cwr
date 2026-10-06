@@ -5,6 +5,7 @@ import SidebarMobile from "./_internal/SidebarMobile/SidebarMobile";
 import SidebarTablet from "./_internal/SidebarTablet/SidebarTablet";
 import { useGetUser } from "@/entities/user";
 import { useGetVisibleTeams } from "@/entities/team";
+import { useReviewLeaveRequests } from "@/entities/attendance";
 import { useLogout } from "@/features/auth/logout";
 import { usePathname, useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/config/routes";
@@ -47,6 +48,13 @@ const Sidebar = () => {
   const teams = isHrAdmin
     ? (allTeams ?? [])
     : (user?.memberships.map(({ groupId, group }) => ({ id: groupId, name: group.name })) ?? []);
+  // 휴가 승인: 팀장(어느 팀이든 ADMIN)과 인사담당자. 배지는 대기 건수
+  const isLeader = user?.memberships.some((m) => m.role === "ADMIN") ?? false;
+  const { data: pendingReviews } = useReviewLeaveRequests(true, isLeader || isHrAdmin);
+  const review =
+    isLeader || isHrAdmin
+      ? { label: isHrAdmin ? "인사 관리" : "팀장", pendingCount: pendingReviews?.length ?? 0 }
+      : undefined;
   const { logout } = useLogout();
   const statusOptions = usePresenceStatusOptions();
   const myStatus = usePresenceStore(selectMyStatus);
@@ -73,6 +81,7 @@ const Sidebar = () => {
         user={user || null}
         teams={teams}
         isHrAdmin={isHrAdmin}
+        review={review}
         isOpen={isOpen}
         handleOpenDropdown={handleOpenDropdown}
         options={options}
@@ -82,6 +91,7 @@ const Sidebar = () => {
         user={user || null}
         teams={teams}
         isHrAdmin={isHrAdmin}
+        review={review}
         isOpen={isMobileOpen}
         handleOpenDropdown={() => setIsMobileOpen((open) => !open)}
         options={options}
