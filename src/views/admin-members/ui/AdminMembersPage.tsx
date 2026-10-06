@@ -40,7 +40,7 @@ const FILTER_STYLE =
   "h-11 rounded-xl border border-border-primary bg-background-primary px-3 text-md-regular text-text-secondary";
 
 /**
- * 구성원 관리 (/admin/members). 인사담당자 전용 (middleware + admin_employees).
+ * 구성원 관리 (/admin/members). 인사담당자 전용 (proxy + admin_employees).
  * 이번 달·오늘 근태는 정책 엔진으로 계산한다.
  */
 const AdminMembersPage = () => {

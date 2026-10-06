@@ -1,5 +1,5 @@
 /**
- * 앱 내부 경로. href, router.push/replace, middleware는 모두 이 상수를 사용한다.
+ * 앱 내부 경로. href, router.push/replace, proxy(src/proxy.ts)는 모두 이 상수를 사용한다.
  * (docs/decisions/ADR-002-route-restructure.md)
  */
 type Id = number | string;
@@ -14,7 +14,7 @@ export const ROUTES = {
   attendance: "/attendance",
   /** 휴가 승인. 팀장·인사담당자 (roadmap H4) */
   approvals: "/approvals",
-  /** 인사담당자 (roadmap H5). middleware가 /admin 아래를 막는다 */
+  /** 인사담당자 (roadmap H5). proxy가 /admin 아래를 막는다 */
   adminMembers: "/admin/members",
   adminPolicies: "/admin/policies",
   adminApprovals: "/admin/approvals",
@@ -45,5 +45,5 @@ export const PROTECTED_ROUTES: string[] = [
   ROUTES.board,
 ];
 
-/** 인사담당자만 들어갈 수 있는 경로 (prefix 매칭). middleware가 is_hr_admin으로 확인한다 */
+/** 인사담당자만 들어갈 수 있는 경로 (prefix 매칭). proxy가 is_hr_admin으로 확인한다 */
 export const HR_ADMIN_ROUTES: string[] = ["/admin"];

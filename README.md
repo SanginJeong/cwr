@@ -1,133 +1,91 @@
-# Coworkers
-팀단위 업무 배정 및 현황 공유 서비스
+# Coworkers HR
 
-## 프로젝트 선정 이유
+**근태 정책을 데이터로 다루는 HR 서비스.** 회사가 정책(자율·코어타임·고정)을 데이터로 정하면, 출퇴근 기록은 순수 함수 정책 엔진이 화면에서 매번 판정합니다. 판정 결과를 저장하지 않기 때문에 **정책을 바꾸면 지난 기록도 새 정책으로 다시 판정됩니다.**
 
-기존 협업 과정에서는 **메신저, Notion, Github, Figma 등 여러 서비스가 기능별로 분산되어 있어** 앱을 계속 이동하면서 작업 해야하는 번거롭다는 불편함이 있었습니다.
-이러한 불편함을 해소하기 위해서 필요한 핵심 기능들만 모아놓은 업무 관리 서비스를 만들어보면 좋을 것 같아서 주어진 주제들 중 Coworkers를 선택하게 되었습니다.
+팀 프로젝트였던 협업 툴 Coworkers(팀·할 일·게시판)를 HR 서비스의 업무 공간으로 두고, 개인 프로젝트 HR-platform(다님)의 정책 엔진을 합쳐 새로 설계했습니다.
 
-## 맡은 역할
+- 데모: [배포 주소] → 로그인 화면의 **계정 없이 둘러보기**에서 인사담당자·팀장·직원 중 하나를 고르면 바로 들어갑니다
+- 데모 데이터(직원 30명, 팀 4개, 최근 3개월 기록)는 매일 새벽 처음 상태로 돌아갑니다
 
-### 재사용성 있는 공통컴포넌트 개발 
-- [Button](https://github.com/SanginJeong/Coworkers/tree/develop/src/common/Button)
-- [Dropdown](https://github.com/SanginJeong/Coworkers/tree/develop/src/common/Dropdown)
-- [Icon](https://github.com/SanginJeong/Coworkers/tree/develop/src/common/Icon)
-- [Modal](https://github.com/SanginJeong/Coworkers/tree/develop/src/common/Modal)
-- [ProgressBadge](https://github.com/SanginJeong/Coworkers/tree/develop/src/common/ProgressBadge)
-- [ProgressBar](https://github.com/SanginJeong/Coworkers/tree/develop/src/common/ProgressBar)
-- [Select](https://github.com/SanginJeong/Coworkers/tree/develop/src/common/Select)
+## 역할별로 할 수 있는 것
 
-### 페이지 개발
-- [자유게시판(게시글 목록)](https://github.com/SanginJeong/Coworkers/tree/develop/src/app/dashboard)
-- [자유게시판](https://github.com/SanginJeong/Coworkers/tree/develop/src/app/(route)/dashboard)
-- [팀페이지, 팀 상세페이지](https://github.com/SanginJeong/Coworkers/tree/develop/src/app/(route)/team)
+| 역할       | 화면                                                                                               |
+| ---------- | -------------------------------------------------------------------------------------------------- |
+| 직원       | 사이드바 출퇴근 카드, **내 근태**(월 달력·이번 달 요약·오늘), 휴가 신청·취소                       |
+| 팀장       | 팀 페이지의 **오늘 우리 팀 근태**, **휴가 승인**(같은 날 겹침 표시), 평일 팀 휴가 달력             |
+| 인사담당자 | **구성원 관리**(직원 등록·팀·정책 배정·퇴사), **근태 정책**(만들기·기본 정책), 회사 전체 휴가 승인 |
 
-## 개선 경험
+팀장은 회사 역할이 아니라 팀마다 정해집니다 (한 사람이 A팀 팀장이면서 B팀 팀원일 수 있음).
 
-### 권한 기반 접근 제어 및 UI 개선
-기존에는 페이지 컴포넌트 내에서 권한 검사 후 redirect 시키는 로직에서는 이 때 해당 url 페이지에서 검사를 하기 때문에 화면 깜빡임 문제가 있었습니다. 
-**Next.js Middleware를 활용하여 인증/권한 검사를 선처리**하도록 구조를 개선했습니다. [middleware.ts](https://github.com/SanginJeong/Coworkers/blob/develop/src/middleware.ts)
-```jsx
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+## 설계에서 고민한 것
 
-export async function middleware(req: NextRequest) {
-  const token = req.cookies.get("accessToken")?.value;
+### 1. 판정은 저장하지 않는다 ([ADR-007](docs/decisions/ADR-007-attendance.md))
 
-  const { pathname } = req.nextUrl;
-
-  const authRoutes = ["/login", "/signup", "/reset-password"];
-
-  if (token && authRoutes.includes(pathname)) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
-
-  const protectedRoutes = ["/my-page", "/my-history", "/team", "/team-creation", "/team-join", "/dashboard"];
-
-  if (!token && protectedRoutes.some((route) => pathname.startsWith(route))) {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
-
-  if (!token && req.nextUrl.pathname.startsWith("/team")) {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
-
-  if (token && req.nextUrl.pathname === "/team") {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
-      headers: { Authorization: `Bearer ${token}` },
-      cache: "no-store",
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      const groupId = data.memberships?.[0]?.groupId;
-
-      if (groupId) {
-        return NextResponse.redirect(new URL(`/team/${groupId}`, req.url));
-      }
-    }
-  }
-
-  if (token && req.nextUrl.pathname.startsWith("/team/")) {
-    const teamId = req.nextUrl.pathname.split("/")[2];
-
-    if (!teamId) {
-      return NextResponse.next();
-    }
-
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/groups/${teamId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-      cache: "no-store",
-    });
-
-    if (!res.ok) {
-      return NextResponse.redirect(new URL("/team", req.url));
-    }
-  }
-
-  return NextResponse.next();
-}
-
-export const config = {
-  matcher: ["/team/:path*", "/((?!api|_next/static|_next/image|favicon.ico).*)"],
-};
+```
+DB: 사실(출근·퇴근 시각, 휴가 결정) + 규칙(정책)
+          │  attendance_range RPC: 엔진 입력 모양으로 (KST 벽시계 시각, 승인된 휴가만 LEAVE, 서버 기준 오늘)
+          ▼
+정책 엔진 (순수 TypeScript 함수) → 날짜별 정상 / 지각 / 결근 / 휴가
 ```
 
-그 결과 아래와 같은 효과를 얻을 수 있었습니다.
-- 인증되지 않은 사용자의 페이지 접근을 사전에 차단
-- 중복된 권한 체크 로직 제거
-- 화면 깜빡임 문제 해결
+- 정책 엔진(`src/entities/attendance/lib/policy-engine`)은 DB·React·시계에 의존하지 않습니다. 현재 날짜도 인자로 받습니다.
+- 판정을 저장하면 정책을 바꾸거나 휴가를 승인할 때마다 다시 계산해 덮어써야 하고, 두 값이 어긋날 수 있습니다.
+- 경계값(유예 정확히 N분, 코어 시작 정각, 자정 근처, 주말, 오늘·미래, 입사 전)을 단위 테스트로 고정했습니다.
 
+### 2. 권한은 DB가 확인한다 ([ADR-006](docs/decisions/ADR-006-company-roles.md))
 
-### Debounce
-게시글 검색 기능에서 입력 완료 후 페이지가 이동하는 것이 아닌 입력할 때마다 검색 이벤트를 실행시켜서 결과를 보여주고 싶었습니다. 하지만 입력마다 요청을 보내는 점이 무겁게 느껴질 수 있기 때문에 Debounce 기법으로 검색 기능을 개선했습니다.
-[useDebounce.ts](https://github.com/SanginJeong/Coworkers/blob/develop/src/hooks/useDebounce.ts)
-```jsx
-import { useEffect, useState } from "react";
+모든 권한은 Postgres RLS와 RPC가 확인하고, 화면의 메뉴 숨김과 라우트 보호(`src/proxy.ts`)는 사용자 경험용입니다.
 
-const useDebounce = <T>(value: T, delay = 200): T => {
-  const [debouncedValue, setDebouncedValue] = useState(value);
+| 데이터                  | 직원 | 팀장             | 인사담당자       |
+| ----------------------- | ---- | ---------------- | ---------------- |
+| 내 출퇴근·휴가          | 본인 | 본인 + 팀원      | 전체             |
+| 휴가 승인·반려          | -    | 팀원 (본인 제외) | 전체 (본인 제외) |
+| 팀 생성·수정, 멤버 배정 | -    | -                | ✓                |
+| 직원 등록·퇴사 처리     | -    | -                | ✓ (BFF)          |
+| 근태 정책               | 읽기 | 읽기             | 쓰기             |
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
+- 퇴사는 삭제가 아니라 비활성화입니다. `current_profile_id()`가 비활성 계정에 null을 돌려줘서 모든 RLS와 RPC에서 한 번에 막히고, 기록은 남습니다.
+- 휴가 승인은 `update ... where status = 'PENDING'`으로 **먼저 처리한 결정만 적용**됩니다 (팀장과 인사담당자가 동시에 눌러도 하나만 반영).
+- 계정 생성과 로그인 차단은 Supabase service role이 필요해서 Route Handler(BFF)에서만 합니다. 새 계정은 비활성으로 생기므로 공개 가입이 열려 있어도 아무것도 할 수 없습니다.
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [value, delay]);
+### 3. 원클릭 데모 로그인
 
-  return debouncedValue;
-};
+데모 계정의 비밀번호는 어디에도 저장하지 않습니다. 서버가 로그인할 때마다 service role로 새 비밀번호를 정해 로그인하고 세션 쿠키만 넘깁니다. 면접관이 비밀번호를 바꾸거나 퇴사 처리해도 다음 데모 로그인에서 되돌아오고, 나머지 변경은 매일 크론이 되돌립니다.
 
-export default useDebounce;
+## 기술 스택
+
+- **Next.js 16** (App Router, Route Handler를 BFF로), React 19, TypeScript, TailwindCSS
+- **TanStack Query v5** (서버 상태), Zustand (로그인 이메일 기억)
+- **Supabase**: Auth, Postgres(RLS + RPC), Realtime(팀 접속 상태), Storage
+- 폴더 구조: Feature-Sliced Design ([ADR-001](docs/decisions/ADR-001-fsd-folder-structure.md))
+- 테스트: **Vitest**(정책 엔진·날짜·데모 데이터 생성), **PGlite**로 마이그레이션과 RLS를 Docker 없이 테스트
+- 배포: Vercel (서울 리전, 매일 데모 리셋 크론)
+
+## 로컬에서 실행
+
+```bash
+npm install
+cp .env.example .env   # 값 채우기 (아래 표)
+npm run dev
 ```
-## 좋았던 점
-- 새로 학습한 기술을 빠르게 도입하고 장단점을 체득할 수 있었습니다. (React Compiler, App Router)
-- 협업 시 편리한 git hook을 활용한 자동화 및 테스트를 세팅하는 방법을 배우게 되었습니다.
-- 팀원들과 매일 오랜시간 회의를 거치면서 프로젝트의 방향을 조정하고, 기술적으로도 토론을 했던 점이 학습하는데에 많은 도움이 되었습니다.
-## 아쉬운 점
-- App Router의 숙련도가 부족했습니다.
-- 프로젝트 설계상 권한이 필요한 페이지가 많아서 동적 메타 데이터를 작성해줄만한 페이지가 없었습니다.
-- device 크기에 따른 반응형 사이즈를 mobile, tablet, pc 로 나눠서 구현했으나, 경계선에서 깨지는 경우가 많았습니다. mobile, tablet, desktop, pc 4가지로 나누었다면 반응형 UI를 조금 더 디테일하게 구현할 수 있었을 것 같다고 느꼈습니다.
+
+| 환경변수                                                    | 설명                                                         |
+| ----------------------------------------------------------- | ------------------------------------------------------------ |
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 프로젝트                                            |
+| `SUPABASE_SERVICE_ROLE_KEY`                                 | 서버 전용. 직원 등록, 퇴사 처리, 데모 로그인·리셋            |
+| `CRON_SECRET`                                               | 데모 리셋 엔드포인트 인증 (Vercel Cron이 자동으로 붙여 보냄) |
+
+DB 준비(마이그레이션, Auth 설정, 첫 인사담당자)와 데모 데이터 만들기는 [supabase/README.md](supabase/README.md)에 있습니다.
+
+```bash
+npm test          # Vitest
+npm run test:db   # PGlite로 마이그레이션 + DB 테스트
+npm run build
+```
+
+## 문서
+
+- [로드맵](docs/roadmap.md): H0~H6 진행 기록
+- 결정 기록: [ADR-004 Supabase](docs/decisions/ADR-004-supabase-backend.md), [ADR-006 역할과 계정](docs/decisions/ADR-006-company-roles.md), [ADR-007 근태](docs/decisions/ADR-007-attendance.md)
+- 단계별 QA: [docs/qa](docs/qa)
+- 팀 프로젝트 시절 README: [docs/legacy-readme.md](docs/legacy-readme.md)

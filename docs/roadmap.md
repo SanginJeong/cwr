@@ -137,14 +137,19 @@
 
 ### H6. 데모와 배포 (2~3일)
 
-- [ ] 시드: 직원 30명, 팀 4개, 정책 3종, 최근 3개월 출퇴근 기록(지각·결근 패턴), 휴가(승인·반려·대기), 할 일 샘플
-  - 다시 실행해도 같은 결과가 나오게 (idempotent)
-- [ ] 로그인 화면의 원클릭 데모 로그인 3종 (인사담당자 / 팀장 / 직원)
-- [ ] 데모 데이터 오염 대책: 매일 시드로 되돌리는 크론, 또는 데모 계정의 일부 쓰기 제한
-- [ ] Vercel 배포: 환경변수, `vercel.json` 리전 `icn1`, Supabase Auth URL 설정
-- [ ] 무료 플랜 일시정지(7일) 방지 크론 (위 시드 크론과 합칠 수 있음)
-- [ ] `middleware.ts` → `proxy.ts` (Next 16)
-- [ ] README를 HR 서비스 소개로 다시 쓰기: 정책 엔진 설계, RLS 권한 표, 데모 계정 안내
+브랜치 `feat/h6-demo-deploy`
+
+- [x] 시드: 직원 30명(`@coworkers.test`), 팀 4개, 정책 3종, 최근 3개월 출퇴근(지각·결근 패턴, 신입), 휴가(승인·반려·대기, 팀장 화면용 겹침), 할 일 샘플
+  - 다시 실행해도 같은 결과 (기록 생성은 순수 함수 `src/app/api/_demo/generate.ts`, Vitest)
+- [x] 로그인 화면의 원클릭 데모 로그인 3종 (인사담당자 / 팀장 / 직원). 비밀번호를 저장하지 않고 서버가 로그인할 때마다 새로 정한다
+- [x] 데모 데이터 오염 대책: 매일 03:00 KST 리셋 크론(`/api/cron/reset-demo`) + 데모 계정의 직원 추가·퇴사 처리 막기
+- [x] 무료 플랜 일시정지(7일) 방지: 위 리셋 크론이 매일 DB에 요청
+- [x] `vercel.json` 리전 `icn1`, 크론
+- [x] `middleware.ts` → `proxy.ts` (Next 16)
+- [x] README를 HR 서비스 소개로 다시 쓰기 (팀 프로젝트 시절 README는 `docs/legacy-readme.md`)
+- [ ] **(직접)** 데모 데이터 첫 시드 ([supabase/README.md](../supabase/README.md) §6)
+- [ ] **(직접)** Vercel 배포: 환경변수, Supabase Auth URL 설정 ([supabase/README.md](../supabase/README.md) §8)
+- [ ] 배포 후 README의 [배포 주소] 채우기, 데모 로그인 3종 QA
 
 ## 3. 나중에 (첫 완성본 이후)
 

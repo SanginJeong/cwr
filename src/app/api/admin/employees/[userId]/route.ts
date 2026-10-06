@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getAdminSupabase } from "@/shared/api/supabase/admin";
 import { toApiError } from "@/shared/api/supabase/errors";
 import { getServerSupabase } from "@/shared/api/supabase/server";
-import { errorResponse } from "../../_lib/response";
+import { blockDemo, errorResponse } from "../../_lib/response";
 
 /** 사실상 영구 차단 (100년) */
 const BAN_FOREVER = "876000h";
@@ -23,6 +23,10 @@ export const PATCH = async (request: NextRequest, { params }: { params: Promise<
   const isActive: boolean = body.isActive;
 
   const supabase = await getServerSupabase();
+  const { data: claims } = await supabase.auth.getClaims();
+  const demoBlocked = blockDemo(claims?.claims.email as string | undefined);
+  if (demoBlocked) return demoBlocked;
+
   const { data: authId, error } = await supabase.rpc("set_employee_active", {
     p_user_id: userId,
     p_active: isActive,
