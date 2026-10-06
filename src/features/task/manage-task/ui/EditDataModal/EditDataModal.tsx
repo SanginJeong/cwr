@@ -42,7 +42,8 @@ const EditDataModal = ({ isEditModal, setIsEditModal, form, setForm, handleEdit 
             type="submit"
             variant="solid"
             size="large"
-            disabled={!form.name.trim() || !form.description.trim()}
+            // 설명은 선택 (만들 때의 메모와 같게)
+            disabled={!form.name.trim()}
           >
             저장
           </BaseButton>

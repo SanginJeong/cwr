@@ -97,6 +97,7 @@ const MakeTodoModal = ({ isOpen, onClose, groupId, taskListId }: MakeTodoModalPr
               <Select
                 value={order}
                 options={REPEAT_OPTIONS}
+                menuPlacement="inline"
                 onChange={(value) => {
                   setOrder(value);
                   if (value !== "WEEKLY") {

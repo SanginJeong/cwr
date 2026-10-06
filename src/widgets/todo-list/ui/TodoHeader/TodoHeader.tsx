@@ -80,12 +80,12 @@ const TodoHeader = ({ data, groupId, isPending, isError }: TodoHeaderProps) => {
           <BaseButton
             size="large"
             variant="outlinedPrimary"
-            aria-label="할 일 추가"
+            aria-label="목록 추가"
             onClick={() => setIsAddTodoModalOpen(true)}
             className="max-w-[130px] h-9 px-4 text-nowrap rounded-[40px] bg-background-primary mobile:hidden tablet:hidden pc:flex items-center"
           >
             <Icon name="plus" className="size-5 tablet:size-5" />
-            <span className="text-lg-semibold">할 일 추가</span>
+            <span className="text-lg-semibold">목록 추가</span>
           </BaseButton>
         </div>
 
@@ -119,12 +119,12 @@ const TodoHeader = ({ data, groupId, isPending, isError }: TodoHeaderProps) => {
             <BaseButton
               size="large"
               variant="outlinedPrimary"
-              aria-label="할 일 추가"
+              aria-label="목록 추가"
               onClick={() => setIsAddTodoModalOpen(true)}
               className="w-[112px] h-10 px-4 text-nowrap rounded-[40px] bg-background-primary select-none pc:hidden"
             >
               <Icon name="plus" className="size-5 tablet:size-5" />
-              <span className="text-lg-semibold">할 일 추가</span>
+              <span className="text-lg-semibold">목록 추가</span>
             </BaseButton>
           </div>
         </section>
