@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   describePolicy,
+  onTimeDeadline,
   evaluateToday,
   formatClockTime,
   formatDuration,
@@ -30,6 +31,14 @@ describe("describePolicy", () => {
       "10:05까지 출근하면 정상 (유예 15분)",
     );
     expect(describePolicy({ type: "FIXED", workStart: "09:00", graceMinutes: 0 }).rule).toBe("09:00까지 출근하면 정상");
+  });
+});
+
+describe("onTimeDeadline", () => {
+  it("정상 마감 시각 (코어 시작, 고정은 유예 포함, 자율은 없음)", () => {
+    expect(onTimeDeadline({ type: "CORE_TIME", coreStart: "10:00", coreEnd: "16:00" })).toBe("10:00");
+    expect(onTimeDeadline({ type: "FIXED", workStart: "09:50", graceMinutes: 15 })).toBe("10:05");
+    expect(onTimeDeadline({ type: "AUTONOMOUS" })).toBeNull();
   });
 });
 

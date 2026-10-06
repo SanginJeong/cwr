@@ -20,6 +20,14 @@ const addMinutes = (time: string, minutes: number) => {
   return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
 };
 
+/** 정상으로 판정되는 마지막 출근 시각 "HH:mm". 자율은 없음(null). 엔진의 경계(이하면 정상)와 같다 */
+export const onTimeDeadline = (policy: Policy) =>
+  policy.type === "CORE_TIME"
+    ? policy.coreStart
+    : policy.type === "FIXED"
+      ? addMinutes(policy.workStart, policy.graceMinutes)
+      : null;
+
 /**
  * 정책을 사람이 읽는 문장으로 (내 근태 머리말, 사이드바 카드, H5 정책 화면의 판정 규칙 문장).
  * 엔진의 판정 규칙(policy-engine/index.ts)과 같은 내용이어야 한다.
