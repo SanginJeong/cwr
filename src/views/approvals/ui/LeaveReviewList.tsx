@@ -43,90 +43,122 @@ const LeaveReviewList = ({ requests, pending, isLoading }: LeaveReviewListProps)
     );
   }
 
+  const decisionButtons = (request: ReviewLeaveRequest, className?: string) => {
+    const isDeciding = isPending && variables?.requestId === request.id;
+    return (
+      <div className={cn("flex gap-2", className)}>
+        <button
+          type="button"
+          disabled={isDeciding}
+          onClick={() => decide({ requestId: request.id, approve: false })}
+          className="flex-1 tablet:flex-none h-9 px-3.5 rounded-[10px] border border-border-secondary text-md-semibold text-text-secondary hover:bg-background-tertiary disabled:opacity-50"
+        >
+          반려
+        </button>
+        <button
+          type="button"
+          disabled={isDeciding}
+          onClick={() => decide({ requestId: request.id, approve: true })}
+          className="flex-1 tablet:flex-none h-9 px-3.5 rounded-[10px] bg-brand-primary text-md-semibold text-text-inverse hover:bg-interaction-hover disabled:opacity-50"
+        >
+          승인
+        </button>
+      </div>
+    );
+  };
+
+  const result = (request: ReviewLeaveRequest) => (
+    <div className="flex flex-col items-start gap-1">
+      <AttendanceChip
+        kind={request.status === "APPROVED" ? "LEAVE" : "ABSENT"}
+        label={request.status === "APPROVED" ? "승인됨" : "반려됨"}
+        className={cn(request.status === "REJECTED" && "bg-text-default/15 text-text-default")}
+      />
+      <span className="text-xs-regular text-text-default">
+        {request.decidedByName ?? "알 수 없음"} · {formatDateTime(request.decidedAt)}
+      </span>
+    </div>
+  );
+
   return (
-    <section
-      aria-label={pending ? "승인 대기 목록" : "처리된 목록"}
-      className="rounded-[20px] bg-background-primary overflow-x-auto"
-    >
-      <table className="w-full min-w-[760px] border-collapse text-md-regular">
-        <thead>
-          <tr className="text-left text-sm-medium text-text-default">
-            <th className="px-6 py-4 font-medium">신청자</th>
-            <th className="px-3 py-4 font-medium">휴가 날짜</th>
-            <th className="px-3 py-4 font-medium">사유</th>
-            <th className="px-3 py-4 font-medium">{pending ? "그날 팀 상황" : "결과"}</th>
-            {pending && <th className="px-6 py-4 font-medium text-right">처리</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {requests.map((request) => {
-            const isDeciding = isPending && variables?.requestId === request.id;
-            return (
-              <tr key={request.id} className="border-t border-border-primary align-middle">
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-3">
-                    <span
-                      aria-hidden="true"
-                      className="size-9 shrink-0 rounded-[10px] bg-background-tertiary flex-center text-md-semibold text-text-secondary"
-                    >
-                      {request.userName.slice(0, 1)}
-                    </span>
-                    <div className="flex flex-col gap-0.5 min-w-0">
-                      <span className="text-md-semibold text-text-primary">{request.userName}</span>
-                      <span className="text-xs-regular text-text-default truncate">
-                        {request.teams.join(", ") || "소속 팀 없음"} · {formatDateTime(request.createdAt)} 신청
-                      </span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-3 py-4 text-md-semibold text-text-primary whitespace-nowrap">
-                  {formatDayLabel(request.date)}
-                </td>
-                <td className="px-3 py-4 text-text-secondary">{request.reason ?? "—"}</td>
-                <td className="px-3 py-4">
-                  {pending ? (
-                    <OverlapText overlaps={request.overlaps} />
-                  ) : (
-                    <div className="flex flex-col items-start gap-1">
-                      <AttendanceChip
-                        kind={request.status === "APPROVED" ? "LEAVE" : "ABSENT"}
-                        label={request.status === "APPROVED" ? "승인됨" : "반려됨"}
-                        className={cn(request.status === "REJECTED" && "bg-text-default/15 text-text-default")}
-                      />
-                      <span className="text-xs-regular text-text-default">
-                        {request.decidedByName ?? "알 수 없음"} · {formatDateTime(request.decidedAt)}
-                      </span>
-                    </div>
-                  )}
-                </td>
-                {pending && (
+    <>
+      {/* 모바일: 카드. 표를 가로 스크롤하면 승인·반려 버튼이 화면 밖에 숨는다 */}
+      <ul aria-label={pending ? "승인 대기 목록" : "처리된 목록"} className="tablet:hidden flex flex-col gap-3">
+        {requests.map((request) => (
+          <li key={request.id} className="rounded-[20px] bg-background-primary p-4 flex flex-col gap-3">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex flex-col gap-0.5 min-w-0">
+                <span className="text-lg-semibold text-text-primary">{request.userName}</span>
+                <span className="text-xs-regular text-text-default truncate">
+                  {request.teams.join(", ") || "소속 팀 없음"} · {formatDateTime(request.createdAt)} 신청
+                </span>
+              </div>
+              <span className="shrink-0 text-md-semibold text-text-primary">{formatDayLabel(request.date)}</span>
+            </div>
+            <p className="text-md-regular text-text-secondary">사유: {request.reason ?? "—"}</p>
+            {pending ? (
+              <>
+                <p className="text-sm-medium">
+                  <OverlapText overlaps={request.overlaps} />
+                </p>
+                {decisionButtons(request)}
+              </>
+            ) : (
+              result(request)
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <section
+        aria-label={pending ? "승인 대기 목록" : "처리된 목록"}
+        className="hidden tablet:block rounded-[20px] bg-background-primary overflow-x-auto"
+      >
+        <table className="w-full min-w-[760px] border-collapse text-md-regular">
+          <thead>
+            <tr className="text-left text-sm-medium text-text-default">
+              <th className="px-6 py-4 font-medium">신청자</th>
+              <th className="px-3 py-4 font-medium">휴가 날짜</th>
+              <th className="px-3 py-4 font-medium">사유</th>
+              <th className="px-3 py-4 font-medium">{pending ? "그날 팀 상황" : "결과"}</th>
+              {pending && <th className="px-6 py-4 font-medium text-right">처리</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {requests.map((request) => {
+              return (
+                <tr key={request.id} className="border-t border-border-primary align-middle">
                   <td className="px-6 py-4">
-                    <div className="flex justify-end gap-2">
-                      <button
-                        type="button"
-                        disabled={isDeciding}
-                        onClick={() => decide({ requestId: request.id, approve: false })}
-                        className="h-9 px-3.5 rounded-[10px] border border-border-secondary text-md-semibold text-text-secondary hover:bg-background-tertiary disabled:opacity-50"
+                    <div className="flex items-center gap-3">
+                      <span
+                        aria-hidden="true"
+                        className="size-9 shrink-0 rounded-[10px] bg-background-tertiary flex-center text-md-semibold text-text-secondary"
                       >
-                        반려
-                      </button>
-                      <button
-                        type="button"
-                        disabled={isDeciding}
-                        onClick={() => decide({ requestId: request.id, approve: true })}
-                        className="h-9 px-3.5 rounded-[10px] bg-brand-primary text-md-semibold text-text-inverse hover:bg-interaction-hover disabled:opacity-50"
-                      >
-                        승인
-                      </button>
+                        {request.userName.slice(0, 1)}
+                      </span>
+                      <div className="flex flex-col gap-0.5 min-w-0">
+                        <span className="text-md-semibold text-text-primary">{request.userName}</span>
+                        <span className="text-xs-regular text-text-default truncate">
+                          {request.teams.join(", ") || "소속 팀 없음"} · {formatDateTime(request.createdAt)} 신청
+                        </span>
+                      </div>
                     </div>
                   </td>
-                )}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </section>
+                  <td className="px-3 py-4 text-md-semibold text-text-primary whitespace-nowrap">
+                    {formatDayLabel(request.date)}
+                  </td>
+                  <td className="px-3 py-4 text-text-secondary">{request.reason ?? "—"}</td>
+                  <td className="px-3 py-4">
+                    {pending ? <OverlapText overlaps={request.overlaps} /> : result(request)}
+                  </td>
+                  {pending && <td className="px-6 py-4">{decisionButtons(request, "justify-end")}</td>}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </section>
+    </>
   );
 };
 
