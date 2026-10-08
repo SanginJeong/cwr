@@ -226,6 +226,7 @@ const AdminMembersPage = () => {
                       </td>
                       <td className="px-5 py-3.5 text-right">
                         <Dropdown
+                          label={`${employee.nickname} 메뉴`}
                           iconName="kebab"
                           iconClassName="size-4 tablet:size-4"
                           placement="bottom-right"

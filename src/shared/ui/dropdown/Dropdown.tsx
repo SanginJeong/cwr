@@ -16,6 +16,8 @@ const PLACEMENT_TRANSFORM: Record<DropdownPlacement, string> = {
 };
 
 interface DropdownProps {
+  /** 트리거 버튼의 접근 가능한 이름 (예: "직원1 메뉴"). 화면 읽기와 E2E 셀렉터가 쓴다 */
+  label?: string;
   iconName?: IconKeys;
   image?: ReactNode;
   iconClassName?: string;
@@ -25,6 +27,7 @@ interface DropdownProps {
 }
 
 const Dropdown = ({
+  label = "메뉴 열기",
   iconName,
   iconClassName,
   options,
@@ -58,7 +61,14 @@ const Dropdown = ({
 
   return (
     <>
-      <button ref={triggerRef} aria-label="드롭다운 버튼" onClick={handleDropdownClick}>
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-label={label}
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        onClick={handleDropdownClick}
+      >
         {iconName ? <Icon name={iconName} className={iconClassName} /> : image}
       </button>
 

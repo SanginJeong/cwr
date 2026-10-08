@@ -44,9 +44,15 @@ const Modal = ({ isOpen, onClose, className, children }: ModalProps) => {
 };
 
 const ModalCloseIcon = ({ className, onClose }: { className?: string; onClose: () => void }) => {
+  // 아이콘이 아니라 버튼 자체를 위치·크기 지정한다 (크기가 0인 버튼은 누를 수 없고 화면 읽기·E2E에서도 잡히지 않는다)
   return (
-    <button onClick={onClose}>
-      <Icon name="x" className={cn(MODAL_CLOSE_ICON_STYLE, className)} />
+    <button
+      type="button"
+      aria-label="닫기"
+      onClick={onClose}
+      className={cn(MODAL_CLOSE_ICON_STYLE, "size-11", className)}
+    >
+      <Icon name="x" />
     </button>
   );
 };

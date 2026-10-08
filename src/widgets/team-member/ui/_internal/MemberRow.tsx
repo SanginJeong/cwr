@@ -49,6 +49,7 @@ const MemberRow = ({ member, groupId, myUserId, attendance, onClickDelete }: Mem
       )}
       {onClickDelete && (
         <Dropdown
+          label={`${member.userName} 메뉴`}
           iconName="kebab"
           iconClassName="size-4 tablet:size-4"
           options={[{ label: "팀에서 제외", action: () => onClickDelete(member) }]}

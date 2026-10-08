@@ -47,6 +47,7 @@ const SidebarMobile = ({
           <div className="flex items-center gap-3">
             <ClockStatusPill />
             <Dropdown
+              label="프로필 메뉴"
               options={options}
               placement="bottom-right"
               image={

@@ -93,6 +93,7 @@ const SidebarTablet = ({
           >
             {user ? (
               <Dropdown
+                label="프로필 메뉴"
                 options={options}
                 placement="top-left"
                 image={

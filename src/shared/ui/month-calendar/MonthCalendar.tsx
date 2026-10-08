@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { cn } from "@/shared/lib/cn";
-import { buildMonthGrid, weekdayHeaders, type CalendarDay } from "@/shared/lib/calendar";
+import { buildMonthGrid, formatDayLabel, weekdayHeaders, type CalendarDay } from "@/shared/lib/calendar";
 
 /**
  * 공통 월 달력. 날짜 칸 안에 칩 등을 넣는 구조다 (roadmap H3).
@@ -86,7 +86,8 @@ const MonthCalendar = ({
                   type="button"
                   disabled={state.disabled || !onSelectDay}
                   aria-pressed={state.selected}
-                  aria-label={day.date}
+                  aria-label={formatDayLabel(day.date)}
+                  data-date={day.date}
                   onClick={() => onSelectDay?.(day)}
                   className={cn(
                     "w-full h-9 rounded-[10px] flex-center text-sm-medium",
@@ -109,6 +110,7 @@ const MonthCalendar = ({
             <li
               key={day.date}
               aria-current={day.isToday ? "date" : undefined}
+              data-date={day.date}
               className={cn(
                 "min-h-[64px] tablet:min-h-[92px] rounded-[14px] p-1.5 tablet:p-2.5 flex flex-col gap-1 tablet:gap-2 min-w-0",
                 day.isWeekend ? "bg-transparent" : "bg-background-secondary",
