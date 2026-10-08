@@ -27,12 +27,15 @@ test("L3 승인 → 대기 감소, 처리됨 탭", async ({ page }) => {
   await expect(pendingRows(page).first()).toBeVisible();
   const before = await pendingRows(page).count();
 
-  await reviewRowOf(page, "박지민").getByRole("button", { name: "승인" }).click();
+  const pending = reviewRowOf(page, "박지민");
+  // 처리됨 탭에는 박지민의 지난 휴가(시드)도 있으므로 방금 승인한 날짜로 찾는다
+  const dateLabel = (await pending.locator("td").nth(1).innerText()).trim();
+  await pending.getByRole("button", { name: "승인" }).click();
   await expect(toast(page, "휴가를 승인했어요")).toBeVisible();
   await expect(pendingRows(page)).toHaveCount(before - 1);
 
   await page.getByRole("tab", { name: "처리됨" }).click();
-  const done = reviewRowOf(page, "박지민");
+  const done = reviewRowOf(page, "박지민").filter({ hasText: dateLabel });
   await expect(done).toContainText("승인됨");
   await expect(done).toContainText("김하늘");
 });
