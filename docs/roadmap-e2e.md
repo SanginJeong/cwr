@@ -146,23 +146,25 @@ Playwright는 한 테스트에서 **브라우저 컨텍스트를 여러 개** �
 
 테스트를 쓰기 전에 셀렉터로 잡히지 않는 곳을 고친다. 대부분 접근성 개선이기도 하다.
 
-- [ ] 드롭다운 트리거: 모두 `aria-label="드롭다운 버튼"` → 쓰임에 맞는 이름 ("직원1 메뉴", "팀 설정", "프로필 메뉴")
-- [ ] 모달 닫기 버튼: 크기가 0인 `<button>` 안의 아이콘 → 버튼 자체에 위치·크기와 `aria-label="닫기"`
-- [ ] 달력 칸에 날짜 (`data-date` 또는 `aria-label="10월 13일"`)
-- [ ] 출퇴근 카드·요약 카드에 영역 이름 (일부 있음, 빠진 곳 보완)
-- [ ] 토스트를 `getByRole("status")`로 잡을 수 있는지 확인 (react-hot-toast)
+- [x] 드롭다운 트리거: 모두 `aria-label="드롭다운 버튼"` → 쓰임에 맞는 이름 ("직원1 메뉴", "팀 설정", "프로필 메뉴")
+- [x] 모달 닫기 버튼: 크기가 0인 `<button>` 안의 아이콘 → 버튼 자체에 위치·크기와 `aria-label="닫기"`
+- [x] 달력 칸에 날짜 (`data-date` 또는 `aria-label="10월 13일"`)
+- [x] 출퇴근 카드·요약 카드에 영역 이름 (일부 있음, 빠진 곳 보완)
+- [x] 토스트를 `getByRole("status")`로 잡을 수 있는지 확인 (react-hot-toast)
 
 ### E2. 기반 (1일)
 
-- [ ] `@playwright/test` 설치, `playwright.config.ts` (baseURL, 프로젝트: `desktop-chrome`, `mobile` 390×844, 실패 시 trace·영상)
-- [ ] `e2e/fixtures`: 역할별 로그인 상태 (`/api/demo-login`을 request로 불러 storageState 저장), `resetDemo()` (`CRON_SECRET`), `isWeekendKst()`
-- [ ] `npm run test:e2e` (로컬은 개발 서버 재사용, CI는 빌드 후 `next start`)
-- [ ] 로컬 실행 안내: Supabase 로컬 스택 띄우기, `.env.e2e`
+- [x] `@playwright/test` 설치, `playwright.config.ts` (baseURL, 프로젝트: `desktop-chrome`, `mobile` 390×844, 실패 시 trace·영상)
+- [x] `e2e/support.ts`: 역할별 로그인 상태 (`/api/demo-login`을 request로 불러 storageState 저장), `resetDemo()` (`CRON_SECRET`), `isWeekendKst()`
+- [x] `npm run test:e2e` (로컬은 개발 서버 재사용, CI는 빌드 후 `next start`)
+- [x] 로컬 실행 안내: Supabase 로컬 스택 띄우기, `.env.e2e`
 
 ### E3. P0 스모크 (1일)
 
-- [ ] A1~A5, E1, E3, L1~L3, H2, H6, X1, O1
-- [ ] 목표: 3분 안에 끝나고 PR마다 돈다
+> CI 4회차에서 전부 통과. 첫 실행에서 실제 버그 1건 발견: 새 브라우저에서 사이드바가 접힌 채 시작해 출퇴근 카드·이름·배지가 숨음 → 기본을 펼침으로
+
+- [x] A1~A5, E1·E2·E3·E5, L1~L3, H2, H6, X1, O1·O3 (23개 테스트, CI 1.5분)
+- [x] 목표: 3분 안에 끝나고 PR마다 돈다
 
 ### E4. P1 역할 시나리오와 회귀 (1.5일)
 
@@ -175,8 +177,8 @@ Playwright는 한 테스트에서 **브라우저 컨텍스트를 여러 개** �
 
 ### E6. CI (0.5~1일)
 
-- [ ] GitHub Actions `ci.yml`: 설치 → lint·타입 → Vitest → PGlite DB 테스트 → 빌드 → Supabase 로컬 스택 → `reset-demo` 시드 → Playwright(P0·P1)
-- [ ] 실패 시 trace·영상·리포트 아티팩트 업로드
+- [x] GitHub Actions `ci.yml`: 설치 → lint·타입 → Vitest → PGlite DB 테스트 → 빌드 → Supabase 로컬 스택 → `reset-demo` 시드 → Playwright(P0·P1)
+- [x] 실패 시 trace·영상·리포트 아티팩트 업로드
 - [ ] nightly(평일 오전, KST 자정 피함): P2 포함 전체
 - [ ] README 테스트 섹션: "순수 함수(Vitest) / DB·RLS(PGlite) / 화면 흐름(Playwright)" 3층
 
