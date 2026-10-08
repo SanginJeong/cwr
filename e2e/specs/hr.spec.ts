@@ -20,9 +20,10 @@ test("H2 정책을 바꾸면 같은 기록이 다시 판정된다", async ({ pag
   const policyName = `E2E 05시 고정 ${Date.now()}`;
   await page.goto("/admin/policies");
   await page.getByRole("button", { name: "새 정책" }).click();
-  await page.getByLabel("이름").fill(policyName);
-  await page.getByLabel("출근 시각").fill("05:00");
-  await page.getByLabel("유예 (분)").fill("0");
+  await page.getByLabel("이름", { exact: true }).fill(policyName);
+  // "고정" 유형 카드 설명("출근 시각 + 유예")에도 같은 글자가 있어서 정확히 일치하는 라벨만
+  await page.getByLabel("출근 시각", { exact: true }).fill("05:00");
+  await page.getByLabel("유예 (분)", { exact: true }).fill("0");
   await page.getByRole("button", { name: "저장하기" }).click();
   await expect(toast(page, "정책을 저장했어요")).toBeVisible();
 
