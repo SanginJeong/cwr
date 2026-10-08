@@ -1,4 +1,4 @@
-import { expect, openAs, requestLeave, resetDemoBeforeAll, showMonthOf, test, toast } from "../support";
+import { expect, openAs, requestLeave, resetDemoBeforeAll, reviewRowOf, showMonthOf, test, toast } from "../support";
 
 // 로드맵 2 §2-5. 여러 브라우저 컨텍스트로 역할을 오간다
 test.describe.configure({ mode: "serial" });
@@ -10,7 +10,7 @@ test("X1 직원 신청 → 팀장 승인 → 직원 달력에 휴가", async ({ 
 
   const leader = await openAs(browser, "leader");
   await leader.goto("/approvals");
-  const row = leader.getByRole("table").locator("tbody tr").filter({ hasText: "박지민" }).filter({ hasText: label });
+  const row = reviewRowOf(leader, "박지민").filter({ hasText: label });
   await row.getByRole("button", { name: "승인" }).click();
   await expect(toast(leader, "휴가를 승인했어요")).toBeVisible();
 

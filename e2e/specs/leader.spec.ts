@@ -1,4 +1,4 @@
-import { expect, resetDemoBeforeAll, storageStatePath, test, toast } from "../support";
+import { expect, resetDemoBeforeAll, reviewRowOf, storageStatePath, test, toast } from "../support";
 
 // 로드맵 2 §2-3. 시드: 박지민·최도윤이 같은 날 대기, 팀장(김하늘) 본인도 대기 1건
 test.describe.configure({ mode: "serial" });
@@ -16,10 +16,10 @@ test("L1 사이드바 배지 = 대기 목록 수", async ({ page }) => {
 
 test("L2 같은 날 겹침 표시, 팀장 본인 신청은 목록에 없음", async ({ page }) => {
   await page.goto("/approvals");
-  await expect(pendingRows(page).filter({ hasText: "박지민" })).toContainText("최도윤");
-  await expect(pendingRows(page).filter({ hasText: "최도윤" })).toContainText("박지민");
+  await expect(reviewRowOf(page, "박지민")).toContainText("최도윤");
+  await expect(reviewRowOf(page, "최도윤")).toContainText("박지민");
   await expect(pendingRows(page).filter({ hasText: "겹침" })).not.toHaveCount(0);
-  await expect(pendingRows(page).filter({ hasText: "김하늘" })).toHaveCount(0);
+  await expect(reviewRowOf(page, "김하늘")).toHaveCount(0);
 });
 
 test("L3 승인 → 대기 감소, 처리됨 탭", async ({ page }) => {
@@ -27,12 +27,12 @@ test("L3 승인 → 대기 감소, 처리됨 탭", async ({ page }) => {
   await expect(pendingRows(page).first()).toBeVisible();
   const before = await pendingRows(page).count();
 
-  await pendingRows(page).filter({ hasText: "박지민" }).getByRole("button", { name: "승인" }).click();
+  await reviewRowOf(page, "박지민").getByRole("button", { name: "승인" }).click();
   await expect(toast(page, "휴가를 승인했어요")).toBeVisible();
   await expect(pendingRows(page)).toHaveCount(before - 1);
 
   await page.getByRole("tab", { name: "처리됨" }).click();
-  const done = pendingRows(page).filter({ hasText: "박지민" });
+  const done = reviewRowOf(page, "박지민");
   await expect(done).toContainText("승인됨");
   await expect(done).toContainText("김하늘");
 });

@@ -101,3 +101,13 @@ export const showMonthOf = async (page: Page, date: string) => {
   }
   return page.locator(`li[data-date="${date}"]`);
 };
+
+/**
+ * 휴가 승인 표에서 신청자가 name인 행. 다른 행의 "박지민(대기)와 겹침" 같은 문구에 걸리지 않도록
+ * 이름이 정확히 일치하는 요소를 가진 행만 고른다
+ */
+export const reviewRowOf = (page: Page, name: string) =>
+  page
+    .getByRole("table")
+    .locator("tbody tr")
+    .filter({ has: page.getByText(name, { exact: true }) });
