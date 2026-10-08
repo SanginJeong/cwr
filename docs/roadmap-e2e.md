@@ -137,9 +137,10 @@ Playwright는 한 테스트에서 **브라우저 컨텍스트를 여러 개** �
 
 ### E0. 결정과 준비 (0.5일)
 
-- [ ] **ADR-008**: E2E 전략 (MCP는 작성 도구, 스펙은 `@playwright/test`, DB는 Supabase 로컬 스택, 시간·병렬 원칙)
-- [ ] 팀 채팅 ADR 번호는 009로 미룬다 (roadmap §3 갱신)
-- [ ] Playwright MCP를 Claude Code에 연결하고, 로컬 개발 서버에서 데모 로그인 → 내 근태까지 탐색이 되는지 확인
+- [x] **ADR-008** (Accepted): E2E 전략 (MCP는 작성 도구, 스펙은 `@playwright/test`, DB는 Supabase 로컬 스택, 시간·병렬 원칙)
+- [x] 팀 채팅 ADR 번호는 009로 미룬다 (roadmap §3 갱신)
+- [ ] **(직접)** Docker 설치 (OrbStack 또는 Docker Desktop)
+- [ ] **(직접)** Playwright MCP를 Claude Code에 연결하고, 로컬 개발 서버에서 데모 로그인 → 내 근태까지 탐색이 되는지 확인
 
 ### E1. 테스트하기 좋게 고치기 (0.5~1일)
 
