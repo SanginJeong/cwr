@@ -37,7 +37,9 @@ const Modal = ({ isOpen, onClose, className, children }: ModalProps) => {
   return (
     <Portal>
       <div className={MODAL_OVERLAY_STYLE} onClick={handleOverlayClick}>
-        <div className={cn(MODAL_BASE_STYLE, className)}>{children}</div>
+        <div role="dialog" aria-modal="true" className={cn(MODAL_BASE_STYLE, className)}>
+          {children}
+        </div>
       </div>
     </Portal>
   );
