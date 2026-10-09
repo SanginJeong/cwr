@@ -73,37 +73,25 @@ update public.profiles set company_role = 'HR_ADMIN', is_active = true where ema
 
 계정이 아직 없으면 대시보드 → Authentication → Add user로 만든 뒤(Auto Confirm 체크) 위 SQL을 실행합니다.
 
-### 6. 데모 데이터 만들기 (roadmap H6)
+### 6. 비활성 일시정지 주의
 
-데모 회사(직원 30명 `@coworkers.test`, 팀 4개, 정책 3종, 최근 3개월 출퇴근·휴가, 할 일 샘플)는 `GET /api/cron/reset-demo`가 만듭니다.
-다시 실행해도 같은 결과가 나오고(같은 날 기준), 데모 계정·팀의 데이터만 지우고 다시 만듭니다. 그 밖의 계정과 팀은 건드리지 않습니다.
+무료 플랜은 7일 동안 요청이 없으면 프로젝트가 일시정지됩니다 (대시보드에서 다시 켤 수 있다). 예전에는 매일 데모 리셋 크론이 요청을 보내 막았지만 데모를 없애면서 크론도 없앴습니다.
 
-처음 한 번은 로컬 개발 서버를 띄우고 직접 호출합니다 (`.env`에 `CRON_SECRET` 필요).
+> E2E 테스트 데이터(직원 30명 `@coworkers.test`, 팀 4개, 정책 3종, 최근 3개월 출퇴근·휴가)는 `e2e/seed`가 **로컬 Supabase 스택에만** 만듭니다. 원격 DB면 멈춥니다.
 
-```bash
-curl -s -H "Authorization: Bearer $(grep '^CRON_SECRET=' .env | cut -d= -f2-)" http://localhost:3000/api/cron/reset-demo
-```
-
-응답의 `users`, `records`, `leaves`가 생성된 수입니다. 그 뒤로는 배포한 서버의 Vercel Cron이 매일 03:00 KST에 부릅니다.
-
-### 7. 비활성 일시정지 방지
-
-무료 플랜은 7일 동안 요청이 없으면 프로젝트가 일시정지됩니다. 위의 데모 리셋 크론이 매일 DB에 요청을 보내므로 따로 둘 필요가 없습니다.
-
-### 8. Vercel 배포
+### 7. Vercel 배포
 
 1. Vercel에서 이 저장소를 Import (Framework: Next.js). 리전은 `vercel.json`의 `icn1`(서울)
-2. Environment Variables: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `CRON_SECRET`
+2. Environment Variables: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
 3. 배포 후 Supabase 대시보드 → Authentication → URL Configuration
    - Site URL: 배포 주소 (`https://<프로젝트>.vercel.app`)
    - Redirect URLs: `https://<프로젝트>.vercel.app/**` (비밀번호 재설정 메일 링크)
-4. Vercel → Settings → Cron Jobs에 `/api/cron/reset-demo`가 보이는지 확인. 한 번 수동 실행(Run)해 데모 데이터를 오늘 기준으로 만든다
 
 ## 프론트
 
 2026-10-06부터 앱은 Supabase만 씁니다 (기존 API 코드 삭제, roadmap H0).
 
-- `.env`에서 쓰는 값은 `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, 서버 전용 `SUPABASE_SERVICE_ROLE_KEY`, `CRON_SECRET`입니다 (`.env.example`). 예전 값(`NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_KAKAO_*`, `NEXT_PUBLIC_BACKEND`)은 지워도 됩니다.
+- `.env`에서 쓰는 값은 `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, 서버 전용 `SUPABASE_SERVICE_ROLE_KEY`입니다 (`.env.example`). 예전 값(`NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_KAKAO_*`, `NEXT_PUBLIC_BACKEND`)은 지워도 됩니다.
 - API 함수(`*/api/*.ts`)는 화면이 쓰던 시그니처를 유지하고, 구현은 옆의 `*.supabase.ts`에 있습니다.
 
 ## DB 타입
