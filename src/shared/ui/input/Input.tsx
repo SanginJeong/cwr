@@ -19,7 +19,7 @@ interface InputProps extends ComponentPropsWithRef<"input"> {
 }
 
 const variantClasses: Record<InputVariant, string> = {
-  default: "border-border-primary focus:border-primary",
+  default: "border-border-primary focus:border-interaction-focus",
   error: "border-status-danger focus:border-status-danger",
 };
 
@@ -64,7 +64,6 @@ const Input = ({
             "w-full rounded-lg border bg-transparent px-4 py-3 text-md-regular",
             "tablet:text-lg-regular pc:text-lg-regular",
             "placeholder:text-gray-400 placeholder:text-lg-regular",
-            "focus:border-interaction-pressed",
             variantClasses[variant],
             disabled && disabledClasses,
             addonAfter && "pr-12",

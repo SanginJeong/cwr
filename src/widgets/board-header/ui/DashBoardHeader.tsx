@@ -61,7 +61,7 @@ const DashBoardHeader = () => {
             "w-full h-[48px] py-4 px-12",
             "pc:w-[420px] pc:h-[56px]",
             "border border-border-primary rounded-full bg-transparent",
-            "focus:border-interaction-pressed focus:outline-none",
+            "focus:border-interaction-focus focus:outline-none",
             "text-lg-regular text-text-primary placeholder:text-gray-400",
           )}
         />
