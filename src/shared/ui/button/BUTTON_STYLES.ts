@@ -13,7 +13,7 @@ export const BASE_BUTTON_STYLE_BY_SIZE = {
 
 export const BASE_BUTTON_STYLE_BY_VARIANT = {
   solid:
-    "bg-brand-primary text-text-inverse hover:bg-interaction-hover active:bg-interaction-inactive disabled:bg-interaction-inactive",
+    "bg-brand-primary text-text-inverse hover:bg-interaction-hover active:bg-interaction-pressed disabled:bg-interaction-inactive",
   outlinedPrimary:
     "text-brand-primary border border-brand-primary hover:text-interaction-hover active:text-interaction-pressed disabled:text-interaction-inactive disabled:border-interaction-inactive",
   outlinedSecondary: "text-text-default border border-border-secondary",
