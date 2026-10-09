@@ -64,7 +64,8 @@ jobs:
       - run: npx playwright test ${{ env.GREP }} ${{ inputs.update_snapshots && '--update-snapshots' || '' }}
         env:
           CI: true
-          GREP: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && '' || '--grep-invert @p2' }}
+          # `조건 && '' || x`는 ''가 거짓이라 항상 x가 된다. 그래서 PR·push일 때 값을 넣는 쪽으로 쓴다
+          GREP: ${{ (github.event_name == 'pull_request' || github.event_name == 'push') && '--grep-invert @p2' || '' }}
 
       - uses: actions/upload-artifact@v4
         if: ${{ inputs.update_snapshots }}
