@@ -76,6 +76,7 @@ table.plain{background:#fff;border:1px solid var(--rule)}
 .todo ol{padding-left:1.2rem;color:var(--ink);font-size:.9rem}
 .todo ol>li{margin-bottom:.9rem}
 .todo .warn{border-left:3px solid var(--accent);background:var(--accent-tint);padding:.6rem .9rem;border-radius:0 6px 6px 0;font-size:.86rem;color:var(--ink);margin:.75rem 0}
+.sub-h{font-size:1.15rem;margin:2.25rem 0 .4rem}
 .footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(30,41,59,.10);font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
 @media (max-width:900px){.stats,.cards.c3,.cards.c2,.cards.c6,.feature-grid{grid-template-columns:1fr}body{padding:2rem 1rem}}
 </style>
@@ -210,7 +211,100 @@ table.plain{background:#fff;border:1px solid var(--rule)}
 
 <section class="block" id="userflow">
   <p class="eyebrow">02 · User flow</p>
-  <h2>역할별 유저플로우</h2>
+  <h2>유저플로우</h2>
+  <p class="lead">세 장으로 나눴다. 전체 화면 흐름 → 근태·휴가(역할을 넘나드는 핵심) → 협업(칸반·할 일·자유게시판).</p>
+
+  <h3 class="sub-h">2-1. 전체 화면 흐름</h3>
+  <p class="lead">로그인하면 모든 역할이 "내 근태"에서 시작하고, 사이드바로 각 영역에 간다. 사이드바 메뉴는 역할에 따라 다르게 보이고(휴가 승인은 팀장·인사담당자, 인사 관리는 인사담당자), 실제 접근은 proxy와 DB가 다시 막는다.</p>
+  <div class="diagram-container"><svg viewBox="0 0 1280 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="navmap-title navmap-desc" style="min-width:1280px">
+<title id="navmap-title">전체 화면 흐름</title>
+<desc id="navmap-desc">로그인 후 첫 화면인 내 근태에서 사이드바로 팀 페이지와 할 일 목록, 자유게시판과 게시글, 휴가 승인, 인사 관리, 마이 히스토리와 계정 설정으로 이동하는 전체 화면 구조.</desc>
+<defs>
+  <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#475569"/></marker>
+  <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#5189fa"/></marker>
+  <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#315296"/></marker>
+  <marker id="arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748b"/></marker>
+</defs>
+<rect width="100%" height="100%" fill="#f1f5f9"/>
+
+<line x1="200" y1="280" x2="260" y2="280" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<path d="M 440,228 L 472,228 Q 480,228 480,220 L 480,96 Q 480,88 488,88 L 560,88" fill="none" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<path d="M 440,252 L 492,252 Q 500,252 500,244 L 500,200 Q 500,192 508,192 L 560,192" fill="none" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<path d="M 440,280 L 512,280 Q 520,280 520,288 L 520,288 Q 520,296 528,296 L 560,296" fill="none" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<path d="M 440,308 L 492,308 Q 500,308 500,316 L 500,392 Q 500,400 508,400 L 560,400" fill="none" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<path d="M 440,332 L 472,332 Q 480,332 480,340 L 480,496 Q 480,504 488,504 L 560,504" fill="none" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<line x1="780" y1="88" x2="880" y2="88" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="800" y="70" width="60" height="12" rx="2" fill="#f1f5f9"/><text x="830" y="79" fill="#64748b" font-size="8" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.06em">OPEN LIST</text>
+<line x1="780" y1="192" x2="880" y2="192" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="800" y="174" width="60" height="12" rx="2" fill="#f1f5f9"/><text x="830" y="183" fill="#64748b" font-size="8" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.06em">OPEN POST</text>
+<text x="510" y="44" fill="#64748b" font-size="12" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">사이드바</text>
+<rect x="40" y="248" width="160" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="40" y="248" width="160" height="64" rx="6" fill="rgba(71,85,105,0.10)" stroke="#64748b" stroke-width="1"/>
+<rect x="48" y="254" width="32" height="12" rx="2" fill="transparent" stroke="#64748b" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="64" y="263" fill="#64748b" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">AUTH</text>
+<text x="120" y="282" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">로그인</text>
+<text x="120" y="298" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">email · demo 3종</text>
+<rect x="260" y="200" width="180" height="160" rx="6" fill="#f1f5f9"/>
+<rect x="260" y="200" width="180" height="160" rx="6" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<rect x="268" y="206" width="32" height="12" rx="2" fill="transparent" stroke="#5189fa" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="284" y="215" fill="#5189fa" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">HOME</text>
+<text x="350" y="282" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">내 근태</text>
+<text x="350" y="298" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">/attendance</text>
+<rect x="560" y="56" width="220" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="560" y="56" width="220" height="64" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1"/>
+<rect x="568" y="62" width="32" height="12" rx="2" fill="transparent" stroke="#1e293b" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="584" y="71" fill="#1e293b" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">TEAM</text>
+<text x="670" y="90" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">팀 페이지 · 칸반</text>
+<text x="670" y="106" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">/teams/{id}</text>
+<rect x="880" y="56" width="240" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="880" y="56" width="240" height="64" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1"/>
+<rect x="888" y="62" width="32" height="12" rx="2" fill="transparent" stroke="#1e293b" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="904" y="71" fill="#1e293b" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">LIST</text>
+<text x="1000" y="90" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">할 일 목록 · 상세</text>
+<text x="1000" y="106" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">/teams/{id}/lists/{listId}</text>
+<rect x="560" y="160" width="220" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="560" y="160" width="220" height="64" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1"/>
+<rect x="568" y="166" width="36" height="12" rx="2" fill="transparent" stroke="#1e293b" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="586" y="175" fill="#1e293b" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">BOARD</text>
+<text x="670" y="194" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">자유게시판</text>
+<text x="670" y="210" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">/board?q=&amp;sort=</text>
+<rect x="880" y="160" width="240" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="880" y="160" width="240" height="64" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1"/>
+<rect x="888" y="166" width="32" height="12" rx="2" fill="transparent" stroke="#1e293b" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="904" y="175" fill="#1e293b" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">POST</text>
+<text x="1000" y="194" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">게시글 쓰기 · 상세</text>
+<text x="1000" y="210" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">/board/new · /board/{id}</text>
+<rect x="560" y="264" width="220" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="560" y="264" width="220" height="64" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1"/>
+<rect x="568" y="270" width="56" height="12" rx="2" fill="transparent" stroke="#1e293b" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="596" y="279" fill="#1e293b" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">LEADER·HR</text>
+<text x="670" y="298" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">휴가 승인</text>
+<text x="670" y="314" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">/approvals</text>
+<rect x="560" y="368" width="220" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="560" y="368" width="220" height="64" rx="6" fill="rgba(81,137,250,0.05)" stroke="rgba(81,137,250,0.50)" stroke-width="1" stroke-dasharray="4,4"/>
+<rect x="568" y="374" width="20" height="12" rx="2" fill="transparent" stroke="#5189fa" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="578" y="383" fill="#5189fa" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">HR</text>
+<text x="670" y="402" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">인사 관리</text>
+<text x="670" y="418" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">/admin/members · policies</text>
+<rect x="560" y="472" width="220" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="560" y="472" width="220" height="64" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1"/>
+<rect x="568" y="478" width="20" height="12" rx="2" fill="transparent" stroke="#1e293b" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="578" y="487" fill="#1e293b" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">ME</text>
+<text x="670" y="506" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">마이 히스토리 · 계정</text>
+<text x="670" y="522" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">/history · /account</text>
+<line x1="40" y1="560" x2="1240" y2="560" stroke="rgba(30,41,59,0.10)" stroke-width="0.8"/>
+<text x="40" y="584" fill="#475569" font-size="8" font-family="'Geist Mono', ui-monospace, Menlo, monospace" letter-spacing="0.14em">LEGEND</text>
+<rect x="120" y="575" width="20" height="12" rx="2" fill="rgba(71,85,105,0.10)" stroke="#64748b" stroke-width="1"/>
+<text x="148" y="585" fill="#475569" font-size="12" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">진입</text>
+<rect x="200" y="575" width="20" height="12" rx="2" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="228" y="585" fill="#475569" font-size="12" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">로그인 후 첫 화면</text>
+<rect x="364" y="575" width="20" height="12" rx="2" fill="#ffffff" stroke="#1e293b" stroke-width="1"/>
+<text x="392" y="585" fill="#475569" font-size="12" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">화면</text>
+<rect x="444" y="575" width="20" height="12" rx="2" fill="rgba(81,137,250,0.05)" stroke="rgba(81,137,250,0.50)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="472" y="585" fill="#475569" font-size="12" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">인사담당자만</text>
+</svg></div>
+
+  <h3 class="sub-h">2-2. 근태 · 휴가 (역할별)</h3>
   <p class="lead">인사담당자가 계정과 정책을 만들고, 직원이 출퇴근·휴가를 기록하면, 팀장(또는 인사담당자)이 승인하고, 시스템이 기록과 정책으로 판정해 각자의 화면에 돌려준다. 파란 두 곳이 이 서비스의 핵심 규칙이다: 휴가 결정은 먼저 처리한 쪽만, 판정은 엔진이 매번.</p>
   <div class="diagram-container"><svg viewBox="0 0 1280 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="flow-title flow-desc" style="min-width:1280px">
 <title id="flow-title">역할별 유저플로우</title>
@@ -323,11 +417,108 @@ table.plain{background:#fff;border:1px solid var(--rule)}
 </svg></div>
   <div class="cards c3">
     <div class="card"><div class="card-header"><span class="card-dot ink"></span><h3>직원 · 박지민 (데모)</h3></div>
-      <ul><li>로그인 → <code>/attendance</code> 내 근태 (월 달력, 이번 달 요약, 오늘 카드, 휴가 목록)</li><li>사이드바 카드로 출근·퇴근, 모바일은 서랍 카드</li><li>휴가 신청·취소, 승인 결과 확인</li><li>팀 페이지(할 일·멤버), 자유게시판, 마이 히스토리, 계정 설정</li></ul></div>
+      <ul><li>로그인 → <code>/attendance</code> 내 근태 (월 달력, 이번 달 요약, 오늘 카드, 휴가 목록)</li><li>사이드바 카드로 출근·퇴근, 모바일은 서랍 카드</li><li>휴가 신청·취소, 승인 결과 확인</li><li>소속 팀의 칸반·할 일, 자유게시판, 마이 히스토리, 계정 설정</li></ul></div>
     <div class="card"><div class="card-header"><span class="card-dot accent"></span><h3>팀장 · 김하늘 (데모)</h3></div>
       <ul><li>직원이 하는 모든 것 +</li><li>사이드바 "팀장 · 휴가 승인" 배지 → <code>/approvals</code> 승인·반려, 같은 날 겹침, 팀 휴가 달력</li><li>팀 페이지의 "오늘 우리 팀 근태"와 멤버별 근태 칩</li><li>팀 생성·수정·멤버 관리는 없음</li></ul></div>
     <div class="card"><div class="card-header"><span class="card-dot link"></span><h3>인사담당자 · 이서연 (데모)</h3></div>
       <ul><li>"인사 관리": 구성원 관리, 근태 정책, 휴가 승인(회사 전체)</li><li>모든 팀을 멤버처럼 보고, 팀 생성·수정·삭제·멤버 배정</li><li>데모 계정은 직원 추가·퇴사 처리만 막힘(403)</li></ul></div>
+  </div>
+
+  <h3 class="sub-h">2-3. 협업: 칸반 · 할 일 · 자유게시판</h3>
+  <p class="lead">팀 협업은 팀 페이지의 칸반에서 시작한다. 목록을 열어 날짜별 할 일을 만들고 완료하면, 칸반의 열(할 일 · 진행중 · 완료)과 진행 상황이 다시 계산된다. 자유게시판은 회사 전체가 같이 쓰는 공간으로, 검색어·정렬이 URL에 남는다. 모든 역할이 같은 흐름을 쓴다 (인사담당자는 모든 팀).</p>
+  <div class="diagram-container"><svg viewBox="0 0 1280 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="collab-title collab-desc" style="min-width:1280px">
+<title id="collab-title">협업 플로우: 칸반 · 할 일 · 자유게시판</title>
+<desc id="collab-desc">팀 페이지 칸반에서 할 일 목록을 열어 날짜별 할 일을 만들고 완료하면 칸반 열과 진행 상황이 바뀌고, 자유게시판에서는 목록에서 글을 쓰고 상세에서 좋아요와 댓글을 남기는 흐름.</desc>
+<defs>
+  <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#475569"/></marker>
+  <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#5189fa"/></marker>
+  <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#315296"/></marker>
+  <marker id="arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748b"/></marker>
+</defs>
+<rect width="100%" height="100%" fill="#f1f5f9"/>
+
+<rect x="40" y="40" width="1200" height="184" rx="8" fill="rgba(30,41,59,0.02)" stroke="rgba(30,41,59,0.14)" stroke-width="0.8"/><rect x="52" y="44" width="124" height="12" rx="2" fill="#f1f5f9"/><text x="114" y="53" fill="#64748b" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.14em">TEAM · KANBAN &amp; TASKS</text>
+<rect x="40" y="264" width="1200" height="184" rx="8" fill="rgba(30,41,59,0.02)" stroke="rgba(30,41,59,0.14)" stroke-width="0.8"/><rect x="52" y="268" width="40" height="12" rx="2" fill="#f1f5f9"/><text x="72" y="277" fill="#64748b" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.14em">BOARD</text>
+<line x1="280" y1="128" x2="380" y2="128" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="300" y="110" width="60" height="12" rx="2" fill="#f1f5f9"/><text x="330" y="119" fill="#64748b" font-size="8" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.06em">OPEN LIST</text>
+<line x1="580" y1="128" x2="680" y2="128" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="604" y="110" width="52" height="12" rx="2" fill="#f1f5f9"/><text x="630" y="119" fill="#64748b" font-size="8" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.06em">NEW TASK</text>
+<line x1="880" y1="128" x2="980" y2="128" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="912" y="110" width="36" height="12" rx="2" fill="#f1f5f9"/><text x="930" y="119" fill="#64748b" font-size="8" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.06em">CHECK</text>
+<path d="M 1080,160 L 1080,184 Q 1080,192 1072,192 L 188,192 Q 180,192 180,184 L 180,160" fill="none" stroke="#64748b" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrow-soft)"/>
+<rect x="604" y="174" width="52" height="12" rx="2" fill="#f1f5f9"/><text x="630" y="183" fill="#64748b" font-size="8" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.06em">PROGRESS</text>
+<line x1="280" y1="352" x2="380" y2="352" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="316" y="334" width="28" height="12" rx="2" fill="#f1f5f9"/><text x="330" y="343" fill="#64748b" font-size="8" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.06em">NEW</text>
+<line x1="580" y1="352" x2="680" y2="352" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="608" y="334" width="44" height="12" rx="2" fill="#f1f5f9"/><text x="630" y="343" fill="#64748b" font-size="8" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.06em">UPLOAD</text>
+<line x1="880" y1="352" x2="980" y2="352" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="912" y="334" width="36" height="12" rx="2" fill="#f1f5f9"/><text x="930" y="343" fill="#64748b" font-size="8" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.06em">REACT</text>
+<path d="M 1080,384 L 1080,408 Q 1080,416 1072,416 L 188,416 Q 180,416 180,408 L 180,384" fill="none" stroke="#64748b" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrow-soft)"/>
+<rect x="596" y="398" width="68" height="12" rx="2" fill="#f1f5f9"/><text x="630" y="407" fill="#64748b" font-size="8" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.06em">BEST · SORT</text>
+<rect x="80" y="96" width="200" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="80" y="96" width="200" height="64" rx="6" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<rect x="88" y="102" width="40" height="12" rx="2" fill="transparent" stroke="#5189fa" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="108" y="111" fill="#5189fa" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">KANBAN</text>
+<text x="180" y="130" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">칸반 보드</text>
+<text x="180" y="146" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">TODO · DOING · DONE</text>
+<rect x="380" y="96" width="200" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="380" y="96" width="200" height="64" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1"/>
+<rect x="388" y="102" width="32" height="12" rx="2" fill="transparent" stroke="#1e293b" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="404" y="111" fill="#1e293b" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">LIST</text>
+<text x="480" y="130" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">목록 열기 · 날짜 이동</text>
+<text x="480" y="146" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">?date= · week · calendar</text>
+<rect x="680" y="96" width="200" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="680" y="96" width="200" height="64" rx="6" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<rect x="688" y="102" width="28" height="12" rx="2" fill="transparent" stroke="#5189fa" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="702" y="111" fill="#5189fa" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">RPC</text>
+<text x="780" y="130" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">할 일 만들기 (반복)</text>
+<text x="780" y="146" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">tasks_for_date</text>
+<rect x="980" y="96" width="200" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="980" y="96" width="200" height="64" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1"/>
+<rect x="988" y="102" width="32" height="12" rx="2" fill="transparent" stroke="#1e293b" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="1004" y="111" fill="#1e293b" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">TASK</text>
+<text x="1080" y="130" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">완료 체크 · 댓글</text>
+<text x="1080" y="146" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">?task={id} · doneAt</text>
+<rect x="80" y="320" width="200" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="80" y="320" width="200" height="64" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1"/>
+<rect x="88" y="326" width="36" height="12" rx="2" fill="transparent" stroke="#1e293b" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="106" y="335" fill="#1e293b" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">BOARD</text>
+<text x="180" y="354" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">목록 · 검색 · 정렬</text>
+<text x="180" y="370" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">?q= · ?sort= · infinite</text>
+<rect x="380" y="320" width="200" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="380" y="320" width="200" height="64" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1"/>
+<rect x="388" y="326" width="28" height="12" rx="2" fill="transparent" stroke="#1e293b" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="402" y="335" fill="#1e293b" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">NEW</text>
+<text x="480" y="354" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">글쓰기</text>
+<text x="480" y="370" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">title · content · image</text>
+<rect x="680" y="320" width="200" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="680" y="320" width="200" height="64" rx="6" fill="rgba(30,41,59,0.05)" stroke="#475569" stroke-width="1"/>
+<rect x="688" y="326" width="48" height="12" rx="2" fill="transparent" stroke="#475569" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="712" y="335" fill="#475569" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">STORAGE</text>
+<text x="780" y="354" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">게시글 상세</text>
+<text x="780" y="370" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">/board/{id} · images</text>
+<rect x="980" y="320" width="200" height="64" rx="6" fill="#f1f5f9"/>
+<rect x="980" y="320" width="200" height="64" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1"/>
+<rect x="988" y="326" width="28" height="12" rx="2" fill="transparent" stroke="#1e293b" stroke-opacity="0.45" stroke-width="0.8"/>
+<text x="1002" y="335" fill="#1e293b" font-size="7" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle" letter-spacing="0.08em">RPC</text>
+<text x="1080" y="354" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">좋아요 · 댓글</text>
+<text x="1080" y="370" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">likes · comments</text>
+<line x1="40" y1="456" x2="1240" y2="456" stroke="rgba(30,41,59,0.10)" stroke-width="0.8"/>
+<text x="40" y="480" fill="#475569" font-size="8" font-family="'Geist Mono', ui-monospace, Menlo, monospace" letter-spacing="0.14em">LEGEND</text>
+<rect x="120" y="471" width="20" height="12" rx="2" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="148" y="481" fill="#475569" font-size="12" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">핵심 규칙 (자동 분류, 반복 생성)</text>
+<rect x="380" y="471" width="20" height="12" rx="2" fill="#ffffff" stroke="#1e293b" stroke-width="1"/>
+<text x="408" y="481" fill="#475569" font-size="12" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">화면</text>
+<rect x="460" y="471" width="20" height="12" rx="2" fill="rgba(30,41,59,0.05)" stroke="#475569" stroke-width="1"/>
+<text x="488" y="481" fill="#475569" font-size="12" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">Storage</text>
+<line x1="568" y1="477" x2="588" y2="477" stroke="#64748b" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrow-soft)"/>
+<text x="596" y="481" fill="#475569" font-size="12" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">목록에 다시 반영</text>
+</svg></div>
+  <div class="cards c2">
+    <div class="card"><div class="card-header"><span class="card-dot accent"></span><h3>칸반 열은 저장하지 않고 계산한다</h3></div>
+      <ul><li>목록에 완료한 할 일만 있으면 <b>완료</b>, 오늘까지 안 끝난 할 일이 있으면 <b>진행중</b>, 나머지는 <b>할 일</b></li><li>할 일을 체크하는 순간 카드가 다른 열로 옮겨 간다 (근태 판정과 같은 "저장 대신 계산" 원칙)</li><li>반복 일정은 날짜를 열 때 <code>tasks_for_date</code>가 멱등하게 만든다</li></ul></div>
+    <div class="card"><div class="card-header"><span class="card-dot ink"></span><h3>자유게시판</h3></div>
+      <ul><li>목록 <code>/board?q=&amp;sort=</code>: 피드형 무한 스크롤, 베스트 게시글</li><li>글쓰기: 이미지 1장을 Storage <code>images</code>에 올리고 공개 URL 저장</li><li>상세: 본문 전체(줄바꿈 유지), 좋아요, 댓글. 작성자만 수정·삭제</li></ul></div>
   </div>
 </section>
 
@@ -335,7 +526,7 @@ table.plain{background:#fff;border:1px solid var(--rule)}
   <p class="eyebrow">03 · Features</p>
   <h2>기능별 상세</h2>
   <p class="lead">기능마다 동작 순서, 적용한 기술과 설계 이유, 관련 코드, 그 기능을 지키는 E2E를 함께 적었다. E2E 칩 색: <span class="chip chip-p0">P0</span> 데모가 깨지면 바로 보이는 것 · <span class="chip chip-p1">P1</span> 역할별 시나리오와 회귀 · <span class="chip chip-p2">P2</span> nightly.</p>
-  <p class="lead" style="font-size:.86rem"><a href="#f-auth">인증 · 계정 · 라우트 보호</a> · <a href="#f-clock">출퇴근</a> · <a href="#f-engine">근태 판정 (정책 엔진)</a> · <a href="#f-leave">휴가 신청 · 취소</a> · <a href="#f-approve">휴가 승인 (팀장 · 인사담당자)</a> · <a href="#f-team">팀 페이지 · 팀 관리</a> · <a href="#f-members">구성원 관리 (인사담당자)</a> · <a href="#f-policies">근태 정책 (인사담당자)</a> · <a href="#f-tasks">할 일 · 반복 일정</a> · <a href="#f-presence">접속 상태 (Realtime)</a> · <a href="#f-board">자유게시판</a> · <a href="#f-demo">데모 운영</a> · <a href="#f-ui">UI 테마 · 접근성</a></p>
+  <p class="lead" style="font-size:.86rem"><a href="#f-auth">인증 · 계정 · 라우트 보호</a> · <a href="#f-clock">출퇴근</a> · <a href="#f-engine">근태 판정 (정책 엔진)</a> · <a href="#f-leave">휴가 신청 · 취소</a> · <a href="#f-approve">휴가 승인 (팀장 · 인사담당자)</a> · <a href="#f-team">팀 페이지 · 팀 관리</a> · <a href="#f-members">구성원 관리 (인사담당자)</a> · <a href="#f-policies">근태 정책 (인사담당자)</a> · <a href="#f-tasks">팀 협업 · 칸반 · 할 일</a> · <a href="#f-presence">접속 상태 (Realtime)</a> · <a href="#f-board">자유게시판</a> · <a href="#f-me">마이 히스토리 · 계정 설정</a> · <a href="#f-demo">데모 운영</a> · <a href="#f-ui">UI 테마 · 접근성</a></p>
   
 <article class="feature" id="f-auth">
   <header><h3>인증 · 계정 · 라우트 보호</h3><p>공개 가입이 없는 회사용 서비스. 계정은 인사담당자가 만들고, 면접관은 원클릭 데모 로그인으로 들어온다.</p></header>
@@ -402,12 +593,12 @@ table.plain{background:#fff;border:1px solid var(--rule)}
   <div class="feature-e2e"><p class="eyebrow">이 기능의 E2E</p><table class="mini"><thead><tr><th>ID</th><th>시나리오</th><th>확인하는 것</th></tr></thead><tbody><tr><td><span class="chip chip-p0" title="정책을 05:00 고정·유예 0분으로 바꿈">H2</span></td><td>정책을 05:00 고정·유예 0분으로 바꿈</td><td>그 직원 정상 0, 지각 ≥ 1 (지난 기록 재판정)</td></tr><tr><td><span class="chip chip-p1" title="기본 정책 변경 → 되돌리기">H3</span></td><td>기본 정책 변경 → 되돌리기</td><td>적용 인원 재계산, 합계 유지, 원복</td></tr><tr><td><span class="chip chip-p1" title="배정된 정책 삭제">H4</span></td><td>배정된 정책 삭제</td><td>삭제 비활성 + 이유 툴팁</td></tr><tr><td><span class="chip chip-p1" title="인사담당자가 정책을 자율로">X3</span></td><td>인사담당자가 정책을 자율로</td><td>직원 지각 0, 정상 = 이전 정상 + 지각, 이름 한 번만(E7 회귀)</td></tr></tbody></table></div>
 </article>
 <article class="feature" id="f-tasks">
-  <header><h3>할 일 · 반복 일정</h3><p>팀 프로젝트 시절의 핵심 기능. 제공 API에서 Supabase로 옮기며 반복 일정 모델을 다시 설계했다.</p></header>
+  <header><h3>팀 협업 · 칸반 · 할 일</h3><p>팀 프로젝트 시절의 핵심 기능. 팀 페이지의 칸반에서 할 일 목록을 관리하고, 목록 안에서 날짜별 할 일(반복 포함)을 처리한다. 제공 API에서 Supabase로 옮기며 반복 일정 모델을 다시 설계했다.</p></header>
   <div class="feature-grid">
-    <div><p class="eyebrow">어떻게 동작하나</p><ol><li>팀 페이지 → 할 일 목록 → 날짜별 할 일, 완료 체크, 상세(댓글), 할 일 만들기(반복: 한 번·매일·매주·매월)</li><li><code>tasks_for_date(list, date)</code> RPC가 그 날짜의 반복 일정 행을 만든 뒤 조회</li><li>반복 일정을 고치면 오늘 이후·직접 수정하지 않은·완료 안 된 할 일에 반영</li></ol></div>
-    <div><p class="eyebrow">적용한 것</p><ul><li>"조회할 때 생성"을 <code>insert ... on conflict (recurring_id, date) do nothing</code>으로 <b>멱등</b>하게 (동시 조회에도 중복 없음)</li><li>모든 할 일이 숫자 id를 가진 실제 행 → URL <code>?task=12</code>, 댓글, 완료 처리를 그대로 사용 (ADR-004)</li><li><code>is_customized</code> 플래그로 사용자가 고친 날은 규칙 변경에서 보호</li></ul><p class="eyebrow">관련 코드</p><p class="files"><code>src/widgets/todo-list/*</code> <code>src/entities/task/*</code> <code>supabase/migrations/20261005000005_rpc_tasks.sql</code></p></div>
+    <div><p class="eyebrow">어떻게 동작하나</p><ol><li>팀 페이지 칸반: 할 일 목록을 <b>할 일 · 진행중 · 완료</b> 세 열로 자동 분류 (<code>getTaskListStatus</code>: 완료한 할 일만 있으면 완료, 오늘까지 안 끝난 할 일이 있으면 진행중, 나머지는 할 일)</li><li>열의 버튼으로 목록 추가, 카드 메뉴로 목록 이름 수정·삭제. 위쪽 "진행 상황" 위젯은 팀 할 일 완료율(완료 / 전체)</li><li>카드를 누르면 <code>/teams/{id}/lists/{listId}</code>: 주 단위 날짜 이동과 달력(<code>?date=</code>), 목록 탭 전환</li><li>할 일 만들기(<code>?modal=new-task</code>): 제목·시작 날짜와 시간·반복(한 번·매일·매주·매월, 요일 선택)·메모</li><li>체크로 완료(<code>doneAt</code>) → 칸반 열과 진행 상황이 바뀌고, 마이 히스토리에 완료 기록</li><li>할 일 상세(<code>?task={id}</code>): 수정·삭제, 댓글 쓰기·수정·삭제</li><li><code>tasks_for_date(list, date)</code> RPC가 그 날짜의 반복 일정 행을 만든 뒤 조회. 반복 규칙을 고치면 오늘 이후·직접 수정하지 않은·완료 안 된 할 일에 반영</li></ol></div>
+    <div><p class="eyebrow">적용한 것</p><ul><li>"조회할 때 생성"을 <code>insert ... on conflict (recurring_id, date) do nothing</code>으로 <b>멱등</b>하게 (동시 조회에도 중복 없음)</li><li>모든 할 일이 숫자 id를 가진 실제 행 → URL <code>?task=12</code>, 댓글, 완료 처리를 그대로 사용 (ADR-004)</li><li><code>is_customized</code> 플래그로 사용자가 고친 날은 규칙 변경에서 보호</li><li>모달·상세·날짜를 URL 쿼리에 둬서 새로고침·공유해도 같은 화면 (ADR-002)</li><li>권한: 팀 멤버만(<code>is_member</code>, 인사담당자는 모든 팀), RLS <code>can_access_task_list</code></li></ul><p class="eyebrow">관련 코드</p><p class="files"><code>src/widgets/task-list-board/*</code> <code>src/views/task-list/*</code> <code>src/widgets/todo-list/*</code> <code>src/widgets/task-detail/*</code> <code>src/entities/task/lib/getTaskListStatus.ts</code> <code>supabase/migrations/20261005000005_rpc_tasks.sql</code></p></div>
   </div>
-  <div class="feature-e2e"><p class="eyebrow">이 기능의 E2E</p><p class="muted-note">E2E 대상 아님 (데모의 핵심 흐름 밖). DB 테스트 <code>20_recurring.test.sql</code>로 펼침 규칙을 확인</p></div>
+  <div class="feature-e2e"><p class="eyebrow">이 기능의 E2E</p><p class="muted-note">E2E 대상 아님 (데모의 핵심 흐름 밖). DB 테스트 <code>20_recurring.test.sql</code>로 펼침 규칙을, 팀 프로젝트 시절 QA와 2026-10-06 Supabase 전환 QA(57항목)로 화면을 확인</p></div>
 </article>
 <article class="feature" id="f-presence">
   <header><h3>접속 상태 (Realtime)</h3><p>팀원이 지금 활동 중인지. 출퇴근과는 연결하지 않는다 (버튼으로만 기록).</p></header>
@@ -424,6 +615,14 @@ table.plain{background:#fff;border:1px solid var(--rule)}
     <div><p class="eyebrow">적용한 것</p><ul><li>검색 상태를 Zustand에서 URL 쿼리로 옮김 (새로고침·공유 시 유지)</li><li>작성자만 수정·삭제 (RLS)</li><li>2026-10-09 QA에서 고침: 상세 본문이 한 줄로 잘림, 없는 글이 빈 화면</li></ul><p class="eyebrow">관련 코드</p><p class="files"><code>src/views/board/*</code> <code>src/widgets/article-detail/*</code> <code>src/entities/article/*</code></p></div>
   </div>
   <div class="feature-e2e"><p class="eyebrow">이 기능의 E2E</p><p class="muted-note">E2E 대상 아님. 2026-10-09에 브라우저로 글 2개(이미지 포함)와 댓글을 직접 확인</p></div>
+</article>
+<article class="feature" id="f-me">
+  <header><h3>마이 히스토리 · 계정 설정</h3><p>개인 화면. 사이드바 프로필 메뉴에서 들어간다 (접속 상태 선택, 로그아웃도 여기).</p></header>
+  <div class="feature-grid">
+    <div><p class="eyebrow">어떻게 동작하나</p><ol><li><code>/history</code> 나의 히스토리: 내가 완료한 할 일을 날짜별로 (<code>user_history</code> RPC)</li><li><code>/account</code> 계정 설정: 닉네임·프로필 이미지 수정(Storage), 비밀번호 변경</li><li>회원 탈퇴는 없앴다: 계정의 시작과 끝은 인사담당자가 관리 (ADR-006)</li></ol></div>
+    <div><p class="eyebrow">적용한 것</p><ul><li><code>update_my_profile</code> RPC, Auth 사용자 정보가 바뀌면 프로필에 반영하는 트리거 (마이그레이션 <code>sync_profile_on_login</code>)</li><li>비밀번호 형식 규칙(영문·숫자·특수문자 8자 이상)은 비밀번호를 정할 때만 적용</li></ul><p class="eyebrow">관련 코드</p><p class="files"><code>src/views/history/*</code> <code>src/views/account/*</code> <code>src/entities/user/*</code></p></div>
+  </div>
+  <div class="feature-e2e"><p class="eyebrow">이 기능의 E2E</p><p class="muted-note">E2E 대상 아님. 프로필 메뉴의 로그아웃은 A8에서 확인</p></div>
 </article>
 <article class="feature" id="f-demo">
   <header><h3>데모 운영</h3><p>면접관이 무엇을 눌러도 다음 날이면 처음 상태로 돌아온다.</p></header>
