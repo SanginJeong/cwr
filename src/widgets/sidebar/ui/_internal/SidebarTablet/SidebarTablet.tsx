@@ -33,7 +33,8 @@ const SidebarTablet = ({
     >
       <aside
         className={cn(
-          "flex-col sticky top-0 h-[100vh] border-r border-border-primary z-[10]",
+          // 화면은 밝은 테마, 사이드바만 어두운 테마
+          "theme-dark bg-background-secondary flex-col sticky top-0 h-[100vh] border-r border-border-primary z-[10]",
           isOpen ? "w-[270px]" : "w-[72px]",
           "hidden tablet:flex pc:flex",
         )}
@@ -93,6 +94,7 @@ const SidebarTablet = ({
           >
             {user ? (
               <Dropdown
+                label="프로필 메뉴"
                 options={options}
                 placement="top-left"
                 image={

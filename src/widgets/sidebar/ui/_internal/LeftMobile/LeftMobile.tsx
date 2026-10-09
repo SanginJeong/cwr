@@ -30,7 +30,7 @@ const LeftMobile = ({ isOpen, handleOpenDropdown, user, teams, isHrAdmin, manage
             exit={{ x: "-100%" }}
             transition={{ duration: 0.18, ease: [0.15, 0.85, 0.25, 1] }}
             className={cn(
-              "fixed inset-y-0 left-0 z-40 w-[260px] max-w-[85vw] bg-background-primary border-r border-border-primary p-4 flex flex-col gap-4",
+              "theme-dark fixed inset-y-0 left-0 z-40 w-[260px] max-w-[85vw] bg-background-primary border-r border-border-primary p-4 flex flex-col gap-4",
               "tablet:hidden pc:hidden",
             )}
             role="dialog"

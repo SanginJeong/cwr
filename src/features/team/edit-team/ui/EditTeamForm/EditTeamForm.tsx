@@ -8,12 +8,25 @@ import { BaseButton } from "@/shared/ui/button";
 import { FloatingButton } from "@/shared/ui/button";
 import useTeamEdit from "../../model/useTeamEdit";
 import { useParams } from "next/navigation";
+import { useGetGroups } from "@/entities/team";
+import { LoadingSpinner } from "@/shared/ui/spinner";
 
+/**
+ * 팀 정보를 받은 뒤에 폼을 그린다. 폼은 이름·이미지 초기값을 첫 렌더에서 정하므로,
+ * URL로 바로 들어와 캐시가 비어 있으면 이름 칸이 빈 채로 시작하던 문제가 있었다
+ */
 const TeamEditForm = () => {
-  const { isMobile } = useDevice();
-  const profileSize = isMobile ? "md" : "lg";
   const { teamId } = useParams();
   const id = Number(teamId);
+  const { data: group } = useGetGroups({ id });
+
+  if (!group) return <LoadingSpinner className="py-16 flex-center" size="lg" />;
+  return <TeamEditFormFields key={group.id} id={id} />;
+};
+
+const TeamEditFormFields = ({ id }: { id: number }) => {
+  const { isMobile } = useDevice();
+  const profileSize = isMobile ? "md" : "lg";
 
   const {
     name,

@@ -15,6 +15,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:db": "node scripts/test-db.mjs",
+    "e2e:db": "npx supabase start && npx supabase db reset",
+    "e2e:env": "node scripts/e2e-env.mjs",
+    "test:e2e": "playwright test",
     "db:types": "npx supabase gen types typescript --linked --schema public > src/shared/api/supabase/database.types.ts"
   },
   "dependencies": {
@@ -39,6 +42,7 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.2",
     "@electric-sql/pglite": "^0.5.8",
+    "@playwright/test": "^1.64.0",
     "@storybook/addon-a11y": "^10.0.2",
     "@storybook/addon-docs": "^10.0.2",
     "@storybook/nextjs": "^10.0.3",

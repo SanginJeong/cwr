@@ -23,7 +23,7 @@ const SidebarMobile = ({
     <>
       <nav
         className={cn(
-          "sticky top-0 z-20 flex items-center justify-between bg-background-primary px-4 py-3",
+          "theme-dark sticky top-0 z-20 flex items-center justify-between bg-background-primary px-4 py-3",
           "tablet:hidden pc:hidden",
         )}
       >
@@ -47,6 +47,7 @@ const SidebarMobile = ({
           <div className="flex items-center gap-3">
             <ClockStatusPill />
             <Dropdown
+              label="프로필 메뉴"
               options={options}
               placement="bottom-right"
               image={

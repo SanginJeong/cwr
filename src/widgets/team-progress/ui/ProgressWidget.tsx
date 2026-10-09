@@ -77,7 +77,7 @@ const ProgressWidget = () => {
 
       {isHrAdmin && (
         <div className="absolute right-[26px] top-[32px] pc:bottom-[30px] pc:top-auto leading-none">
-          <Dropdown iconName="setting" placement="bottom-right" options={DropdownOptions} />
+          <Dropdown label="팀 설정" iconName="setting" placement="bottom-right" options={DropdownOptions} />
         </div>
       )}
 
