@@ -1,4 +1,12 @@
-import { test as base, expect, type APIRequestContext, type Browser, type Page } from "@playwright/test";
+import {
+  test as base,
+  expect,
+  type APIRequestContext,
+  type Browser,
+  type Locator,
+  type Page,
+  type PlaywrightWorkerArgs,
+} from "@playwright/test";
 
 /** 원격(운영·데모) DB에 대고 돌면 데모 데이터가 망가진다. 로컬 Supabase가 아니면 바로 멈춘다 (ADR-008) */
 export const assertLocalSupabase = () => {
@@ -20,6 +28,18 @@ export const ROLES: Record<Role, { name: string; team: string | null }> = {
 };
 
 export const storageStatePath = (role: Role) => `e2e/.auth/${role}.json`;
+
+/**
+ * 데모 로그인해 세션 쿠키를 storageState로 저장한다. 스펙은 이 상태로 시작한다.
+ * 로그아웃은 그 사용자의 모든 세션을 끊으므로(supabase signOut 기본 global) 로그아웃한 뒤에도 다시 부른다
+ */
+export const saveLoginState = async (playwright: PlaywrightWorkerArgs["playwright"], baseURL: string, role: Role) => {
+  const context = await playwright.request.newContext({ baseURL });
+  const res = await context.post("/api/demo-login", { data: { role } });
+  if (!res.ok()) throw new Error(`데모 로그인 실패(${role}): ${res.status()} ${await res.text()}`);
+  await context.storageState({ path: storageStatePath(role) });
+  await context.dispose();
+};
 
 /** 데모 데이터를 오늘 기준으로 되돌린다. 데이터를 바꾸는 스펙은 시작할 때 부른다 */
 export const resetDemo = async (request: APIRequestContext) => {
@@ -67,9 +87,49 @@ export const hasPastWeekdayThisMonth = () => {
   return false;
 };
 
-function kstToday() {
+export function kstToday() {
   return new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10);
 }
+
+/** "YYYY-MM-DD"가 토·일인지 */
+export const isWeekendDate = (date: string) => [0, 6].includes(new Date(`${date}T00:00:00Z`).getUTCDay());
+
+/** 이번 달(KST)에서 offset만큼 옮긴 달의 화면 이름 ("2026년 9월") */
+export const kstMonthLabel = (offset = 0) => {
+  const d = new Date(`${kstToday().slice(0, 7)}-01T00:00:00Z`);
+  d.setUTCMonth(d.getUTCMonth() + offset);
+  return `${d.getUTCFullYear()}년 ${d.getUTCMonth() + 1}월`;
+};
+
+export const SUMMARY_LABELS = ["정상", "지각", "결근", "휴가"] as const;
+export type SummaryLabel = (typeof SUMMARY_LABELS)[number];
+
+/** 내 근태의 "이번 달 요약" 카드 숫자 */
+export const readSummary = async (page: Page) => {
+  const region = page.getByRole("region", { name: "이번 달 요약" });
+  await expect(region).toBeVisible();
+  const result = {} as Record<SummaryLabel, number>;
+  for (const label of SUMMARY_LABELS) {
+    const text = await region.locator(":scope > div").filter({ hasText: label }).innerText();
+    result[label] = Number(text.match(/(\d+)\s*일/)![1]);
+  }
+  return result;
+};
+
+/** 사이드바의 "팀 선택"에서 팀 페이지로 간다 */
+export const openTeamPage = async (page: Page, team: string) => {
+  await page.goto("/attendance");
+  await page.getByRole("button", { name: "팀 선택" }).click();
+  await page.getByRole("link", { name: team, exact: true }).click();
+  await expect(page).toHaveURL(/\/teams\/\d+$/);
+};
+
+/** 팀 페이지 오른쪽의 팀 멤버 영역 */
+export const memberPanel = (page: Page) => page.getByRole("complementary", { name: "팀 멤버" });
+
+/** "N명" 같은 문구에서 숫자만 */
+export const countIn = async (locator: Locator, unit = "명") =>
+  Number((await locator.innerText()).match(new RegExp(`(\\d+)${unit}`))![1]);
 
 /**
  * 내 근태에서 휴가를 신청한다. 고를 수 있는 첫 날짜(내일 이후 평일, 아직 신청하지 않은 날)를 고른다.
