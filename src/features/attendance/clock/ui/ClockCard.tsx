@@ -99,21 +99,28 @@ const ClockCard = ({ variant = "sidebar", className }: ClockCardProps) => {
           ))}
         </dl>
         <p className="text-md-regular text-text-secondary">
-          {status ? (
+          {state === "BEFORE" ? (
+            <>아직 출근 전이에요. {rule}이에요.</>
+          ) : (
             <>
               {state === "DONE"
                 ? `${formatDuration(minutes)} 근무했어요. `
                 : minutes < 1
                   ? "방금 출근했어요. "
                   : `${formatDuration(minutes)}째 근무 중이에요. `}
-              오늘은{" "}
-              <strong className={status === "LATE" ? "text-point-orange" : "text-icon-brand"}>
-                {STATUS_LABEL[status]}
-              </strong>
-              으로 기록돼요.
+              {/* 주말처럼 판정하지 않는 날은 판정이 없다. 예전에는 이때 출근했는데도 "아직 출근 전"이 보였다 */}
+              {status ? (
+                <>
+                  오늘은{" "}
+                  <strong className={status === "LATE" ? "text-point-orange" : "text-icon-brand"}>
+                    {STATUS_LABEL[status]}
+                  </strong>
+                  으로 기록돼요.
+                </>
+              ) : (
+                "오늘은 판정하지 않는 날이에요."
+              )}
             </>
-          ) : (
-            <>아직 출근 전이에요. {rule}이에요.</>
           )}
         </p>
         {actionButton}
