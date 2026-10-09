@@ -1,4 +1,4 @@
-import { ROLES, expect, storageStatePath, test } from "../support";
+import { ROLES, expect, saveLoginState, storageStatePath, test, toast } from "../support";
 
 // 로드맵 2 §2-1. 라우트 보호는 proxy, 실제 권한은 DB가 확인한다 (화면은 이동만 본다)
 
@@ -24,6 +24,43 @@ test.describe("데모 로그인", () => {
       await expect(page.getByText(ROLES[role].name).first()).toBeVisible();
     });
   }
+});
+
+test.describe("이메일 로그인", () => {
+  // 로그인 폼의 이메일 형식 검사는 .test 같은 4글자 도메인을 막으므로 example.com을 쓴다
+  const fillLogin = async (page: import("@playwright/test").Page, password: string) => {
+    await page.goto("/login");
+    await page.getByLabel("이메일").fill("nobody@example.com");
+    await page.getByLabel("비밀번호", { exact: true }).fill(password);
+  };
+
+  test("A6 틀린 비밀번호 → 안내 토스트", async ({ page }) => {
+    await fillLogin(page, "wrong-password-1!");
+    await page.getByRole("button", { name: "로그인", exact: true }).click();
+    await expect(toast(page, "이메일 혹은 비밀번호를 확인해주세요")).toBeVisible();
+    await expect(page).toHaveURL(/\/login$/);
+  });
+
+  test("A7 특수문자 없는 비밀번호도 제출할 수 있다 (회귀: 임시 비밀번호로 로그인 불가)", async ({ page }) => {
+    await fillLogin(page, "abcd1234");
+    await expect(page.getByRole("button", { name: "로그인", exact: true })).toBeEnabled();
+    await expect(page.getByText(/특수문자/)).toHaveCount(0);
+  });
+});
+
+test("A8 로그아웃하면 로그인 화면, 보호 라우트가 다시 막힌다", async ({ page, playwright, baseURL }) => {
+  await page.goto("/login");
+  await page.getByRole("button", { name: /직원으로 보기/ }).click();
+  await expect(page).toHaveURL(/\/attendance$/);
+
+  await page.getByRole("button", { name: "프로필 메뉴" }).first().click();
+  await page.getByRole("button", { name: "로그아웃" }).click();
+  await expect(page).toHaveURL(/\/login$/);
+  await page.goto("/attendance");
+  await expect(page).toHaveURL(/\/login$/);
+
+  // 로그아웃은 직원의 모든 세션을 끊는다. 다른 스펙이 쓰는 저장된 로그인 상태를 새로 만든다
+  await saveLoginState(playwright, baseURL!, "employee");
 });
 
 test.describe("직원", () => {
