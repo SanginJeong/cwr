@@ -1,4 +1,4 @@
-import { ROLES, expect, saveLoginState, storageStatePath, test, toast } from "../support";
+import { ROLES, expect, saveLoginState, setAccount, storageStatePath, submitLoginForm, test, toast } from "../support";
 
 // 로드맵 2 §2-1. 라우트 보호는 proxy, 실제 권한은 DB가 확인한다 (화면은 이동만 본다)
 
@@ -27,24 +27,37 @@ test.describe("데모 로그인", () => {
 });
 
 test.describe("이메일 로그인", () => {
-  // 로그인 폼의 이메일 형식 검사는 .test 같은 4글자 도메인을 막으므로 example.com을 쓴다
-  const fillLogin = async (page: import("@playwright/test").Page, password: string) => {
-    await page.goto("/login");
-    await page.getByLabel("이메일").fill("nobody@example.com");
-    await page.getByLabel("비밀번호", { exact: true }).fill(password);
-  };
-
   test("A6 틀린 비밀번호 → 안내 토스트", async ({ page }) => {
-    await fillLogin(page, "wrong-password-1!");
-    await page.getByRole("button", { name: "로그인", exact: true }).click();
+    await submitLoginForm(page, "nobody@example.com", "wrong-password-1!");
     await expect(toast(page, "이메일 혹은 비밀번호를 확인해주세요")).toBeVisible();
     await expect(page).toHaveURL(/\/login$/);
   });
 
-  test("A7 특수문자 없는 비밀번호도 제출할 수 있다 (회귀: 임시 비밀번호로 로그인 불가)", async ({ page }) => {
-    await fillLogin(page, "abcd1234");
+  test("A7 특수문자 없는 비밀번호, .test 같은 긴 최상위 도메인도 제출할 수 있다 (회귀 2건)", async ({ page }) => {
+    // 회귀: 임시 비밀번호(특수문자 없음)로 로그인 불가, 최상위 도메인 2~3글자 제한으로 @coworkers.test 로그인 불가
+    await page.goto("/login");
+    await page.getByLabel("이메일").fill("employee@coworkers.test");
+    await page.getByLabel("비밀번호", { exact: true }).fill("abcd1234");
     await expect(page.getByRole("button", { name: "로그인", exact: true })).toBeEnabled();
-    await expect(page.getByText(/특수문자/)).toHaveCount(0);
+    await expect(page.getByText(/특수문자|이메일 형식/)).toHaveCount(0);
+  });
+
+  test("A9 퇴사 처리된 계정은 로그인할 수 없고, 복직하면 다시 된다", { tag: "@p2" }, async ({ page }) => {
+    // 데모 인사담당자는 퇴사 처리를 할 수 없어서(H6) 같은 상태를 service role로 만든다
+    const email = "doyun.choi@coworkers.test";
+    const password = "e2e-Password-1!";
+    await setAccount(email, { password, active: false });
+    try {
+      await submitLoginForm(page, email, password);
+      await expect(toast(page, "퇴사 처리된 계정입니다")).toBeVisible();
+
+      await setAccount(email, { active: true });
+      await submitLoginForm(page, email, password);
+      await expect(page).toHaveURL(/\/attendance$/);
+      await expect(page.getByText("최도윤").first()).toBeVisible();
+    } finally {
+      await setAccount(email, { active: true });
+    }
   });
 });
 

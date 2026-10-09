@@ -29,6 +29,8 @@ test("E1 사이드바 카드로 출근", async ({ page }) => {
 
   const todayPanel = page.getByRole("region", { name: "오늘", exact: true });
   await expect(todayPanel.getByText("--:--")).toHaveCount(1); // 퇴근만 비어 있다
+  // E8 회귀: 1분 미만이면 "0분째 근무 중" 대신 "방금 출근했어요"
+  await expect(todayPanel).toContainText("방금 출근했어요");
   if (!isWeekendKst()) {
     await expect(page.locator('li[aria-current="date"]')).toContainText(/정상|지각/);
   }
