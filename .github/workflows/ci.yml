@@ -68,7 +68,8 @@ jobs:
           GREP: ${{ (github.event_name == 'pull_request' || github.event_name == 'push') && '--grep-invert @p2' || '' }}
 
       - uses: actions/upload-artifact@v4
-        if: ${{ inputs.update_snapshots }}
+        # 테스트가 실패해도 새로 만든 기준 이미지는 올린다
+        if: ${{ !cancelled() && inputs.update_snapshots }}
         with:
           name: e2e-snapshots
           path: e2e/**/*-snapshots/
