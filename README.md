@@ -58,7 +58,7 @@ DB: 사실(출근·퇴근 시각, 휴가 결정) + 규칙(정책)
 - **TanStack Query v5** (서버 상태), Zustand (로그인 이메일 기억)
 - **Supabase**: Auth, Postgres(RLS + RPC), Realtime(팀 접속 상태), Storage
 - 폴더 구조: Feature-Sliced Design ([ADR-001](docs/decisions/ADR-001-fsd-folder-structure.md))
-- 테스트: **Vitest**(정책 엔진·날짜·데모 데이터 생성), **PGlite**로 마이그레이션과 RLS를 Docker 없이 테스트
+- 테스트: 3층 (아래 [테스트](#테스트))
 - 배포: Vercel (서울 리전, 매일 데모 리셋 크론)
 
 ## 로컬에서 실행
@@ -77,15 +77,29 @@ npm run dev
 
 DB 준비(마이그레이션, Auth 설정, 첫 인사담당자)와 데모 데이터 만들기는 [supabase/README.md](supabase/README.md)에 있습니다.
 
+## 테스트
+
+아래 층에서 확인한 규칙은 위 층에서 다시 세세하게 보지 않습니다 ([ADR-008](docs/decisions/ADR-008-e2e-testing.md)).
+
+| 층        | 도구                                         | 무엇을                                                                                      |
+| --------- | -------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| 순수 함수 | **Vitest**                                   | 정책 엔진의 판정 경계값, 날짜(KST), 데모 데이터 생성                                        |
+| DB·RLS    | **PGlite** (Docker 없이)                     | 마이그레이션, 역할별 RLS, 출퇴근·휴가 RPC 규칙                                              |
+| 화면 흐름 | **Playwright** + Supabase 로컬 스택 (Docker) | 데모 로그인 3종의 핵심 흐름, 역할을 넘나드는 승인(동시 승인 경쟁 포함), 모바일, 접근성(axe) |
+
+- PR마다 P0·P1(데모가 깨지면 바로 보이는 것, 역할별 시나리오)이 CI에서 돕니다. 평일 09:00(KST) nightly는 P2(모바일 일부, 접근성, 스크린샷)까지 전부.
+- 테스트 목록과 우선순위: [로드맵 2](docs/roadmap-e2e.md)
+
 ```bash
 npm test          # Vitest
 npm run test:db   # PGlite로 마이그레이션 + DB 테스트
-npm run build
+npm run e2e:db && npm run e2e:env   # Supabase 로컬 스택(Docker)과 .env.e2e
+npm run test:e2e  # Playwright (원격 DB면 시작하지 않고 멈춘다)
 ```
 
 ## 문서
 
-- [로드맵](docs/roadmap.md): H0~H6 진행 기록
-- 결정 기록: [ADR-004 Supabase](docs/decisions/ADR-004-supabase-backend.md), [ADR-006 역할과 계정](docs/decisions/ADR-006-company-roles.md), [ADR-007 근태](docs/decisions/ADR-007-attendance.md)
+- [로드맵](docs/roadmap.md): H0~H6 진행 기록, [로드맵 2](docs/roadmap-e2e.md): E2E 테스트
+- 결정 기록: [ADR-004 Supabase](docs/decisions/ADR-004-supabase-backend.md), [ADR-006 역할과 계정](docs/decisions/ADR-006-company-roles.md), [ADR-007 근태](docs/decisions/ADR-007-attendance.md), [ADR-008 E2E](docs/decisions/ADR-008-e2e-testing.md)
 - 단계별 QA: [docs/qa](docs/qa)
 - 팀 프로젝트 시절 README: [docs/legacy-readme.md](docs/legacy-readme.md)
