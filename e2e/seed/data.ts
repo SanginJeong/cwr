@@ -1,34 +1,32 @@
 /**
- * 데모 회사 (roadmap H6). 직원 30명, 팀 4개, 정책 3종.
- * 이메일 도메인은 예약된 .test라서 실제 메일이 가지 않는다. 데모 계정은 이 도메인으로 구분한다.
+ * E2E 테스트용 가상 회사. 직원 30명, 팀 4개, 정책 3종 (로컬 Supabase 스택에만 만든다).
+ * 이메일 도메인은 예약된 .test라서 실제 메일이 가지 않는다.
  */
 
-export const DEMO_EMAIL_DOMAIN = "coworkers.test";
+export const SEED_EMAIL_DOMAIN = "coworkers.test";
 
-export const isDemoEmail = (email: string | null | undefined) => !!email?.endsWith(`@${DEMO_EMAIL_DOMAIN}`);
-
-export type DemoPolicyKey = "FIXED" | "CORE" | "AUTO";
+export type SeedPolicyKey = "FIXED" | "CORE" | "AUTO";
 
 /** 정책 이름이 키다. 자율 출퇴근은 기본 정책(마이그레이션 시드)을 쓴다 */
-export const DEMO_POLICIES = {
+export const SEED_POLICIES = {
   FIXED: { name: "고정 근무 09:00", type: "FIXED", work_start: "09:00", grace_minutes: 10 },
   CORE: { name: "코어타임 10–16", type: "CORE_TIME", core_start: "10:00", core_end: "16:00" },
 } as const;
 
-export const DEMO_TEAMS = [
+export const SEED_TEAMS = [
   { name: "개발팀", policy: "CORE" },
   { name: "디자인팀", policy: "AUTO" },
   { name: "마케팅팀", policy: "FIXED" },
   { name: "영업팀", policy: "FIXED" },
-] as const satisfies readonly { name: string; policy: DemoPolicyKey }[];
+] as const satisfies readonly { name: string; policy: SeedPolicyKey }[];
 
-export type DemoTeamName = (typeof DEMO_TEAMS)[number]["name"];
+export type SeedTeamName = (typeof SEED_TEAMS)[number]["name"];
 
-export interface DemoPerson {
+export interface SeedPerson {
   nickname: string;
   /** @coworkers.test 앞부분 */
   local: string;
-  team: DemoTeamName | null;
+  team: SeedTeamName | null;
   isLeader?: boolean;
   isHrAdmin?: boolean;
   /** 지각 확률 (기본 0.08) */
@@ -39,22 +37,22 @@ export interface DemoPerson {
   hiredDaysAgo?: number;
 }
 
-/** 원클릭 데모 로그인 계정 */
-export const DEMO_ACCOUNTS = {
+/** E2E가 역할별로 로그인하는 계정 */
+export const SEED_ACCOUNTS = {
   hr: "hr",
   leader: "leader",
   employee: "employee",
 } as const;
 
-export type DemoRole = keyof typeof DEMO_ACCOUNTS;
+export type SeedRole = keyof typeof SEED_ACCOUNTS;
 
-export const demoEmail = (local: string) => `${local}@${DEMO_EMAIL_DOMAIN}`;
+export const seedEmail = (local: string) => `${local}@${SEED_EMAIL_DOMAIN}`;
 
-export const DEMO_PEOPLE: DemoPerson[] = [
-  { nickname: "이서연", local: DEMO_ACCOUNTS.hr, team: null, isHrAdmin: true },
+export const SEED_PEOPLE: SeedPerson[] = [
+  { nickname: "이서연", local: SEED_ACCOUNTS.hr, team: null, isHrAdmin: true },
 
-  { nickname: "김하늘", local: DEMO_ACCOUNTS.leader, team: "개발팀", isLeader: true },
-  { nickname: "박지민", local: DEMO_ACCOUNTS.employee, team: "개발팀", lateRate: 0.15 },
+  { nickname: "김하늘", local: SEED_ACCOUNTS.leader, team: "개발팀", isLeader: true },
+  { nickname: "박지민", local: SEED_ACCOUNTS.employee, team: "개발팀", lateRate: 0.15 },
   { nickname: "최도윤", local: "doyun.choi", team: "개발팀", lateRate: 0.25 },
   { nickname: "정유나", local: "yuna.jung", team: "개발팀" },
   { nickname: "한서준", local: "seojun.han", team: "개발팀" },
@@ -88,8 +86,8 @@ export const DEMO_PEOPLE: DemoPerson[] = [
 ];
 
 /** 팀마다 할 일 목록 샘플 (반복 규칙). 할 일은 조회할 때 규칙으로 만들어진다 (ADR-004) */
-export const DEMO_TASK_LISTS: Record<
-  DemoTeamName,
+export const SEED_TASK_LISTS: Record<
+  SeedTeamName,
   { name: string; recurrings: { name: string; frequency: "DAILY" | "WEEKLY"; weekDays?: number[] }[] }[]
 > = {
   개발팀: [

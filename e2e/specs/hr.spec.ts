@@ -4,7 +4,7 @@ import {
   hasPastWeekdayThisMonth,
   memberPanel,
   openTeamPage,
-  resetDemoBeforeAll,
+  reseedBeforeAll,
   reviewRowOf,
   storageStatePath,
   test,
@@ -15,7 +15,7 @@ import type { Page } from "@playwright/test";
 // 로드맵 2 §2-4
 test.describe.configure({ mode: "serial" });
 test.use({ storageState: storageStatePath("hr") });
-resetDemoBeforeAll();
+reseedBeforeAll();
 
 const memberRows = (page: Page) => page.getByRole("region", { name: "구성원 목록" }).locator("tbody tr");
 const policyCard = (page: Page, name: string) =>
@@ -30,7 +30,7 @@ const openEditModal = async (page: Page, name: string) => {
   return page.getByRole("dialog");
 };
 
-test("H1 구성원 목록: 재직 수, 데모 계정, 검색과 필터", async ({ page }) => {
+test("H1 구성원 목록: 재직 수, 시드 계정, 검색과 필터", async ({ page }) => {
   await page.goto("/admin/members");
   const header = page.getByText(/^재직 \d+명/);
   const active = await countIn(header);
@@ -73,16 +73,6 @@ test("H7 인사담당자의 휴가 승인은 회사 전체", async ({ page }) =>
   for (const name of ["박지민", "김하늘", "서지호", "권도현", "고은채"]) {
     await expect(reviewRowOf(page, name).first()).toBeVisible();
   }
-});
-
-test("H6 데모 계정은 직원을 추가할 수 없다", async ({ page }) => {
-  await page.goto("/admin/members");
-  await page.getByRole("button", { name: "직원 추가" }).click();
-  const dialog = page.getByRole("dialog");
-  await dialog.getByLabel("이름").fill("E2E 지원자");
-  await dialog.getByLabel("이메일 (로그인 아이디)").fill("e2e-new@coworkers.test");
-  await dialog.getByRole("button", { name: "추가하기" }).click();
-  await expect(toast(page, /데모 계정에서는/)).toBeVisible();
 });
 
 test("H2 정책을 바꾸면 같은 기록이 다시 판정된다", async ({ page }) => {

@@ -5,7 +5,7 @@ import {
   memberPanel,
   openAs,
   openTeamPage,
-  resetDemoBeforeAll,
+  reseedBeforeAll,
   reviewRowOf,
   storageStatePath,
   test,
@@ -15,7 +15,7 @@ import {
 // 로드맵 2 §2-3. 시드: 박지민·최도윤이 같은 날 대기, 팀장(김하늘) 본인도 대기 1건
 test.describe.configure({ mode: "serial" });
 test.use({ storageState: storageStatePath("leader") });
-resetDemoBeforeAll();
+reseedBeforeAll();
 
 const pendingRows = (page: import("@playwright/test").Page) => page.getByRole("table").locator("tbody tr");
 

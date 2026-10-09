@@ -1,20 +1,20 @@
-import { DEMO_ACCOUNTS, DEMO_PEOPLE, DEMO_TEAMS, type DemoPerson, type DemoPolicyKey } from "./data";
+import { SEED_ACCOUNTS, SEED_PEOPLE, SEED_TEAMS, type SeedPerson, type SeedPolicyKey } from "./data";
 
 /**
- * 데모 근태 기록 생성. 순수 함수라 같은 (today, nowTime)이면 항상 같은 결과가 나온다 (멱등).
+ * 시드 근태 기록 생성. 순수 함수라 같은 (today, nowTime)이면 항상 같은 결과가 나온다 (멱등).
  * 날짜는 KST "YYYY-MM-DD", 시각은 KST 벽시계 "HH:MM:SS".
  */
 
 export const HISTORY_DAYS = 92;
 
-export interface DemoRecord {
+export interface SeedRecord {
   local: string;
   date: string;
   clockIn: string;
   clockOut: string | null;
 }
 
-export interface DemoLeave {
+export interface SeedLeave {
   local: string;
   date: string;
   status: "PENDING" | "APPROVED" | "REJECTED";
@@ -64,45 +64,45 @@ const toTime = (minutes: number, seconds: number) =>
   `${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
 /** 정책별 출근 시각 범위(분). 정상은 판정 경계 안, 지각은 밖 (엔진: 경계 이하면 정상) */
-const CLOCK_IN_RANGE: Record<DemoPolicyKey, { onTime: [number, number]; late: [number, number] }> = {
+const CLOCK_IN_RANGE: Record<SeedPolicyKey, { onTime: [number, number]; late: [number, number] }> = {
   CORE: { onTime: [8 * 60 + 30, 9 * 60 + 58], late: [10 * 60 + 3, 11 * 60 + 15] },
   FIXED: { onTime: [8 * 60 + 15, 9 * 60 + 9], late: [9 * 60 + 12, 10 * 60 + 5] },
   AUTO: { onTime: [7 * 60 + 40, 11 * 60], late: [7 * 60 + 40, 11 * 60] },
 };
 
-export const policyOf = (person: DemoPerson): DemoPolicyKey =>
-  person.isHrAdmin ? "FIXED" : (DEMO_TEAMS.find((t) => t.name === person.team)?.policy ?? "AUTO");
+export const policyOf = (person: SeedPerson): SeedPolicyKey =>
+  person.isHrAdmin ? "FIXED" : (SEED_TEAMS.find((t) => t.name === person.team)?.policy ?? "AUTO");
 
-export const hiredOnOf = (person: DemoPerson, today: string) => addDays(today, -(person.hiredDaysAgo ?? 400));
+export const hiredOnOf = (person: SeedPerson, today: string) => addDays(today, -(person.hiredDaysAgo ?? 400));
 
-const leaderOf = (person: DemoPerson) =>
+const leaderOf = (person: SeedPerson) =>
   person.isLeader || !person.team
-    ? DEMO_ACCOUNTS.hr
-    : (DEMO_PEOPLE.find((p) => p.team === person.team && p.isLeader)?.local ?? DEMO_ACCOUNTS.hr);
+    ? SEED_ACCOUNTS.hr
+    : (SEED_PEOPLE.find((p) => p.team === person.team && p.isLeader)?.local ?? SEED_ACCOUNTS.hr);
 
 const REASONS = ["병원", "가족 행사", "이사", "개인 사유", "여행", null];
 
 /**
  * 앞으로의 휴가: 팀장 화면에서 볼 거리(대기, 같은 날 겹침, 팀장 본인 휴가)를 일부러 만든다.
- * 박지민(데모 직원)과 최도윤이 같은 날 대기 → 김하늘(데모 팀장)의 승인 화면에 "겹침"
+ * 박지민(E2E 직원)과 최도윤이 같은 날 대기 → 김하늘(E2E 팀장)의 승인 화면에 "겹침"
  */
-const upcomingLeaves = (today: string): Omit<DemoLeave, "decidedByLocal" | "createdOn">[] => [
-  { local: DEMO_ACCOUNTS.employee, date: weekdayAfter(today, 5), status: "PENDING", reason: "가족 행사" },
+const upcomingLeaves = (today: string): Omit<SeedLeave, "decidedByLocal" | "createdOn">[] => [
+  { local: SEED_ACCOUNTS.employee, date: weekdayAfter(today, 5), status: "PENDING", reason: "가족 행사" },
   { local: "doyun.choi", date: weekdayAfter(today, 5), status: "PENDING", reason: "이사" },
   { local: "yuna.jung", date: weekdayAfter(today, 3), status: "APPROVED", reason: "병원" },
-  { local: DEMO_ACCOUNTS.leader, date: weekdayAfter(today, 10), status: "PENDING", reason: "개인 사유" },
+  { local: SEED_ACCOUNTS.leader, date: weekdayAfter(today, 10), status: "PENDING", reason: "개인 사유" },
   { local: "jiho.seo", date: weekdayAfter(today, 7), status: "PENDING", reason: "여행" },
   { local: "dohyun.kwon", date: weekdayAfter(today, 4), status: "PENDING", reason: null },
   { local: "eunchae.ko", date: weekdayAfter(today, 8), status: "PENDING", reason: "병원" },
   { local: "seoyun.baek", date: weekdayAfter(today, 8), status: "APPROVED", reason: "가족 행사" },
 ];
 
-export const generateDemoAttendance = (today: string, nowTime: string) => {
+export const generateSeedAttendance = (today: string, nowTime: string) => {
   const from = addDays(today, -HISTORY_DAYS);
-  const records: DemoRecord[] = [];
-  const leaves: DemoLeave[] = [];
+  const records: SeedRecord[] = [];
+  const leaves: SeedLeave[] = [];
 
-  for (const person of DEMO_PEOPLE) {
+  for (const person of SEED_PEOPLE) {
     const hiredOn = hiredOnOf(person, today);
     const start = hiredOn > from ? hiredOn : from;
     const pastWeekdays: string[] = [];
@@ -156,9 +156,9 @@ export const generateDemoAttendance = (today: string, nowTime: string) => {
       });
     }
 
-    // 오늘: 지금 시각보다 이른 출근만, 퇴근은 아직. 데모 로그인 계정은 직접 출근해 볼 수 있게 비워 둔다
-    const isDemoAccount = (Object.values(DEMO_ACCOUNTS) as string[]).includes(person.local);
-    if (!isDemoAccount && !isWeekend(today) && today >= hiredOn && random(`${person.local}:${today}:today`) < 0.8) {
+    // 오늘: 지금 시각보다 이른 출근만, 퇴근은 아직. E2E 로그인 계정은 테스트가 직접 출근하도록 비워 둔다
+    const isSeedAccount = (Object.values(SEED_ACCOUNTS) as string[]).includes(person.local);
+    if (!isSeedAccount && !isWeekend(today) && today >= hiredOn && random(`${person.local}:${today}:today`) < 0.8) {
       const isLate = random(`${person.local}:${today}:late`) < (person.lateRate ?? 0.08);
       const [min, max] = CLOCK_IN_RANGE[policy][isLate ? "late" : "onTime"];
       const inMinutes = between(`${person.local}:${today}:in`, min, max);
@@ -168,7 +168,7 @@ export const generateDemoAttendance = (today: string, nowTime: string) => {
   }
 
   for (const leave of upcomingLeaves(today)) {
-    const person = DEMO_PEOPLE.find((p) => p.local === leave.local)!;
+    const person = SEED_PEOPLE.find((p) => p.local === leave.local)!;
     leaves.push({
       ...leave,
       decidedByLocal: leave.status === "PENDING" ? null : leaderOf(person),

@@ -1,7 +1,6 @@
-import { randomBytes } from "node:crypto";
-import { getAdminSupabase } from "@/shared/api/supabase/admin";
-import { DEMO_PEOPLE, DEMO_POLICIES, DEMO_TASK_LISTS, DEMO_TEAMS, demoEmail, type DemoPolicyKey } from "./data";
-import { addDays, generateDemoAttendance, hiredOnOf, policyOf } from "./generate";
+import { getAdminSupabase } from "../../src/shared/api/supabase/admin";
+import { SEED_PEOPLE, SEED_POLICIES, SEED_TASK_LISTS, SEED_TEAMS, seedEmail, type SeedPolicyKey } from "./data";
+import { addDays, generateSeedAttendance, hiredOnOf, policyOf } from "./generate";
 
 type Admin = ReturnType<typeof getAdminSupabase>;
 
@@ -9,8 +8,8 @@ const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
 const kstNow = () => new Date(Date.now() + KST_OFFSET_MS).toISOString();
 const kst = (date: string, time: string) => `${date}T${time}+09:00`;
 
-/** 임시 비밀번호. 데모 로그인은 매번 서버가 새 비밀번호를 정해 로그인하므로 아무도 알 필요가 없다 */
-export const randomPassword = () => `${randomBytes(18).toString("base64url")}!9a`;
+/** 시드 계정의 비밀번호. 로컬 Supabase 스택에서만 쓰는 값이라 코드에 둔다 (E2E가 이 값으로 로그인한다) */
+export const E2E_PASSWORD = "e2e-Password-1!";
 
 /** 에러만 확인한다 (결과 행을 받지 않는 update·delete) */
 const must = (result: { error: { message: string } | null }, step: string) => {
@@ -27,9 +26,9 @@ const required = <T>(result: { data: T; error: { message: string } | null }, ste
 const chunk = <T>(items: T[], size: number) =>
   Array.from({ length: Math.ceil(items.length / size) }, (_, i) => items.slice(i * size, (i + 1) * size));
 
-/** 정책: 데모 정책은 이름으로 찾아 정해진 값으로 되돌리고, 자율 출퇴근을 기본 정책으로 되돌린다 */
-const ensurePolicies = async (admin: Admin): Promise<Record<DemoPolicyKey, number | null>> => {
-  const ids: Record<DemoPolicyKey, number | null> = { FIXED: null, CORE: null, AUTO: null };
+/** 정책: 시드 정책은 이름으로 찾아 정해진 값으로 되돌리고, 자율 출퇴근을 기본 정책으로 되돌린다 */
+const ensurePolicies = async (admin: Admin): Promise<Record<SeedPolicyKey, number | null>> => {
+  const ids: Record<SeedPolicyKey, number | null> = { FIXED: null, CORE: null, AUTO: null };
   for (const key of ["FIXED", "CORE"] as const) {
     const policy: {
       name: string;
@@ -38,7 +37,7 @@ const ensurePolicies = async (admin: Admin): Promise<Record<DemoPolicyKey, numbe
       grace_minutes?: number;
       core_start?: string;
       core_end?: string;
-    } = DEMO_POLICIES[key];
+    } = SEED_POLICIES[key];
     // 유형에 쓰지 않는 칸은 null (DB CHECK)
     const row = {
       name: policy.name,
@@ -55,7 +54,7 @@ const ensurePolicies = async (admin: Admin): Promise<Record<DemoPolicyKey, numbe
       : required(await admin.from("policies").insert(row).select("id").single(), "정책 생성").id;
   }
 
-  // 기본 정책 = 자율 출퇴근 (마이그레이션 시드). 인사담당자 데모가 바꿨으면 되돌린다
+  // 기본 정책 = 자율 출퇴근 (마이그레이션 시드). 테스트가 바꿨으면 되돌린다
   const auto = required(
     await admin.from("policies").select("id").eq("type", "AUTONOMOUS").order("id").limit(1),
     "기본 정책 조회",
@@ -73,7 +72,7 @@ const ensurePolicies = async (admin: Admin): Promise<Record<DemoPolicyKey, numbe
 /** 팀: 이름으로 찾고 없으면 만든다 */
 const ensureTeams = async (admin: Admin) => {
   const teamIds = new Map<string, number>();
-  for (const team of DEMO_TEAMS) {
+  for (const team of SEED_TEAMS) {
     const existing = required(
       await admin.from("groups").select("id").eq("name", team.name).order("id").limit(1),
       "팀 조회",
@@ -86,8 +85,8 @@ const ensureTeams = async (admin: Admin) => {
   return teamIds;
 };
 
-/** 데모 계정: 없으면 만들고, 있으면 로그인 차단을 푼다. profile id를 돌려준다 */
-const ensureUsers = async (admin: Admin, today: string, policyIds: Record<DemoPolicyKey, number | null>) => {
+/** 시드 계정: 없으면 만들고, 있으면 비밀번호·로그인 차단을 되돌린다. profile id를 돌려준다 */
+const ensureUsers = async (admin: Admin, today: string, policyIds: Record<SeedPolicyKey, number | null>) => {
   const authIdByEmail = new Map<string, string>();
   for (let page = 1; ; page++) {
     const { data, error } = await admin.auth.admin.listUsers({ page, perPage: 1000 });
@@ -97,21 +96,21 @@ const ensureUsers = async (admin: Admin, today: string, policyIds: Record<DemoPo
   }
 
   const profileIdByLocal = new Map<string, number>();
-  for (const person of DEMO_PEOPLE) {
-    const email = demoEmail(person.local);
+  for (const person of SEED_PEOPLE) {
+    const email = seedEmail(person.local);
     let authId = authIdByEmail.get(email);
     if (!authId) {
       const { data, error } = await admin.auth.admin.createUser({
         email,
-        password: randomPassword(),
+        password: E2E_PASSWORD,
         email_confirm: true,
         user_metadata: { nickname: person.nickname },
       });
       if (error || !data.user) throw new Error(`계정 생성(${email}): ${error?.message}`);
       authId = data.user.id;
     } else {
-      // 인사담당자 데모가 퇴사 처리했을 수 있다
-      await admin.auth.admin.updateUserById(authId, { ban_duration: "none" });
+      // 테스트가 퇴사 처리하거나 비밀번호를 바꿨을 수 있다
+      await admin.auth.admin.updateUserById(authId, { ban_duration: "none", password: E2E_PASSWORD });
     }
 
     const profile = required(
@@ -135,11 +134,16 @@ const ensureUsers = async (admin: Admin, today: string, policyIds: Record<DemoPo
 };
 
 /**
- * 데모 데이터를 오늘 기준으로 되돌린다 (roadmap H6). 다시 실행해도 같은 결과가 나온다.
- * - 데모 계정(@coworkers.test) 30명, 팀 4개, 정책 3종, 최근 3개월 출퇴근, 휴가(승인·반려·대기), 할 일 샘플
- * - 데모 계정의 출퇴근·휴가와 데모 팀의 멤버십·할 일 목록은 지우고 새로 만든다. 그 밖의 데이터는 건드리지 않는다
+ * E2E 테스트 데이터를 오늘 기준으로 만든다. 다시 실행해도 같은 결과가 나온다 (멱등).
+ * - 시드 계정(@coworkers.test) 30명, 팀 4개, 정책 3종, 최근 3개월 출퇴근, 휴가(승인·반려·대기), 할 일 샘플
+ * - 시드 계정의 출퇴근·휴가와 시드 팀의 멤버십·할 일 목록은 지우고 새로 만든다. 그 밖의 데이터는 건드리지 않는다
+ * - 로컬 Supabase 스택에서만 돈다. 원격 DB면 바로 멈춘다
  */
-export const resetDemo = async () => {
+export const seedTestData = async () => {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  if (!/^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?/.test(url)) {
+    throw new Error(`테스트 시드는 로컬 Supabase에서만 실행한다. 지금 NEXT_PUBLIC_SUPABASE_URL=${url || "(없음)"}`);
+  }
   const admin = getAdminSupabase();
   const now = kstNow();
   const today = now.slice(0, 10);
@@ -150,12 +154,12 @@ export const resetDemo = async () => {
   const userIds = [...profileIds.values()];
   const groupIds = [...teamIds.values()];
 
-  // 멤버십: 데모 계정과 데모 팀의 배정을 정해진 대로
+  // 멤버십: 시드 계정과 시드 팀의 배정을 정해진 대로
   must(await admin.from("memberships").delete().in("user_id", userIds), "멤버십 정리");
   must(await admin.from("memberships").delete().in("group_id", groupIds), "멤버십 정리");
   must(
     await admin.from("memberships").insert(
-      DEMO_PEOPLE.filter((p) => p.team).map((p) => ({
+      SEED_PEOPLE.filter((p) => p.team).map((p) => ({
         group_id: teamIds.get(p.team!)!,
         user_id: profileIds.get(p.local)!,
         role: p.isLeader ? "ADMIN" : "MEMBER",
@@ -165,7 +169,7 @@ export const resetDemo = async () => {
   );
 
   // 출퇴근·휴가
-  const { records, leaves } = generateDemoAttendance(today, now.slice(11, 19));
+  const { records, leaves } = generateSeedAttendance(today, now.slice(11, 19));
   must(await admin.from("attendance_records").delete().in("user_id", userIds), "출퇴근 정리");
   must(await admin.from("leave_requests").delete().in("user_id", userIds), "휴가 정리");
   for (const rows of chunk(records, 500)) {
@@ -198,10 +202,10 @@ export const resetDemo = async () => {
 
   // 할 일 샘플: 목록을 지우면 반복 규칙·할 일·댓글이 함께 지워진다 (cascade)
   must(await admin.from("task_lists").delete().in("group_id", groupIds), "할 일 정리");
-  for (const team of DEMO_TEAMS) {
+  for (const team of SEED_TEAMS) {
     const groupId = teamIds.get(team.name)!;
-    const leaderId = profileIds.get(DEMO_PEOPLE.find((p) => p.team === team.name && p.isLeader)!.local)!;
-    for (const list of DEMO_TASK_LISTS[team.name]) {
+    const leaderId = profileIds.get(SEED_PEOPLE.find((p) => p.team === team.name && p.isLeader)!.local)!;
+    for (const list of SEED_TASK_LISTS[team.name]) {
       const taskList = required(
         await admin.from("task_lists").insert({ group_id: groupId, name: list.name }).select("id").single(),
         "할 일 목록 생성",

@@ -7,7 +7,7 @@ import {
   openTeamPage,
   readSummary,
   requestLeave,
-  resetDemoBeforeAll,
+  reseedBeforeAll,
   reviewRowOf,
   showMonthOf,
   test,
@@ -16,7 +16,7 @@ import {
 
 // 로드맵 2 §2-5. 여러 브라우저 컨텍스트로 역할을 오간다
 test.describe.configure({ mode: "serial" });
-resetDemoBeforeAll();
+reseedBeforeAll();
 
 test("X1 직원 신청 → 팀장 승인 → 직원 달력에 휴가", async ({ browser }) => {
   const employee = await openAs(browser, "employee");

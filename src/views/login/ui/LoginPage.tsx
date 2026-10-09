@@ -1,5 +1,4 @@
 import { LoginForm } from "@/features/auth/login";
-import { DemoLoginSection } from "@/features/auth/demo-login";
 import { CenteredCardLayout } from "@/shared/ui/centered-card-layout";
 
 const LoginPage = () => {
@@ -10,7 +9,6 @@ const LoginPage = () => {
       titleClassName="text-xl-bold"
     >
       <LoginForm />
-      <DemoLoginSection />
     </CenteredCardLayout>
   );
 };

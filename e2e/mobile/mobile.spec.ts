@@ -1,9 +1,9 @@
 import type { Page } from "@playwright/test";
-import { expect, openAs, requestLeave, resetDemoBeforeAll, storageStatePath, test, toast } from "../support";
+import { expect, openAs, requestLeave, reseedBeforeAll, storageStatePath, test, toast } from "../support";
 
-// 로드맵 2 §2-6. 390×844 (playwright.config의 mobile 프로젝트). 출근은 하루 한 번이라 직렬, 시작할 때 데모 리셋
+// 로드맵 2 §2-6. 390×844 (playwright.config의 mobile 프로젝트). 출근은 하루 한 번이라 직렬, 시작할 때 시드
 test.describe.configure({ mode: "serial" });
-resetDemoBeforeAll();
+reseedBeforeAll();
 
 /** 가로 스크롤이 생기지 않는다 (모바일에서 표·달력이 화면 밖으로 밀리던 문제) */
 const expectNoHorizontalScroll = async (page: Page) => {

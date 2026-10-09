@@ -31,7 +31,6 @@ writeFileSync(
     `NEXT_PUBLIC_SUPABASE_URL=${url}`,
     `NEXT_PUBLIC_SUPABASE_ANON_KEY=${anon}`,
     `SUPABASE_SERVICE_ROLE_KEY=${service}`,
-    "CRON_SECRET=e2e-local-secret",
     "",
   ].join("\n"),
 );
