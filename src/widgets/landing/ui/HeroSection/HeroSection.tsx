@@ -57,7 +57,7 @@ const HeroSection = ({ link = ROUTES.login }: HeroSectionProps) => {
             />
             <div className="ml-[30px]">
               <p className="text-md-medium tablet:text-lg-medium pc:text-xl-medium text-state-400">
-                함께 만들어가는 투두 리스트
+                함께 만들어가는 회사
               </p>
               <h1 className="text-2xl-brand-bold tablet:text-3xl-brand-bold pc:text-4xl-brand-bold text-brand-primary mt-1">
                 Coworkers
