@@ -6,6 +6,15 @@ on:
     branches: [main]
   push:
     branches: [main]
+  # nightly: 평일 09:00 KST (UTC 00:00). KST 자정 근처는 날짜 경계라 피한다 (ADR-008). P2까지 전부
+  schedule:
+    - cron: "0 0 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      update_snapshots:
+        description: "V2 스크린샷 기준 이미지를 새로 만든다 (아티팩트 e2e-snapshots를 받아 커밋)"
+        type: boolean
+        default: false
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -51,9 +60,20 @@ jobs:
           SUPABASE_BIN: supabase
 
       - run: npx playwright install --with-deps chromium
-      - run: npx playwright test
+      # PR·push는 P0·P1만, nightly·수동 실행은 P2(@p2: 모바일 일부, 접근성, 스크린샷)까지
+      - run: npx playwright test ${{ env.GREP }} ${{ inputs.update_snapshots && '--update-snapshots' || '' }}
         env:
           CI: true
+          # `조건 && '' || x`는 ''가 거짓이라 항상 x가 된다. 그래서 PR·push일 때 값을 넣는 쪽으로 쓴다
+          GREP: ${{ (github.event_name == 'pull_request' || github.event_name == 'push') && '--grep-invert @p2' || '' }}
+
+      - uses: actions/upload-artifact@v4
+        # 테스트가 실패해도 새로 만든 기준 이미지는 올린다
+        if: ${{ !cancelled() && inputs.update_snapshots }}
+        with:
+          name: e2e-snapshots
+          path: e2e/**/*-snapshots/
+          retention-days: 7
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
