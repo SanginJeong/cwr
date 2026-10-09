@@ -1,6 +1,7 @@
 import { ValidationResult } from "@/shared/api/types/AuthType";
 
-export const EMAIL_REGX = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+// 최상위 도메인은 2글자 이상 (.test·.info·.company 등). 예전에는 2~3글자로 막아 데모 계정(@coworkers.test)으로 폼 로그인이 안 됐다
+export const EMAIL_REGX = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,}$/i;
 export const PW_REGX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
 
 export const validateEmail = (email: string): ValidationResult => {
