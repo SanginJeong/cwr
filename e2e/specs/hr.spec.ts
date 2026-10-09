@@ -49,12 +49,12 @@ test("H1 구성원 목록: 재직 수, 데모 계정, 검색과 필터", async (
   await expect(rows).toContainText("doyun.choi@coworkers.test");
   await search.fill("");
 
-  await page.getByLabel("팀", { exact: true }).selectOption({ label: "디자인팀" });
+  await page.getByRole("combobox", { name: "팀", exact: true }).selectOption({ label: "디자인팀" });
   await expect(rows).toHaveCount(6);
   await expect(rows.filter({ hasNotText: "디자인팀" })).toHaveCount(0);
-  await page.getByLabel("팀", { exact: true }).selectOption("all");
+  await page.getByRole("combobox", { name: "팀", exact: true }).selectOption("all");
 
-  await page.getByLabel("근태 정책", { exact: true }).selectOption({ label: "코어타임 10–16" });
+  await page.getByRole("combobox", { name: "근태 정책" }).selectOption({ label: "코어타임 10–16" });
   await expect(rows.first()).toBeVisible();
   await expect(rows.filter({ hasNotText: "코어타임 10–16" })).toHaveCount(0);
 });
