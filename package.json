@@ -40,6 +40,7 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@chromatic-com/storybook": "^4.1.2",
     "@electric-sql/pglite": "^0.5.8",
     "@playwright/test": "^1.64.0",
