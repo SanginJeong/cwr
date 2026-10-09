@@ -14,8 +14,7 @@ const waitForContent = async (page: Page, heading: string) => {
 const seriousViolations = async (page: Page) => {
   const { violations } = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
-    // 색 대비는 팔레트(brand·icon-brand·text-disabled·point-yellow·status-danger) 결정이 필요해 따로 둔다.
-    // 위반 목록은 docs/roadmap-e2e.md §4. 팔레트를 고치면 이 줄을 지운다
+    // 색 대비는 검사하지 않는다. 브랜드 팔레트를 그대로 두기로 했다 (2026-10-09, 위반 목록은 docs/roadmap-e2e.md §4)
     .disableRules(["color-contrast"])
     .analyze();
   return violations
