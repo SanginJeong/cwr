@@ -13,9 +13,11 @@ const config: Config = {
 
     extend: {
       colors: {
+        // 테마에 따라 바뀌는 색은 CSS 변수로 둔다 (값은 globals.css의 :root·.theme-dark).
+        // 화면은 밝은 테마, 사이드바만 .theme-dark로 어두운 테마를 쓴다
         brand: {
           primary: "#5189FA",
-          secondary: "#1E2F55",
+          secondary: "rgb(var(--brand-secondary) / <alpha-value>)",
           tertiary: "#315296",
         },
         point: {
@@ -28,10 +30,10 @@ const config: Config = {
           yellow: "#EAB308",
         },
         background: {
-          primary: "#1E293B", // 카드·사이드바 등 표면
-          secondary: "#0F172A", // 페이지 배경
-          tertiary: "#334155", // hover·강조 표면
-          inverse: "#1E293B",
+          primary: "rgb(var(--background-primary) / <alpha-value>)", // 카드·사이드바 등 표면
+          secondary: "rgb(var(--background-secondary) / <alpha-value>)", // 페이지 배경
+          tertiary: "rgb(var(--background-tertiary) / <alpha-value>)", // hover·강조 표면
+          inverse: "rgb(var(--background-inverse) / <alpha-value>)",
         },
         interaction: {
           inactive: "#94A3B8",
@@ -40,16 +42,16 @@ const config: Config = {
           focus: "#416EC8",
         },
         border: {
-          primary: "#334155",
-          secondary: "#475569",
+          primary: "rgb(var(--border-primary) / <alpha-value>)",
+          secondary: "rgb(var(--border-secondary) / <alpha-value>)",
         },
         text: {
-          primary: "#F1F5F9",
-          secondary: "#CBD5E1",
-          tertiary: "#F8FAFC",
-          default: "#94A3B8",
+          primary: "rgb(var(--text-primary) / <alpha-value>)",
+          secondary: "rgb(var(--text-secondary) / <alpha-value>)",
+          tertiary: "rgb(var(--text-tertiary) / <alpha-value>)",
+          default: "rgb(var(--text-default) / <alpha-value>)",
           inverse: "#FFFFFF", // brand·danger 등 채색 배경 위 텍스트
-          disabled: "#64748B",
+          disabled: "rgb(var(--text-disabled) / <alpha-value>)",
         },
         status: {
           danger: "#FC4B4B",
@@ -61,20 +63,20 @@ const config: Config = {
           offline: "#FC4B4B",
         },
         icon: {
-          primary: "#94A3B8",
+          primary: "rgb(var(--icon-primary) / <alpha-value>)",
           inverse: "#F8FAFC",
           brand: "#74A1FB",
         },
         state: {
-          200: "#334155",
-          300: "#475569",
+          200: "rgb(var(--state-200) / <alpha-value>)",
+          300: "rgb(var(--state-300) / <alpha-value>)",
           400: "#94A3B8",
-          600: "#CBD5E1",
+          600: "rgb(var(--state-600) / <alpha-value>)",
         },
       },
 
       borderColor: {
-        DEFAULT: "#334155", // 색 지정 없는 `border` 클래스 기본값 (border.primary)
+        DEFAULT: "rgb(var(--border-primary))", // 색 지정 없는 `border` 클래스 기본값 (border.primary)
       },
 
       fontFamily: {

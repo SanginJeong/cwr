@@ -8,8 +8,7 @@
  * ```
  */
 
-const STRIPE_PATTERN =
-  "repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.06) 0, rgba(255, 255, 255, 0.06) 46px, transparent 46px, transparent 92px)";
+const STRIPE_PATTERN = "repeating-linear-gradient(-45deg, #EBEFF5 0, #EBEFF5 46px, transparent 46px, transparent 92px)";
 
 interface ProgressBarType {
   percent: number;

@@ -3,10 +3,51 @@
 @tailwind utilities;
 
 @layer base {
+  /* 테마 색 토큰 (RGB 값, tailwind.config.ts에서 rgb(var(--x) / alpha)로 쓴다) */
+  :root {
+    --brand-secondary: 238 243 255; /* #EEF3FF */
+    --background-primary: 255 255 255; /* #FFFFFF */
+    --background-secondary: 241 245 249; /* #F1F5F9 */
+    --background-tertiary: 226 232 240; /* #E2E8F0 */
+    --background-inverse: 255 255 255; /* #FFFFFF */
+    --border-primary: 226 232 240; /* #E2E8F0 */
+    --border-secondary: 203 213 225; /* #CBD5E1 */
+    --text-primary: 30 41 59; /* #1E293B */
+    --text-secondary: 51 65 85; /* #334155 */
+    --text-tertiary: 15 23 42; /* #0F172A */
+    --text-default: 100 116 139; /* #64748B */
+    --text-disabled: 148 163 184; /* #94A3B8 */
+    --icon-primary: 100 116 139; /* #64748B */
+    --state-200: 226 232 240; /* #E2E8F0 */
+    --state-300: 203 213 225; /* #CBD5E1 */
+    --state-600: 71 85 105; /* #475569 */
+  }
+
+  /* 사이드바용 어두운 테마. 이 클래스가 붙은 요소 안에서는 토큰이 어두운 값으로 바뀐다 */
+  .theme-dark {
+    --brand-secondary: 30 47 85; /* #1E2F55 */
+    --background-primary: 30 41 59; /* #1E293B */
+    --background-secondary: 15 23 42; /* #0F172A */
+    --background-tertiary: 51 65 85; /* #334155 */
+    --background-inverse: 30 41 59; /* #1E293B */
+    --border-primary: 51 65 85; /* #334155 */
+    --border-secondary: 71 85 105; /* #475569 */
+    --text-primary: 241 245 249; /* #F1F5F9 */
+    --text-secondary: 203 213 225; /* #CBD5E1 */
+    --text-tertiary: 248 250 252; /* #F8FAFC */
+    --text-default: 148 163 184; /* #94A3B8 */
+    --text-disabled: 100 116 139; /* #64748B */
+    --icon-primary: 148 163 184; /* #94A3B8 */
+    --state-200: 51 65 85; /* #334155 */
+    --state-300: 71 85 105; /* #475569 */
+    --state-600: 203 213 225; /* #CBD5E1 */
+    color-scheme: dark;
+    color: rgb(var(--text-primary));
+  }
+
   html,
   body {
     @apply bg-background-secondary;
-    color-scheme: dark;
   }
 }
 
