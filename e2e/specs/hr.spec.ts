@@ -159,3 +159,29 @@ test("H5 팀 역할을 팀장으로 바꾸면 팀 페이지에 팀장 배지", a
   await expect(member).toBeVisible();
   await expect(member).not.toContainText("팀장");
 });
+
+test("H8 이미지 없이 만든 팀의 수정 페이지가 에러 없이 열리고 이름이 채워져 있다", { tag: "@p2" }, async ({ page }) => {
+  // 회귀 2건: 기본 이미지(dicebear) 호스트가 next/image 설정에 없어 수정 페이지가 깨짐, 직접 접근하면 이름 칸이 빔
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  const name = `E2E 팀 ${Date.now() % 100000}`;
+
+  await page.goto("/teams/new");
+  await page.getByLabel("팀 이름").fill(name);
+  await page.getByRole("button", { name: "생성하기" }).click();
+  await expect(toast(page, "팀 생성 완료")).toBeVisible();
+  await expect(page).toHaveURL(/\/teams\/\d+$/);
+  const teamUrl = page.url();
+
+  await page.goto(`${teamUrl}/edit`);
+  await expect(page.getByLabel("팀 이름")).toHaveValue(name);
+  await expect(page.getByRole("button", { name: "수정하기" })).toBeVisible();
+  expect(errors).toEqual([]);
+
+  // 정리: 만든 팀을 지운다
+  await page.goto(teamUrl);
+  await page.getByRole("button", { name: "팀 설정" }).click();
+  await page.getByRole("button", { name: "삭제하기" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "삭제하기" }).click();
+  await expect(toast(page, "팀을 성공적으로 삭제")).toBeVisible();
+});

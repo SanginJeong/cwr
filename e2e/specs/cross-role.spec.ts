@@ -2,7 +2,9 @@ import type { Page } from "@playwright/test";
 import {
   expect,
   hasPastWeekdayThisMonth,
+  memberPanel,
   openAs,
+  openTeamPage,
   readSummary,
   requestLeave,
   resetDemoBeforeAll,
@@ -90,4 +92,32 @@ test("X3 인사담당자가 정책을 바꾸면 직원 화면의 판정이 다�
   await expect(employee.getByText(/^근태 정책:/)).toHaveText("근태 정책: 자율 출퇴근 · 출근 기록만 있으면 정상");
   const after = await readSummary(employee);
   expect(after).toEqual({ ...before, 정상: before.정상 + before.지각, 지각: 0 });
+});
+
+test("X4 인사담당자가 팀원을 제외하면 팀장 화면에서 빠진다", { tag: "@p2" }, async ({ browser }) => {
+  const member = (page: Page) => memberPanel(page).getByRole("listitem").filter({ hasText: "강태오" });
+  const hr = await openAs(browser, "hr");
+  await openTeamPage(hr, "개발팀");
+  await hr.getByRole("button", { name: "강태오 메뉴" }).click();
+  await hr.getByRole("button", { name: "팀에서 제외" }).click();
+  await hr.getByRole("dialog").getByRole("button", { name: "제외하기" }).click();
+  await expect(toast(hr, "팀에서 제외했습니다")).toBeVisible();
+  await expect(member(hr)).toHaveCount(0);
+
+  const leader = await openAs(browser, "leader");
+  await openTeamPage(leader, "개발팀");
+  await expect(memberPanel(leader).getByRole("listitem").first()).toBeVisible();
+  await expect(member(leader)).toHaveCount(0);
+
+  // 되돌리기: 구성원 관리에서 개발팀에 다시 배정
+  await hr.goto("/admin/members");
+  await hr.getByLabel("이름·이메일 검색").fill("강태오");
+  await hr.getByRole("button", { name: "강태오 메뉴" }).click();
+  await hr.getByRole("button", { name: "정보 수정" }).click();
+  const dialog = hr.getByRole("dialog");
+  await dialog.getByLabel("배정할 팀").selectOption({ label: "개발팀" });
+  await dialog.getByRole("button", { name: "배정", exact: true }).click();
+  await expect(dialog.getByRole("combobox", { name: "개발팀 역할" })).toBeVisible();
+  await leader.reload();
+  await expect(member(leader)).toBeVisible();
 });

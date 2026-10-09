@@ -7,6 +7,7 @@ import {
   type Page,
   type PlaywrightWorkerArgs,
 } from "@playwright/test";
+import { createClient } from "@supabase/supabase-js";
 
 /** 원격(운영·데모) DB에 대고 돌면 데모 데이터가 망가진다. 로컬 Supabase가 아니면 바로 멈춘다 (ADR-008) */
 export const assertLocalSupabase = () => {
@@ -17,6 +18,46 @@ export const assertLocalSupabase = () => {
         "npx supabase start → npm run e2e:env 로 .env.e2e를 만드세요.",
     );
   }
+};
+
+/**
+ * service role 클라이언트. 로컬 스택에서만 만든다.
+ * 화면에서는 막혀 있는 준비(데모 인사담당자는 퇴사 처리를 못 한다, H6)를 테스트에서 직접 할 때 쓴다
+ */
+const adminSupabase = () => {
+  assertLocalSupabase();
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+};
+
+/**
+ * 계정의 비밀번호와 재직 상태를 바꾼다. 퇴사 처리 BFF(/api/admin/employees/{id})와 같은 방식:
+ * profiles.is_active + Auth 로그인 차단(ban)
+ */
+export const setAccount = async (email: string, { password, active }: { password?: string; active?: boolean }) => {
+  const admin = adminSupabase();
+  const { data: profile, error } = await admin.from("profiles").select("id, auth_id").eq("email", email).single();
+  if (error) throw new Error(`프로필 조회(${email}): ${error.message}`);
+
+  const attributes = {
+    ...(password && { password }),
+    ...(active !== undefined && { ban_duration: active ? "none" : "876000h" }),
+  };
+  const { error: authError } = await admin.auth.admin.updateUserById(profile.auth_id, attributes);
+  if (authError) throw new Error(`Auth 변경(${email}): ${authError.message}`);
+  if (active !== undefined) {
+    const { error: activeError } = await admin.from("profiles").update({ is_active: active }).eq("id", profile.id);
+    if (activeError) throw new Error(`재직 상태 변경(${email}): ${activeError.message}`);
+  }
+};
+
+/** 로그인 폼으로 로그인을 시도한다 */
+export const submitLoginForm = async (page: Page, email: string, password: string) => {
+  await page.goto("/login");
+  await page.getByLabel("이메일").fill(email);
+  await page.getByLabel("비밀번호", { exact: true }).fill(password);
+  await page.getByRole("button", { name: "로그인", exact: true }).click();
 };
 
 export type Role = "hr" | "leader" | "employee";
