@@ -35,11 +35,12 @@ const config: Config = {
           tertiary: "rgb(var(--background-tertiary) / <alpha-value>)", // hover·강조 표면
           inverse: "rgb(var(--background-inverse) / <alpha-value>)",
         },
+        // 상태는 브랜드 색 하나에 투명도로 구분한다 (다른 파랑을 섞지 않는다). inactive는 비활성 회색
         interaction: {
           inactive: "#94A3B8",
-          hover: "#416EC8",
-          pressed: "#3B63B5",
-          focus: "#416EC8",
+          hover: "rgb(81 137 250 / 0.85)",
+          pressed: "rgb(81 137 250 / 0.7)",
+          focus: "#5189FA",
         },
         border: {
           primary: "rgb(var(--border-primary) / <alpha-value>)",
@@ -65,7 +66,7 @@ const config: Config = {
         icon: {
           primary: "rgb(var(--icon-primary) / <alpha-value>)",
           inverse: "#F8FAFC",
-          brand: "#74A1FB",
+          brand: "rgb(var(--icon-brand) / <alpha-value>)", // 밝은 화면은 brand-primary, 어두운 사이드바는 더 밝은 파랑
         },
         state: {
           200: "rgb(var(--state-200) / <alpha-value>)",

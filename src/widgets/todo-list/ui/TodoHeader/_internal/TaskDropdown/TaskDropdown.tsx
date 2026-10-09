@@ -47,7 +47,7 @@ const TaskDropdown = ({ data, isTabletMenuOpen, setIsTabletMenuOpen }: TaskDropd
       className={cn(
         "relative flex items-center justify-between gap-2 min-w-[120px] max-w-[200px] h-[44px] pl-4 pr-3 rounded-xl",
         "border bg-background-primary",
-        "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-interaction-focus",
         !data ? "cursor-not-allowed" : "transition-colors hover:bg-background-tertiary ",
       )}
     >
