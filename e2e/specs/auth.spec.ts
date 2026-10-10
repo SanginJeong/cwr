@@ -65,8 +65,9 @@ test.describe("이메일 로그인", () => {
     // 인사담당자 화면(구성원 관리)에서 퇴사 처리·복직: BFF가 DB 비활성화 + Auth 로그인 차단
     const setActive = async (active: boolean) => {
       await hr.goto("/admin/members");
-      await hr.getByRole("combobox", { name: "재직 상태" }).selectOption("all");
-      await hr.getByLabel("이름·이메일 검색").fill("최도윤");
+      await hr.getByRole("button", { name: "재직 상태" }).click();
+      await hr.getByRole("option", { name: "전체", exact: true }).click();
+      await hr.getByLabel("이름 및 이메일 검색").fill("최도윤");
       await hr.getByRole("button", { name: "최도윤 메뉴" }).click();
       if (active) {
         await hr.getByRole("button", { name: "복직" }).click();

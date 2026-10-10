@@ -24,6 +24,7 @@ import { Dropdown } from "@/shared/ui/dropdown";
 import { Icon } from "@/shared/ui/icon";
 import { Modal } from "@/shared/ui/modal";
 import { PageLayout } from "@/shared/ui/page-layout";
+import FilterSelect from "./_internal/FilterSelect";
 
 const TODAY_CHIP: Record<string, { label: string; className: string }> = {
   ON_TIME: { label: "정상", className: "bg-brand-primary/20 text-icon-brand" },
@@ -36,8 +37,7 @@ const TODAY_CHIP: Record<string, { label: string; className: string }> = {
 /** admin_employees 응답의 한 사람: 프로필 + 근태(엔진 입력) */
 type Employee = EmployeeBase<Omit<AttendanceRange, "today" | "userId" | "hiredOn">>;
 
-const FILTER_STYLE =
-  "h-11 rounded-xl border border-border-primary bg-background-primary px-3 text-md-regular text-text-secondary";
+const SUMMARY_BADGE = "rounded-lg px-3 py-[1px] text-xs-semibold";
 
 /**
  * 구성원 관리 (/admin/members). 인사담당자 전용 (proxy + admin_employees).
@@ -93,15 +93,19 @@ const AdminMembersPage = () => {
           <div className="flex flex-col gap-1.5">
             <h1 className="text-2xl-bold tablet:text-[28px] text-text-primary">구성원 관리</h1>
             {data && (
-              <p className="text-md-regular text-text-default">
-                재직 {activeCount}명 · 퇴사 {employees.length - activeCount}명 · 팀 {teams.length}개
-              </p>
+              <ul aria-label="구성원 요약" className="flex flex-wrap gap-1.5">
+                <li className={cn(SUMMARY_BADGE, "bg-brand-primary text-text-inverse")}>재직 {activeCount}명</li>
+                <li className={cn(SUMMARY_BADGE, "bg-interaction-inactive text-text-inverse")}>
+                  퇴사 {employees.length - activeCount}명
+                </li>
+                <li className={cn(SUMMARY_BADGE, "bg-point-purple text-text-inverse")}>팀 {teams.length}개</li>
+              </ul>
             )}
           </div>
           <button
             type="button"
             onClick={() => setIsRegisterOpen(true)}
-            className="h-11 px-[18px] rounded-xl bg-brand-primary text-lg-semibold text-text-inverse hover:bg-interaction-hover flex items-center gap-1"
+            className="h-9 px-[18px] rounded-xl bg-brand-primary text-lg-semibold text-text-inverse hover:bg-interaction-hover flex items-center gap-1"
           >
             <Icon name="plus" className="size-4 tablet:size-4" />
             직원 추가
@@ -110,7 +114,7 @@ const AdminMembersPage = () => {
 
         <div className="flex flex-wrap gap-2">
           <label htmlFor="member-search" className="sr-only">
-            이름·이메일 검색
+            이름 및 이메일 검색
           </label>
           <input
             id="member-search"
@@ -120,43 +124,35 @@ const AdminMembersPage = () => {
             onChange={(e) => setQuery(e.target.value)}
             className="flex-1 basis-[220px] h-11 rounded-xl border border-border-primary bg-background-primary px-3.5 text-md-regular text-text-primary placeholder:text-text-default"
           />
-          <select
-            aria-label="팀"
-            className={FILTER_STYLE}
+          <FilterSelect
+            label="팀"
             value={teamFilter}
-            onChange={(e) => setTeamFilter(e.target.value)}
-          >
-            <option value="all">팀 전체</option>
-            {teams.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.name}
-              </option>
-            ))}
-            <option value="none">소속 없음</option>
-          </select>
-          <select
-            aria-label="근태 정책"
-            className={FILTER_STYLE}
+            onChange={setTeamFilter}
+            options={[
+              { label: "팀 전체", value: "all" },
+              ...teams.map((t) => ({ label: t.name, value: String(t.id) })),
+              { label: "소속 없음", value: "none" },
+            ]}
+          />
+          <FilterSelect
+            label="근태 정책"
             value={policyFilter}
-            onChange={(e) => setPolicyFilter(e.target.value)}
-          >
-            <option value="all">정책 전체</option>
-            {policies.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
-              </option>
-            ))}
-          </select>
-          <select
-            aria-label="재직 상태"
-            className={FILTER_STYLE}
+            onChange={setPolicyFilter}
+            options={[
+              { label: "정책 전체", value: "all" },
+              ...policies.map((p) => ({ label: p.name, value: String(p.id) })),
+            ]}
+          />
+          <FilterSelect
+            label="재직 상태"
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
-          >
-            <option value="active">재직 중</option>
-            <option value="inactive">퇴사</option>
-            <option value="all">전체</option>
-          </select>
+            onChange={(value) => setStatusFilter(value as typeof statusFilter)}
+            options={[
+              { label: "재직 중", value: "active" },
+              { label: "퇴사", value: "inactive" },
+              { label: "전체", value: "all" },
+            ]}
+          />
         </div>
 
         {isError ? (
