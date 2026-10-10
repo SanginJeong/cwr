@@ -1,15 +1,11 @@
-import {
-  test as base,
-  expect,
-  type APIRequestContext,
-  type Browser,
-  type Locator,
-  type Page,
-  type PlaywrightWorkerArgs,
-} from "@playwright/test";
+import { test as base, expect, type Browser, type Locator, type Page } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
+import { SEED_ACCOUNTS, seedEmail } from "./seed/data";
+import { E2E_PASSWORD, seedTestData } from "./seed/seed";
 
-/** 원격(운영·데모) DB에 대고 돌면 데모 데이터가 망가진다. 로컬 Supabase가 아니면 바로 멈춘다 (ADR-008) */
+export { E2E_PASSWORD };
+
+/** 원격(운영) DB에 대고 돌면 실제 데이터가 망가진다. 로컬 Supabase가 아니면 바로 멈춘다 (ADR-008) */
 export const assertLocalSupabase = () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
   if (!/^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?/.test(url)) {
@@ -22,7 +18,7 @@ export const assertLocalSupabase = () => {
 
 /**
  * service role 클라이언트. 로컬 스택에서만 만든다.
- * 화면에서는 막혀 있는 준비(데모 인사담당자는 퇴사 처리를 못 한다, H6)를 테스트에서 직접 할 때 쓴다
+ * 화면을 거치지 않고 계정 상태를 바로 바꿀 때 쓴다 (예: 퇴사 처리된 계정 준비)
  */
 const adminSupabase = () => {
   assertLocalSupabase();
@@ -62,35 +58,30 @@ export const submitLoginForm = async (page: Page, email: string, password: strin
 
 export type Role = "hr" | "leader" | "employee";
 
-export const ROLES: Record<Role, { name: string; team: string | null }> = {
-  hr: { name: "이서연", team: null },
-  leader: { name: "김하늘", team: "개발팀" },
-  employee: { name: "박지민", team: "개발팀" },
+/** 역할별 시드 계정 (e2e/seed/data.ts). 비밀번호는 모두 E2E_PASSWORD */
+export const ROLES: Record<Role, { name: string; team: string | null; email: string }> = {
+  hr: { name: "이서연", team: null, email: seedEmail(SEED_ACCOUNTS.hr) },
+  leader: { name: "김하늘", team: "개발팀", email: seedEmail(SEED_ACCOUNTS.leader) },
+  employee: { name: "박지민", team: "개발팀", email: seedEmail(SEED_ACCOUNTS.employee) },
 };
 
 export const storageStatePath = (role: Role) => `e2e/.auth/${role}.json`;
 
 /**
- * 데모 로그인해 세션 쿠키를 storageState로 저장한다. 스펙은 이 상태로 시작한다.
+ * 로그인 폼으로 로그인해 세션 쿠키를 storageState로 저장한다. 스펙은 이 상태로 시작한다.
  * 로그아웃은 그 사용자의 모든 세션을 끊으므로(supabase signOut 기본 global) 로그아웃한 뒤에도 다시 부른다
  */
-export const saveLoginState = async (playwright: PlaywrightWorkerArgs["playwright"], baseURL: string, role: Role) => {
-  const context = await playwright.request.newContext({ baseURL });
-  const res = await context.post("/api/demo-login", { data: { role } });
-  if (!res.ok()) throw new Error(`데모 로그인 실패(${role}): ${res.status()} ${await res.text()}`);
+export const saveLoginState = async (browser: Browser, baseURL: string, role: Role) => {
+  const context = await browser.newContext({ baseURL });
+  const page = await context.newPage();
+  await submitLoginForm(page, ROLES[role].email, E2E_PASSWORD);
+  await expect(page).toHaveURL(/\/attendance$/);
   await context.storageState({ path: storageStatePath(role) });
-  await context.dispose();
+  await context.close();
 };
 
-/** 데모 데이터를 오늘 기준으로 되돌린다. 데이터를 바꾸는 스펙은 시작할 때 부른다 */
-export const resetDemo = async (request: APIRequestContext) => {
-  const res = await request.get("/api/cron/reset-demo", {
-    headers: { Authorization: `Bearer ${process.env.CRON_SECRET}` },
-    timeout: 120_000,
-  });
-  expect(res.status(), await res.text()).toBe(200);
-  return res.json();
-};
+/** 테스트 데이터를 오늘 기준으로 다시 만든다 (e2e/seed). 데이터를 바꾸는 스펙은 시작할 때 부른다 */
+export const reseed = () => seedTestData();
 
 /** 오늘(KST)이 주말인지. 주말에는 판정하지 않아 결과가 달라지는 단언을 건너뛴다 */
 export const isWeekendKst = () => {
@@ -110,12 +101,11 @@ export const toast = (page: Page, text: string | RegExp) => page.getByRole("stat
 export const test = base;
 export { expect };
 
-/** 데이터를 바꾸는 describe의 시작에서 데모 데이터를 되돌린다 */
-export const resetDemoBeforeAll = () =>
-  test.beforeAll(async ({ playwright }, testInfo) => {
-    const request = await playwright.request.newContext({ baseURL: testInfo.project.use.baseURL });
-    await resetDemo(request);
-    await request.dispose();
+/** 데이터를 바꾸는 파일의 시작에서 테스트 데이터를 다시 만든다 */
+export const reseedBeforeAll = () =>
+  test.beforeAll(async () => {
+    test.setTimeout(120_000);
+    await reseed();
   });
 
 /** 이번 달(KST)에 오늘 이전 평일이 있는지 */

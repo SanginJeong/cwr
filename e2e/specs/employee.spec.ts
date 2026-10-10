@@ -6,17 +6,17 @@ import {
   kstToday,
   readSummary,
   requestLeave,
-  resetDemoBeforeAll,
+  reseedBeforeAll,
   showMonthOf,
   storageStatePath,
   test,
   toast,
 } from "../support";
 
-// 로드맵 2 §2-2. 출근은 하루 한 번이라 직렬, 시작할 때 데모 리셋 (데모 직원은 오늘 출근 기록이 비어 있다)
+// 로드맵 2 §2-2. 출근은 하루 한 번이라 직렬, 시작할 때 시드 (E2E 직원은 오늘 출근 기록이 비어 있다)
 test.describe.configure({ mode: "serial" });
 test.use({ storageState: storageStatePath("employee") });
-resetDemoBeforeAll();
+reseedBeforeAll();
 
 test("E1 사이드바 카드로 출근", async ({ page }) => {
   await page.goto("/attendance");
@@ -86,7 +86,7 @@ test("E6 이전 달로 가면 요약과 달력이 같은 달을 센다", async (
 });
 
 test("E7 머리말에 정책 이름과 규칙", async ({ page }) => {
-  // 데모 직원(개발팀)은 코어타임 정책. 이름이 유형 이름과 같을 때 한 번만 쓰는 회귀는 X3에서 본다
+  // E2E 직원(개발팀)은 코어타임 정책. 이름이 유형 이름과 같을 때 한 번만 쓰는 회귀는 X3에서 본다
   await page.goto("/attendance");
   const sentence = page.getByText(/^근태 정책:/);
   await expect(sentence).toContainText("코어타임 10–16");
