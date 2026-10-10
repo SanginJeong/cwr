@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SidebarMobile from "./_internal/SidebarMobile/SidebarMobile";
 import SidebarTablet from "./_internal/SidebarTablet/SidebarTablet";
 import { useGetUser } from "@/entities/user";
@@ -9,6 +9,7 @@ import { useReviewLeaveRequests } from "@/entities/attendance";
 import { useLogout } from "@/features/auth/logout";
 import { usePathname, useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/config/routes";
+import { SIDEBAR_OPEN_COOKIE } from "@/shared/config/sidebar";
 import { usePresenceStatusOptions } from "@/features/presence/set-status";
 import { selectMyStatus, usePresenceStore } from "@/entities/presence";
 import type { ManagementMenu } from "./_types/SidebarProps";
@@ -18,22 +19,39 @@ import type { ManagementMenu } from "./_types/SidebarProps";
  * @component
  * @example
  * ```tsx
- * <Sidebar user={user} />
+ * <Sidebar initialOpen={cookie !== "false"} />
  * ```
  */
 
-const Sidebar = () => {
+const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
+
+const saveSidebarOpen = (open: boolean) => {
+  document.cookie = `${SIDEBAR_OPEN_COOKIE}=${open}; path=/; max-age=${ONE_YEAR_SECONDS}; samesite=lax`;
+};
+
+interface SidebarProps {
+  /** 쿠키에 저장된 값. 처음 방문하면 펼친 상태로 시작한다 */
+  initialOpen: boolean;
+}
+
+const Sidebar = ({ initialOpen }: SidebarProps) => {
   // 처음 방문하면 펼친 상태로 시작한다. 접혀 있으면 이름·배지가 보이지 않아 첫인상에서 핵심 기능이 숨는다
-  // (E2E에서 발견: 저장된 값이 없는 새 브라우저). 사용자가 접으면 그 값을 기억한다
-  const [isOpen, setIsOpen] = useState(true);
+  // (E2E에서 발견: 저장된 값이 없는 새 브라우저). 사용자가 접으면 그 값을 쿠키에 기억한다
+  const [isOpen, setIsOpen] = useState(initialOpen);
   // 모바일 서랍은 저장하지 않는다. PC에서 펼쳐 둔 값(sidebarOpen)을 쓰면 페이지마다 서랍이 열린 채 시작했다
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  // 예전에는 localStorage에 저장했다. 남아 있는 값은 한 번만 쿠키로 옮긴다
   useEffect(() => {
-    const initialIsOpen = typeof window !== "undefined" ? localStorage.getItem("sidebarOpen") : null;
-    if (initialIsOpen !== null) {
-      startTransition(() => {
-        setIsOpen(initialIsOpen === "true");
-      });
+    try {
+      const legacy = localStorage.getItem(SIDEBAR_OPEN_COOKIE);
+      if (legacy === null) return;
+      localStorage.removeItem(SIDEBAR_OPEN_COOKIE);
+      if (document.cookie.includes(`${SIDEBAR_OPEN_COOKIE}=`)) return;
+      saveSidebarOpen(legacy === "true");
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- 옮기는 첫 방문 한 번만 바뀐다
+      setIsOpen(legacy === "true");
+    } catch {
+      // 저장소를 막아 둔 브라우저에서는 옮기지 않는다
     }
   }, []);
   const router = useRouter();
@@ -77,9 +95,7 @@ const Sidebar = () => {
   const handleOpenDropdown = () => {
     const newOpenState = !isOpen;
     setIsOpen(newOpenState);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("sidebarOpen", String(newOpenState));
-    }
+    saveSidebarOpen(newOpenState);
   };
 
   const options = [
