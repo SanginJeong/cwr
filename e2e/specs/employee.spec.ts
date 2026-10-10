@@ -18,16 +18,15 @@ test.describe.configure({ mode: "serial" });
 test.use({ storageState: storageStatePath("employee") });
 reseedBeforeAll();
 
-test("E1 사이드바 카드로 출근", async ({ page }) => {
+test("E1 오늘 카드로 출근", async ({ page }) => {
   await page.goto("/attendance");
-  const card = page.getByRole("region", { name: "오늘 출퇴근" });
-  await card.getByRole("button", { name: "출근하기" }).click();
+  const todayPanel = page.getByRole("region", { name: "오늘", exact: true });
+  await todayPanel.getByRole("button", { name: "출근하기" }).click();
 
   await expect(toast(page, "출근했어요")).toBeVisible();
-  await expect(card.getByRole("button", { name: "퇴근하기" })).toBeVisible();
+  await expect(todayPanel.getByRole("button", { name: "퇴근하기" })).toBeVisible();
   await expect(page.getByRole("button", { name: "출근하기" })).toHaveCount(0);
 
-  const todayPanel = page.getByRole("region", { name: "오늘", exact: true });
   await expect(todayPanel.getByText("--:--")).toHaveCount(1); // 퇴근만 비어 있다
   // E8 회귀: 1분 미만이면 "0분째 근무 중" 대신 "방금 출근했어요"
   await expect(todayPanel).toContainText("방금 출근했어요");
@@ -38,7 +37,7 @@ test("E1 사이드바 카드로 출근", async ({ page }) => {
 
 test("E2 퇴근", async ({ page }) => {
   await page.goto("/attendance");
-  const card = page.getByRole("region", { name: "오늘 출퇴근" });
+  const card = page.getByRole("region", { name: "오늘", exact: true });
   await card.getByRole("button", { name: "퇴근하기" }).click();
   await expect(toast(page, "퇴근했어요")).toBeVisible();
   await expect(card.getByText("오늘 근무를 마쳤어요")).toBeVisible();

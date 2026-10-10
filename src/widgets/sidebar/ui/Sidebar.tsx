@@ -23,7 +23,7 @@ import type { ManagementMenu } from "./_types/SidebarProps";
  */
 
 const Sidebar = () => {
-  // 처음 방문하면 펼친 상태로 시작한다. 접혀 있으면 출퇴근 카드·이름·배지가 보이지 않아 첫인상에서 핵심 기능이 숨는다
+  // 처음 방문하면 펼친 상태로 시작한다. 접혀 있으면 이름·배지가 보이지 않아 첫인상에서 핵심 기능이 숨는다
   // (E2E에서 발견: 저장된 값이 없는 새 브라우저). 사용자가 접으면 그 값을 기억한다
   const [isOpen, setIsOpen] = useState(true);
   // 모바일 서랍은 저장하지 않는다. PC에서 펼쳐 둔 값(sidebarOpen)을 쓰면 페이지마다 서랍이 열린 채 시작했다

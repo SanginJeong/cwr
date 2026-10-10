@@ -18,7 +18,7 @@ const MobileMenuItem = ({ team, isOpen }: MobileMenuItemProps) => {
       href={ROUTES.team(team.id)}
       aria-label={`${team.name} 팀으로 이동`}
       className={cn(
-        "w-full min-h-[52px] p-4 flex gap-3 items-center rounded-xl",
+        "w-full min-h-[42px] px-4 py-2 flex gap-3 items-center rounded-xl",
         "text-text-primary bg-background-primary hover:bg-background-tertiary transition-colors",
         isActive && "text-brand-primary bg-blue-50",
       )}
