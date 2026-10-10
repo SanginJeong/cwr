@@ -7,7 +7,8 @@ import ArticleLike from "./_internal/ArticleLike";
 import isValidImageUrl from "./_internal/isValidImageUrl";
 import { ROUTES } from "@/shared/config/routes";
 
-const FeedArticleItem = ({ article }: { article: ArticleListItem }) => {
+// isLcp: 피드 첫 화면의 대표 이미지면 lazy 로딩을 끄고 먼저 받는다 (LCP)
+const FeedArticleItem = ({ article, isLcp = false }: { article: ArticleListItem; isLcp?: boolean }) => {
   const hasImage = !!article.image && isValidImageUrl(article.image);
 
   return (
@@ -29,6 +30,8 @@ const FeedArticleItem = ({ article }: { article: ArticleListItem }) => {
             width={680}
             height={383}
             sizes="(min-width: 940px) 680px, 100vw"
+            loading={isLcp ? "eager" : "lazy"}
+            fetchPriority={isLcp ? "high" : "auto"}
             className="w-full aspect-video rounded-xl border object-cover"
           />
         )}
