@@ -74,7 +74,6 @@ const AttendanceCalendar = ({ month, today, evaluations, records, leaves }: Atte
             {kind === "PENDING" ? "휴가 승인 대기" : CHIP_LABEL[kind]}
           </li>
         ))}
-        <li className="tablet:ml-auto text-text-disabled">주말은 판정하지 않아요</li>
       </ul>
     </section>
   );

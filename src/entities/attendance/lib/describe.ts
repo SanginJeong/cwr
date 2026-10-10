@@ -14,43 +14,17 @@ const POLICY_TYPE_LABEL: Record<Policy["type"], string> = {
   FIXED: "고정 근무",
 };
 
-const addMinutes = (time: string, minutes: number) => {
-  const [h, m] = time.split(":").map(Number);
-  const total = (h * 60 + m + minutes) % (24 * 60);
-  return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
-};
-
-/** 정상으로 판정되는 마지막 출근 시각 "HH:mm". 자율은 없음(null). 엔진의 경계(이하면 정상)와 같다 */
-export const onTimeDeadline = (policy: Policy) =>
-  policy.type === "CORE_TIME"
-    ? policy.coreStart
-    : policy.type === "FIXED"
-      ? addMinutes(policy.workStart, policy.graceMinutes)
-      : null;
-
 /**
- * 정책을 사람이 읽는 문장으로 (내 근태 머리말, 사이드바 카드, H5 정책 화면의 판정 규칙 문장).
- * 엔진의 판정 규칙(policy-engine/index.ts)과 같은 내용이어야 한다.
+ * 정책을 사람이 읽는 문장으로 (내 근태 머리말)
  */
 export const describePolicy = (policy: Policy) => {
   switch (policy.type) {
     case "AUTONOMOUS":
-      return { typeLabel: POLICY_TYPE_LABEL.AUTONOMOUS, hours: null, rule: "출근 기록만 있으면 정상" };
+      return { typeLabel: POLICY_TYPE_LABEL.AUTONOMOUS, hours: null };
     case "CORE_TIME":
-      return {
-        typeLabel: POLICY_TYPE_LABEL.CORE_TIME,
-        hours: `${policy.coreStart}–${policy.coreEnd}`,
-        rule: `${policy.coreStart}까지 출근하면 정상`,
-      };
+      return { typeLabel: POLICY_TYPE_LABEL.CORE_TIME, hours: `${policy.coreStart}–${policy.coreEnd}` };
     case "FIXED":
-      return {
-        typeLabel: POLICY_TYPE_LABEL.FIXED,
-        hours: `${policy.workStart} 출근`,
-        rule:
-          policy.graceMinutes > 0
-            ? `${addMinutes(policy.workStart, policy.graceMinutes)}까지 출근하면 정상 (유예 ${policy.graceMinutes}분)`
-            : `${policy.workStart}까지 출근하면 정상`,
-      };
+      return { typeLabel: POLICY_TYPE_LABEL.FIXED, hours: `${policy.workStart} 출근` };
   }
 };
 

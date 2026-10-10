@@ -89,7 +89,7 @@ test("X3 인사담당자가 정책을 바꾸면 직원 화면의 판정이 다�
 
   await employee.reload();
   // E7 회귀: 정책 이름이 유형 이름과 같으면("자율 출퇴근") 한 번만 쓴다
-  await expect(employee.getByText(/^근태 정책:/)).toHaveText("근태 정책: 자율 출퇴근 · 출근 기록만 있으면 정상");
+  await expect(employee.getByText(/^근태 정책:/)).toHaveText("근태 정책: 자율 출퇴근");
   const after = await readSummary(employee);
   expect(after).toEqual({ ...before, 정상: before.정상 + before.지각, 지각: 0 });
 });

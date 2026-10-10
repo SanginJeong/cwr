@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { describePolicy, toEnginePolicy, type PolicyInfo } from "@/entities/attendance";
+import { type PolicyInfo } from "@/entities/attendance";
 import { useAdminPolicies } from "@/entities/employee";
 import { cn } from "@/shared/lib/cn";
 import { Icon } from "@/shared/ui/icon";
@@ -19,13 +19,8 @@ const AdminPoliciesPage = () => {
   return (
     <PageLayout ariaLabel="근태 정책">
       <div className="w-full max-w-[1180px] flex flex-col gap-6 pb-16">
-        <header className="flex flex-wrap items-end justify-between gap-4">
-          <div className="flex flex-col gap-1.5">
-            <h1 className="text-2xl-bold tablet:text-[28px] text-text-primary">근태 정책</h1>
-            <p className="text-md-regular text-text-default">
-              정책은 데이터로 저장돼요. 바꾸면 지난 기록도 새 정책으로 다시 판정돼요.
-            </p>
-          </div>
+        <header className="flex flex-wrap items-center justify-between gap-4">
+          <h1 className="text-2xl-bold tablet:text-[28px] text-text-primary">근태 정책</h1>
           <button
             type="button"
             onClick={() => setSelectedId(null)}
@@ -69,9 +64,6 @@ const AdminPoliciesPage = () => {
                           )}
                         </span>
                         <span className="shrink-0 text-xs-regular text-text-default">{policy.employeeCount}명</span>
-                      </span>
-                      <span className="text-sm-medium text-text-default">
-                        {describePolicy(toEnginePolicy(policy)).rule}
                       </span>
                     </button>
                   </li>
