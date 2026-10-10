@@ -15,6 +15,8 @@ const PLACEMENT_TRANSFORM: Record<DropdownPlacement, string> = {
   "top-right": "-translate-x-full -translate-y-full",
 };
 
+const MENU_CLASS = "min-w-[120px] bg-background-primary border rounded-xl shadow-md";
+
 interface DropdownProps {
   /** 트리거 버튼의 접근 가능한 이름 (예: "직원1 메뉴"). 화면 읽기와 E2E 셀렉터가 쓴다 */
   label?: string;
@@ -36,6 +38,10 @@ const Dropdown = ({
   placement = "bottom-left",
 }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  // 열려 있는 하위 메뉴의 부모 라벨
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  // 메뉴가 화면 왼쪽에 붙어 있으면 하위 메뉴는 오른쪽으로, 오른쪽에 붙어 있으면 왼쪽으로 연다
+  const submenuSide = placement.endsWith("left") ? "right" : "left";
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
   const triggerRef = useRef<HTMLButtonElement | null>(null);
@@ -50,14 +56,54 @@ const Dropdown = ({
 
     setPosition(pos);
     setIsOpen((prev) => !prev);
+    setOpenSubmenu(null);
+  };
+
+  const close = () => {
+    setIsOpen(false);
+    setOpenSubmenu(null);
   };
 
   const handleOptionClick = (option: DropdownOption) => {
-    option.action();
-    setIsOpen(false);
+    if (option.children) {
+      // 터치에서는 탭할 때 mouseenter가 먼저 와서 이미 열려 있다. 토글하면 바로 닫히므로 열기만 한다
+      setOpenSubmenu(option.label);
+      return;
+    }
+    option.action?.();
+    close();
   };
 
-  useDropdownClose(dropdownRef, () => setIsOpen(false), isOpen);
+  useDropdownClose(dropdownRef, close, isOpen);
+
+  const renderOption = (option: DropdownOption) => (
+    <button
+      className={cn(
+        "w-full px-3 py-2 hover:bg-state-200 transition",
+        `text-${textAlign}`,
+        option.icon && "flex items-center gap-2 text-left",
+        // 화살표는 띄워서 라벨 정렬(가운데 등)이 다른 항목과 같게 한다
+        option.children && "relative px-6",
+      )}
+      onClick={() => handleOptionClick(option)}
+      aria-current={option.selected || undefined}
+      aria-haspopup={option.children ? "menu" : undefined}
+      aria-expanded={option.children ? openSubmenu === option.label : undefined}
+    >
+      {option.icon}
+      <span className={cn("text-md-regular text-text-primary", option.icon && "flex-1")}>{option.label}</span>
+      {option.selected && <Icon name="check" className="size-4 tablet:size-4 text-brand-primary" />}
+      {option.children && (
+        <Icon
+          name={submenuSide === "right" ? "rightArrow" : "leftArrow"}
+          className={cn(
+            "absolute top-1/2 -translate-y-1/2 size-3 tablet:size-3 text-text-default",
+            submenuSide === "right" ? "right-2" : "left-2",
+          )}
+        />
+      )}
+    </button>
+  );
 
   return (
     <>
@@ -81,28 +127,29 @@ const Dropdown = ({
               top: position.top,
               left: position.left,
             }}
-            className={cn(
-              "min-w-[120px] bg-background-primary border rounded-xl shadow-md z-[999]",
-              PLACEMENT_TRANSFORM[placement],
-            )}
+            className={cn(MENU_CLASS, "z-[999]", PLACEMENT_TRANSFORM[placement])}
           >
             {options.map((option) => (
-              <li key={option.label}>
-                <button
-                  className={cn(
-                    "w-full px-3 py-2 hover:bg-state-200 transition",
-                    `text-${textAlign}`,
-                    option.icon && "flex items-center gap-2 text-left",
-                  )}
-                  onClick={() => handleOptionClick(option)}
-                  aria-current={option.selected || undefined}
-                >
-                  {option.icon}
-                  <span className={cn("text-md-regular text-text-primary", option.icon && "flex-1")}>
-                    {option.label}
-                  </span>
-                  {option.selected && <Icon name="check" className="size-4 tablet:size-4 text-brand-primary" />}
-                </button>
+              <li
+                key={option.label}
+                className={cn(option.children && "relative")}
+                onMouseEnter={() => option.children && setOpenSubmenu(option.label)}
+                onMouseLeave={() => option.children && setOpenSubmenu(null)}
+              >
+                {renderOption(option)}
+                {option.children && openSubmenu === option.label && (
+                  <ul
+                    className={cn(
+                      MENU_CLASS,
+                      "absolute top-0 whitespace-nowrap",
+                      submenuSide === "right" ? "left-full" : "right-full",
+                    )}
+                  >
+                    {option.children.map((child) => (
+                      <li key={child.label}>{renderOption(child)}</li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
