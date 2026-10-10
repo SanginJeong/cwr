@@ -108,7 +108,7 @@ const ClockCard = ({ className }: ClockCardProps) => {
                 으로 기록돼요.
               </>
             ) : (
-              "오늘은 판정하지 않는 날이에요."
+              "금일은 휴무입니다."
             )}
           </>
         )}

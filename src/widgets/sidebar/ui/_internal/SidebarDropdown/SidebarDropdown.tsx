@@ -39,7 +39,9 @@ const SidebarDropdown = ({ isOpen, teams }: { isOpen: boolean; teams: TeamSummar
       <button
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          "w-full px-4 h-[42px] flex items-center justify-between cursor-pointer rounded-xl select-none",
+          "h-[42px] flex items-center cursor-pointer rounded-xl select-none",
+          // 접혔을 때는 다른 메뉴(SidebarLink)처럼 42px 정사각형을 가운데에 둔다
+          isOpen ? "w-full px-4 justify-between" : "w-[42px] mx-auto justify-center",
           "hover:bg-background-tertiary transition-colors",
           open && "bg-background-secondary",
         )}
@@ -63,7 +65,7 @@ const SidebarDropdown = ({ isOpen, teams }: { isOpen: boolean; teams: TeamSummar
           >
             <ul className="flex flex-col gap-2 mt-2">
               {teams.map((team) => (
-                <li key={team.id}>
+                <li key={team.id} className="flex justify-center">
                   <DropdownItem title={team.name} id={team.id.toString()} isOpen={isOpen} />
                 </li>
               ))}
