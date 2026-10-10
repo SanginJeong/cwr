@@ -17,6 +17,7 @@ const SidebarMobile = ({
   handleOpenDropdown,
   options,
   myStatus,
+  isUserLoading = false,
 }: SidebarDropdownProps) => {
   return (
     <>
@@ -62,6 +63,8 @@ const SidebarMobile = ({
               }
             />
           </div>
+        ) : isUserLoading ? (
+          <div aria-busy="true" className="size-7 rounded-full bg-background-tertiary animate-pulse" />
         ) : (
           <Link href={ROUTES.login} aria-label="로그인 페이지로 이동" className="text-sm font-medium">
             로그인

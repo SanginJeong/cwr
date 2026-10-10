@@ -19,7 +19,7 @@ import type { ManagementMenu } from "./_types/SidebarProps";
  * @component
  * @example
  * ```tsx
- * <Sidebar initialOpen={cookie !== "false"} />
+ * <Sidebar initialOpen={cookie !== "false"} hasSession={hasSession} />
  * ```
  */
 
@@ -32,9 +32,11 @@ const saveSidebarOpen = (open: boolean) => {
 interface SidebarProps {
   /** 쿠키에 저장된 값. 처음 방문하면 펼친 상태로 시작한다 */
   initialOpen: boolean;
+  /** 로그인 쿠키가 있는지. 내 정보가 스트림으로 오는 동안 "로그인" 대신 자리만 잡아 둔다 */
+  hasSession: boolean;
 }
 
-const Sidebar = ({ initialOpen }: SidebarProps) => {
+const Sidebar = ({ initialOpen, hasSession }: SidebarProps) => {
   // 처음 방문하면 펼친 상태로 시작한다. 접혀 있으면 이름·배지가 보이지 않아 첫인상에서 핵심 기능이 숨는다
   // (E2E에서 발견: 저장된 값이 없는 새 브라우저). 사용자가 접으면 그 값을 쿠키에 기억한다
   const [isOpen, setIsOpen] = useState(initialOpen);
@@ -63,7 +65,8 @@ const Sidebar = ({ initialOpen }: SidebarProps) => {
     setIsMobileOpen(false);
   }
 
-  const { data: user } = useGetUser();
+  const { data: user, isPending: isUserPending } = useGetUser();
+  const isUserLoading = hasSession && isUserPending;
   const isHrAdmin = user?.companyRole === "HR_ADMIN";
   const { data: allTeams } = useGetVisibleTeams({ enabled: isHrAdmin });
   const teams = isHrAdmin
@@ -110,6 +113,7 @@ const Sidebar = ({ initialOpen }: SidebarProps) => {
     <>
       <SidebarTablet
         user={user || null}
+        isUserLoading={isUserLoading}
         teams={teams}
         isHrAdmin={isHrAdmin}
         managementMenu={managementMenu}
@@ -120,6 +124,7 @@ const Sidebar = ({ initialOpen }: SidebarProps) => {
       />
       <SidebarMobile
         user={user || null}
+        isUserLoading={isUserLoading}
         teams={teams}
         isHrAdmin={isHrAdmin}
         managementMenu={managementMenu}
