@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { getServerSupabase } from "@/shared/api/supabase/server";
 import { mapMe } from "@/shared/api/supabase/mappers/user";
@@ -14,12 +15,12 @@ export const hasServerSession = async (): Promise<boolean> => {
   return cookieStore.getAll().some(({ name }) => /^sb-.+-auth-token(\.0)?$/.test(name));
 };
 
-/** 내 정보. 비로그인이거나 실패하면 null */
-export const getServerMe = async (): Promise<UserResponse | null> => {
+/** 내 정보. 비로그인이거나 실패하면 null. 루트 레이아웃과 하위 레이아웃이 함께 불러도 요청당 한 번만 조회한다 */
+export const getServerMe = cache(async (): Promise<UserResponse | null> => {
   const supabase = await getServerSupabase();
   const { data, error } = await supabase.rpc("get_me");
   return error || !data ? null : mapMe(rpcJson("get_me", data));
-};
+});
 
 /** 내가 볼 수 있는 팀인지. 비로그인이면 null (판단 보류) */
 export const canAccessTeamOnServer = async (teamId: string): Promise<boolean | null> => {

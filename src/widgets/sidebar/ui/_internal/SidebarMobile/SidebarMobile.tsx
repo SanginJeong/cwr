@@ -7,7 +7,6 @@ import { SidebarDropdownProps } from "../../_types/SidebarProps";
 import LeftMobile from "../LeftMobile/LeftMobile";
 import { ROUTES } from "@/shared/config/routes";
 import { StatusDot } from "@/shared/ui/profile";
-import { ClockStatusPill } from "@/features/attendance/clock";
 
 const SidebarMobile = ({
   user,
@@ -45,7 +44,6 @@ const SidebarMobile = ({
         </div>
         {user ? (
           <div className="flex items-center gap-3">
-            <ClockStatusPill />
             <Dropdown
               label="프로필 메뉴"
               options={options}

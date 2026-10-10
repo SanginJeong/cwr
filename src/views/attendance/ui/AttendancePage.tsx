@@ -107,7 +107,7 @@ const AttendancePage = () => {
                 )}
               </div>
               <aside className="w-full pc:w-[340px] shrink-0 flex flex-col gap-4">
-                <ClockCard variant="panel" />
+                <ClockCard />
                 <LeaveSection
                   leaves={sortedLeaves}
                   isLoading={isLeavesLoading}

@@ -11,7 +11,7 @@ import { StatusDot } from "@/shared/ui/profile";
 import { toastKit } from "@/shared/lib/toastKit";
 
 /**
- * 내 접속 상태를 고르는 드롭다운 항목.
+ * 내 접속 상태를 고르는 드롭다운 항목. "내 상태" 하나로 묶고, 상태들은 옆으로 열리는 하위 메뉴에 둔다.
  * 고른 상태는 profiles.presence_status에 저장해서 다른 기기에서도 이어진다.
  */
 const usePresenceStatusOptions = (): DropdownOption[] => {
@@ -41,12 +41,17 @@ const usePresenceStatusOptions = (): DropdownOption[] => {
     queryClient.setQueryData<UserResponse>(["user"], (old) => (old ? { ...old, presenceStatus: status } : old));
   };
 
-  return PRESENCE_STATUSES.map((status) => ({
-    label: PRESENCE_CHOICE_LABEL[status],
-    icon: <StatusDot status={status} size="sm" />,
-    selected: status === chosen,
-    action: () => void changeStatus(status),
-  }));
+  return [
+    {
+      label: "내 상태",
+      children: PRESENCE_STATUSES.map((status) => ({
+        label: PRESENCE_CHOICE_LABEL[status],
+        icon: <StatusDot status={status} size="sm" />,
+        selected: status === chosen,
+        action: () => void changeStatus(status),
+      })),
+    },
+  ];
 };
 
 export default usePresenceStatusOptions;

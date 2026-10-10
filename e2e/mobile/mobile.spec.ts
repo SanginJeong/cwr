@@ -14,21 +14,19 @@ const expectNoHorizontalScroll = async (page: Page) => {
 test.describe("직원", () => {
   test.use({ storageState: storageStatePath("employee") });
 
-  test("M1 첫 화면은 서랍이 닫혀 있고 헤더에 출퇴근 상태 (회귀: 서랍이 열린 채 시작)", async ({ page }) => {
+  test("M1 첫 화면은 서랍이 닫혀 있다 (회귀: 서랍이 열린 채 시작)", async ({ page }) => {
     await page.goto("/attendance");
-    await expect(page.getByRole("link", { name: /^내 근태: 출근 전/ })).toBeVisible();
     await expect(page.getByRole("button", { name: "메뉴 열기" })).toBeVisible();
     await expect(page.getByRole("dialog")).toHaveCount(0);
   });
 
-  test("M2 서랍 안 카드로 출근, 다른 페이지로 가면 서랍이 닫힌다", async ({ page }) => {
+  test("M2 오늘 카드로 출근, 다른 페이지로 가면 서랍이 닫힌다", async ({ page }) => {
     await page.goto("/attendance");
+    await page.getByRole("region", { name: "오늘", exact: true }).getByRole("button", { name: "출근하기" }).click();
+    await expect(toast(page, "출근했어요")).toBeVisible();
+
     await page.getByRole("button", { name: "메뉴 열기" }).click();
     const drawer = page.getByRole("dialog");
-    await drawer.getByRole("region", { name: "오늘 출퇴근" }).getByRole("button", { name: "출근하기" }).click();
-    await expect(toast(page, "출근했어요")).toBeVisible();
-    await expect(page.getByRole("link", { name: /^내 근태: 근무 중/ })).toBeVisible();
-
     await drawer.getByRole("link", { name: "자유게시판" }).click();
     await expect(page).toHaveURL(/\/board$/);
     await expect(page.getByRole("dialog")).toHaveCount(0);

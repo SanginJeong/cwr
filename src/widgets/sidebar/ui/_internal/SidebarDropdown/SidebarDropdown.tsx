@@ -15,8 +15,8 @@ const DropdownItem = ({ title, id, isOpen }: { title: string; id: string; isOpen
     <Link
       href={ROUTES.team(id)}
       className={cn(
-        "h-[52px] rounded-xl p-4 flex items-center gap-3 bg-primary",
-        isOpen ? "w-full" : "w-[52px]",
+        "h-[42px] rounded-xl flex items-center gap-3 bg-primary",
+        isOpen ? "w-full px-4" : "w-[42px] justify-center",
         isActive
           ? "bg-blue-50 text-brand-primary"
           : "bg-transparent text-text-primary hover:bg-background-tertiary transition-colors",
@@ -35,11 +35,11 @@ const SidebarDropdown = ({ isOpen, teams }: { isOpen: boolean; teams: TeamSummar
   const [open, setOpen] = useState(false);
 
   return (
-    <section className="group w-full rounded-xl bg-background-primary">
+    <section className="group w-full rounded-xl">
       <button
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          "w-full px-4 h-[52px] flex items-center justify-between cursor-pointer rounded-xl select-none",
+          "w-full px-4 h-[42px] flex items-center justify-between cursor-pointer rounded-xl select-none",
           "hover:bg-background-tertiary transition-colors",
           open && "bg-background-secondary",
         )}

@@ -7,7 +7,6 @@ import useEmailStore from "../../model/useEmailStore";
 import { OverlayLoading } from "@/shared/ui/overlay-loading";
 import { ValidationRules } from "@/shared/api/types/AuthType";
 import usePostLogin from "../../api/usePostLogin";
-import ResetPassword from "../ResetPassword/ResetPassword";
 import { Input } from "@/shared/ui/input";
 import { InputPassword } from "@/shared/ui/input";
 import { BaseButton } from "@/shared/ui/button";
@@ -16,13 +15,10 @@ import { validateEmail, validatePasswordForLogin } from "@/shared/lib/Validation
 
 const loginRules: ValidationRules = {
   email: (value) => validateEmail(value),
-  // 형식 규칙은 비밀번호를 정할 때만 본다. 로그인은 빈 값만 막는다 (임시 비밀번호 등)
   password: (value) => validatePasswordForLogin(value),
 };
 
 const LoginForm = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const isInitialized = useRef(false);
 
   const { mutateAsync: postLogin } = usePostLogin();
@@ -88,19 +84,14 @@ const LoginForm = () => {
             <Icon name={isRemembered ? "checkboxActive" : "checkboxDefault"} className="size-5 tablet:size-5" />
             <span>이메일 기억하기</span>
           </button>
-          <button type="button" className="text-brand-primary" onClick={() => setIsOpen(true)}>
-            비밀번호를 잊으셨나요?
-          </button>
         </div>
         <div className="text-lg-semibold flex-col-center gap-6 mt-10">
           <BaseButton type="submit" variant="solid" size="large" disabled={!meta.isValid || meta.isLoading}>
             {meta.isLoading ? "로그인 중..." : "로그인"}
           </BaseButton>
-          {/* 공개 가입은 없다. 계정은 인사담당자가 만든다 (ADR-006) */}
           <p className="text-md-medium text-text-default">계정이 없다면 인사담당자에게 문의해주세요.</p>
         </div>
       </form>
-      <ResetPassword isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
   );
 };
