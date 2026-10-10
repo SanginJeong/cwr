@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { onTimeDeadline, toEnginePolicy, type Policy, type PolicyInfo, type PolicyType } from "@/entities/attendance";
+import { toEnginePolicy, type Policy, type PolicyInfo, type PolicyType } from "@/entities/attendance";
 import type { AdminPolicy } from "@/entities/employee";
 import { useDeletePolicy, useSavePolicy, useSetDefaultPolicy } from "@/features/policy/manage-policy";
 import { cn } from "@/shared/lib/cn";
@@ -45,7 +45,7 @@ const buildPolicy = (form: {
 };
 
 /**
- * 정책 만들기·수정. 유형별 입력과 판정 규칙 문장을 보여준다.
+ * 정책 만들기·수정. 유형별 입력을 보여준다.
  * "저장하면 이렇게 바뀌어요" 미리보기는 범위 밖 (roadmap §0, 시뮬레이터)
  */
 const PolicyEditor = ({ policy, onSaved, onDeleted }: PolicyEditorProps) => {
@@ -64,7 +64,6 @@ const PolicyEditor = ({ policy, onSaved, onDeleted }: PolicyEditorProps) => {
   const { mutate: makeDefault, isPending: isSettingDefault } = useSetDefaultPolicy();
 
   const built = buildPolicy(form);
-  const deadline = "policy" in built ? onTimeDeadline(built.policy) : null;
   const canDelete = policy && !policy.isDefault && policy.assignedCount === 0;
   const set = (key: keyof typeof form) => (value: string) => setForm((f) => ({ ...f, [key]: value }));
 
@@ -173,42 +172,7 @@ const PolicyEditor = ({ policy, onSaved, onDeleted }: PolicyEditorProps) => {
         </div>
       )}
 
-      <div className="rounded-2xl bg-background-secondary px-5 py-4 flex flex-col gap-2.5">
-        <span className="text-md-semibold text-text-primary">판정 규칙</span>
-        {"error" in built ? (
-          <p className="text-md-regular text-status-danger">{built.error}</p>
-        ) : (
-          <ul className="list-disc pl-[18px] flex flex-col gap-1.5 text-md-regular text-text-secondary">
-            <li>
-              {deadline === null ? (
-                <>
-                  출근 기록이 있으면 시각과 상관없이 → <strong className="text-icon-brand">정상</strong>
-                </>
-              ) : (
-                <>
-                  {deadline}까지 출근 → <strong className="text-icon-brand">정상</strong>, {deadline} 이후 출근 →{" "}
-                  <strong className="text-point-orange">지각</strong>
-                  {"policy" in built && built.policy.type === "FIXED" && built.policy.graceMinutes > 0 && (
-                    <>
-                      {" "}
-                      (출근 {built.policy.workStart} + 유예 {built.policy.graceMinutes}분)
-                    </>
-                  )}
-                </>
-              )}
-            </li>
-            <li>
-              평일에 기록이 없으면 → <strong className="text-status-danger">결근</strong> (오늘과 미래는 판정하지 않음)
-            </li>
-            <li>
-              승인된 휴가 → <strong className="text-point-purple">휴가</strong>, 주말과 입사 전은 판정하지 않음
-            </li>
-          </ul>
-        )}
-        <p className="text-xs-regular text-text-default">
-          판정은 저장하지 않아요. 정책을 바꾸면 지난 기록도 새 정책으로 다시 판정돼요.
-        </p>
-      </div>
+      {"error" in built && <p className="text-md-regular text-status-danger">{built.error}</p>}
 
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex gap-2">

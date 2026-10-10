@@ -10,7 +10,6 @@ export {
   formatDuration,
   getClockState,
   nowKstNaiveIso,
-  onTimeDeadline,
   workedMinutes,
 } from "./lib/describe";
 export type { ClockState } from "./lib/describe";

@@ -45,8 +45,8 @@ const MemberList = ({ groupId, members, attendanceByUser, onClickDelete }: Membe
         </h2>
         <span className="text-xs-regular text-text-default">접속 중 {onlineCount}</span>
       </header>
-      {/* 멤버가 많아도 진행 상황 카드 높이를 크게 넘기지 않게 스크롤한다 */}
-      <ul className="flex flex-col gap-3 max-h-[200px] overflow-y-auto pr-1">
+      {/* PC에서는 높이를 고정해 멤버 수와 상관없이 진행 상황 카드 높이가 같게 한다. 넘치면 스크롤 */}
+      <ul className="flex flex-col gap-3 max-h-[200px] pc:h-[200px] overflow-y-auto pr-1">
         {sorted.map((member) => (
           <MemberRow
             key={member.userId}

@@ -24,7 +24,7 @@ const policyCard = (page: Page, name: string) =>
 /** 구성원 관리에서 그 사람의 "정보 수정" 모달을 연다 */
 const openEditModal = async (page: Page, name: string) => {
   await page.goto("/admin/members");
-  await page.getByLabel("이름·이메일 검색").fill(name);
+  await page.getByLabel("이름 및 이메일 검색").fill(name);
   await page.getByRole("button", { name: `${name} 메뉴` }).click();
   await page.getByRole("button", { name: "정보 수정" }).click();
   return page.getByRole("dialog");
@@ -41,7 +41,7 @@ test("H1 구성원 목록: 재직 수, 시드 계정, 검색과 필터", async (
     await expect(rows.filter({ hasText: email })).toHaveCount(1);
   }
 
-  const search = page.getByLabel("이름·이메일 검색");
+  const search = page.getByLabel("이름 및 이메일 검색");
   await search.fill("doyun");
   await expect(rows).toHaveCount(1);
   await expect(rows).toContainText("최도윤");
@@ -49,12 +49,15 @@ test("H1 구성원 목록: 재직 수, 시드 계정, 검색과 필터", async (
   await expect(rows).toContainText("doyun.choi@coworkers.test");
   await search.fill("");
 
-  await page.getByRole("combobox", { name: "팀", exact: true }).selectOption({ label: "디자인팀" });
+  await page.getByRole("button", { name: "팀", exact: true }).click();
+  await page.getByRole("option", { name: "디자인팀" }).click();
   await expect(rows).toHaveCount(6);
   await expect(rows.filter({ hasNotText: "디자인팀" })).toHaveCount(0);
-  await page.getByRole("combobox", { name: "팀", exact: true }).selectOption("all");
+  await page.getByRole("button", { name: "팀", exact: true }).click();
+  await page.getByRole("option", { name: "팀 전체" }).click();
 
-  await page.getByRole("combobox", { name: "근태 정책" }).selectOption({ label: "코어타임 10–16" });
+  await page.getByRole("button", { name: "근태 정책" }).click();
+  await page.getByRole("option", { name: "코어타임 10–16" }).click();
   await expect(rows.first()).toBeVisible();
   await expect(rows.filter({ hasNotText: "코어타임 10–16" })).toHaveCount(0);
 });
@@ -88,7 +91,7 @@ test("H2 정책을 바꾸면 같은 기록이 다시 판정된다", async ({ pag
   await expect(toast(page, "정책을 저장했어요")).toBeVisible();
 
   await page.goto("/admin/members");
-  await page.getByLabel("이름·이메일 검색").fill("박지민");
+  await page.getByLabel("이름 및 이메일 검색").fill("박지민");
   const row = page.getByRole("row").filter({ hasText: "employee@coworkers.test" });
   await expect(row).toBeVisible();
 

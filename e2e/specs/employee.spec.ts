@@ -84,10 +84,11 @@ test("E6 이전 달로 가면 요약과 달력이 같은 달을 센다", async (
   }
 });
 
-test("E7 머리말에 정책 이름과 규칙", async ({ page }) => {
+test("E7 머리말에 정책 이름", async ({ page }) => {
   // E2E 직원(개발팀)은 코어타임 정책. 이름이 유형 이름과 같을 때 한 번만 쓰는 회귀는 X3에서 본다
   await page.goto("/attendance");
   const sentence = page.getByText(/^근태 정책:/);
   await expect(sentence).toContainText("코어타임 10–16");
-  await expect(sentence).toContainText("10:00까지 출근하면 정상");
+  // 판정 규칙 문장은 보여주지 않는다
+  await expect(sentence).not.toContainText("출근하면 정상");
 });

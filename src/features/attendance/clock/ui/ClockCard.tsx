@@ -2,7 +2,6 @@
 
 import {
   STATUS_LABEL,
-  describePolicy,
   evaluateToday,
   formatClockTime,
   formatDuration,
@@ -49,7 +48,6 @@ const ClockCard = ({ className }: ClockCardProps) => {
   const policy = toEnginePolicy(data.policy);
   const status = evaluateToday(record, policy, data.today);
   const minutes = record ? workedMinutes(record.clockInAt!, record.clockOutAt, nowKstNaiveIso(now)) : 0;
-  const { rule } = describePolicy(policy);
 
   const actionButton =
     state === "BEFORE" ? (
@@ -90,7 +88,7 @@ const ClockCard = ({ className }: ClockCardProps) => {
       </dl>
       <p className="text-md-regular text-text-secondary">
         {state === "BEFORE" ? (
-          <>아직 출근 전이에요. {rule}이에요.</>
+          "아직 출근 전이에요."
         ) : (
           <>
             {state === "DONE"
@@ -108,7 +106,7 @@ const ClockCard = ({ className }: ClockCardProps) => {
                 으로 기록돼요.
               </>
             ) : (
-              "오늘은 판정하지 않는 날이에요."
+              "금일은 휴무입니다."
             )}
           </>
         )}

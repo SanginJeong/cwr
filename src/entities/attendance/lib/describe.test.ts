@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
   describePolicy,
-  onTimeDeadline,
   evaluateToday,
   formatClockTime,
   formatDuration,
@@ -12,33 +11,15 @@ import {
 
 describe("describePolicy", () => {
   it("유형별 문장", () => {
-    expect(describePolicy({ type: "AUTONOMOUS" })).toEqual({
-      typeLabel: "자율 출퇴근",
-      hours: null,
-      rule: "출근 기록만 있으면 정상",
-    });
+    expect(describePolicy({ type: "AUTONOMOUS" })).toEqual({ typeLabel: "자율 출퇴근", hours: null });
     expect(describePolicy({ type: "CORE_TIME", coreStart: "10:00", coreEnd: "16:00" })).toEqual({
       typeLabel: "코어타임",
       hours: "10:00–16:00",
-      rule: "10:00까지 출근하면 정상",
     });
-  });
-  it("고정 근무는 유예를 더한 시각으로 (엔진과 같은 경계)", () => {
-    expect(describePolicy({ type: "FIXED", workStart: "09:00", graceMinutes: 10 }).rule).toBe(
-      "09:10까지 출근하면 정상 (유예 10분)",
-    );
-    expect(describePolicy({ type: "FIXED", workStart: "09:50", graceMinutes: 15 }).rule).toBe(
-      "10:05까지 출근하면 정상 (유예 15분)",
-    );
-    expect(describePolicy({ type: "FIXED", workStart: "09:00", graceMinutes: 0 }).rule).toBe("09:00까지 출근하면 정상");
-  });
-});
-
-describe("onTimeDeadline", () => {
-  it("정상 마감 시각 (코어 시작, 고정은 유예 포함, 자율은 없음)", () => {
-    expect(onTimeDeadline({ type: "CORE_TIME", coreStart: "10:00", coreEnd: "16:00" })).toBe("10:00");
-    expect(onTimeDeadline({ type: "FIXED", workStart: "09:50", graceMinutes: 15 })).toBe("10:05");
-    expect(onTimeDeadline({ type: "AUTONOMOUS" })).toBeNull();
+    expect(describePolicy({ type: "FIXED", workStart: "09:00", graceMinutes: 10 })).toEqual({
+      typeLabel: "고정 근무",
+      hours: "09:00 출근",
+    });
   });
 });
 

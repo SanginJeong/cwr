@@ -2,7 +2,6 @@ import { PageLayout } from "@/shared/ui/page-layout";
 import { MemberPanel } from "@/widgets/team-member";
 import { ProgressWidget } from "@/widgets/team-progress";
 import { TaskSection } from "@/widgets/task-list-board";
-import { TeamChatWidget } from "@/widgets/team-chat";
 
 const TeamDetailPage = async () => {
   return (
@@ -19,7 +18,6 @@ const TeamDetailPage = async () => {
         <hr className="hidden pc:block border border-border-primary mt-8" />
         <TaskSection />
       </div>
-      <TeamChatWidget />
     </PageLayout>
   );
 };

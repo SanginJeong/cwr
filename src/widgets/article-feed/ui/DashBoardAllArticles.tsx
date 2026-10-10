@@ -30,6 +30,9 @@ const DashBoardAllArticles = () => {
     pageSize: 6,
   });
 
+  // 첫 페이지에서 이미지가 있는 첫 게시글이 LCP 후보다
+  const lcpArticleId = articles?.pages[0]?.list.find((article) => article.image)?.id;
+
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -62,16 +65,17 @@ const DashBoardAllArticles = () => {
 
       <ul className="mt-6 -mx-4 tablet:-mx-[26px] pc:mx-0 flex flex-col divide-y divide-border-primary border-y border-border-primary">
         <AnimatePresence>
-          {articles?.pages.map((page) =>
+          {articles?.pages.map((page, pageIndex) =>
             page.list.map((article) => (
               <motion.li
                 key={article.id}
-                initial={{ opacity: 0, x: 0, y: 20 }}
+                // 첫 페이지는 바로 보이게 둔다. opacity 0인 요소는 LCP 후보가 되지 않아 측정이 애니메이션 끝까지 밀린다
+                initial={pageIndex === 0 ? false : { opacity: 0, x: 0, y: 20 }}
                 whileInView={{ opacity: 1, x: 0, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
                 viewport={{ once: true, amount: 0.5 }}
               >
-                <FeedArticleItem article={article} />
+                <FeedArticleItem article={article} isLcp={article.id === lcpArticleId} />
               </motion.li>
             )),
           )}

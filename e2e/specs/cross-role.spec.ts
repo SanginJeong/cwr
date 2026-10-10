@@ -79,7 +79,7 @@ test("X3 인사담당자가 정책을 바꾸면 직원 화면의 판정이 다�
   // 코어타임 → 자율 출퇴근(기본 정책). 자율은 출근 기록만 있으면 정상이라 지각이 모두 정상이 된다
   const hr = await openAs(browser, "hr");
   await hr.goto("/admin/members");
-  await hr.getByLabel("이름·이메일 검색").fill("박지민");
+  await hr.getByLabel("이름 및 이메일 검색").fill("박지민");
   await hr.getByRole("button", { name: "박지민 메뉴" }).click();
   await hr.getByRole("button", { name: "정보 수정" }).click();
   const dialog = hr.getByRole("dialog");
@@ -89,7 +89,7 @@ test("X3 인사담당자가 정책을 바꾸면 직원 화면의 판정이 다�
 
   await employee.reload();
   // E7 회귀: 정책 이름이 유형 이름과 같으면("자율 출퇴근") 한 번만 쓴다
-  await expect(employee.getByText(/^근태 정책:/)).toHaveText("근태 정책: 자율 출퇴근 · 출근 기록만 있으면 정상");
+  await expect(employee.getByText(/^근태 정책:/)).toHaveText("근태 정책: 자율 출퇴근");
   const after = await readSummary(employee);
   expect(after).toEqual({ ...before, 정상: before.정상 + before.지각, 지각: 0 });
 });
@@ -111,7 +111,7 @@ test("X4 인사담당자가 팀원을 제외하면 팀장 화면에서 빠진다
 
   // 되돌리기: 구성원 관리에서 개발팀에 다시 배정
   await hr.goto("/admin/members");
-  await hr.getByLabel("이름·이메일 검색").fill("강태오");
+  await hr.getByLabel("이름 및 이메일 검색").fill("강태오");
   await hr.getByRole("button", { name: "강태오 메뉴" }).click();
   await hr.getByRole("button", { name: "정보 수정" }).click();
   const dialog = hr.getByRole("dialog");

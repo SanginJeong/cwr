@@ -46,7 +46,7 @@ const TeamTodayCard = ({ today, members, isLoading }: TeamTodayCardProps) => {
         <div aria-busy="true" className="h-[60px] rounded-xl bg-background-secondary animate-pulse" />
       ) : isOffDay ? (
         <p className="rounded-xl bg-background-secondary py-4 text-center text-sm-medium text-text-default">
-          오늘은 판정하지 않는 날이에요 (주말)
+          금일은 휴무입니다
         </p>
       ) : (
         <dl className="grid grid-cols-4 gap-2">
