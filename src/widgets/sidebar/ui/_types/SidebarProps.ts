@@ -23,8 +23,6 @@ export interface SidebarProps {
 
 export interface SidebarDropdownProps extends SidebarProps {
   options: DropdownOption[];
-  /** 로그인은 했는데 내 정보가 아직 오지 않았다. "로그인" 링크 대신 빈 자리를 그린다 */
-  isUserLoading?: boolean;
   /** 내 접속 상태. 기존 API 모드에서는 없음 (점을 그리지 않는다) */
   myStatus?: PresenceStatus;
 }

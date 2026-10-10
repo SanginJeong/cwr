@@ -20,7 +20,6 @@ const SidebarTablet = ({
   handleOpenDropdown,
   options,
   myStatus,
-  isUserLoading = false,
 }: SidebarDropdownProps) => {
   return (
     <motion.div
@@ -110,11 +109,6 @@ const SidebarTablet = ({
                   </div>
                 }
               />
-            ) : isUserLoading ? (
-              <div aria-busy="true" className="flex items-center gap-3">
-                <div className="size-10 shrink-0 rounded-[12px] bg-background-tertiary animate-pulse" />
-                {isOpen && <div className="h-5 w-24 rounded bg-background-tertiary animate-pulse" />}
-              </div>
             ) : (
               <div className="flex items-center gap-3">
                 {isOpen && <Profile src="" alt="" size="lg" />}
