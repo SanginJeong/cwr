@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       update_snapshots:
-        description: "V2 스크린샷 기준 이미지를 새로 만든다 (아티팩트 e2e-snapshots를 받아 커밋)"
+        description: "스크린샷 기준 이미지를 4개 브라우저 모두 새로 만든다 (아티팩트 e2e-snapshots를 받아 커밋)"
         type: boolean
         default: false
 
@@ -41,7 +41,8 @@ jobs:
   e2e:
     name: E2E (Playwright)
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # nightly는 스크린샷을 4개 브라우저에서 찍어 더 오래 걸린다
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -60,7 +61,10 @@ jobs:
           SUPABASE_BIN: supabase
 
       - run: npx playwright install --with-deps chromium
-      # PR·push는 P0·P1만, nightly·수동 실행은 P2(@p2: 모바일 일부, 접근성, 스크린샷)까지
+      # 크로스 브라우징 스크린샷(e2e/visual, @p2)은 nightly·수동 실행에서만 돈다. PR·push에서는 설치하지 않는다
+      - if: ${{ github.event_name != 'pull_request' && github.event_name != 'push' }}
+        run: npx playwright install --with-deps webkit firefox
+      # PR·push는 P0·P1만, nightly·수동 실행은 P2(@p2: 모바일 일부, 접근성, 크로스 브라우징 스크린샷)까지
       - run: npx playwright test ${{ env.GREP }} ${{ inputs.update_snapshots && '--update-snapshots' || '' }}
         env:
           CI: true
