@@ -10,6 +10,16 @@ if (existsSync(".env.e2e")) process.loadEnvFile(".env.e2e");
 const PORT = 3100;
 const isCI = !!process.env.CI;
 
+const DESKTOP_VIEWPORT = { width: 1440, height: 900 };
+
+/** 스크린샷을 비교할 브라우저. 데스크톱 3종 + iPhone 13 WebKit(보이는 영역 390×664. 주소창을 빼서 100vh 문제가 드러난다) */
+const VISUAL_BROWSERS = [
+  { name: "chromium", device: { ...devices["Desktop Chrome"], viewport: DESKTOP_VIEWPORT } },
+  { name: "webkit", device: { ...devices["Desktop Safari"], viewport: DESKTOP_VIEWPORT } },
+  { name: "firefox", device: { ...devices["Desktop Firefox"], viewport: DESKTOP_VIEWPORT } },
+  { name: "mobile-webkit", device: devices["iPhone 13"] },
+];
+
 export default defineConfig({
   testDir: "./e2e",
   // 데모 계정 3개를 모든 스펙이 같이 쓰고 데이터를 바꾸므로 직렬로 돈다 (ADR-008 §5)
@@ -34,7 +44,7 @@ export default defineConfig({
       name: "desktop",
       testMatch: /specs\/.*\.spec\.ts/,
       dependencies: ["setup"],
-      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } },
+      use: { ...devices["Desktop Chrome"], viewport: DESKTOP_VIEWPORT },
     },
     {
       name: "mobile",
@@ -42,6 +52,14 @@ export default defineConfig({
       dependencies: ["setup"],
       use: { ...devices["Desktop Chrome"], viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true },
     },
+    // 크로스 브라우징 스크린샷 (docs/cross-browser-analysis.md). 기능 스펙은 Chromium에서만 돌고,
+    // e2e/visual만 4개 브라우저에서 돈다. 기준 이미지는 브라우저별로 따로 둔다 ({이름}-{프로젝트}-linux.png)
+    ...VISUAL_BROWSERS.map(({ name, device }) => ({
+      name: `visual-${name}`,
+      testMatch: /visual\/.*\.spec\.ts/,
+      dependencies: ["setup"],
+      use: { ...device },
+    })),
   ],
   webServer: {
     // CI는 빌드해서 띄우고, 로컬은 개발 서버로 (이미 3100에 떠 있으면 재사용)
