@@ -55,6 +55,7 @@ DB: 사실(출근·퇴근 시각, 휴가 결정) + 규칙(정책)
 - 폴더 구조: Feature-Sliced Design ([ADR-001](docs/decisions/ADR-001-fsd-folder-structure.md))
 - 테스트: 3층 (아래 [테스트](#테스트))
 - 배포: Vercel (서울 리전)
+- 에러 모니터링: **Sentry** (아래 [에러 모니터링](#에러-모니터링))
 
 ## 로컬에서 실행
 
@@ -68,6 +69,7 @@ npm run dev
 | ----------------------------------------------------------- | ------------------------------- |
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 프로젝트               |
 | `SUPABASE_SERVICE_ROLE_KEY`                                 | 서버 전용. 직원 등록, 퇴사 처리 |
+| `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_*`                        | 선택. 비우면 Sentry가 꺼진다    |
 
 DB 준비(마이그레이션, Auth 설정, 첫 인사담당자)는 [supabase/README.md](supabase/README.md)에 있습니다.
 
@@ -90,6 +92,14 @@ npm run test:db   # PGlite로 마이그레이션 + DB 테스트
 npm run e2e:db && npm run e2e:env   # Supabase 로컬 스택(Docker)과 .env.e2e
 npm run test:e2e  # Playwright (원격 DB면 시작하지 않고 멈춘다)
 ```
+
+## 에러 모니터링
+
+배포 환경의 에러를 Sentry로 모읍니다. 브라우저, 서버 컴포넌트, Route Handler(BFF), proxy에서 난 에러가 모두 커밋 단위 릴리스와 원본 소스 위치(소스맵)와 함께 쌓이고, 새 이슈가 생기면 메일로 알림이 옵니다.
+
+- HR 데이터를 다루기 때문에 사용자 정보, 쿠키(인증 토큰), 요청 본문은 보내지 않습니다. SDK 기본값은 전부 수집이라 직접 껐습니다.
+- 무료 플랜 안에서 쓰려고 에러만 보내고, 트레이싱 코드는 번들에서 뺐습니다.
+- 설정, 연결 확인 방법, 대시보드 구성: [docs/monitoring.md](docs/monitoring.md)
 
 ## 문서
 
