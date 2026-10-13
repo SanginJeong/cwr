@@ -1,0 +1,85 @@
+# 크로스 브라우징 위험 요소 분석
+
+2026-10-13. 브라우저마다 화면이 다르게 보이는 문제(폰트, 레이아웃)를 nightly 스크린샷 비교로 잡기 전에, 코드에서 위험한 곳을 찾아 테스트할 화면을 고른다.
+
+- 대상 브라우저: Chromium, WebKit, Firefox(데스크톱 1440×900) + Mobile WebKit(iPhone, 390×844)
+- 범위 밖: 실제 기기(BrowserStack 등), Edge/구형 브라우저, Chromatic 확장, 발견한 깨짐을 고치는 작업(별도 작업으로)
+- 한계: Playwright의 WebKit은 실제 Safari가 아니다(같은 엔진이지만 macOS/iOS 폰트·네이티브 컨트롤이 아니다). 그래서 "Safari 엔진에서 레이아웃이 깨지는가"까지만 보장한다
+
+## 1. 폰트 (예전에 깨졌던 곳)
+
+| 위치 | 내용 | 위험 |
+|---|---|---|
+| `src/app/layout.tsx:13` | `next/font/local`로 `PretendardVariable.woff2`를 불러와 `<html>`에 className으로 건다. fallback은 `Apple SD Gothic Neo`, `Malgun Gothic`, `sans-serif` | **높음.** 폰트 파일을 못 불러오면 macOS/Windows 밖(리눅스 CI, 안드로이드 일부)에서는 `sans-serif`로 떨어지고, 한글 글리프가 없는 폰트면 □(tofu)로 나온다 |
+| `tailwind.config.ts:83` | `font-pretendard` 유틸리티가 `"Pretendard"`라는 이름을 쓴다. 하지만 next/font는 해시가 붙은 이름(`__pretendard_xxxx`)으로 등록하므로 이 이름의 폰트는 없다 | **잠복.** 지금은 아무 데서도 안 쓴다. 누가 `font-pretendard`를 붙이면 그 요소만 시스템 폰트로 바뀐다. 2026-02의 `cde8c50`(fallback 추가)이 이 계열 문제의 흔적 |
+| `layout.tsx:15` | `variable: "--font-pretendard"`를 만들지만 `<html>`에는 `className`만 걸어서 변수는 정의되지 않는다 | 낮음. 사용처가 없다 |
+| `TaskPdfDocument.tsx:16` | PDF는 `NotoSansKR`(ttf)로 따로 렌더링 | 화면 비교 대상 아님 |
+
+테스트에서 볼 것:
+- 모든 스크린샷이 Pretendard로 찍혔는지. 폰트 로딩(`font-display: swap`) 전에 찍히면 fallback이 찍히므로, 찍기 전에 `document.fonts.ready`를 기다린다
+- 5단계 검증: 폰트 경로를 일부러 깨뜨리면 4개 브라우저 모두에서 비교가 실패해야 한다
+
+## 2. 레이아웃
+
+| 위험 | 위치 | 브라우저 차이 |
+|---|---|---|
+| 뷰포트 높이 단위가 섞여 있다(`100vh`, `100dvh`, `100svh`, `h-screen`) | `PageLayout.tsx:30`, `CenteredCardLayout.tsx:38`, `LandingPage.tsx:14`, `not-found.tsx:8`, `ResetPasswordPage.tsx:7`, `SidebarTablet.tsx:36` | **높음(Mobile WebKit).** iOS Safari에서는 `100vh`가 주소창을 포함한 높이라 아래가 잘리거나 스크롤이 생긴다. `dvh`/`svh`는 Safari 15.4+ |
+| `sticky` + 높이 `100vh` 사이드바 | `SidebarTablet.tsx:36`, `SidebarMobile.tsx:25`, `BoardPage.tsx:20` | 중간. 부모에 `overflow`가 있으면 WebKit에서 sticky가 풀린다 |
+| `backdrop-blur` | `MODAL_STYLE.ts:3`, `OverlayLoading.tsx:5`, `OnboardingModal.tsx:65` | 중간. Firefox 103+만 지원하고 렌더링 결과가 브라우저마다 다르다(픽셀 비교 시 노이즈) |
+| `line-clamp` | `FeedArticleItem.tsx:20`, `ArticleTitle.tsx`, `BestArticleRankItem.tsx` | 낮음. 모두 지원하지만 한글 `break-all`과 함께 줄 끝 처리가 엔진마다 다르다 |
+| 스크롤바 숨김 | `globals.css`의 `.hide-scrollbar` | 낮음. `scrollbar-width`와 `::-webkit-scrollbar`를 둘 다 써서 대응돼 있다 |
+
+## 3. 폼 컨트롤 (네이티브 UI라 엔진마다 모양이 가장 다르다)
+
+| 위험 | 위치 | 브라우저 차이 |
+|---|---|---|
+| `<input type="time">` | `PolicyEditor.tsx:133,142,155` | **높음.** Chromium/WebKit/Firefox가 모두 다른 모양으로 그리고, 너비도 다르다 |
+| `<input type="date">` | `EditEmployeeModal.tsx:70` | **높음.** 위와 같다. 데스크톱 WebKit에서는 안쪽 세그먼트 모양이 다르다 |
+| 기본 `<select>`(`appearance` 초기화 없음) | `EditEmployeeModal.tsx`, `RegisterEmployeeModal.tsx`, `TeamLeaveCalendarSection.tsx:47` | 중간. 화살표 모양과 안쪽 여백이 다르다. `h-11`은 지켜지지만 글자 세로 위치가 어긋날 수 있다 |
+| `appearance-none` 체크박스 | `Todo.tsx:48` | 낮음 |
+
+네이티브 컨트롤은 엔진마다 다른 게 정상이다. 그래서 기준 이미지는 **브라우저별로 따로** 둔다(Playwright 기본 동작: `{이름}-{프로젝트}-{플랫폼}.png`). "Chromium과 똑같아야 한다"가 아니라 "그 브라우저의 지난 모습과 같아야 한다"를 본다.
+
+## 4. 스크립트·API
+
+| 위험 | 위치 | 판단 |
+|---|---|---|
+| `new Date(string)` 파싱 | `formatTime.ts:32`, `formatDate.ts:19`, `getTaskStatus.ts:9`, `TaskListPage.tsx:44` 등 | 낮음. 대부분 ISO(`YYYY-MM-DDTHH:mm:ssZ`)이거나 `T00:00:00Z`를 붙여서 쓴다. `"YYYY-MM-DD HH:mm"`처럼 공백이 들어간 형식은 없다. `TaskListPage.tsx:44`의 `?date=` 값은 URL에서 오므로 형식이 보장되지 않는다(기능 문제, 이번 범위 밖) |
+| `navigator.clipboard.writeText` | `RegisterEmployeeModal.tsx:72` | 낮음. HTTPS/localhost에서는 모두 지원. 화면에는 영향 없다 |
+| 최신 JS API(`requestIdleCallback`, `structuredClone`, `.at()`, `toSorted` 등) | 없음 | — |
+| GSAP / framer-motion 애니메이션 | 랜딩(`widgets/landing`), 사이드바, 온보딩 모달, `DatePicker` | 중간(테스트 안정성). `toHaveScreenshot`의 `animations: "disabled"`는 CSS 애니메이션만 멈춘다. JS 애니메이션은 끝날 때까지 기다리거나 대상에서 뺀다 |
+
+## 5. 스크린샷을 불안정하게 만드는 것
+
+- **seed가 실행한 날 기준이다.** `e2e/seed/generate.ts`는 `today` 기준으로 근태·휴가를 만든다. 서버(Next)가 실제 시각으로 그리므로 `page.clock`만으로는 날짜를 고정할 수 없다. 날짜·시각·상대 시간 텍스트는 `mask`로 가리고, 레이아웃(줄 수·높이)이 날짜에 따라 바뀌는 영역은 해당 요소만 찍는다
+- **실시간 표시.** `PresenceProvider`(접속 중 표시), 토스트, 로딩 스켈레톤(`aria-busy`). 기존 `waitForContent`로 스켈레톤이 없어질 때까지 기다린다
+- **OS 폰트 렌더링 차이.** 기준 이미지는 CI(ubuntu)에서만 만든다(기존 `update_snapshots` 입력 사용). 로컬 macOS에서 찍은 이미지는 커밋하지 않는다
+
+## 6. 테스트할 화면
+
+위험 요소가 실제로 그려지는 화면 위주로 고른다. 기존 a11y 스펙과 같은 역할·경로를 써서 seed와 로그인 상태(`e2e/.auth/{role}.json`)를 그대로 쓴다.
+
+| # | 화면 | 역할 | 이유 |
+|---|---|---|---|
+| 1 | `/login` (기존) | — | 폰트, `CenteredCardLayout`의 `100vh`/`svh` |
+| 2 | 404 (기존) | — | `100dvh` |
+| 3 | `/attendance` 내 근태 | employee | 로그인 후 첫 화면. `PageLayout` `100vh`, 사이드바 sticky |
+| 4 | `/approvals` 휴가 승인 | leader | 팀 휴가 캘린더 + 기본 `<select>` |
+| 5 | `/admin/members` 구성원 관리 | hr | 표 레이아웃, 긴 한글 |
+| 6 | 구성원 정보 수정 모달 | hr | `type="date"`, `<select>` 여러 개, `backdrop-blur` |
+| 7 | `/admin/policies` 근태 정책 | hr | `type="time"` 3개 |
+| 8 | `/board` 게시판 | employee | `line-clamp`, `aspect-video`, pc `sticky` 사이드 |
+| 9 | 모바일 사이드바 열림 (Mobile WebKit만) | employee | `fixed inset`, `max-w-[85vw]`, 모바일 헤더 sticky |
+
+뺀 것:
+- 랜딩(`/`): GSAP 스크롤 애니메이션이라 매번 다르게 찍힌다(ADR-003). 필요하면 나중에 히어로 영역만 찍는다
+- 팀·할 일(`/teams/...`): 데이터가 많이 바뀌고, 위 화면과 위험 요소가 겹친다
+- 온보딩 모달: framer-motion 애니메이션, `backdrop-blur`는 6번에서 본다
+
+## 7. 다음 단계에 넘기는 결정
+
+- 2단계: `playwright.config.ts`에 `webkit`, `firefox`, `mobile-webkit` 프로젝트를 추가한다. 기존 기능 스펙은 Chromium에서만 돌리고, 스크린샷 스펙만 4개 브라우저에서 돈다(nightly 시간 관리)
+- 3단계: 스크린샷 스펙을 `e2e/visual/`로 분리한다. 공통 헬퍼: 폰트 대기(`document.fonts.ready`), 날짜/시각 `mask`, `animations: "disabled"`
+- 4단계: CI에서 `npx playwright install --with-deps chromium webkit firefox`
+- 5단계: `layout.tsx`의 폰트 경로를 일부러 바꿔 4개 브라우저 모두 실패하는지 확인한다(커밋하지 않는다)
+- 정리 후보(이번 범위 밖): 사용하지 않는 `font-pretendard` 유틸리티와 `--font-pretendard` 변수를 정리하거나 서로 연결하기
