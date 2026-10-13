@@ -136,13 +136,24 @@ test.describe("인사담당자", { tag: "@p2" }, () => {
     await page.getByRole("button", { name: "정보 수정" }).click();
     const dialog = page.getByRole("dialog");
     // 시드의 입사일은 오늘 기준이라 날마다 바뀐다. 저장하지 않고 화면 값만 고정한다
-    await dialog.getByLabel("입사일").fill("2024-03-04");
+    const hiredOn = dialog.getByLabel("입사일");
+    await hiredOn.fill("2024-03-04");
+    await hiredOn.blur(); // 포커스가 남으면 연도 칸이 선택된 채로 찍힌다
     await snap(dialog, "edit-employee.png");
   });
 
   test("근태 정책 (time)", async ({ page }) => {
     await page.goto("/admin/policies");
     await waitForContent(page, "근태 정책");
+    const policyList = page.getByRole("list", { name: "정책 목록" });
+    // 다른 스펙이 만든 정책("E2E 05시 고정 <시각>")은 시드가 지우지 않는다. 이름이 매번 달라 숨긴다
+    await policyList
+      .getByRole("listitem")
+      .filter({ hasText: /^E2E / })
+      .evaluateAll((items) => items.forEach((item) => ((item as HTMLElement).style.display = "none")));
+    // 기본으로 열리는 자율 출퇴근에는 시각 입력이 없다. 코어타임을 열어 type="time" 두 칸을 찍는다
+    await policyList.getByRole("button").filter({ hasText: "코어타임 10–16" }).click();
+    await expect(page.locator('input[type="time"]').first()).toBeVisible();
     await snap(page, "admin-policies.png");
   });
 });
