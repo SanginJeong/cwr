@@ -3,7 +3,8 @@ import { expect, reseedBeforeAll, storageStatePath, test, type Role } from "../s
 
 // 크로스 브라우징 스크린샷 (docs/cross-browser-analysis.md). playwright.config의 visual-* 4개 프로젝트에서 돈다.
 // P2라 nightly·수동 실행에서만 돈다. 기준 이미지는 브라우저별로 CI(리눅스)에서 만든다 ({이름}-{프로젝트}-linux.png)
-test.describe.configure({ mode: "serial" });
+// 화면끼리 순서 의존이 없어 serial로 묶지 않는다. 묶으면 한 화면이 깨졌을 때 나머지가 돌지 않아 어디까지 깨졌는지 모른다
+
 // 다른 스펙이 바꾼 데이터(출근, 정책, 팀)가 화면에 나오지 않게 처음 상태로 되돌린다
 reseedBeforeAll();
 
