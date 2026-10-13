@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withSentryConfig } from "@sentry/nextjs/config";
 
 // Supabase Storage 이미지 (supabase/migrations의 images 버킷)
 const supabaseHost = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -63,4 +64,16 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// org·project·authToken은 SENTRY_ORG·SENTRY_PROJECT·SENTRY_AUTH_TOKEN 환경 변수에서 읽는다.
+// 토큰이 없으면(로컬·preview) 소스맵 업로드만 건너뛰고 빌드는 그대로 된다.
+// 릴리스 이름은 Vercel의 커밋 SHA(VERCEL_GIT_COMMIT_SHA)로 자동으로 붙는다
+export default withSentryConfig(nextConfig, {
+  silent: !process.env.CI,
+  widenClientFileUpload: true,
+  // 광고 차단기가 sentry.io 요청을 막지 않게 같은 도메인으로 우회한다 (proxy.ts matcher에서 제외)
+  tunnelRoute: "/monitoring",
+  bundleSizeOptimizations: {
+    excludeDebugStatements: true,
+    excludeTracing: true,
+  },
+});
