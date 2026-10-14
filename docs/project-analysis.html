@@ -98,7 +98,7 @@ dl.glossary dd{color:var(--muted);font-size:.86rem;line-height:1.6}
 <div class="header">
   <p class="header-eyebrow">Project analysis · 2026-10-10 · refactor/ui (데모 제거)</p>
   <h1>Coworkers HR</h1>
-  <p class="subtitle">팀 협업 도구였던 Coworkers를 "근태 정책을 데이터로 다루는 HR 서비스"로 바꾼 프로젝트의 전체 분석. 역할별 유저플로우, 기능별 동작과 적용한 기술, 기능별 E2E, 운영 에러 모니터링, 리팩토링을 진행한 AI 워크플로우, 남은 수동 작업을 한 문서에 담았다.</p>
+  <p class="subtitle">팀 협업 도구였던 Coworkers를 "근태 정책을 데이터로 다루는 HR 서비스"로 바꾼 프로젝트의 전체 분석. 역할별 유저플로우, 기능별 동작과 적용한 기술, 기능별 E2E, 크로스 브라우징 스크린샷 테스트, 운영 에러 모니터링, 리팩토링을 진행한 AI 워크플로우, 남은 수동 작업을 한 문서에 담았다.</p>
 </div>
 
 <div class="intro">
@@ -112,13 +112,13 @@ dl.glossary dd{color:var(--muted);font-size:.86rem;line-height:1.6}
 
 <nav class="toc">
   <a href="#glossary">00 용어 풀이</a><a href="#overview">01 한눈에 보기</a><a href="#userflow">02 유저플로우</a><a href="#features">03 기능별 상세</a>
-  <a href="#tests">04 테스트 · E2E</a><a href="#monitoring">05 에러 모니터링</a><a href="#workflow">06 AI 리팩토링 워크플로우</a><a href="#todo">07 직접 할 일</a>
+  <a href="#tests">04 테스트 · E2E</a><a href="#crossbrowser">05 크로스 브라우징</a><a href="#monitoring">06 에러 모니터링</a><a href="#workflow">07 AI 리팩토링 워크플로우</a><a href="#todo">08 직접 할 일</a>
 </nav>
 
 <div class="stats">
   <div class="stat"><b>3 역할</b><span>인사담당자 · 팀장 · 직원 (회사 하나, 팀 여러 개)</span></div>
   <div class="stat"><b>19</b><span>Supabase 마이그레이션 · SQL 함수 69개</span></div>
-  <div class="stat"><b>82 · 12 · 53</b><span>Vitest 단위 · PGlite DB 파일 · Playwright E2E</span></div>
+  <div class="stat"><b>82 · 12 · 87</b><span>Vitest 단위 · PGlite DB 파일 · Playwright E2E (4개 브라우저)</span></div>
   <div class="stat"><b>PR #3–#18</b><span>2026-10-05 ~ 10-10</span></div>
 </div>
 
@@ -667,7 +667,7 @@ dl.glossary dd{color:var(--muted);font-size:.86rem;line-height:1.6}
 <section class="block" id="tests">
   <p class="eyebrow">04 · Tests</p>
   <h2>테스트 3층과 E2E 전체 목록</h2>
-  <p class="tldr"><b>한 줄 요약</b> 작은 함수 → DB 규칙 → 실제 브라우저, 세 겹의 자동 테스트가 있다. 브라우저 테스트는 PR마다 41개, 평일 아침에 53개가 돈다.</p>
+  <p class="tldr"><b>한 줄 요약</b> 작은 함수 → DB 규칙 → 실제 브라우저, 세 겹의 자동 테스트가 있다. 브라우저 테스트는 PR마다 41개, 평일 아침에 87개(4개 브라우저 스크린샷 포함)가 돈다.</p>
   <p class="lead">아래 층에서 확인한 규칙은 위 층에서 다시 세세하게 보지 않는다 (ADR-008). E2E는 Supabase 로컬 스택(Docker)에 대고 돌고, 원격 DB면 시작하지 않고 멈춘다. 데이터를 바꾸는 스펙은 시작할 때 테스트 데이터를 다시 만들고(시드), 한 번에 하나씩 돈다. 시드가 날마다 달라서 숫자 대신 변하지 않는 성질로 단언한다 (예: 요약 일수 = 달력 칩 수).</p>
   <div class="diagram-container"><svg viewBox="0 0 1000 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tests-title tests-desc" style="min-width:1000px">
 <title id="tests-title">테스트 3층과 실행 시점</title>
@@ -684,7 +684,7 @@ dl.glossary dd{color:var(--muted);font-size:.86rem;line-height:1.6}
 <text x="140" y="88" fill="#64748b" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" letter-spacing="0.14em">L4</text>
 <text x="192" y="82" fill="#1e293b" font-size="15" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">화면 흐름 · nightly</text>
 <text x="192" y="100" fill="#475569" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace">Playwright @p2</text>
-<text x="940" y="90" fill="#475569" font-size="12" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="end">+12 · 모바일 일부 · axe · 스크린샷</text>
+<text x="940" y="90" fill="#475569" font-size="12" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="end">+46 · 모바일 일부 · axe · 4개 브라우저 스크린샷</text>
 <rect x="120" y="120" width="840" height="72" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
 <text x="140" y="160" fill="#64748b" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" letter-spacing="0.14em">L3</text>
 <text x="192" y="154" fill="#1e293b" font-size="15" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">화면 흐름 · PR마다</text>
@@ -714,16 +714,145 @@ dl.glossary dd{color:var(--muted);font-size:.86rem;line-height:1.6}
 </svg></div>
   <div class="cards c2">
     <div class="card"><div class="card-header"><span class="card-dot ink"></span><h3>CI (GitHub Actions <code>ci.yml</code>)</h3></div>
-      <ul><li>PR·main push: 타입·lint·Vitest·PGlite → <code>supabase start</code> → <code>playwright test --grep-invert @p2</code> (41개, 약 2분)</li><li>평일 09:00 KST nightly·수동 실행: P2 포함 57개</li><li>수동 실행 <code>update_snapshots</code>: 스크린샷 기준 이미지를 리눅스에서 다시 만들어 아티팩트로</li><li>실패 시 trace·영상·리포트 아티팩트</li></ul></div>
+      <ul><li>PR·main push: 타입·lint·Vitest·PGlite → <code>supabase start</code> → <code>playwright test --grep-invert @p2</code> (41개, 약 2분)</li><li>평일 09:00 KST nightly·수동 실행: P2 포함 87개. WebKit·Firefox는 이때만 설치한다</li><li>수동 실행 <code>update_snapshots</code>: 4개 브라우저 스크린샷 기준 이미지 33장을 리눅스에서 다시 만들어 아티팩트로</li><li>실패 시 trace·영상·리포트 아티팩트</li></ul></div>
     <div class="card"><div class="card-header"><span class="card-dot accent"></span><h3>E2E가 찾은 실제 버그</h3></div>
       <ul><li>새 브라우저에서 사이드바가 접힌 채 시작 → 출퇴근 카드가 숨음 (E3)</li><li>로그인 폼이 <code>.test</code> 같은 최상위 도메인을 거부 (E4)</li><li>로그아웃이 모든 세션을 끊어 저장된 로그인 상태가 깨짐 → 테스트 구조 수정 (E4)</li><li>접근성 검사: 색 대비 20건 → 팔레트 유지로 결정</li></ul></div>
   </div>
-  <p class="eyebrow" style="margin-top:2rem">E2E 전체 (42개 ID · P0 15 · P1 20 · P2 7, A1·A2처럼 한 ID가 여러 번 도는 것과 준비 단계를 합치면 53개)</p>
-  <table class="e2e"><thead><tr><th>ID</th><th>기능</th><th>시나리오</th><th>확인하는 것</th><th>우선</th></tr></thead><tbody><tr class="group"><th colspan="5">auth.spec.ts</th></tr><tr><td><span class="chip chip-p0" title="비로그인으로 /attendance·/teams·/admin/members·/approvals">A1</span></td><td>인증</td><td>비로그인으로 /attendance·/teams·/admin/members·/approvals</td><td>/login으로 이동</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="이메일 로그인 3역할 + 로그인 화면">A2</span></td><td>인증</td><td>이메일 로그인 3역할 + 로그인 화면</td><td>/attendance 도착, 사이드바 이름, 둘러보기 없음</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="로그인 상태로 /login">A3</span></td><td>인증</td><td>로그인 상태로 /login</td><td>/attendance로 이동</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="직원이 관리 화면 접근">A4</span></td><td>인증</td><td>직원이 관리 화면 접근</td><td>내 근태로 이동, 관리 메뉴 없음</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="팀장이 /admin/policies">A5</span></td><td>인증</td><td>팀장이 /admin/policies</td><td>막힘, /approvals는 열림</td><td>P0</td></tr><tr><td><span class="chip chip-p1" title="틀린 비밀번호">A6</span></td><td>인증</td><td>틀린 비밀번호</td><td>&quot;이메일 혹은 비밀번호를 확인해주세요&quot; 토스트</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="특수문자 없는 비밀번호, @coworkers.test 이메일">A7</span></td><td>인증</td><td>특수문자 없는 비밀번호, @coworkers.test 이메일</td><td>제출 버튼 활성, 형식 오류 없음 (회귀 2건)</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="이메일 로그인 → 로그아웃">A8</span></td><td>인증</td><td>이메일 로그인 → 로그아웃</td><td>/login, 보호 라우트 다시 막힘 → 저장된 로그인 상태 재생성</td><td>P1</td></tr><tr><td><span class="chip chip-p2" title="인사담당자가 구성원 관리에서 퇴사 처리 → 그 계정 로그인 → 복직">A9</span></td><td>인증</td><td>인사담당자가 구성원 관리에서 퇴사 처리 → 그 계정 로그인 → 복직</td><td>&quot;퇴사 처리된 계정&quot; 안내, 복직 후 로그인</td><td>P2</td></tr></tbody><tbody><tr class="group"><th colspan="5">employee.spec.ts</th></tr><tr><td><span class="chip chip-p0" title="사이드바 카드로 출근">E1</span></td><td>출퇴근</td><td>사이드바 카드로 출근</td><td>근무 중, 오늘 카드 출근 시각, 달력 오늘 칸 칩</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="1분 미만 근무 문구 (E1 안에서)">E8</span></td><td>출퇴근</td><td>1분 미만 근무 문구 (E1 안에서)</td><td>&quot;방금 출근했어요&quot; (회귀: &quot;0분째&quot;)</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="퇴근">E2</span></td><td>출퇴근</td><td>퇴근</td><td>&quot;오늘 근무를 마쳤어요&quot;</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="휴가 신청">E3</span></td><td>휴가</td><td>휴가 신청</td><td>달력 &quot;대기&quot; 칩, 목록 &quot;승인 대기&quot;</td><td>P0</td></tr><tr><td><span class="chip chip-p1" title="이미 신청한 날짜">E4</span></td><td>휴가</td><td>이미 신청한 날짜</td><td>모달에서 비활성 + 점선</td><td>P1</td></tr><tr><td><span class="chip chip-p0" title="대기 중 신청 취소">E5</span></td><td>휴가</td><td>대기 중 신청 취소</td><td>목록에서 사라짐</td><td>P0</td></tr><tr><td><span class="chip chip-p1" title="이전 달로 이동">E6</span></td><td>판정</td><td>이전 달로 이동</td><td>상태별 요약 일수 = 그 칩이 있는 달력 칸 수</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="정책 문장">E7</span></td><td>판정</td><td>정책 문장</td><td>코어타임 이름과 &quot;10:00까지 출근하면 정상&quot;</td><td>P1</td></tr></tbody><tbody><tr class="group"><th colspan="5">leader.spec.ts</th></tr><tr><td><span class="chip chip-p0" title="사이드바 배지">L1</span></td><td>승인</td><td>사이드바 배지</td><td>배지 숫자 = 대기 행 수</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="같은 날 겹침 (시드 박지민·최도윤)">L2</span></td><td>승인</td><td>같은 날 겹침 (시드 박지민·최도윤)</td><td>두 행 모두 겹침, 팀장 본인 신청 없음</td><td>P0</td></tr><tr><td><span class="chip chip-p1" title="팀 휴가 달력">L5</span></td><td>승인</td><td>팀 휴가 달력</td><td>평일 칸만, 겹친 날 &quot;겹침 2명&quot;</td><td>P1</td></tr><tr><td><span class="chip chip-p0" title="승인">L3</span></td><td>승인</td><td>승인</td><td>대기 감소, 처리됨 탭 &quot;승인됨 · 김하늘&quot;</td><td>P0</td></tr><tr><td><span class="chip chip-p1" title="반려">L4</span></td><td>승인</td><td>반려</td><td>처리됨 탭 &quot;반려됨&quot;</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="팀 페이지 오늘 우리 팀 근태">L6</span></td><td>팀</td><td>팀 페이지 오늘 우리 팀 근태</td><td>팀장에게 카드와 멤버 칩, 직원에게는 없음</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="팀장 관리 메뉴 숨김">L7</span></td><td>팀</td><td>팀장 관리 메뉴 숨김</td><td>팀 설정·팀에서 제외·팀 추가하기 없음</td><td>P1</td></tr></tbody><tbody><tr class="group"><th colspan="5">hr.spec.ts</th></tr><tr><td><span class="chip chip-p1" title="구성원 목록">H1</span></td><td>구성원</td><td>구성원 목록</td><td>재직 ≥ 30, 시드 계정 이메일, 검색·팀·정책 필터</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="배정된 정책 삭제">H4</span></td><td>정책</td><td>배정된 정책 삭제</td><td>삭제 비활성 + 이유 툴팁</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="인사담당자 휴가 승인">H7</span></td><td>승인</td><td>인사담당자 휴가 승인</td><td>여러 팀의 대기 신청이 모두 보임</td><td>P1</td></tr><tr><td><span class="chip chip-p0" title="정책을 05:00 고정·유예 0분으로 바꿈">H2</span></td><td>판정</td><td>정책을 05:00 고정·유예 0분으로 바꿈</td><td>그 직원 정상 0, 지각 ≥ 1 (지난 기록 재판정)</td><td>P0</td></tr><tr><td><span class="chip chip-p1" title="기본 정책 변경 → 되돌리기">H3</span></td><td>정책</td><td>기본 정책 변경 → 되돌리기</td><td>적용 인원 재계산, 합계 유지, 원복</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="팀 역할을 팀장으로 → 되돌리기">H5</span></td><td>팀</td><td>팀 역할을 팀장으로 → 되돌리기</td><td>팀 페이지 &quot;팀장&quot; 배지가 생기고 사라짐</td><td>P1</td></tr><tr><td><span class="chip chip-p2" title="이미지 없는 팀의 수정 페이지">H8</span></td><td>팀</td><td>이미지 없는 팀의 수정 페이지</td><td>에러 없음, 이름 칸 채워짐 → 팀 삭제</td><td>P2</td></tr></tbody><tbody><tr class="group"><th colspan="5">cross-role.spec.ts</th></tr><tr><td><span class="chip chip-p0" title="직원 신청 → 팀장 승인">X1</span></td><td>역할 넘나들기</td><td>직원 신청 → 팀장 승인</td><td>직원 달력 &quot;휴가&quot;, 목록 &quot;승인됨&quot;</td><td>P0</td></tr><tr><td><span class="chip chip-p1" title="팀장 승인 + 인사담당자 반려 동시 클릭">X2</span></td><td>역할 넘나들기</td><td>팀장 승인 + 인사담당자 반려 동시 클릭</td><td>한쪽만 성공, 직원 화면 결과가 이긴 쪽과 같음</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="인사담당자가 정책을 자율로">X3</span></td><td>역할 넘나들기</td><td>인사담당자가 정책을 자율로</td><td>직원 지각 0, 정상 = 이전 정상 + 지각, 이름 한 번만(E7 회귀)</td><td>P1</td></tr><tr><td><span class="chip chip-p2" title="인사담당자가 팀원 제외 → 다시 배정">X4</span></td><td>역할 넘나들기</td><td>인사담당자가 팀원 제외 → 다시 배정</td><td>팀장 화면에서 빠졌다가 돌아옴</td><td>P2</td></tr></tbody><tbody><tr class="group"><th colspan="5">mobile/mobile.spec.ts</th></tr><tr><td><span class="chip chip-p1" title="첫 화면">M1</span></td><td>모바일</td><td>첫 화면</td><td>서랍 닫힘, 헤더 &quot;내 근태: 출근 전&quot; (회귀)</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="서랍에서 출근 → 이동">M2</span></td><td>모바일</td><td>서랍에서 출근 → 이동</td><td>근무 중 표시, 이동하면 서랍 닫힘</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="휴가 승인">M3</span></td><td>모바일</td><td>휴가 승인</td><td>카드형, 승인·반려 버튼이 화면 안, 표 숨김 (회귀)</td><td>P1</td></tr><tr><td><span class="chip chip-p2" title="내 근태 달력">M4</span></td><td>모바일</td><td>내 근태 달력</td><td>글자 칩 대신 색 막대, 가로 스크롤 없음</td><td>P2</td></tr><tr><td><span class="chip chip-p2" title="낮은 화면(390×600) 휴가 모달">M5</span></td><td>모바일</td><td>낮은 화면(390×600) 휴가 모달</td><td>신청하기 버튼까지 스크롤 (회귀)</td><td>P2</td></tr></tbody><tbody><tr class="group"><th colspan="5">a11y.spec.ts</th></tr><tr><td><span class="chip chip-p2" title="axe: 로그인·내 근태·휴가 승인·구성원·정책">V1</span></td><td>접근성</td><td>axe: 로그인·내 근태·휴가 승인·구성원·정책</td><td>WCAG 2.1 A·AA serious·critical 0 (색 대비 제외)</td><td>P2</td></tr><tr><td><span class="chip chip-p2" title="스크린샷: 로그인, 없는 페이지">V2</span></td><td>접근성</td><td>스크린샷: 로그인, 없는 페이지</td><td>CI 리눅스 기준 이미지와 같음</td><td>P2</td></tr></tbody></table>
+  <p class="eyebrow" style="margin-top:2rem">E2E 전체 (42개 ID · P0 15 · P1 20 · P2 7, A1·A2·V2처럼 한 ID가 여러 번 도는 것과 준비 단계를 합치면 87개)</p>
+  <table class="e2e"><thead><tr><th>ID</th><th>기능</th><th>시나리오</th><th>확인하는 것</th><th>우선</th></tr></thead><tbody><tr class="group"><th colspan="5">auth.spec.ts</th></tr><tr><td><span class="chip chip-p0" title="비로그인으로 /attendance·/teams·/admin/members·/approvals">A1</span></td><td>인증</td><td>비로그인으로 /attendance·/teams·/admin/members·/approvals</td><td>/login으로 이동</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="이메일 로그인 3역할 + 로그인 화면">A2</span></td><td>인증</td><td>이메일 로그인 3역할 + 로그인 화면</td><td>/attendance 도착, 사이드바 이름, 둘러보기 없음</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="로그인 상태로 /login">A3</span></td><td>인증</td><td>로그인 상태로 /login</td><td>/attendance로 이동</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="직원이 관리 화면 접근">A4</span></td><td>인증</td><td>직원이 관리 화면 접근</td><td>내 근태로 이동, 관리 메뉴 없음</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="팀장이 /admin/policies">A5</span></td><td>인증</td><td>팀장이 /admin/policies</td><td>막힘, /approvals는 열림</td><td>P0</td></tr><tr><td><span class="chip chip-p1" title="틀린 비밀번호">A6</span></td><td>인증</td><td>틀린 비밀번호</td><td>&quot;이메일 혹은 비밀번호를 확인해주세요&quot; 토스트</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="특수문자 없는 비밀번호, @coworkers.test 이메일">A7</span></td><td>인증</td><td>특수문자 없는 비밀번호, @coworkers.test 이메일</td><td>제출 버튼 활성, 형식 오류 없음 (회귀 2건)</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="이메일 로그인 → 로그아웃">A8</span></td><td>인증</td><td>이메일 로그인 → 로그아웃</td><td>/login, 보호 라우트 다시 막힘 → 저장된 로그인 상태 재생성</td><td>P1</td></tr><tr><td><span class="chip chip-p2" title="인사담당자가 구성원 관리에서 퇴사 처리 → 그 계정 로그인 → 복직">A9</span></td><td>인증</td><td>인사담당자가 구성원 관리에서 퇴사 처리 → 그 계정 로그인 → 복직</td><td>&quot;퇴사 처리된 계정&quot; 안내, 복직 후 로그인</td><td>P2</td></tr></tbody><tbody><tr class="group"><th colspan="5">employee.spec.ts</th></tr><tr><td><span class="chip chip-p0" title="사이드바 카드로 출근">E1</span></td><td>출퇴근</td><td>사이드바 카드로 출근</td><td>근무 중, 오늘 카드 출근 시각, 달력 오늘 칸 칩</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="1분 미만 근무 문구 (E1 안에서)">E8</span></td><td>출퇴근</td><td>1분 미만 근무 문구 (E1 안에서)</td><td>&quot;방금 출근했어요&quot; (회귀: &quot;0분째&quot;)</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="퇴근">E2</span></td><td>출퇴근</td><td>퇴근</td><td>&quot;오늘 근무를 마쳤어요&quot;</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="휴가 신청">E3</span></td><td>휴가</td><td>휴가 신청</td><td>달력 &quot;대기&quot; 칩, 목록 &quot;승인 대기&quot;</td><td>P0</td></tr><tr><td><span class="chip chip-p1" title="이미 신청한 날짜">E4</span></td><td>휴가</td><td>이미 신청한 날짜</td><td>모달에서 비활성 + 점선</td><td>P1</td></tr><tr><td><span class="chip chip-p0" title="대기 중 신청 취소">E5</span></td><td>휴가</td><td>대기 중 신청 취소</td><td>목록에서 사라짐</td><td>P0</td></tr><tr><td><span class="chip chip-p1" title="이전 달로 이동">E6</span></td><td>판정</td><td>이전 달로 이동</td><td>상태별 요약 일수 = 그 칩이 있는 달력 칸 수</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="정책 문장">E7</span></td><td>판정</td><td>정책 문장</td><td>코어타임 이름과 &quot;10:00까지 출근하면 정상&quot;</td><td>P1</td></tr></tbody><tbody><tr class="group"><th colspan="5">leader.spec.ts</th></tr><tr><td><span class="chip chip-p0" title="사이드바 배지">L1</span></td><td>승인</td><td>사이드바 배지</td><td>배지 숫자 = 대기 행 수</td><td>P0</td></tr><tr><td><span class="chip chip-p0" title="같은 날 겹침 (시드 박지민·최도윤)">L2</span></td><td>승인</td><td>같은 날 겹침 (시드 박지민·최도윤)</td><td>두 행 모두 겹침, 팀장 본인 신청 없음</td><td>P0</td></tr><tr><td><span class="chip chip-p1" title="팀 휴가 달력">L5</span></td><td>승인</td><td>팀 휴가 달력</td><td>평일 칸만, 겹친 날 &quot;겹침 2명&quot;</td><td>P1</td></tr><tr><td><span class="chip chip-p0" title="승인">L3</span></td><td>승인</td><td>승인</td><td>대기 감소, 처리됨 탭 &quot;승인됨 · 김하늘&quot;</td><td>P0</td></tr><tr><td><span class="chip chip-p1" title="반려">L4</span></td><td>승인</td><td>반려</td><td>처리됨 탭 &quot;반려됨&quot;</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="팀 페이지 오늘 우리 팀 근태">L6</span></td><td>팀</td><td>팀 페이지 오늘 우리 팀 근태</td><td>팀장에게 카드와 멤버 칩, 직원에게는 없음</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="팀장 관리 메뉴 숨김">L7</span></td><td>팀</td><td>팀장 관리 메뉴 숨김</td><td>팀 설정·팀에서 제외·팀 추가하기 없음</td><td>P1</td></tr></tbody><tbody><tr class="group"><th colspan="5">hr.spec.ts</th></tr><tr><td><span class="chip chip-p1" title="구성원 목록">H1</span></td><td>구성원</td><td>구성원 목록</td><td>재직 ≥ 30, 시드 계정 이메일, 검색·팀·정책 필터</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="배정된 정책 삭제">H4</span></td><td>정책</td><td>배정된 정책 삭제</td><td>삭제 비활성 + 이유 툴팁</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="인사담당자 휴가 승인">H7</span></td><td>승인</td><td>인사담당자 휴가 승인</td><td>여러 팀의 대기 신청이 모두 보임</td><td>P1</td></tr><tr><td><span class="chip chip-p0" title="정책을 05:00 고정·유예 0분으로 바꿈">H2</span></td><td>판정</td><td>정책을 05:00 고정·유예 0분으로 바꿈</td><td>그 직원 정상 0, 지각 ≥ 1 (지난 기록 재판정)</td><td>P0</td></tr><tr><td><span class="chip chip-p1" title="기본 정책 변경 → 되돌리기">H3</span></td><td>정책</td><td>기본 정책 변경 → 되돌리기</td><td>적용 인원 재계산, 합계 유지, 원복</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="팀 역할을 팀장으로 → 되돌리기">H5</span></td><td>팀</td><td>팀 역할을 팀장으로 → 되돌리기</td><td>팀 페이지 &quot;팀장&quot; 배지가 생기고 사라짐</td><td>P1</td></tr><tr><td><span class="chip chip-p2" title="이미지 없는 팀의 수정 페이지">H8</span></td><td>팀</td><td>이미지 없는 팀의 수정 페이지</td><td>에러 없음, 이름 칸 채워짐 → 팀 삭제</td><td>P2</td></tr></tbody><tbody><tr class="group"><th colspan="5">cross-role.spec.ts</th></tr><tr><td><span class="chip chip-p0" title="직원 신청 → 팀장 승인">X1</span></td><td>역할 넘나들기</td><td>직원 신청 → 팀장 승인</td><td>직원 달력 &quot;휴가&quot;, 목록 &quot;승인됨&quot;</td><td>P0</td></tr><tr><td><span class="chip chip-p1" title="팀장 승인 + 인사담당자 반려 동시 클릭">X2</span></td><td>역할 넘나들기</td><td>팀장 승인 + 인사담당자 반려 동시 클릭</td><td>한쪽만 성공, 직원 화면 결과가 이긴 쪽과 같음</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="인사담당자가 정책을 자율로">X3</span></td><td>역할 넘나들기</td><td>인사담당자가 정책을 자율로</td><td>직원 지각 0, 정상 = 이전 정상 + 지각, 이름 한 번만(E7 회귀)</td><td>P1</td></tr><tr><td><span class="chip chip-p2" title="인사담당자가 팀원 제외 → 다시 배정">X4</span></td><td>역할 넘나들기</td><td>인사담당자가 팀원 제외 → 다시 배정</td><td>팀장 화면에서 빠졌다가 돌아옴</td><td>P2</td></tr></tbody><tbody><tr class="group"><th colspan="5">mobile/mobile.spec.ts</th></tr><tr><td><span class="chip chip-p1" title="첫 화면">M1</span></td><td>모바일</td><td>첫 화면</td><td>서랍 닫힘, 헤더 &quot;내 근태: 출근 전&quot; (회귀)</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="서랍에서 출근 → 이동">M2</span></td><td>모바일</td><td>서랍에서 출근 → 이동</td><td>근무 중 표시, 이동하면 서랍 닫힘</td><td>P1</td></tr><tr><td><span class="chip chip-p1" title="휴가 승인">M3</span></td><td>모바일</td><td>휴가 승인</td><td>카드형, 승인·반려 버튼이 화면 안, 표 숨김 (회귀)</td><td>P1</td></tr><tr><td><span class="chip chip-p2" title="내 근태 달력">M4</span></td><td>모바일</td><td>내 근태 달력</td><td>글자 칩 대신 색 막대, 가로 스크롤 없음</td><td>P2</td></tr><tr><td><span class="chip chip-p2" title="낮은 화면(390×600) 휴가 모달">M5</span></td><td>모바일</td><td>낮은 화면(390×600) 휴가 모달</td><td>신청하기 버튼까지 스크롤 (회귀)</td><td>P2</td></tr></tbody><tbody><tr class="group"><th colspan="5">a11y.spec.ts</th></tr><tr><td><span class="chip chip-p2" title="axe: 로그인·내 근태·휴가 승인·구성원·정책">V1</span></td><td>접근성</td><td>axe: 로그인·내 근태·휴가 승인·구성원·정책</td><td>WCAG 2.1 A·AA serious·critical 0 (색 대비 제외)</td><td>P2</td></tr></tbody><tbody><tr class="group"><th colspan="5">visual/visual.spec.ts</th></tr><tr><td><span class="chip chip-p2" title="스크린샷 9화면 × Chromium·WebKit·Firefox·Mobile WebKit">V2</span></td><td>크로스 브라우징</td><td>공개 2 + 로그인 후 7화면 × 4개 브라우저 (33장)</td><td>Pretendard 로딩 단언 + 브라우저별 CI 리눅스 기준 이미지와 같음 (<a href="#crossbrowser">05</a>)</td><td>P2</td></tr></tbody></table>
+</section>
+
+<section class="block" id="crossbrowser">
+  <p class="eyebrow">05 · Cross-browser</p>
+  <h2>크로스 브라우징 스크린샷 테스트</h2>
+  <p class="tldr"><b>한 줄 요약</b> 같은 화면을 Chromium · WebKit(Safari 엔진) · Firefox · iPhone 크기 WebKit에서 찍어 브라우저별 기준 이미지와 비교한다. 폰트를 일부러 깨뜨리자 33장이 모두 실패로 잡혔다. 기능 테스트는 모두 통과했던 문제다.</p>
+  <p class="lead">계기는 예전에 폰트가 깨졌던 경험이다. 지금 깨진 곳은 없지만, 기능 E2E는 화면이 어떻게 보이는지 확인하지 않아서 같은 문제가 다시 생겨도 통과한다. 그래서 코드에서 브라우저마다 다르게 그려질 곳을 먼저 찾고, 그 위험이 실제로 그려지는 화면만 골라 nightly에서 4개 브라우저로 비교하기로 했다. PR #23 (2026-10-13), 분석 · 결정 · 결과는 <code>docs/cross-browser-analysis.md</code>.</p>
+  <div class="diagram-container"><svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="xb-title xb-desc" style="min-width:1000px">
+<title id="xb-title">크로스 브라우징 스크린샷 매트릭스</title>
+<desc id="xb-desc">공개 화면 2개와 로그인 후 화면 7개를 Chromium, WebKit, Firefox, Mobile WebKit 4개 브라우저에서 찍어 기준 이미지 33장과 비교한다. 모바일 메뉴 서랍은 Mobile WebKit에서만 찍는다. 폰트를 일부러 깨뜨리자 33장이 모두 실패했다.</desc>
+<rect width="100%" height="100%" fill="#f1f5f9"/>
+<text x="40" y="40" fill="#64748b" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" letter-spacing="0.14em">9 SCREENS × 4 BROWSERS = 33 BASELINES</text>
+<text x="261" y="66" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">로그인</text>
+<text x="261" y="82" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">폰트·svh</text>
+<text x="343" y="66" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">404</text>
+<text x="343" y="82" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">dvh</text>
+<text x="425" y="66" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">내 근태</text>
+<text x="425" y="82" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">100vh·sticky</text>
+<text x="507" y="66" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">게시판</text>
+<text x="507" y="82" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">빈 상태</text>
+<text x="589" y="66" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">서랍</text>
+<text x="589" y="82" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">모바일만</text>
+<text x="671" y="66" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">휴가 승인</text>
+<text x="671" y="82" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">달력·표</text>
+<text x="753" y="66" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">구성원</text>
+<text x="753" y="82" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">표·긴 한글</text>
+<text x="835" y="66" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">정보 수정</text>
+<text x="835" y="82" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">date·select</text>
+<text x="917" y="66" fill="#1e293b" font-size="12" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">근태 정책</text>
+<text x="917" y="82" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">time ×2</text>
+<text x="40" y="112" fill="#1e293b" font-size="13" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">Chromium</text>
+<text x="40" y="126" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace">1440×900</text>
+<rect x="226" y="98" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="261" y="118" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="308" y="98" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="343" y="118" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="390" y="98" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="425" y="118" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="472" y="98" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="507" y="118" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="554" y="98" width="70" height="32" rx="3" fill="none" stroke="rgba(30,41,59,0.20)" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="589" y="118" fill="#64748b" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">skip</text>
+<rect x="636" y="98" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="671" y="118" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="718" y="98" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="753" y="118" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="800" y="98" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="835" y="118" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="882" y="98" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="917" y="118" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<text x="40" y="156" fill="#1e293b" font-size="13" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">WebKit</text>
+<text x="40" y="170" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace">1440×900</text>
+<rect x="226" y="142" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="261" y="162" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="308" y="142" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="343" y="162" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="390" y="142" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="425" y="162" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="472" y="142" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="507" y="162" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="554" y="142" width="70" height="32" rx="3" fill="none" stroke="rgba(30,41,59,0.20)" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="589" y="162" fill="#64748b" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">skip</text>
+<rect x="636" y="142" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="671" y="162" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="718" y="142" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="753" y="162" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="800" y="142" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="835" y="162" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="882" y="142" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="917" y="162" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<text x="40" y="200" fill="#1e293b" font-size="13" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">Firefox</text>
+<text x="40" y="214" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace">1440×900</text>
+<rect x="226" y="186" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="261" y="206" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="308" y="186" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="343" y="206" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="390" y="186" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="425" y="206" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="472" y="186" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="507" y="206" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="554" y="186" width="70" height="32" rx="3" fill="none" stroke="rgba(30,41,59,0.20)" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="589" y="206" fill="#64748b" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">skip</text>
+<rect x="636" y="186" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="671" y="206" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="718" y="186" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="753" y="206" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="800" y="186" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="835" y="206" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="882" y="186" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="917" y="206" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<text x="40" y="244" fill="#1e293b" font-size="13" font-weight="600" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">Mobile WebKit</text>
+<text x="40" y="258" fill="#475569" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace">iPhone 13 · 390×664</text>
+<rect x="226" y="230" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="261" y="250" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="308" y="230" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="343" y="250" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="390" y="230" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="425" y="250" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="472" y="230" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="507" y="250" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="554" y="230" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="589" y="250" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="636" y="230" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="671" y="250" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="718" y="230" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="753" y="250" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="800" y="230" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="835" y="250" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<rect x="882" y="230" width="70" height="32" rx="3" fill="rgba(81,137,250,0.10)" stroke="#5189fa" stroke-width="1"/>
+<text x="917" y="250" fill="#315296" font-size="10" font-family="'Geist Mono', ui-monospace, Menlo, monospace" text-anchor="middle">png</text>
+<line x1="40" y1="288" x2="960" y2="288" stroke="rgba(30,41,59,0.10)" stroke-width="0.8"/>
+<text x="40" y="314" fill="#64748b" font-size="9" font-family="'Geist Mono', ui-monospace, Menlo, monospace" letter-spacing="0.14em">FONT-BREAK CHECK</text>
+<text x="220" y="314" fill="#1e293b" font-size="13" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">폰트를 일부러 뺀 빌드: 스크린샷 <tspan font-weight="600" fill="#315296">33 / 33 실패</tspan> · 기능 E2E 51개는 그대로 통과</text>
+<text x="220" y="334" fill="#475569" font-size="12" font-family="'Geist', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">Chromium·Firefox는 웹폰트 단언에서, WebKit 계열은 픽셀 비교에서 잡았다 (두 겹으로 검사)</text>
+</svg></div>
+  <div class="cards c3">
+    <div class="card"><div class="card-header"><span class="card-dot ink"></span><h3>1. 위험 요소부터 찾았다</h3></div><p class="sub">화면은 위험이 그려지는 곳으로 고른다</p>
+      <ul><li><b>폰트</b>: Pretendard를 못 불러오면 마지막 대체 폰트가 <code>sans-serif</code> → 리눅스·일부 안드로이드에서 한글이 □. Tailwind <code>font-pretendard</code>가 next/font의 해시 이름과 달라 붙이면 그 요소만 시스템 폰트가 되는 잠복 문제도 발견</li><li><b>네이티브 입력</b>: <code>type="time"</code>(근태 정책), <code>type="date"</code>와 기본 <code>&lt;select&gt;</code>(정보 수정)</li><li><b>높이 단위</b>: <code>100vh</code> · <code>dvh</code> · <code>svh</code>가 섞여 iOS 주소창 문제가 날 수 있다</li><li>최신 JS API · Safari가 못 읽는 날짜 형식은 없었다</li></ul></div>
+    <div class="card"><div class="card-header"><span class="card-dot accent"></span><h3>2. 날마다 같은 이미지가 나오게</h3></div><p class="sub">시드가 실행한 날 기준이라 그대로 찍으면 매일 실패한다</p>
+      <ul><li>뷰포트만 찍는다: 달력 주 수가 바뀌어도 이미지 크기가 같다</li><li>날짜 · 시각 · 출근 상태는 <code>mask</code>, 높이가 변하는 영역은 CSS로 높이 고정</li><li>모달 · 서랍은 요소만, 입사일은 화면 값만 <code>2024-03-04</code>로</li><li>다른 스펙이 남긴 정책(<code>E2E 05시 고정 &lt;시각&gt;</code>)은 숨긴다</li><li>기준 이미지는 브라우저별로 CI(리눅스)에서만 만든다. 다른 브라우저와 같아야 하는 게 아니라 그 브라우저의 지난 모습과 같아야 한다</li></ul></div>
+    <div class="card"><div class="card-header"><span class="card-dot link"></span><h3>3. 깨뜨려서 확인했다</h3></div><p class="sub">통과만으로는 잡는다는 증거가 없다</p>
+      <ul><li>임시 브랜치에서 <code>&lt;html&gt;</code>의 폰트 클래스를 빼 예전 깨짐을 재현 → 33장 모두 실패, 기능 51개 통과</li><li>찍기 전에 <code>document.fonts</code>에서 Pretendard가 <code>loaded</code>인지 단언 → 원인이 메시지로 바로 보인다</li><li>WebKit은 안 쓰인 웹폰트도 <code>loaded</code>로 보고해 단언을 통과했다. 픽셀 비교가 대신 잡았다</li><li>첫 시도에서 <code>serial</code> 때문에 첫 화면 실패 후 32개가 돌지 않았다 → serial 제거</li></ul></div>
+  </div>
+  <div class="cards c2">
+    <div class="card"><div class="card-header"><span class="card-dot accent"></span><h3>첫 실행에서 찾은 브라우저 차이</h3></div>
+      <ul><li><b>Firefox는 <code>lang="ko"</code> · <code>ko-KR</code>이어도 날짜 · 시각 입력을 영어 형식으로 그린다</b>: <code>03 / 04 / 2024</code>, <code>10:00 AM</code>. Chromium · WebKit은 <code>2024. 03. 04.</code>, <code>오전 10:00</code>. 깨짐은 아니지만 날짜 순서가 다르게 읽힐 수 있어 기록만 했다</li><li>WebKit의 기본 <code>&lt;select&gt;</code>는 회색 버튼 모양, Firefox는 얇은 꺾쇠</li><li>main nightly 실패(10/12) 원인: 예전 로그인 기준 이미지가 현재 화면과 530픽셀 달랐다 → 새 기준 이미지로 해결</li></ul></div>
+    <div class="card"><div class="card-header"><span class="card-dot muted"></span><h3>CI · 한계</h3></div>
+      <ul><li>스크린샷은 <code>@p2</code>라 nightly · 수동 실행에서만 돈다. WebKit · Firefox 설치도 이때만 → PR CI 시간은 그대로, nightly의 Playwright 실행은 약 3.6분</li><li>화면을 의도적으로 바꾸면 수동 실행 <code>update_snapshots</code>로 다시 만들어 커밋</li><li>가린 영역 안쪽, 모달 뒤 <code>backdrop-blur</code>, 게시판 글 목록(시드에 글 없음)은 비교하지 않는다</li><li>Playwright WebKit은 실제 Safari가 아니다(같은 엔진, macOS · iOS의 폰트 · 네이티브 컨트롤은 아님). 실기기 테스트는 범위 밖</li></ul></div>
+  </div>
 </section>
 
 <section class="block" id="monitoring">
-  <p class="eyebrow">05 · Monitoring</p>
+  <p class="eyebrow">06 · Monitoring</p>
   <h2>에러 모니터링 (Sentry)</h2>
   <p class="tldr"><b>한 줄 요약</b> 배포된 앱에서 난 에러를 사용자가 말하기 전에 알아챈다. 브라우저와 서버 에러가 원본 소스 위치, 배포 버전과 함께 Sentry에 쌓이고, 새 에러가 생기면 메일이 온다. 직원 개인정보는 보내지 않는다.</p>
   <p class="lead">계기는 배포 후에야 드러난 hydration mismatch(getMe 스트리밍, 되돌림)였다. 테스트 3층은 배포 전에 도는데, 운영에서 실제 사용자에게 나는 에러는 볼 방법이 없었다. 직접 수집 서버를 만들지 Sentry를 붙일지 먼저 정했고(아래), 무료 플랜 안에서 에러 추적만 하기로 범위를 좁혔다. PR #22 (2026-10-13).</p>
@@ -787,7 +916,7 @@ dl.glossary dd{color:var(--muted);font-size:.86rem;line-height:1.6}
 </section>
 
 <section class="block" id="workflow">
-  <p class="eyebrow">06 · AI workflow</p>
+  <p class="eyebrow">07 · AI workflow</p>
   <h2>AI 리팩토링 워크플로우</h2>
   <p class="tldr"><b>한 줄 요약</b> 사람이 방향과 머지를 정하고, AI가 계획·구현·테스트·확인을 한 바퀴씩 돌린다. 결과는 문서와 메모리에 남아 다음 바퀴로 이어진다.</p>
   <p class="lead">사람(결정·머지)과 AI 에이전트(Claude Code: 분석·구현·테스트·QA)가 같은 고리를 반복했다. 한 바퀴의 결과는 저장소 문서(로드맵·ADR·QA)와 에이전트 메모리에 쌓이고, 다음 바퀴는 거기서 시작한다. 세션이 끊겨도 맥락이 이어지는 이유다.</p>
@@ -873,7 +1002,7 @@ dl.glossary dd{color:var(--muted);font-size:.86rem;line-height:1.6}
 </section>
 
 <section class="block" id="todo">
-  <p class="eyebrow">07 · Manual steps</p>
+  <p class="eyebrow">08 · Manual steps</p>
   <h2>직접 할 일</h2>
   <p class="tldr"><b>한 줄 요약</b> 설치 2가지와 운영 DB 정리 2가지. 명령어와 SQL을 그대로 복사해 쓰면 된다.</p>
   <p class="lead">에이전트가 대신하지 않는 일: 설치, 내 계정에 도구 연결, 운영 DB 삭제.</p>
