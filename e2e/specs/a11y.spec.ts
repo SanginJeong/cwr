@@ -47,17 +47,4 @@ test.describe("V1 접근성 (axe)", { tag: "@p2" }, () => {
   }
 });
 
-// 데이터가 날마다 바뀌는 화면은 빼고, 고정된 화면만 비교한다. 기준 이미지는 CI(리눅스)에서 만든다
-test.describe("V2 스크린샷", { tag: "@p2" }, () => {
-  test("로그인", async ({ page }) => {
-    await page.goto("/login");
-    await waitForContent(page, "로그인");
-    await expect(page).toHaveScreenshot("login.png", { fullPage: true });
-  });
-
-  test("없는 페이지 (빈 상태)", async ({ page }) => {
-    await page.goto("/no-such-page");
-    await expect(page.getByText("요청하신 페이지를 찾을 수 없습니다.")).toBeVisible();
-    await expect(page).toHaveScreenshot("not-found.png", { fullPage: true });
-  });
-});
+// V2 스크린샷은 e2e/visual로 옮겼다 (4개 브라우저에서 돈다. docs/cross-browser-analysis.md)
