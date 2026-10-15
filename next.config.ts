@@ -8,6 +8,8 @@ const supabaseHost = process.env.NEXT_PUBLIC_SUPABASE_URL
 
 const nextConfig: NextConfig = {
   images: {
+    // Image의 quality prop에 쓰는 값 (기본 75, 프로필·랜딩 85, 게시글 100)
+    qualities: [75, 85, 100],
     // 팀 이미지를 고르지 않으면 dicebear SVG를 기본 이미지로 쓴다 (features/team/create-team/lib/resolveTeamImage.ts)
     // SVG 안의 스크립트가 실행되지 않게 Next 문서의 권장 CSP를 함께 둔다
     dangerouslyAllowSVG: true,
