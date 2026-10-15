@@ -51,9 +51,10 @@ jobs:
           cache: npm
       - run: npm ci
 
+      # latest는 GitHub API로 최신 버전을 찾다가 rate limit에 걸려 실패한다. 올릴 때는 이 숫자만 바꾼다
       - uses: supabase/setup-cli@v1
         with:
-          version: latest
+          version: 2.120.0
       # 마이그레이션까지 적용된 새 DB. 테스트 데이터는 E2E의 global.setup이 e2e/seed로 만든다
       - run: supabase start
       - run: npm run e2e:env
