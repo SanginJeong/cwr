@@ -81,7 +81,12 @@ const LoginForm = () => {
           />
         </div>
         <div className="flex justify-between text-md-medium tablet:text-lg-medium">
-          <button type="button" className="flex items-center gap-1" onClick={toggleRemember}>
+          <button
+            type="button"
+            className="flex items-center gap-1"
+            onClick={toggleRemember}
+            aria-pressed={isRemembered}
+          >
             <Icon name={isRemembered ? "checkboxActive" : "checkboxDefault"} className="size-5 tablet:size-5" />
             <span>이메일 기억하기</span>
           </button>
