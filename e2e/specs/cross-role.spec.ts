@@ -121,3 +121,27 @@ test("X4 인사담당자가 팀원을 제외하면 팀장 화면에서 빠진다
   await leader.reload();
   await expect(member(leader)).toBeVisible();
 });
+
+test("X5 팀장이 반려하면 직원 목록에 반려됨, 같은 날짜를 다시 신청할 수 있다", async ({ browser }) => {
+  const employee = await openAs(browser, "employee");
+  const { date, label } = await requestLeave(employee, "E2E 반려 흐름");
+
+  const leader = await openAs(browser, "leader");
+  await leader.goto("/approvals");
+  await reviewRowOf(leader, "박지민").filter({ hasText: label }).getByRole("button", { name: "반려" }).click();
+  await expect(toast(leader, "휴가를 반려했어요")).toBeVisible();
+
+  await employee.goto("/attendance");
+  // 같은 날짜에 앞 스펙(X2)이 반려한 신청이 있을 수 있어 사유로 고른다
+  const item = employee
+    .getByRole("region", { name: "휴가" })
+    .getByRole("listitem")
+    .filter({ hasText: label })
+    .filter({ hasText: "E2E 반려 흐름" });
+  await expect(item).toContainText("반려됨");
+  await expect(item.getByRole("button", { name: "신청 취소" })).toHaveCount(0);
+  // 반려된 날짜는 달력에 대기 칩이 없고, 모달에서 다시 고를 수 있다 (가장 이른 빈 날짜로 다시 잡힌다)
+  await expect(await showMonthOf(employee, date)).not.toContainText("대기");
+  const again = await requestLeave(employee, "E2E 다시 신청");
+  expect(again.date).toBe(date);
+});
