@@ -96,8 +96,10 @@ begin
   perform pg_temp.check('작성자', (json -> 'writer' ->> 'id')::bigint = me);
   perform pg_temp.check('상세에 recurring 포함 (groupId, taskListId)',
     (json -> 'recurring' ->> 'groupId')::bigint = g and (json -> 'recurring' ->> 'taskListId')::bigint = list);
+  -- 오늘 할 일 수는 요일·날짜에 따라 다르다: 한번(항상) + 일수(일·수요일) + 31일(31일). 매일은 내일부터
   perform pg_temp.check('get_group에 오늘 할 일 포함',
-    jsonb_array_length(public.get_group(g) -> 'taskLists' -> 0 -> 'tasks') = 1);
+    jsonb_array_length(public.get_group(g) -> 'taskLists' -> 0 -> 'tasks')
+      = 1 + (extract(dow from today) in (0, 3))::int + (extract(day from today) = 31)::int);
 
   -- ── 하루만 수정 ──
   t2 := pg_temp.task_id(list, today + 2, '매일');
