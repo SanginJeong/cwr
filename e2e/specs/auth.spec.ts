@@ -59,6 +59,30 @@ test.describe("이메일 로그인", () => {
     await expect(page.getByText(/특수문자|이메일 형식/)).toHaveCount(0);
   });
 
+  test("A10 이메일 기억하기는 로그인에 성공했을 때만 저장한다 (회귀)", async ({ page }) => {
+    // 회귀: 요청 전에 저장해서 로그인에 실패한 이메일(오타 등)도 다음 방문 때 채워졌다
+    const remember = page.getByRole("button", { name: "이메일 기억하기" });
+    const email = page.getByLabel("이메일");
+
+    await page.goto("/login");
+    await expect(remember).toHaveAttribute("aria-pressed", "false");
+    await remember.click();
+    await expect(remember).toHaveAttribute("aria-pressed", "true");
+
+    await submitLoginForm(page, "typo-employee@coworkers.test", "wrong-password-1!");
+    await expect(toast(page, "이메일 혹은 비밀번호를 확인해주세요")).toBeVisible();
+    await page.reload();
+    // 저장된 설정을 읽어 켜짐으로 바뀐 뒤에 입력값을 본다
+    await expect(remember).toHaveAttribute("aria-pressed", "true");
+    await expect(email).toHaveValue("");
+
+    await submitLoginForm(page, ROLES.employee.email, E2E_PASSWORD);
+    await expect(page).toHaveURL(/\/attendance$/);
+    await page.context().clearCookies();
+    await page.goto("/login");
+    await expect(email).toHaveValue(ROLES.employee.email);
+  });
+
   test("A9 퇴사 처리된 계정은 로그인할 수 없고, 복직하면 다시 된다", { tag: "@p2" }, async ({ browser, page }) => {
     const email = "doyun.choi@coworkers.test";
     const hr = await openAs(browser, "hr");
