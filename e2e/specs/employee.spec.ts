@@ -1,6 +1,7 @@
 import {
   ROLES,
   SUMMARY_LABELS,
+  approveLeaveToday,
   clearLatestClockOut,
   expect,
   isWeekendKst,
@@ -19,6 +20,19 @@ import {
 test.describe.configure({ mode: "serial" });
 test.use({ storageState: storageStatePath("employee") });
 reseedBeforeAll();
+
+// E1보다 먼저: 오늘 출근 기록이 없어야 휴가 안내가 보인다
+test("E10 승인된 휴가 날에는 출근하기 대신 휴가 안내", async ({ page }) => {
+  const { remove } = await approveLeaveToday(ROLES.employee.email);
+  try {
+    await page.goto("/attendance");
+    const todayPanel = page.getByRole("region", { name: "오늘", exact: true });
+    await expect(todayPanel).toContainText("오늘은 휴가예요");
+    await expect(todayPanel.getByRole("button", { name: "출근하기" })).toHaveCount(0);
+  } finally {
+    await remove();
+  }
+});
 
 test("E1 오늘 카드로 출근", async ({ page }) => {
   await page.goto("/attendance");

@@ -78,6 +78,30 @@ export const clearLatestClockOut = async (email: string) => {
   return { date: record.date as string, restore: () => setClockOut(record.clock_out_at) };
 };
 
+/**
+ * 계정에 오늘(KST) 승인된 휴가를 넣는다. 휴가는 내일부터만 신청할 수 있어 화면으로는 만들 수 없다.
+ * remove로 지운다
+ */
+export const approveLeaveToday = async (email: string) => {
+  const admin = adminSupabase();
+  const { data: profile, error } = await admin.from("profiles").select("id").eq("email", email).single();
+  if (error) throw new Error(`프로필 조회(${email}): ${error.message}`);
+
+  const { data: leave, error: insertError } = await admin
+    .from("leave_requests")
+    .insert({ user_id: profile.id, date: kstToday(), status: "APPROVED", decided_at: new Date().toISOString() })
+    .select("id")
+    .single();
+  if (insertError) throw new Error(`오늘 휴가 생성(${email}): ${insertError.message}`);
+
+  return {
+    remove: async () => {
+      const { error: deleteError } = await admin.from("leave_requests").delete().eq("id", leave.id);
+      if (deleteError) throw new Error(`오늘 휴가 삭제(${email}): ${deleteError.message}`);
+    },
+  };
+};
+
 /** 로그인 폼으로 로그인을 시도한다 */
 export const submitLoginForm = async (page: Page, email: string, password: string) => {
   await page.goto("/login");

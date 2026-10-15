@@ -104,6 +104,18 @@ begin
   perform pg_temp.check('출퇴근 기록 직접 수정 불가', public.test_error(
     'update public.attendance_records set clock_in_at = now() - interval ''3 hours''') = '42501');
 
+  -- 승인된 휴가 날에는 출근할 수 없다 (대기 중인 신청은 막지 않는다)
+  perform public.test_logout();
+  insert into public.leave_requests (user_id, date, status, decided_by, decided_at)
+    values (other_leader, public.today_kst(), 'APPROVED', hr, now());
+  perform public.test_login(other_leader);
+  perform pg_temp.check('승인된 휴가 날: 출근 불가', public.test_error('select public.clock_in()') = 'P0001');
+  perform public.test_logout();
+  perform pg_temp.check('승인된 휴가 날: 출근 기록이 생기지 않음',
+    not exists (select 1 from public.attendance_records where user_id = other_leader));
+  delete from public.leave_requests where user_id = other_leader;
+  perform public.test_login(member);
+
   -- ── 휴가 신청 ──
   perform pg_temp.check('오늘은 신청 불가', public.test_error(
     'select public.request_leave(public.today_kst())') = 'P0001');
