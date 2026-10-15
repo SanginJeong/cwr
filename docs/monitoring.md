@@ -34,7 +34,7 @@
 
 ## 연결 확인
 
-- **서버 에러**: 인사담당자로 로그인한 채 `https://cwr-one.vercel.app/api/admin/monitoring-check`를 연다. 500이 나고, Sentry에 `Sentry 서버 에러 확인용` 이슈가 `layer:server`로 생긴다. 스택트레이스가 `src/app/api/admin/monitoring-check/route.ts`를 가리키면 소스맵까지 된 것이다.
+- **서버 에러**: 처음 연결할 때는 인사담당자만 열 수 있는 `/api/admin/monitoring-check`(일부러 에러를 내는 Route Handler)로 확인하고 지웠다. 다시 확인하려면 이 경로를 잠깐 되살린다 (`git log --diff-filter=D -- src/app/api/admin/monitoring-check`). Sentry에 `layer:server` 이슈가 생기고 스택트레이스가 원본 `route.ts`를 가리키면 소스맵까지 된 것이다.
 - **브라우저 에러**: 사이트에서 개발자 도구 콘솔에 아래를 입력한다. (`throw`만 바로 치면 콘솔 자체 에러라 전역 핸들러로 가지 않는다)
 
   ```js
