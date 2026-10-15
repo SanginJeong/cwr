@@ -48,3 +48,6 @@ storybook-static
 /e2e/.auth/
 /playwright-report/
 /test-results/
+
+# 문서 (로컬에만 둔다: 테스트 기록·스크린샷 포함)
+/docs/
