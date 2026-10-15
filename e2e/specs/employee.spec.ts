@@ -1,5 +1,7 @@
 import {
+  ROLES,
   SUMMARY_LABELS,
+  clearLatestClockOut,
   expect,
   isWeekendKst,
   kstMonthLabel,
@@ -81,6 +83,19 @@ test("E6 이전 달로 가면 요약과 달력이 같은 달을 센다", async (
   const days = page.getByRole("region", { name: "월 달력" }).locator("li[data-date]");
   for (const label of SUMMARY_LABELS) {
     await expect(days.filter({ hasText: label }), label).toHaveCount(summary[label]);
+  }
+});
+
+test("E9 퇴근 기록이 없는 지난 날은 '근무 중'이 아니라 '퇴근 누락' (회귀)", async ({ page }) => {
+  // 회귀: 퇴근은 그날에만 할 수 있어(ADR-007) 지난 날은 더 이상 근무 중일 수 없는데 "근무 중"으로 보였다
+  const { date, restore } = await clearLatestClockOut(ROLES.employee.email);
+  try {
+    await page.goto("/attendance");
+    const day = await showMonthOf(page, date);
+    await expect(day).toContainText("퇴근 누락");
+    await expect(day).not.toContainText("근무 중");
+  } finally {
+    await restore();
   }
 });
 
