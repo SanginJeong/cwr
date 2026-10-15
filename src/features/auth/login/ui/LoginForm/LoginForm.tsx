@@ -32,13 +32,14 @@ const LoginForm = () => {
     validationRules: loginRules,
     keepLockOnSuccess: true,
     onSubmit: async (values) => {
-      if (isRemembered) {
-        setEmail(values.email);
-      }
       await postLogin(
         { email: values.email, password: values.password },
         {
           onSuccess: () => {
+            // 오타 난 이메일이 기억되지 않게 로그인에 성공했을 때만 저장한다
+            if (isRemembered) {
+              setEmail(values.email);
+            }
             success("로그인되었습니다.");
           },
           onError: (err) => {
