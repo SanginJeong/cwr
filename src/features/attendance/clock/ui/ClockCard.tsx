@@ -48,19 +48,20 @@ const ClockCard = ({ className }: ClockCardProps) => {
   const policy = toEnginePolicy(data.policy);
   const status = evaluateToday(record, policy, data.today);
   const minutes = record ? workedMinutes(record.clockInAt!, record.clockOutAt, nowKstNaiveIso(now)) : 0;
+  // 승인된 휴가 날에는 출근할 수 없다 (clock_in이 거부한다). 승인 전에 이미 출근했다면 퇴근은 그대로 할 수 있게 둔다
+  const isOnLeave = state === "BEFORE" && data.records.some((r) => r.kind === "LEAVE");
 
-  const actionButton =
-    state === "BEFORE" ? (
-      <BaseButton variant="solid" size="large" onClick={() => clockIn()} disabled={isPending}>
-        출근하기
-      </BaseButton>
-    ) : state === "WORKING" ? (
-      <BaseButton variant="outlinedPrimary" size="large" onClick={() => clockOut()} disabled={isPending}>
-        퇴근하기
-      </BaseButton>
-    ) : (
-      <p className="text-sm-medium text-icon-brand">오늘 근무를 마쳤어요</p>
-    );
+  const actionButton = isOnLeave ? null : state === "BEFORE" ? (
+    <BaseButton variant="solid" size="large" onClick={() => clockIn()} disabled={isPending}>
+      출근하기
+    </BaseButton>
+  ) : state === "WORKING" ? (
+    <BaseButton variant="outlinedPrimary" size="large" onClick={() => clockOut()} disabled={isPending}>
+      퇴근하기
+    </BaseButton>
+  ) : (
+    <p className="text-sm-medium text-icon-brand">오늘 근무를 마쳤어요</p>
+  );
 
   return (
     <section
@@ -87,7 +88,9 @@ const ClockCard = ({ className }: ClockCardProps) => {
         ))}
       </dl>
       <p className="text-md-regular text-text-secondary">
-        {state === "BEFORE" ? (
+        {isOnLeave ? (
+          "오늘은 휴가예요. 출근하지 않아도 돼요."
+        ) : state === "BEFORE" ? (
           "아직 출근 전이에요."
         ) : (
           <>

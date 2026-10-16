@@ -57,7 +57,9 @@ const AttendanceCalendar = ({ month, today, evaluations, records, leaves }: Atte
               )}
               {work && !day.isWeekend && (
                 <span className="hidden tablet:block text-xs-regular text-text-default truncate">
-                  {formatClockTime(work.clockInAt)} – {work.clockOutAt ? formatClockTime(work.clockOutAt) : "근무 중"}
+                  {formatClockTime(work.clockInAt)} –{" "}
+                  {/* 퇴근은 그날에만 할 수 있어(ADR-007) 지난 날에 퇴근 시각이 없으면 퇴근을 빠뜨린 것 */}
+                  {work.clockOutAt ? formatClockTime(work.clockOutAt) : day.date < today ? "퇴근 누락" : "근무 중"}
                 </span>
               )}
               {leave?.reason && (status === "LEAVE" || kind === "PENDING") && (

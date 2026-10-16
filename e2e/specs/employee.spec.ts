@@ -1,5 +1,8 @@
 import {
+  ROLES,
   SUMMARY_LABELS,
+  approveLeaveToday,
+  clearLatestClockOut,
   expect,
   isWeekendKst,
   kstMonthLabel,
@@ -17,6 +20,19 @@ import {
 test.describe.configure({ mode: "serial" });
 test.use({ storageState: storageStatePath("employee") });
 reseedBeforeAll();
+
+// E1보다 먼저: 오늘 출근 기록이 없어야 휴가 안내가 보인다
+test("E10 승인된 휴가 날에는 출근하기 대신 휴가 안내", async ({ page }) => {
+  const { remove } = await approveLeaveToday(ROLES.employee.email);
+  try {
+    await page.goto("/attendance");
+    const todayPanel = page.getByRole("region", { name: "오늘", exact: true });
+    await expect(todayPanel).toContainText("오늘은 휴가예요");
+    await expect(todayPanel.getByRole("button", { name: "출근하기" })).toHaveCount(0);
+  } finally {
+    await remove();
+  }
+});
 
 test("E1 오늘 카드로 출근", async ({ page }) => {
   await page.goto("/attendance");
@@ -81,6 +97,19 @@ test("E6 이전 달로 가면 요약과 달력이 같은 달을 센다", async (
   const days = page.getByRole("region", { name: "월 달력" }).locator("li[data-date]");
   for (const label of SUMMARY_LABELS) {
     await expect(days.filter({ hasText: label }), label).toHaveCount(summary[label]);
+  }
+});
+
+test("E9 퇴근 기록이 없는 지난 날은 '근무 중'이 아니라 '퇴근 누락' (회귀)", async ({ page }) => {
+  // 회귀: 퇴근은 그날에만 할 수 있어(ADR-007) 지난 날은 더 이상 근무 중일 수 없는데 "근무 중"으로 보였다
+  const { date, restore } = await clearLatestClockOut(ROLES.employee.email);
+  try {
+    await page.goto("/attendance");
+    const day = await showMonthOf(page, date);
+    await expect(day).toContainText("퇴근 누락");
+    await expect(day).not.toContainText("근무 중");
+  } finally {
+    await restore();
   }
 });
 

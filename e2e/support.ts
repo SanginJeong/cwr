@@ -48,6 +48,60 @@ export const setAccount = async (email: string, { password, active }: { password
   }
 };
 
+/**
+ * 계정의 오늘 이전 가장 최근 출근 기록에서 퇴근 시각을 지운다 (퇴근을 잊은 날 만들기).
+ * 시드는 지난 날에 늘 퇴근 시각을 넣으므로 화면 대신 DB를 바로 고친다. restore로 되돌린다
+ */
+export const clearLatestClockOut = async (email: string) => {
+  const admin = adminSupabase();
+  const { data: profile, error } = await admin.from("profiles").select("id").eq("email", email).single();
+  if (error) throw new Error(`프로필 조회(${email}): ${error.message}`);
+
+  const { data: record, error: recordError } = await admin
+    .from("attendance_records")
+    .select("id, date, clock_out_at")
+    .eq("user_id", profile.id)
+    .lt("date", kstToday())
+    .order("date", { ascending: false })
+    .limit(1)
+    .single();
+  if (recordError) throw new Error(`출근 기록 조회(${email}): ${recordError.message}`);
+
+  const setClockOut = async (value: string | null) => {
+    const { error: updateError } = await admin
+      .from("attendance_records")
+      .update({ clock_out_at: value })
+      .eq("id", record.id);
+    if (updateError) throw new Error(`퇴근 시각 변경(${email}): ${updateError.message}`);
+  };
+  await setClockOut(null);
+  return { date: record.date as string, restore: () => setClockOut(record.clock_out_at) };
+};
+
+/**
+ * 계정에 오늘(KST) 승인된 휴가를 넣는다. 휴가는 내일부터만 신청할 수 있어 화면으로는 만들 수 없다.
+ * remove로 지운다
+ */
+export const approveLeaveToday = async (email: string) => {
+  const admin = adminSupabase();
+  const { data: profile, error } = await admin.from("profiles").select("id").eq("email", email).single();
+  if (error) throw new Error(`프로필 조회(${email}): ${error.message}`);
+
+  const { data: leave, error: insertError } = await admin
+    .from("leave_requests")
+    .insert({ user_id: profile.id, date: kstToday(), status: "APPROVED", decided_at: new Date().toISOString() })
+    .select("id")
+    .single();
+  if (insertError) throw new Error(`오늘 휴가 생성(${email}): ${insertError.message}`);
+
+  return {
+    remove: async () => {
+      const { error: deleteError } = await admin.from("leave_requests").delete().eq("id", leave.id);
+      if (deleteError) throw new Error(`오늘 휴가 삭제(${email}): ${deleteError.message}`);
+    },
+  };
+};
+
 /** 로그인 폼으로 로그인을 시도한다 */
 export const submitLoginForm = async (page: Page, email: string, password: string) => {
   await page.goto("/login");
@@ -189,6 +243,8 @@ export const requestLeave = async (page: Page, reason?: string) => {
 export const showMonthOf = async (page: Page, date: string) => {
   if (date.slice(0, 7) > kstToday().slice(0, 7)) {
     await page.getByRole("button", { name: "다음 달" }).click();
+  } else if (date.slice(0, 7) < kstToday().slice(0, 7)) {
+    await page.getByRole("button", { name: "이전 달" }).click();
   }
   return page.locator(`li[data-date="${date}"]`);
 };
