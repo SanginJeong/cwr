@@ -102,6 +102,42 @@ export const approveLeaveToday = async (email: string) => {
   };
 };
 
+/**
+ * 계정에 날짜가 지난 대기 중 휴가를 넣는다. 휴가는 내일부터만 신청할 수 있어 화면으로는 만들 수 없다.
+ * 어제부터 거슬러 올라가며 신청이 없는 평일을 고른다. remove로 지운다
+ */
+export const pendingLeaveInPast = async (email: string, reason: string) => {
+  const admin = adminSupabase();
+  const { data: profile, error } = await admin.from("profiles").select("id").eq("email", email).single();
+  if (error) throw new Error(`프로필 조회(${email}): ${error.message}`);
+
+  for (let back = 1; back <= 30; back++) {
+    const date = new Date(Date.parse(`${kstToday()}T00:00:00Z`) - back * 86_400_000).toISOString().slice(0, 10);
+    if (isWeekendDate(date)) continue;
+    const { count } = await admin
+      .from("leave_requests")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", profile.id)
+      .eq("date", date);
+    if (count) continue;
+
+    const { data: leave, error: insertError } = await admin
+      .from("leave_requests")
+      .insert({ user_id: profile.id, date, reason })
+      .select("id")
+      .single();
+    if (insertError) throw new Error(`지난 휴가 생성(${email}): ${insertError.message}`);
+    return {
+      date,
+      remove: async () => {
+        const { error: deleteError } = await admin.from("leave_requests").delete().eq("id", leave.id);
+        if (deleteError) throw new Error(`지난 휴가 삭제(${email}): ${deleteError.message}`);
+      },
+    };
+  }
+  throw new Error(`지난 30일 안에 휴가를 넣을 평일이 없음(${email})`);
+};
+
 /** 로그인 폼으로 로그인을 시도한다 */
 export const submitLoginForm = async (page: Page, email: string, password: string) => {
   await page.goto("/login");

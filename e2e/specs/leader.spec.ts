@@ -3,9 +3,11 @@ import {
   isWeekendDate,
   isWeekendKst,
   kstToday,
+  ROLES,
   memberPanel,
   openAs,
   openTeamPage,
+  pendingLeaveInPast,
   requestLeave,
   reseedBeforeAll,
   reviewRowOf,
@@ -109,6 +111,20 @@ test("L8 승인하면 사이드바 배지가 줄고 팀 휴가 달력의 대기 
   else await expect(badge).not.toContainText(/\d/);
   await expect(day).toContainText("박지민");
   await expect(day).not.toContainText("박지민 · 대기");
+});
+
+test("L9 날짜가 지난 대기 신청에는 '지난 날짜' 표시, 처리 버튼은 그대로", async ({ page }) => {
+  const { remove } = await pendingLeaveInPast(ROLES.employee.email, "E2E L9");
+  try {
+    await page.goto("/approvals");
+    const past = pendingRows(page).filter({ hasText: "E2E L9" });
+    await expect(past).toContainText("지난 날짜");
+    await expect(past.getByRole("button", { name: "승인" })).toBeEnabled();
+    // 앞으로의 신청에는 없다
+    await expect(pendingRows(page).filter({ hasNotText: "E2E L9" }).filter({ hasText: "지난 날짜" })).toHaveCount(0);
+  } finally {
+    await remove();
+  }
 });
 
 test("L6 팀 페이지의 오늘 우리 팀 근태는 팀장에게만", async ({ page, browser }) => {
