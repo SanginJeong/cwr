@@ -4,6 +4,8 @@ import { AttendanceChip, type ReviewLeaveRequest } from "@/entities/attendance";
 import { useDecideLeave } from "@/features/attendance/decide-leave";
 import { cn } from "@/shared/lib/cn";
 import { formatDayLabel } from "@/shared/lib/calendar";
+import { josaWaGwa } from "@/shared/lib/josa";
+import { toKstDateString } from "@/shared/lib/kstDate";
 
 interface LeaveReviewListProps {
   requests: ReviewLeaveRequest[];
@@ -24,12 +26,21 @@ const OverlapText = ({ overlaps }: Pick<ReviewLeaveRequest, "overlaps">) =>
     <span className="text-text-default">겹치는 휴가 없음</span>
   ) : (
     <span className="text-point-orange">
-      {overlaps.map((o) => `${o.userName}${o.status === "PENDING" ? "(대기)" : ""}`).join(", ")}와 겹침
+      {overlaps.map((o) => `${o.userName}${o.status === "PENDING" ? "(대기)" : ""}`).join(", ")}
+      {/* 조사는 괄호가 아니라 마지막 이름에 맞춘다: 박지민(대기)과 */}
+      {josaWaGwa(overlaps[overlaps.length - 1].userName)} 겹침
     </span>
   );
 
+/** 날짜가 지났는데 아직 대기 중인 신청. 늦게 승인해도 그날이 휴가로 다시 판정되므로 처리는 막지 않고 표시만 한다 */
+const PastDateBadge = () => (
+  <span className="rounded-md bg-point-orange/15 px-1.5 py-0.5 text-xs-semibold text-point-orange">지난 날짜</span>
+);
+
 const LeaveReviewList = ({ requests, pending, isLoading }: LeaveReviewListProps) => {
   const { mutate: decide, isPending, variables } = useDecideLeave();
+  const today = toKstDateString(new Date());
+  const isPast = (request: ReviewLeaveRequest) => pending && request.date < today;
 
   if (isLoading) {
     return <div aria-busy="true" className="h-[240px] rounded-[20px] bg-background-primary animate-pulse" />;
@@ -93,7 +104,10 @@ const LeaveReviewList = ({ requests, pending, isLoading }: LeaveReviewListProps)
                   {request.teams.join(", ") || "소속 팀 없음"} · {formatDateTime(request.createdAt)} 신청
                 </span>
               </div>
-              <span className="shrink-0 text-md-semibold text-text-primary">{formatDayLabel(request.date)}</span>
+              <span className="shrink-0 flex flex-col items-end gap-1 text-md-semibold text-text-primary">
+                {formatDayLabel(request.date)}
+                {isPast(request) && <PastDateBadge />}
+              </span>
             </div>
             <p className="text-md-regular text-text-secondary">사유: {request.reason ?? "—"}</p>
             {pending ? (
@@ -145,7 +159,10 @@ const LeaveReviewList = ({ requests, pending, isLoading }: LeaveReviewListProps)
                     </div>
                   </td>
                   <td className="px-3 py-4 text-md-semibold text-text-primary whitespace-nowrap">
-                    {formatDayLabel(request.date)}
+                    <div className="flex flex-col items-start gap-1">
+                      {formatDayLabel(request.date)}
+                      {isPast(request) && <PastDateBadge />}
+                    </div>
                   </td>
                   <td className="px-3 py-4 text-text-secondary">{request.reason ?? "—"}</td>
                   <td className="px-3 py-4">

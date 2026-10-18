@@ -2,9 +2,13 @@ import {
   expect,
   isWeekendDate,
   isWeekendKst,
+  kstToday,
+  ROLES,
   memberPanel,
   openAs,
   openTeamPage,
+  pendingLeaveInPast,
+  requestLeave,
   reseedBeforeAll,
   reviewRowOf,
   storageStatePath,
@@ -26,10 +30,13 @@ test("L1 사이드바 배지 = 대기 목록 수", async ({ page }) => {
   await expect(page.getByRole("link", { name: "휴가 승인" })).toContainText(String(count));
 });
 
-test("L2 같은 날 겹침 표시, 팀장 본인 신청은 목록에 없음", async ({ page }) => {
+test("L2 같은 날 겹침 표시(조사 회귀 포함), 팀장 본인 신청은 목록에 없음", async ({ page }) => {
   await page.goto("/approvals");
   await expect(reviewRowOf(page, "박지민")).toContainText("최도윤");
   await expect(reviewRowOf(page, "최도윤")).toContainText("박지민");
+  // 회귀: 받침이 있는 이름에도 "와"를 붙였다 ("박지민(대기)와 겹침")
+  await expect(reviewRowOf(page, "박지민")).toContainText("최도윤(대기)과 겹침");
+  await expect(reviewRowOf(page, "최도윤")).toContainText("박지민(대기)과 겹침");
   await expect(pendingRows(page).filter({ hasText: "겹침" })).not.toHaveCount(0);
   await expect(reviewRowOf(page, "김하늘")).toHaveCount(0);
 });
@@ -80,6 +87,44 @@ test("L4 반려 → 처리됨 탭에 반려됨", async ({ page }) => {
   const done = reviewRowOf(page, "최도윤").filter({ hasText: dateLabel });
   await expect(done).toContainText("반려됨");
   await expect(done).toContainText("김하늘");
+});
+
+test("L8 승인하면 사이드바 배지가 줄고 팀 휴가 달력의 대기 칩이 승인됨으로 바뀐다", async ({ page, browser }) => {
+  const employee = await openAs(browser, "employee");
+  const { date } = await requestLeave(employee, "E2E L8");
+
+  await page.goto("/approvals");
+  const badge = page.getByRole("link", { name: "휴가 승인" });
+  await expect(pendingRows(page).first()).toBeVisible();
+  const before = await pendingRows(page).count();
+  await expect(badge).toContainText(String(before));
+
+  const calendar = page.getByRole("region", { name: /팀 휴가/ });
+  if (date.slice(0, 7) > kstToday().slice(0, 7)) await calendar.getByRole("button", { name: "다음 달" }).click();
+  const day = calendar.locator(`li[data-date="${date}"]`);
+  await expect(day).toContainText("박지민 · 대기");
+
+  await pendingRows(page).filter({ hasText: "E2E L8" }).getByRole("button", { name: "승인" }).click();
+  await expect(toast(page, "휴가를 승인했어요")).toBeVisible();
+  // 배지는 0이면 숨는다
+  if (before > 1) await expect(badge).toContainText(String(before - 1));
+  else await expect(badge).not.toContainText(/\d/);
+  await expect(day).toContainText("박지민");
+  await expect(day).not.toContainText("박지민 · 대기");
+});
+
+test("L9 날짜가 지난 대기 신청에는 '지난 날짜' 표시, 처리 버튼은 그대로", async ({ page }) => {
+  const { remove } = await pendingLeaveInPast(ROLES.employee.email, "E2E L9");
+  try {
+    await page.goto("/approvals");
+    const past = pendingRows(page).filter({ hasText: "E2E L9" });
+    await expect(past).toContainText("지난 날짜");
+    await expect(past.getByRole("button", { name: "승인" })).toBeEnabled();
+    // 앞으로의 신청에는 없다
+    await expect(pendingRows(page).filter({ hasNotText: "E2E L9" }).filter({ hasText: "지난 날짜" })).toHaveCount(0);
+  } finally {
+    await remove();
+  }
 });
 
 test("L6 팀 페이지의 오늘 우리 팀 근태는 팀장에게만", async ({ page, browser }) => {
