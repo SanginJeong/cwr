@@ -1,12 +1,16 @@
 import {
+  ROLES,
   countIn,
+  deleteAccount,
   expect,
+  setAccount,
   hasPastWeekdayThisMonth,
   memberPanel,
   openTeamPage,
   reseedBeforeAll,
   reviewRowOf,
   storageStatePath,
+  submitLoginForm,
   test,
   toast,
 } from "../support";
@@ -177,4 +181,98 @@ test("H8 이미지 없이 만든 팀의 수정 페이지가 에러 없이 열리
   await page.getByRole("button", { name: "삭제하기" }).click();
   await page.getByRole("dialog").getByRole("button", { name: "삭제하기" }).click();
   await expect(toast(page, "팀을 성공적으로 삭제")).toBeVisible();
+});
+
+test("H11 재직 상태·소속 없음 필터, 내 행에는 퇴사 처리가 없다", async ({ page }) => {
+  await page.goto("/admin/members");
+  const rows = memberRows(page);
+  await expect(rows.first()).toBeVisible();
+  const filter = async (label: string, option: string) => {
+    await page.getByRole("button", { name: label, exact: true }).click();
+    await page.getByRole("option", { name: option, exact: true }).click();
+  };
+
+  // 시드의 인사담당자(이서연)는 팀이 없다
+  await filter("팀", "소속 없음");
+  await expect(rows.filter({ hasText: ROLES.hr.email })).toHaveCount(1);
+  await expect(rows.filter({ hasNotText: "소속 없음" })).toHaveCount(0);
+  await filter("팀", "팀 전체");
+
+  // 퇴사 필터에는 퇴사자만, 메뉴는 복직. 시드에는 퇴사자가 없어 한 명을 잠시 퇴사로 바꾼다
+  const resigned = "haeun.noh@coworkers.test";
+  await setAccount(resigned, { active: false });
+  try {
+    await page.reload();
+    await expect(rows.filter({ hasText: resigned })).toHaveCount(0);
+    await filter("재직 상태", "퇴사");
+    await expect(rows).toHaveCount(1);
+    await expect(rows).toContainText("노하은");
+    await page.getByRole("button", { name: "노하은 메뉴" }).click();
+    await expect(page.getByRole("button", { name: "복직" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "퇴사 처리" })).toHaveCount(0);
+    await page.keyboard.press("Escape");
+  } finally {
+    await setAccount(resigned, { active: true });
+  }
+  await page.reload();
+
+  await page.getByRole("button", { name: `${ROLES.hr.name} 메뉴` }).click();
+  await expect(page.getByRole("button", { name: "정보 수정" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "퇴사 처리" })).toHaveCount(0);
+});
+
+test("H10 이미 있는 이메일·이름으로는 등록할 수 없고 입력란에 이유가 보인다", async ({ page }) => {
+  await page.goto("/admin/members");
+  await page.getByRole("button", { name: "직원 추가" }).click();
+  const dialog = page.getByRole("dialog");
+  const name = dialog.getByLabel("이름", { exact: true });
+  const email = dialog.getByLabel("이메일 (로그인 아이디)");
+  const submit = dialog.getByRole("button", { name: "추가하기" });
+
+  await name.fill(`E2E 중복 ${Date.now() % 100000}`);
+  await email.fill(ROLES.employee.email);
+  await submit.click();
+  await expect(dialog.getByText("이미 등록된 이메일입니다.")).toBeVisible();
+  await expect(email).toHaveAttribute("aria-invalid", "true");
+
+  await name.fill(ROLES.employee.name);
+  await email.fill(`e2e-dup-${Date.now()}@coworkers.test`);
+  await submit.click();
+  await expect(dialog.getByText("이미 사용중인 이름입니다.")).toBeVisible();
+  await expect(name).toHaveAttribute("aria-invalid", "true");
+});
+
+test("H9 직원 추가 → 임시 비밀번호로 로그인, 목록에 팀과 함께 보인다", async ({ page, browser }) => {
+  const stamp = Date.now() % 1_000_000;
+  const nickname = `E2E 신입 ${stamp}`;
+  const email = `e2e-new-${stamp}@coworkers.test`;
+  try {
+    await page.goto("/admin/members");
+    const before = await countIn(page.getByText(/^재직 \d+명/));
+    await page.getByRole("button", { name: "직원 추가" }).click();
+    const dialog = page.getByRole("dialog");
+    await dialog.getByLabel("이름", { exact: true }).fill(nickname);
+    await dialog.getByLabel("이메일 (로그인 아이디)").fill(email);
+    await dialog.getByRole("combobox", { name: "팀", exact: true }).selectOption({ label: "디자인팀" });
+    await dialog.getByRole("button", { name: "추가하기" }).click();
+
+    await expect(dialog.getByText(`${nickname}님을 등록했어요`)).toBeVisible();
+    const password = (await dialog.locator("code").innerText()).trim();
+    expect(password).toMatch(/^\S{12}$/);
+    await dialog.getByRole("button", { name: "확인" }).click();
+
+    await expect(page.getByText(/^재직 \d+명/)).toContainText(`재직 ${before + 1}명`);
+    await page.getByLabel("이름 및 이메일 검색").fill(email);
+    await expect(memberRows(page)).toHaveCount(1);
+    await expect(memberRows(page)).toContainText("디자인팀 · 직원");
+
+    // 새 브라우저(로그인 안 됨)에서 임시 비밀번호로 로그인
+    const context = await browser.newContext({ storageState: { cookies: [], origins: [] } });
+    const newcomer = await context.newPage();
+    await submitLoginForm(newcomer, email, password);
+    await expect(newcomer).toHaveURL(/\/attendance$/);
+    await context.close();
+  } finally {
+    await deleteAccount(email);
+  }
 });

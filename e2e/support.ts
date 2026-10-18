@@ -138,6 +138,15 @@ export const pendingLeaveInPast = async (email: string, reason: string) => {
   throw new Error(`지난 30일 안에 휴가를 넣을 평일이 없음(${email})`);
 };
 
+/** 테스트에서 만든 계정을 지운다 (Auth 계정을 지우면 프로필·멤버십도 함께 지워진다). 없으면 넘어간다 */
+export const deleteAccount = async (email: string) => {
+  const admin = adminSupabase();
+  const { data: profile } = await admin.from("profiles").select("auth_id").eq("email", email).maybeSingle();
+  if (!profile) return;
+  const { error } = await admin.auth.admin.deleteUser(profile.auth_id);
+  if (error) throw new Error(`계정 삭제(${email}): ${error.message}`);
+};
+
 /** 로그인 폼으로 로그인을 시도한다 */
 export const submitLoginForm = async (page: Page, email: string, password: string) => {
   await page.goto("/login");
