@@ -162,7 +162,8 @@ const AdminMembersPage = () => {
         ) : isPending ? (
           <div aria-busy="true" className="h-[420px] rounded-[20px] bg-background-primary animate-pulse" />
         ) : (
-          <section aria-label="구성원 목록" className="rounded-[20px] bg-background-primary overflow-x-auto">
+          // relative: 표 머리의 sr-only(absolute)가 스크롤 영역을 벗어나 페이지 전체를 가로로 밀지 않게 한다
+          <section aria-label="구성원 목록" className="relative rounded-[20px] bg-background-primary overflow-x-auto">
             <table className="w-full min-w-[820px] border-collapse text-md-regular">
               <thead>
                 <tr className="text-left text-sm-medium text-text-default">
@@ -171,7 +172,12 @@ const AdminMembersPage = () => {
                   <th className="px-3 py-4 font-medium">근태 정책</th>
                   <th className="px-3 py-4 font-medium">이번 달</th>
                   <th className="px-3 py-4 font-medium">오늘</th>
-                  <th className="px-5 py-4">
+                  {/*
+                    메뉴 열은 오른쪽에 고정한다. 모바일에서 표를 가로로 스크롤하지 않아도 ⋮에 닿는다.
+                    열린 메뉴가 아래 행의 고정 칸에 가리지 않게 focus-within으로 올리고,
+                    고정 칸의 배경이 덮는 행 구분선은 그림자로 다시 그린다
+                  */}
+                  <th className="sticky right-0 bg-background-primary px-5 py-4">
                     <span className="sr-only">메뉴</span>
                   </th>
                 </tr>
@@ -220,7 +226,7 @@ const AdminMembersPage = () => {
                           </span>
                         )}
                       </td>
-                      <td className="px-5 py-3.5 text-right">
+                      <td className="sticky right-0 focus-within:z-10 bg-background-primary shadow-[inset_0_1px_0_rgb(var(--border-primary))] px-5 py-3.5 text-right">
                         <Dropdown
                           label={`${employee.nickname} 메뉴`}
                           iconName="kebab"
