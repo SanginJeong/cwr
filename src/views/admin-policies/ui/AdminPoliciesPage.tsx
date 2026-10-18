@@ -74,6 +74,7 @@ const AdminPoliciesPage = () => {
               // 다른 정책을 고르면 폼을 새로 만든다
               key={selected?.id ?? "new"}
               policy={selected}
+              otherNames={policies.filter((p) => p.id !== selected?.id).map((p) => p.name)}
               onSaved={(id) => setSelectedId(id)}
               onDeleted={() => setSelectedId(undefined)}
             />

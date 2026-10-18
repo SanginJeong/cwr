@@ -20,6 +20,8 @@ const FIELD_STYLE =
 interface PolicyEditorProps {
   /** 없으면 새 정책 */
   policy: AdminPolicy<PolicyInfo> | null;
+  /** 다른 정책들의 이름. 같은 이름이 둘이면 구성원 수정 모달·필터에서 구별할 수 없다 */
+  otherNames: string[];
   onSaved: (id: number) => void;
   onDeleted: () => void;
 }
@@ -38,8 +40,10 @@ const buildPolicy = (form: {
     if (form.coreStart >= form.coreEnd) return { error: "코어타임 시작은 끝보다 빨라야 해요." };
     return { policy: { type: "CORE_TIME", coreStart: form.coreStart, coreEnd: form.coreEnd } };
   }
-  const grace = Number(form.graceMinutes);
   if (!form.workStart) return { error: "출근 시각을 입력해주세요." };
+  // 빈 칸은 Number("") = 0이라 따로 본다. 예전에는 유예 0분으로 저장됐다
+  if (!form.graceMinutes.trim()) return { error: "유예를 입력해주세요." };
+  const grace = Number(form.graceMinutes);
   if (!Number.isInteger(grace) || grace < 0 || grace > 180) return { error: "유예는 0~180분이에요." };
   return { policy: { type: "FIXED", workStart: form.workStart, graceMinutes: grace } };
 };
@@ -48,7 +52,7 @@ const buildPolicy = (form: {
  * 정책 만들기·수정. 유형별 입력을 보여준다.
  * "저장하면 이렇게 바뀌어요" 미리보기는 범위 밖 (roadmap §0, 시뮬레이터)
  */
-const PolicyEditor = ({ policy, onSaved, onDeleted }: PolicyEditorProps) => {
+const PolicyEditor = ({ policy, otherNames, onSaved, onDeleted }: PolicyEditorProps) => {
   const engine = policy ? toEnginePolicy(policy) : null;
   const [name, setName] = useState(policy?.name ?? "");
   const [form, setForm] = useState({
@@ -64,11 +68,15 @@ const PolicyEditor = ({ policy, onSaved, onDeleted }: PolicyEditorProps) => {
   const { mutate: makeDefault, isPending: isSettingDefault } = useSetDefaultPolicy();
 
   const built = buildPolicy(form);
+  const normalize = (value: string) => value.trim().toLowerCase();
+  const nameError = otherNames.some((other) => normalize(other) === normalize(name))
+    ? "이미 있는 정책 이름이에요."
+    : undefined;
   const canDelete = policy && !policy.isDefault && policy.assignedCount === 0;
   const set = (key: keyof typeof form) => (value: string) => setForm((f) => ({ ...f, [key]: value }));
 
   const submit = () => {
-    if (!("policy" in built) || !name.trim()) return;
+    if (!("policy" in built) || !name.trim() || nameError) return;
     save({ id: policy?.id, name, policy: built.policy }, { onSuccess: onSaved });
   };
 
@@ -94,6 +102,7 @@ const PolicyEditor = ({ policy, onSaved, onDeleted }: PolicyEditorProps) => {
         value={name}
         maxLength={50}
         placeholder="예: 고정 근무 09:00"
+        error={nameError}
         onChange={(e) => setName(e.target.value)}
       />
 
@@ -203,7 +212,7 @@ const PolicyEditor = ({ policy, onSaved, onDeleted }: PolicyEditorProps) => {
           size="large"
           className="w-auto px-6"
           onClick={submit}
-          disabled={isSaving || !name.trim() || "error" in built}
+          disabled={isSaving || !name.trim() || !!nameError || "error" in built}
         >
           {isSaving ? "저장 중..." : "저장하기"}
         </BaseButton>

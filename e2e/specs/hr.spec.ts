@@ -276,3 +276,72 @@ test("H9 직원 추가 → 임시 비밀번호로 로그인, 목록에 팀과 �
     await deleteAccount(email);
   }
 });
+
+test("H12 정책 만들기 → 수정 → 삭제, 저장 직후 편집기가 다른 정책으로 튀지 않는다", async ({ page }) => {
+  const name = `E2E 정책 ${Date.now()}`;
+  const editor = page.locator('[aria-labelledby="policy-editor-title"]');
+  const heading = page.locator("#policy-editor-title");
+  await page.goto("/admin/policies");
+  await expect(policyCard(page, "자율 출퇴근")).toBeVisible();
+
+  await page.getByRole("button", { name: "새 정책" }).click();
+  await page.getByLabel("이름", { exact: true }).fill(name);
+  await page.getByRole("radio", { name: /^자율/ }).check();
+  // 회귀: 저장 직후 목록을 다시 받기 전까지 편집기가 첫 정책(기본 정책)의 폼으로 바뀌었다
+  await page.evaluate(() => {
+    const seen: string[] = [];
+    (window as unknown as { __headings: string[] }).__headings = seen;
+    new MutationObserver(() => {
+      const text = document.getElementById("policy-editor-title")?.firstChild?.textContent;
+      if (text && seen.at(-1) !== text) seen.push(text);
+    }).observe(document.body, { subtree: true, childList: true, characterData: true });
+  });
+  await page.getByRole("button", { name: "저장하기" }).click();
+  await expect(toast(page, "정책을 저장했어요")).toBeVisible();
+  await expect(heading).toContainText(name);
+  await expect(policyCard(page, name)).toHaveAttribute("aria-pressed", "true");
+  const headings = await page.evaluate(() => (window as unknown as { __headings: string[] }).__headings);
+  expect(headings.filter((h) => h !== "새 정책" && h !== name)).toEqual([]);
+
+  // 유형을 바꾸면 그 유형의 칸이 저장된다. 유형 라디오의 이름에는 설명("시작 시각까지 출근")도 붙는다
+  await editor.getByRole("radio", { name: /^코어타임/ }).check();
+  await editor.getByLabel("코어타임 시작", { exact: true }).fill("11:00");
+  await editor.getByRole("button", { name: "저장하기" }).click();
+  await expect(toast(page, "정책을 저장했어요").first()).toBeVisible();
+  await page.reload();
+  await policyCard(page, name).click();
+  await expect(editor.getByRole("radio", { name: /^코어타임/ })).toBeChecked();
+  await expect(editor.getByLabel("코어타임 시작", { exact: true })).toHaveValue("11:00");
+
+  // 아무도 쓰지 않는 정책은 지울 수 있고, 지우면 기본 정책으로 돌아간다
+  await editor.getByRole("button", { name: "삭제" }).click();
+  await expect(toast(page, "정책을 지웠어요")).toBeVisible();
+  await expect(policyCard(page, name)).toHaveCount(0);
+  await expect(heading).toContainText("자율 출퇴근");
+});
+
+test("H13 유예를 비우거나 이미 있는 이름이면 저장할 수 없다", async ({ page }) => {
+  await page.goto("/admin/policies");
+  await page.getByRole("button", { name: "새 정책" }).click();
+  const save = page.getByRole("button", { name: "저장하기" });
+
+  // 회귀: 빈 칸이 Number("") = 0으로 읽혀 유예 0분으로 저장됐다
+  await page.getByLabel("이름", { exact: true }).fill(`E2E 유예 ${Date.now()}`);
+  await page.getByLabel("유예 (분)", { exact: true }).fill("");
+  await expect(page.getByText("유예를 입력해주세요.")).toBeVisible();
+  await expect(save).toBeDisabled();
+  await page.getByLabel("유예 (분)", { exact: true }).fill("10");
+  await expect(save).toBeEnabled();
+
+  // 회귀: 같은 이름의 정책이 둘 생겨 구성원 수정 모달·필터에서 구별할 수 없었다 (앞뒤 공백·대소문자 무시)
+  const nameInput = page.getByLabel("이름", { exact: true });
+  await nameInput.fill(" 고정 근무 09:00 ");
+  await expect(page.getByText("이미 있는 정책 이름이에요.")).toBeVisible();
+  await expect(nameInput).toHaveAttribute("aria-invalid", "true");
+  await expect(save).toBeDisabled();
+
+  // 자기 이름은 그대로 저장할 수 있다
+  await policyCard(page, "고정 근무 09:00").click();
+  await expect(page.getByText("이미 있는 정책 이름이에요.")).toHaveCount(0);
+  await expect(save).toBeEnabled();
+});
