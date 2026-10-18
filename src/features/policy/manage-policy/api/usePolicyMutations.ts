@@ -56,10 +56,13 @@ const usePolicyMutation = <T, R>(fn: (arg: T) => Promise<R>, message: string) =>
     mutationFn: fn,
     onSuccess: () => success(message),
     onError: (err: Error) => error(err.message),
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: employeeKeys.all });
-      queryClient.invalidateQueries({ queryKey: attendanceKeys.all });
-    },
+    // 다시 받을 때까지 기다린다. 그래야 mutate()의 onSuccess(새 정책 고르기)가 새 목록을 본다.
+    // 예전에는 목록에 아직 없는 id를 골라 편집기가 잠깐 첫 정책(기본 정책)의 폼으로 바뀌었다
+    onSettled: () =>
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: employeeKeys.all }),
+        queryClient.invalidateQueries({ queryKey: attendanceKeys.all }),
+      ]),
   });
 };
 
