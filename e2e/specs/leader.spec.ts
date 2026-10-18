@@ -26,10 +26,13 @@ test("L1 사이드바 배지 = 대기 목록 수", async ({ page }) => {
   await expect(page.getByRole("link", { name: "휴가 승인" })).toContainText(String(count));
 });
 
-test("L2 같은 날 겹침 표시, 팀장 본인 신청은 목록에 없음", async ({ page }) => {
+test("L2 같은 날 겹침 표시(조사 회귀 포함), 팀장 본인 신청은 목록에 없음", async ({ page }) => {
   await page.goto("/approvals");
   await expect(reviewRowOf(page, "박지민")).toContainText("최도윤");
   await expect(reviewRowOf(page, "최도윤")).toContainText("박지민");
+  // 회귀: 받침이 있는 이름에도 "와"를 붙였다 ("박지민(대기)와 겹침")
+  await expect(reviewRowOf(page, "박지민")).toContainText("최도윤(대기)과 겹침");
+  await expect(reviewRowOf(page, "최도윤")).toContainText("박지민(대기)과 겹침");
   await expect(pendingRows(page).filter({ hasText: "겹침" })).not.toHaveCount(0);
   await expect(reviewRowOf(page, "김하늘")).toHaveCount(0);
 });

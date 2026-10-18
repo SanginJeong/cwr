@@ -4,6 +4,7 @@ import { AttendanceChip, type ReviewLeaveRequest } from "@/entities/attendance";
 import { useDecideLeave } from "@/features/attendance/decide-leave";
 import { cn } from "@/shared/lib/cn";
 import { formatDayLabel } from "@/shared/lib/calendar";
+import { josaWaGwa } from "@/shared/lib/josa";
 
 interface LeaveReviewListProps {
   requests: ReviewLeaveRequest[];
@@ -24,7 +25,9 @@ const OverlapText = ({ overlaps }: Pick<ReviewLeaveRequest, "overlaps">) =>
     <span className="text-text-default">겹치는 휴가 없음</span>
   ) : (
     <span className="text-point-orange">
-      {overlaps.map((o) => `${o.userName}${o.status === "PENDING" ? "(대기)" : ""}`).join(", ")}와 겹침
+      {overlaps.map((o) => `${o.userName}${o.status === "PENDING" ? "(대기)" : ""}`).join(", ")}
+      {/* 조사는 괄호가 아니라 마지막 이름에 맞춘다: 박지민(대기)과 */}
+      {josaWaGwa(overlaps[overlaps.length - 1].userName)} 겹침
     </span>
   );
 
