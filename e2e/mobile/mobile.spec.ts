@@ -7,8 +7,9 @@ reseedBeforeAll();
 
 /** 가로 스크롤이 생기지 않는다 (모바일에서 표·달력이 화면 밖으로 밀리던 문제) */
 const expectNoHorizontalScroll = async (page: Page) => {
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-  expect(overflow).toBeLessThanOrEqual(0);
+  // 모바일 에뮬레이션(isMobile)에서는 내용이 넓으면 innerWidth도 함께 커진다. 설정한 화면 폭과 비교한다
+  const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+  expect(scrollWidth).toBeLessThanOrEqual(page.viewportSize()!.width);
 };
 
 test.describe("직원", () => {
@@ -82,5 +83,26 @@ test.describe("팀장", () => {
 
     await card.getByRole("button", { name: "승인" }).click();
     await expect(toast(page, "휴가를 승인했어요")).toBeVisible();
+  });
+});
+
+test.describe("인사담당자", () => {
+  test.use({ storageState: storageStatePath("hr") });
+
+  test("M6 구성원 관리: 페이지 가로 스크롤 없음, 행 메뉴 버튼이 화면 안에 (회귀 2건)", async ({ page }) => {
+    // 회귀: 표 머리의 sr-only "메뉴"(absolute)가 표의 스크롤 영역을 벗어나 페이지 전체가 가로로 밀렸다
+    // 회귀: 표를 가로 스크롤해야만 행 메뉴(⋮)에 닿았다
+    await page.goto("/admin/members");
+    const menu = page.getByRole("button", { name: "박지민 메뉴" });
+    await expect(menu).toBeVisible();
+    await expectNoHorizontalScroll(page);
+
+    // 세로로만 스크롤해서 닿는지 본다 (가로 위치가 화면 안)
+    const box = (await menu.boundingBox())!;
+    expect(box.x).toBeGreaterThanOrEqual(0);
+    expect(box.x + box.width).toBeLessThanOrEqual(page.viewportSize()!.width);
+
+    await menu.click();
+    await expect(page.getByRole("button", { name: "정보 수정" })).toBeVisible();
   });
 });

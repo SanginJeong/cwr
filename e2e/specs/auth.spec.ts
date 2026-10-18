@@ -159,8 +159,10 @@ test.describe("팀장", () => {
   test.use({ storageState: storageStatePath("leader") });
 
   test("A5 인사담당자 화면은 막히고 휴가 승인은 열린다", async ({ page }) => {
-    await page.goto("/admin/policies");
-    await expect(page).toHaveURL(/\/attendance$/);
+    for (const path of ["/admin/policies", "/admin/members", "/admin/approvals"]) {
+      await page.goto(path);
+      await expect(page).toHaveURL(/\/attendance$/);
+    }
     await page.goto("/approvals");
     await expect(page.getByRole("heading", { name: "휴가 승인" })).toBeVisible();
   });
