@@ -33,6 +33,8 @@ const useDeleteTask = () => {
       queryClient.invalidateQueries({
         queryKey: ["groups", Number(groupId)],
       });
+      // 완료한 할 일을 지우면 히스토리에서도 빠진다 (user_history는 지운 할 일을 뺀다)
+      queryClient.invalidateQueries({ queryKey: ["my-history"] });
 
       router.replace(ROUTES.taskList(groupId, taskListId));
     },

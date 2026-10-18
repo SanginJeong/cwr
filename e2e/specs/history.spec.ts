@@ -41,3 +41,22 @@ test("T1 완료한 할 일이 히스토리에 보이고, 완료를 취소하면 
   await openHistoryFromMenu(page);
   await expect(page.getByText("텅— 비어 있어요.")).toBeVisible();
 });
+
+test("T2 완료한 할 일을 지우면 히스토리에서도 빠진다 (회귀)", async ({ page }) => {
+  // 회귀: 삭제가 히스토리 캐시를 무효화하지 않아, 지운 할 일이 staleTime(10분) 동안 히스토리에 남았다
+  await openTaskList(page);
+  await page.getByLabel(`${TASK} 미완료`).click();
+  await expect(page.getByLabel(`${TASK} 완료`)).toBeVisible();
+  const main = await openHistoryFromMenu(page);
+  await expect(main.getByLabel(`${TASK} 완료`)).toBeVisible();
+
+  await page.goBack();
+  const item = page.getByRole("button", { name: `${TASK} 상세보기` });
+  await item.locator('button[aria-haspopup="menu"]').click();
+  await page.getByRole("button", { name: "삭제하기" }).click();
+  await expect(toast(page, "할 일 삭제 성공")).toBeVisible();
+
+  await openHistoryFromMenu(page);
+  await expect(page.getByText("텅— 비어 있어요.")).toBeVisible();
+  await expect(page.getByRole("main").getByText(TASK)).toHaveCount(0);
+});
