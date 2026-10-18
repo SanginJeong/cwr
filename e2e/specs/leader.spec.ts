@@ -2,9 +2,11 @@ import {
   expect,
   isWeekendDate,
   isWeekendKst,
+  kstToday,
   memberPanel,
   openAs,
   openTeamPage,
+  requestLeave,
   reseedBeforeAll,
   reviewRowOf,
   storageStatePath,
@@ -83,6 +85,30 @@ test("L4 반려 → 처리됨 탭에 반려됨", async ({ page }) => {
   const done = reviewRowOf(page, "최도윤").filter({ hasText: dateLabel });
   await expect(done).toContainText("반려됨");
   await expect(done).toContainText("김하늘");
+});
+
+test("L8 승인하면 사이드바 배지가 줄고 팀 휴가 달력의 대기 칩이 승인됨으로 바뀐다", async ({ page, browser }) => {
+  const employee = await openAs(browser, "employee");
+  const { date } = await requestLeave(employee, "E2E L8");
+
+  await page.goto("/approvals");
+  const badge = page.getByRole("link", { name: "휴가 승인" });
+  await expect(pendingRows(page).first()).toBeVisible();
+  const before = await pendingRows(page).count();
+  await expect(badge).toContainText(String(before));
+
+  const calendar = page.getByRole("region", { name: /팀 휴가/ });
+  if (date.slice(0, 7) > kstToday().slice(0, 7)) await calendar.getByRole("button", { name: "다음 달" }).click();
+  const day = calendar.locator(`li[data-date="${date}"]`);
+  await expect(day).toContainText("박지민 · 대기");
+
+  await pendingRows(page).filter({ hasText: "E2E L8" }).getByRole("button", { name: "승인" }).click();
+  await expect(toast(page, "휴가를 승인했어요")).toBeVisible();
+  // 배지는 0이면 숨는다
+  if (before > 1) await expect(badge).toContainText(String(before - 1));
+  else await expect(badge).not.toContainText(/\d/);
+  await expect(day).toContainText("박지민");
+  await expect(day).not.toContainText("박지민 · 대기");
 });
 
 test("L6 팀 페이지의 오늘 우리 팀 근태는 팀장에게만", async ({ page, browser }) => {
