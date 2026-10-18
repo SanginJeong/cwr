@@ -319,3 +319,29 @@ test("H12 정책 만들기 → 수정 → 삭제, 저장 직후 편집기가 다
   await expect(policyCard(page, name)).toHaveCount(0);
   await expect(heading).toContainText("자율 출퇴근");
 });
+
+test("H13 유예를 비우거나 이미 있는 이름이면 저장할 수 없다", async ({ page }) => {
+  await page.goto("/admin/policies");
+  await page.getByRole("button", { name: "새 정책" }).click();
+  const save = page.getByRole("button", { name: "저장하기" });
+
+  // 회귀: 빈 칸이 Number("") = 0으로 읽혀 유예 0분으로 저장됐다
+  await page.getByLabel("이름", { exact: true }).fill(`E2E 유예 ${Date.now()}`);
+  await page.getByLabel("유예 (분)", { exact: true }).fill("");
+  await expect(page.getByText("유예를 입력해주세요.")).toBeVisible();
+  await expect(save).toBeDisabled();
+  await page.getByLabel("유예 (분)", { exact: true }).fill("10");
+  await expect(save).toBeEnabled();
+
+  // 회귀: 같은 이름의 정책이 둘 생겨 구성원 수정 모달·필터에서 구별할 수 없었다 (앞뒤 공백·대소문자 무시)
+  const nameInput = page.getByLabel("이름", { exact: true });
+  await nameInput.fill(" 고정 근무 09:00 ");
+  await expect(page.getByText("이미 있는 정책 이름이에요.")).toBeVisible();
+  await expect(nameInput).toHaveAttribute("aria-invalid", "true");
+  await expect(save).toBeDisabled();
+
+  // 자기 이름은 그대로 저장할 수 있다
+  await policyCard(page, "고정 근무 09:00").click();
+  await expect(page.getByText("이미 있는 정책 이름이에요.")).toHaveCount(0);
+  await expect(save).toBeEnabled();
+});
