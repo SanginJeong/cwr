@@ -11,7 +11,7 @@ import { Profile } from "@/shared/ui/profile";
 import useDevice from "@/shared/lib/useDevice";
 import { formatTime } from "@/shared/lib/formatTime";
 import { useParams } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { ArticleEditCommentModal } from "@/features/article-comment/manage-comment";
 import { ArticleCommentType } from "@/shared/api/types/ArticleCommentType";
 
@@ -28,19 +28,27 @@ const ArticleComments = () => {
     hasNextPage,
     isFetchingNextPage,
   } = useGetArticleComments({ articleId });
-  const { mutate: postArticleComment } = usePostArticleComment();
+  const { mutate: postArticleComment, isPending: isPostingComment } = usePostArticleComment();
   const { mutate: deleteArticleComment } = useDeleteArticleComment();
 
   const [commentValue, setCommentValue] = useState("");
   const [selectedComment, setSelectedComment] = useState<ArticleCommentType | null>(null);
   const [isOpenEditCommentModal, setIsOpenEditCommentModal] = useState(false);
 
+  // 등록 중에 다시 누르면 무시한다. isPending은 다음 렌더에야 바뀌어서, 빠른 두 번 클릭은 ref로 막는다.
+  // 예전에는 등록 중에도 버튼이 켜져 있어 같은 댓글이 두 번 올라갔다
+  const isSubmittingRef = useRef(false);
   const handleCommentSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
     postArticleComment(
       { articleId, body: { content: commentValue } },
       {
         onSuccess: () => setCommentValue(""),
+        onSettled: () => {
+          isSubmittingRef.current = false;
+        },
       },
     );
   };
@@ -58,7 +66,7 @@ const ArticleComments = () => {
         </div>
         <form aria-label="댓글 작성" className="flex items-center gap-3 w-full" onSubmit={handleCommentSubmit}>
           <Profile src={userInfo?.image ?? null} />
-          <InputReply value={commentValue} onChange={setCommentValue} isSubmitting={false} />
+          <InputReply value={commentValue} onChange={setCommentValue} isSubmitting={isPostingComment} />
         </form>
       </div>
 

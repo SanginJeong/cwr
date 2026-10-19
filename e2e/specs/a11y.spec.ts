@@ -34,6 +34,8 @@ test.describe("V1 접근성 (axe)", { tag: "@p2" }, () => {
     { role: "leader", path: "/approvals", heading: "휴가 승인" },
     { role: "hr", path: "/admin/members", heading: "구성원 관리" },
     { role: "hr", path: "/admin/policies", heading: "근태 정책" },
+    { role: "employee", path: "/board", heading: "자유게시판" },
+    { role: "employee", path: "/board/new", heading: "게시글 쓰기" },
   ];
   for (const { role, path, heading } of pages) {
     test.describe(() => {
