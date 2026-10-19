@@ -6,7 +6,9 @@ test.use({ storageState: { cookies: [], origins: [] } });
 test("P1 랜딩은 근태·휴가 서비스를 소개하고, 시작하기는 로그인으로 간다", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle("Coworkers | 출퇴근·휴가 관리");
-  const main = page.getByRole("main").first();
+  // 회귀: 랜딩이 레이아웃의 <main> 안에 <main>을 또 만들어 본문 영역이 두 개였다
+  const main = page.getByRole("main");
+  await expect(main).toHaveCount(1);
   await expect(main.getByText("출퇴근부터 휴가 승인까지")).toBeVisible();
   for (const title of ["출근 버튼 하나로", "휴가 신청부터 승인까지", "오늘 우리 팀의 근태와"]) {
     // 회귀: 첫 섹션이 설명 자리에 제목을 넘겨 같은 문구가 두 번 보였다
