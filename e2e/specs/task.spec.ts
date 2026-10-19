@@ -102,3 +102,18 @@ test("K4 상세에서 댓글을 달고 지우면 댓글 수가 바로 바뀐다 
   await expect(panel.getByText(comment)).toHaveCount(0);
   await expect(count).toHaveText("0");
 });
+
+test("K5 할 일 만들기: 제목만으로 만들 수 있고, 저장되지 않는 시간 칸은 없다", async ({ page }) => {
+  // 회귀: 메모가 비어 있으면 안내 없이 "만들기"가 꺼져 있었다. 시간 칸은 고를 수 있었지만 저장되지 않았다(DB에 칸이 없다)
+  await openTaskList(page);
+  await page.getByRole("button", { name: "할 일 만들기" }).click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog.getByLabel("시작 날짜")).toBeVisible();
+  await expect(dialog.getByText(/오전|오후/)).toHaveCount(0);
+
+  const name = `E2E 할 일 ${Date.now()}`;
+  await dialog.getByLabel("할 일 제목").fill(name);
+  await dialog.getByRole("button", { name: "만들기" }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByRole("button", { name: `${name} 상세보기` })).toBeVisible();
+});

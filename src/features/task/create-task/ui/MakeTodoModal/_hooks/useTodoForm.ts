@@ -1,7 +1,6 @@
 import { FormEvent, useState } from "react";
 import { DateValue } from "@/shared/api/types/DatePickerType";
 import { Frequency } from "@/shared/api/types/FrequencyType";
-import { HalfHour } from "@/shared/api/types/TimeType";
 import usePostRecurring from "../../../api/usePostRecurring";
 
 interface UseTodoFormProps {
@@ -19,20 +18,15 @@ export const useTodoForm = ({ onClose, groupId, taskListId, repeatConfig }: UseT
   const [formData, setFormData] = useState({
     title: "",
     startDate: new Date(),
-    startTime: {
-      period: "am" as "am" | "pm",
-      value: "01:30" as HalfHour,
-    },
     todoMemo: "",
   });
 
   const { mutate: postRecurring } = usePostRecurring();
 
+  // 메모는 선택 사항이다 (수정 창과 같다). 예전에는 메모가 비면 안내 없이 "만들기"가 꺼져 있었다
   const isFormValid =
     formData.title.trim().length > 0 &&
-    formData.todoMemo.trim().length > 0 &&
     formData.startDate !== null &&
-    formData.startTime.value !== null &&
     (repeatConfig.order === "WEEKLY"
       ? repeatConfig.weekDays.length > 0
       : repeatConfig.order === "MONTHLY"
@@ -71,22 +65,11 @@ export const useTodoForm = ({ onClose, groupId, taskListId, repeatConfig }: UseT
     }
   };
 
-  const onChangeTime = (period: "am" | "pm", timeValue: HalfHour) => {
-    setFormData((prev) => ({
-      ...prev,
-      startTime: {
-        period,
-        value: timeValue,
-      },
-    }));
-  };
-
   return {
     formData,
     setFormData,
     isFormValid,
     onSubmit,
     onChangeDate,
-    onChangeTime,
   };
 };
