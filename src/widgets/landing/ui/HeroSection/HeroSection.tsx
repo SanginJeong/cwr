@@ -43,10 +43,16 @@ const HeroSection = ({ link = ROUTES.login }: HeroSectionProps) => {
   );
 
   return (
-    <section ref={container} className={cn("overflow-hidden bg-background-secondary pc:pl-8")}>
-      <div className={cn("relative flex flex-col justify-between", "pc:flex-row pc:gap-28")}>
-        <div className="flex flex-col justify-between pc:pl-[44px] pc:mb-[228px] hero-text-item">
-          <div className={cn("pl-[20px] pt-[34px]", "tablet:pl-[35px] tablet:pt-[89px]", "pc:pt-[208px] pc:pl-0")}>
+    <section ref={container} className={cn("overflow-hidden bg-background-secondary pc:px-8 pc:py-[80px]")}>
+      <div
+        className={cn(
+          // 모바일·태블릿의 "지금 시작하기"는 아래에 겹쳐 두므로 그 자리(pb)를 비워 표를 가리지 않게 한다
+          "relative flex flex-col justify-between pb-[116px] pc:pb-0",
+          "pc:gap-10 pc:max-w-[1600px] pc:mx-auto wide:flex-row wide:items-center wide:gap-16",
+        )}
+      >
+        <div className="flex flex-col gap-10 pc:shrink-0 pc:pl-[44px] hero-text-item">
+          <div className={cn("pl-[20px] pt-[34px]", "tablet:pl-[35px] tablet:pt-[89px]", "pc:pt-0 pc:pl-0")}>
             <Image
               src="/landing/land-1.svg"
               alt=""
@@ -68,19 +74,20 @@ const HeroSection = ({ link = ROUTES.login }: HeroSectionProps) => {
             지금 시작하기
           </LinkButton>
         </div>
-        <div className={cn("min-w-full pc:min-w-[1330px]", "hero-image")}>
+        {/* 다음 섹션(내 근태)과 겹치지 않게 인사담당자 화면을 보여준다. wide(1280px)부터 글 옆에 두고 남은 폭에 맞춰 줄인다 */}
+        <div className={cn("min-w-full mt-6 pc:mt-0 pc:min-w-0 wide:flex-1 wide:max-w-[900px]", "hero-image")}>
           <DeviceImage
             ImageInfo={{
-              alt: "이번 달 근태 요약과 달력, 오늘 출근 카드가 보이는 내 근태 화면",
-              width: 1330,
-              height: 1080,
+              alt: "직원별 근태 정책, 이번 달 근태와 오늘 출근 상태가 보이는 구성원 관리 화면",
+              width: 1120,
+              height: 720,
             }}
             Src={{
-              mobileSrc: "/landing/hero-mobile.png",
-              tabletSrc: "/landing/hero-tablet.png",
-              desktopSrc: "/landing/hero.png",
+              mobileSrc: "/landing/hero-members-mobile.png",
+              tabletSrc: "/landing/hero-members-tablet.png",
+              desktopSrc: "/landing/hero-members.png",
             }}
-            ImageClassName="object-contain object-left w-full h-full"
+            ImageClassName="w-full h-auto pc:rounded-2xl pc:shadow-[0_8px_30px_rgba(30,41,59,0.10)]"
           />
         </div>
         <LinkButton
