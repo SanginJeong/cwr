@@ -82,3 +82,35 @@ test("B4 1280px에서 상세의 좋아요 버튼이 화면 안에, 가로 스크
     expect(await page.evaluate(() => document.documentElement.scrollWidth), `${width}px`).toBeLessThanOrEqual(width);
   }
 });
+
+test("B5 좋아요는 응답을 기다리지 않고 바로 바뀌고, 실패하면 되돌아간다 (낙관적 업데이트)", async ({ page }) => {
+  await writeArticle(page, `${PREFIX} 좋아요 ${Date.now()}`);
+  const likes = "**/rest/v1/article_likes*";
+  // 화면 폭에 따라 좋아요 버튼이 둘 중 하나만 보인다(B4). 보이는 쪽의 숫자는 버튼 안 또는 바로 아래에 있다
+  const likeArea = page.getByRole("main").locator("section.relative");
+
+  // 응답을 1.5초 늦춰도 누르자마자 바뀐다
+  await page.route(likes, async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await route.continue();
+  });
+  await page.getByRole("button", { name: "좋아요", exact: true }).click();
+  await expect(page.getByRole("button", { name: "좋아요 취소" })).toBeVisible({ timeout: 500 });
+  await expect(likeArea).toContainText("1", { timeout: 500 });
+  // 응답이 오고 상세를 다시 받은 뒤에도 그대로 (예전 값으로 깜빡이지 않는다)
+  await page.waitForResponse(likes);
+  await expect(page.getByRole("button", { name: "좋아요 취소" })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole("button", { name: "좋아요 취소" })).toBeVisible();
+
+  // 실패하면 원래대로 돌아가고 이유를 알린다
+  await page.unroute(likes);
+  await page.route(likes, (route) =>
+    route.fulfill({ status: 500, contentType: "application/json", body: '{"message":"E2E 실패"}' }),
+  );
+  await page.getByRole("button", { name: "좋아요 취소" }).click();
+  await expect(toast(page, "좋아요를 취소하지 못했습니다.")).toBeVisible();
+  await expect(page.getByRole("button", { name: "좋아요 취소" })).toBeVisible();
+  await expect(likeArea).toContainText("1");
+  await expect(likeArea).not.toContainText(/\b0\b/);
+});
