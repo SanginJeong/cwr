@@ -36,6 +36,16 @@ test("AC1 이름을 바꾸면 사이드바에도 바로 보인다, 탭 제목", 
   }
 });
 
+test("AC2 다른 사람의 이름으로는 바꿀 수 없고 입력란에 이유가 보인다 (회귀)", async ({ page }) => {
+  // 회귀: 토스트로만 "이미 사용중인 닉네임입니다."가 나왔다 (이 서비스에서 이 칸은 "이름"이다)
+  await page.goto("/account");
+  await nameInput(page).fill(ROLES.leader.name);
+  await saveChanges(page);
+  await expect(page.getByText("이미 사용 중인 이름이에요.").first()).toBeVisible();
+  await expect(nameInput(page)).toHaveAttribute("aria-invalid", "true");
+  await expect(page.getByText(/닉네임/)).toHaveCount(0);
+});
+
 test("AC3 비밀번호를 바꾸면 새 비밀번호로 로그인된다", async ({ page, browser, baseURL }) => {
   const newPassword = "E2Echange!234";
   try {

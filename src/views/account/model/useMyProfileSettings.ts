@@ -44,6 +44,10 @@ const useMyProfileSettings = (initialData: UserData): UseMyProfileSettingsReturn
       resetImage();
       setNicknameError("");
     },
+    // 다른 사람이 쓰는 이름이면 이름 칸에 보여준다 (예전에는 토스트로만 "닉네임"이라고 나왔다)
+    onError: (message, field) => {
+      if (field === "nickname") setNicknameError(message);
+    },
   });
 
   const isSaving = isProcessing || isUploading || isPending;

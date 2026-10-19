@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import patchUserProfile from "./patchUserProfile";
 import { toastKit } from "@/shared/lib/toastKit";
+import { ApiError } from "@/shared/api/supabase/errors";
 
 type UsePatchUserProfileOptions = {
   onSuccess?: () => void;
-  onError?: (message: string) => void;
+  /** field: 입력란 하나의 에러면 그 칸 (예: "nickname"). 그때는 토스트 대신 입력란에 보여준다 */
+  onError?: (message: string, field?: string) => void;
 };
 
 const usePatchUserProfile = (options?: UsePatchUserProfileOptions) => {
@@ -22,8 +24,9 @@ const usePatchUserProfile = (options?: UsePatchUserProfileOptions) => {
     },
     onError: (err: Error) => {
       const message = err.message || "프로필 변경에 실패했습니다.";
-      error(message);
-      options?.onError?.(message);
+      const field = err instanceof ApiError ? err.field : undefined;
+      if (!field) error(message);
+      options?.onError?.(message, field);
     },
   });
 };
