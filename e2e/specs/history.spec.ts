@@ -53,6 +53,7 @@ test("T2 완료한 할 일을 지우면 히스토리에서도 빠진다 (회귀)
   await page.goBack();
   await page.getByRole("button", { name: `${TASK} 메뉴` }).click();
   await page.getByRole("button", { name: "삭제하기" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "삭제하기" }).click();
   await expect(toast(page, "할 일 삭제 성공")).toBeVisible();
 
   await openHistoryFromMenu(page);
