@@ -73,3 +73,32 @@ test("K3 상세 패널의 삭제도 확인을 거친다 (회귀)", async ({ page
   await expect(toast(page, "할 일 삭제 성공")).toBeVisible();
   await expect(item).toHaveCount(0);
 });
+
+test("K4 상세에서 댓글을 달고 지우면 댓글 수가 바로 바뀐다 (회귀)", async ({ page }) => {
+  // 회귀: 댓글 등록이 상세·목록과 다른 키(["task-list", 팀, 목록, 할 일])를 무효화해서 "댓글 0"이 그대로였다
+  const TASK2 = "에러 로그 확인"; // 시드: 개발팀 "운영" 목록
+  await openTeamPage(page, "개발팀");
+  await page.locator("a[href*='/lists/']").nth(1).click();
+  await page.getByRole("button", { name: `${TASK2} 상세보기` }).click();
+  const panel = page.getByRole("dialog");
+  const count = panel.getByRole("heading", { name: "댓글" }).locator("xpath=following-sibling::span");
+  await expect(count).toHaveText("0");
+
+  const comment = `E2E 할 일 댓글 ${Date.now()}`;
+  await panel.getByPlaceholder("댓글을 달아주세요.").fill(comment);
+  await panel.getByRole("button", { name: "댓글 작성" }).click();
+  await expect(panel.getByText(comment)).toBeVisible();
+  await expect(count).toHaveText("1");
+  // 목록 카드의 댓글 수도
+  const card = page
+    .getByRole("main")
+    .locator("li")
+    .filter({ has: page.getByRole("button", { name: `${TASK2} 상세보기` }) });
+  await expect(card).toContainText("1");
+
+  // 회귀: 댓글 항목이 li가 아니라 목록 항목으로 읽히지 않았고, 메뉴 버튼 이름이 "메뉴 열기"뿐이었다
+  await panel.getByRole("listitem").filter({ hasText: comment }).getByRole("button", { name: "댓글 메뉴" }).click();
+  await page.getByRole("button", { name: "삭제하기" }).click();
+  await expect(panel.getByText(comment)).toHaveCount(0);
+  await expect(count).toHaveText("0");
+});
