@@ -69,3 +69,16 @@ test("B3 댓글 버튼을 두 번 눌러도 댓글은 하나 (회귀)", async ({
   await page.reload();
   await expect(page.getByText(comment, { exact: true })).toHaveCount(1);
 });
+
+test("B4 1280px에서 상세의 좋아요 버튼이 화면 안에, 가로 스크롤 없음 (회귀)", async ({ page }) => {
+  // 회귀: PC(940px~)에서 좋아요 버튼을 본문 오른쪽 바깥(-120px)에 두어, 1340px보다 좁으면 화면 밖으로 나갔다
+  await writeArticle(page, `${PREFIX} 너비 ${Date.now()}`);
+  for (const width of [1024, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    const like = page.getByRole("button", { name: "좋아요", exact: true });
+    await expect(like).toBeVisible();
+    const box = (await like.boundingBox())!;
+    expect(box.x + box.width, `${width}px`).toBeLessThanOrEqual(width);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth), `${width}px`).toBeLessThanOrEqual(width);
+  }
+});
