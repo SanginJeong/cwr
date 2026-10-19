@@ -133,6 +133,35 @@ test("A8 로그아웃하면 로그인 화면, 보호 라우트가 다시 막힌�
   await saveLoginState(browser, baseURL!, "employee");
 });
 
+test("A11 같은 탭에서 다른 계정으로 다시 로그인하면 앞 계정의 데이터가 보이지 않는다", async ({
+  page,
+  browser,
+  baseURL,
+}) => {
+  // 회귀: 로그아웃이 ["user"] 캐시만 지우고 페이지를 새로 불러오지 않아, 근태 조회("me" 키)가
+  // staleTime(60초) 동안 앞 계정의 것으로 보였다. 직원(개발팀)은 코어타임 정책이다
+  const policySentence = page.getByText(/^근태 정책:/);
+  await submitLoginForm(page, ROLES.employee.email, E2E_PASSWORD);
+  await expect(policySentence).toContainText("코어타임 10–16");
+
+  await page.getByRole("button", { name: "프로필 메뉴" }).first().click();
+  await page.getByRole("button", { name: "로그아웃" }).click();
+  await expect(page).toHaveURL(/\/login$/);
+  await page.getByLabel("이메일").fill(ROLES.hr.email);
+  await page.getByLabel("비밀번호", { exact: true }).fill(E2E_PASSWORD);
+  await page.getByRole("button", { name: "로그인", exact: true }).click();
+  await expect(page).toHaveURL(/\/attendance$/);
+
+  // 인사담당자의 정책은 다른 스펙(H3)에 따라 바뀌므로 이름 대신 "코어타임이 아니다"와 "새로고침한 화면과 같다"를 본다
+  await expect(policySentence).not.toContainText("코어타임");
+  const shown = await policySentence.innerText();
+  await page.reload();
+  await expect(policySentence).toHaveText(shown);
+
+  // 로그아웃은 직원의 모든 세션을 끊는다 (A8)
+  await saveLoginState(browser, baseURL!, "employee");
+});
+
 test.describe("직원", () => {
   test.use({ storageState: storageStatePath("employee") });
 
