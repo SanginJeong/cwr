@@ -58,3 +58,14 @@ test("B2 수정·좋아요·댓글이 목록에 바로 반영된다 (회귀)", a
   // 피드 항목 아래쪽(footer)이 좋아요 수
   await expect(editedItem.locator("footer")).toHaveText("1");
 });
+
+test("B3 댓글 버튼을 두 번 눌러도 댓글은 하나 (회귀)", async ({ page }) => {
+  // 회귀: 등록 중에도 버튼이 켜져 있어(isSubmitting={false}) 같은 댓글이 두 번 올라갔다
+  await writeArticle(page, `${PREFIX} 댓글 ${Date.now()}`);
+  const comment = `E2E 댓글 ${Date.now()}`;
+  await page.getByPlaceholder("댓글을 달아주세요.").fill(comment);
+  await page.getByRole("button", { name: "댓글 작성" }).dblclick();
+  await expect(toast(page, "댓글을 성공적으로 등록하였습니다.").first()).toBeVisible();
+  await page.reload();
+  await expect(page.getByText(comment, { exact: true })).toHaveCount(1);
+});
