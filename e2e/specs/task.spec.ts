@@ -117,3 +117,46 @@ test("K5 할 일 만들기: 제목만으로 만들 수 있고, 저장되지 않�
   await expect(dialog).toHaveCount(0);
   await expect(page.getByRole("button", { name: `${name} 상세보기` })).toBeVisible();
 });
+
+test("K6 Esc는 맨 위 창만 닫고, 링크로 바로 연 상세도 닫기를 누르면 목록에 남는다 (회귀)", async ({ page }) => {
+  const TASK2 = "에러 로그 확인";
+  await openTeamPage(page, "개발팀");
+  await page.locator("a[href*='/lists/']").nth(1).click();
+  await page.getByRole("button", { name: `${TASK2} 상세보기` }).click();
+  const heading = page.getByRole("heading", { name: TASK2, level: 2 });
+  await expect(heading).toBeVisible();
+
+  // 수정 창의 Esc는 수정 창만 닫는다
+  await page.getByRole("button", { name: "할 일 메뉴" }).click();
+  await page.getByRole("button", { name: "수정하기" }).click();
+  const edit = page.getByRole("dialog").filter({ hasText: "할 일 수정" });
+  await expect(edit).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(edit).toHaveCount(0);
+  await expect(heading).toBeVisible();
+
+  // 회귀: 상세 패널은 모달인데 Esc로 닫히지 않았다
+  await page.keyboard.press("Escape");
+  await expect(heading).toHaveCount(0);
+  await expect(page).not.toHaveURL(/task=/);
+
+  // 회귀: 닫기가 router.back()이라, 링크로 바로 열면 앱 밖(이전 페이지)으로 나갔다
+  const listUrl = page.url();
+  await page.goto("about:blank");
+  await page.goto(`${listUrl}${listUrl.includes("?") ? "&" : "?"}task=${await taskIdOf(page, listUrl, TASK2)}`);
+  await expect(heading).toBeVisible();
+  await page.getByRole("button", { name: "닫기" }).click();
+  await expect(heading).toHaveCount(0);
+  await expect(page).toHaveURL(/\/lists\/\d+/);
+  await expect(page).not.toHaveURL(/task=/);
+});
+
+/** 목록에서 그 할 일을 눌러 주소의 task id를 얻는다 */
+const taskIdOf = async (page: Page, listUrl: string, name: string) => {
+  await page.goto(listUrl);
+  await page.getByRole("button", { name: `${name} 상세보기` }).click();
+  await expect(page).toHaveURL(/task=\d+/);
+  const id = new URL(page.url()).searchParams.get("task")!;
+  await page.goto("about:blank");
+  return id;
+};
