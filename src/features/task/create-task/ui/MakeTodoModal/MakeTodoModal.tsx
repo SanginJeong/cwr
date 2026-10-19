@@ -11,12 +11,11 @@ import { Input } from "@/shared/ui/input";
 import { InputBox } from "@/shared/ui/input";
 import { Modal } from "@/shared/ui/modal";
 import { Select } from "@/shared/ui/select";
-import { Time } from "@/shared/ui/time-picker";
 import AnimatedCollapse from "./_internal/AnimatedCollapse/AnimatedCollapse";
 import { RepeatMonthlySelect, RepeatWeeklySelect } from "./_internal/RepeatSelect/RepeatSelect";
 import { MODAL_STYLES, REPEAT_OPTIONS } from "./_constants/MODAL_OPTIONS";
 
-type OpenPicker = "date" | "time" | null;
+type OpenPicker = "date" | null;
 
 interface MakeTodoModalProps {
   isOpen: boolean;
@@ -31,7 +30,7 @@ const MakeTodoModal = ({ isOpen, onClose, groupId, taskListId }: MakeTodoModalPr
   const [weekDays, setWeekDays] = useState<number[]>([]);
   const [monthDay, setMonthDay] = useState<number | null>(null);
 
-  const { formData, setFormData, isFormValid, onSubmit, onChangeDate, onChangeTime } = useTodoForm({
+  const { formData, setFormData, isFormValid, onSubmit, onChangeDate } = useTodoForm({
     onClose,
     groupId: Number(groupId),
     taskListId: Number(taskListId),
@@ -57,38 +56,17 @@ const MakeTodoModal = ({ isOpen, onClose, groupId, taskListId }: MakeTodoModalPr
               placeholder="할 일 제목을 입력해주세요."
               onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
             />
+            {/* 시작 날짜만 받는다. 예전에는 시간도 고르게 했지만 저장하지 않았다(반복 규칙에 시각 칸이 없다) */}
             <div className={cn(MODAL_STYLES.baseDiv, "-mb-4")}>
-              <p>시작 날짜 및 시간</p>
-              <div className="w-full flex gap-2">
-                <div className="flex-[2]">
-                  <Input
-                    readOnly
-                    maxLength={30}
-                    className={cn(MODAL_STYLES.periodDiv, openPicker === "date" && MODAL_STYLES.periodDivPressed)}
-                    value={formatToKoreanDate(formData.startDate)}
-                    onClick={() => setOpenPicker((prev) => (prev === "date" ? null : "date"))}
-                  />
-                </div>
-                <div className="flex-[1.5]">
-                  <Input
-                    readOnly
-                    maxLength={200}
-                    className={cn(MODAL_STYLES.periodDiv, openPicker === "time" && MODAL_STYLES.periodDivPressed)}
-                    value={`${formData.startTime.period === "am" ? "오전" : "오후"} ${formData.startTime.value}`}
-                    onClick={() => setOpenPicker((prev) => (prev === "time" ? null : "time"))}
-                  />
-                </div>
-              </div>
+              <Input
+                readOnly
+                label="시작 날짜"
+                className={cn(MODAL_STYLES.periodDiv, openPicker === "date" && MODAL_STYLES.periodDivPressed)}
+                value={formatToKoreanDate(formData.startDate)}
+                onClick={() => setOpenPicker((prev) => (prev === "date" ? null : "date"))}
+              />
               <AnimatedCollapse isOpen={openPicker === "date"}>
                 <DatePicker value={formData.startDate} onChange={onChangeDate} />
-              </AnimatedCollapse>
-              <AnimatedCollapse isOpen={openPicker === "time"}>
-                <Time
-                  timePeriod={formData.startTime.period}
-                  setTimePeriod={(period) => onChangeTime(period, formData.startTime.value)}
-                  selectedTime={formData.startTime.value}
-                  setSelectedTime={(timeValue) => onChangeTime(formData.startTime.period, timeValue)}
-                />
               </AnimatedCollapse>
             </div>
 
@@ -113,7 +91,7 @@ const MakeTodoModal = ({ isOpen, onClose, groupId, taskListId }: MakeTodoModalPr
               value={formData.todoMemo}
               onChange={(e) => setFormData((prev) => ({ ...prev, todoMemo: e.target.value }))}
               size="md"
-              label="할 일 메모"
+              label="할 일 메모 (선택)"
               labelClassName="!text-lg-medium"
               placeholder="할 일 메모를 입력해주세요."
             />

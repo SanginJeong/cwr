@@ -93,6 +93,7 @@ const TaskListPage = ({ params }: { params: Promise<{ teamId: number; listId: nu
 
       <FloatingButton
         iconName="plus"
+        ariaLabel="할 일 만들기"
         className="fixed bottom-2 right-2"
         iconClassName="size-6 tablet:size-6"
         onClick={onClickFloatingButton}

@@ -52,7 +52,8 @@ const Todo = ({ id, title, completed, onChangeCompleted, type = "team" }: TodoPr
         />
         <span
           className={cn(
-            "absolute inset-0 flex items-center justify-center text-text-inverse transition-opacity",
+            // 체크 표시는 그림일 뿐이라 클릭은 아래 체크박스가 받는다 (예전에는 이 아이콘이 클릭을 가로챘다)
+            "pointer-events-none absolute inset-0 flex items-center justify-center text-text-inverse transition-opacity",
             completed ? "opacity-100" : "opacity-0",
           )}
         >

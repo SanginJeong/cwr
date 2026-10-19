@@ -14,7 +14,7 @@ import { TaskListItem } from "@/entities/task";
 import { TODO_STYLES } from "../../config/TODO_STYLES";
 import { TaskPdfDownloadButton } from "@/features/task/export-pdf";
 import { useTaskMutations } from "@/features/task/manage-task";
-import { EditDataModal } from "@/features/task/manage-task";
+import { DeleteTaskModal, EditDataModal } from "@/features/task/manage-task";
 import { TaskResponse } from "@/shared/api/types/taskApi";
 import { ErrorState } from "@/shared/ui/error-state";
 import { ROUTES } from "@/shared/config/routes";
@@ -109,6 +109,8 @@ const TodoSection = ({
   const [isEditModal, setIsEditModal] = useState(false);
   const [editingTask, setEditingTask] = useState<{ id: number; name: string; description?: string } | null>(null);
   const [editForm, setEditForm] = useState({ name: "", description: "" });
+  // 지우기 전에 확인한다. 예전에는 메뉴의 "삭제하기"가 바로 지웠다
+  const [deletingTask, setDeletingTask] = useState<{ id: number; name: string } | null>(null);
   const { isPending, isError } = taskStatus;
 
   const { toggleTaskDone, deleteTask, updateTask } = useTaskMutations({ teamId, taskListId });
@@ -142,7 +144,7 @@ const TodoSection = ({
 
   const options = (task: { id: number; name: string; description?: string }) => [
     { label: "수정하기", action: () => handleOpenEditModal(task) },
-    { label: "삭제하기", action: () => deleteTask(task.id) },
+    { label: "삭제하기", action: () => setDeletingTask(task) },
   ];
 
   return (
@@ -188,6 +190,15 @@ const TodoSection = ({
         </div>
       </section>
 
+      <DeleteTaskModal
+        isOpen={!!deletingTask}
+        taskName={deletingTask?.name ?? ""}
+        onClose={() => setDeletingTask(null)}
+        onConfirm={() => {
+          if (deletingTask) deleteTask(deletingTask.id);
+          setDeletingTask(null);
+        }}
+      />
       {isEditModal && (
         <EditDataModal
           isEditModal={isEditModal}

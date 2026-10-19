@@ -45,8 +45,13 @@ const MemberList = ({ groupId, members, attendanceByUser, onClickDelete }: Membe
         </h2>
         <span className="text-xs-regular text-text-default">접속 중 {onlineCount}</span>
       </header>
-      {/* PC에서는 높이를 고정해 멤버 수와 상관없이 진행 상황 카드 높이가 같게 한다. 넘치면 스크롤 */}
-      <ul className="flex flex-col gap-3 max-h-[200px] pc:h-[200px] overflow-y-auto pr-1">
+      {/* PC에서는 높이를 고정해 멤버 수와 상관없이 진행 상황 카드 높이가 같게 한다. 넘치면 스크롤.
+          키보드로도 스크롤할 수 있게 포커스를 받는다 (안에 포커스할 요소가 없는 행이 많다) */}
+      <ul
+        tabIndex={0}
+        aria-label="멤버 목록"
+        className="flex flex-col gap-3 max-h-[200px] pc:h-[200px] overflow-y-auto pr-1 focus-visible:outline-2 focus-visible:outline-interaction-focus"
+      >
         {sorted.map((member) => (
           <MemberRow
             key={member.userId}

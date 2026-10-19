@@ -3,7 +3,9 @@
 import { cn } from "@/shared/lib/cn";
 import { BaseButton } from "@/shared/ui/button";
 import { Icon } from "@/shared/ui/icon";
-import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ROUTES } from "@/shared/config/routes";
 import CommentSection from "../_internal/CommentSection/CommentSection";
 import ContentSection from "../_internal/ContentSection/ContentSection";
 import HeaderSection from "../_internal/HeaderSection/HeaderSection";
@@ -20,10 +22,27 @@ interface DetailPageProps {
 
 const DetailPage = ({ id, teamId, taskListId }: DetailPageProps) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
+  // 주소에서 task만 빼고 목록으로 간다. 예전에는 router.back()이라, 링크로 바로 열었으면 앱 밖으로 나갔다
   const onClickClose = () => {
-    router.back();
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("task");
+    params.delete("task-id");
+    const query = params.toString();
+    router.replace(`${ROUTES.taskList(teamId, taskListId)}${query ? `?${query}` : ""}`, { scroll: false });
   };
+
+  // 모달이므로 Esc로 닫는다. 위에 다른 모달(수정·삭제 확인)이 열려 있으면 그 모달만 닫히게 둔다
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      if (document.querySelectorAll('[aria-modal="true"]').length > 1) return;
+      onClickClose();
+    };
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  });
 
   const {
     data: taskDetail,

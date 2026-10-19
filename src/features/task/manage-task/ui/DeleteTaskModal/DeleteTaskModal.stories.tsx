@@ -1,16 +1,18 @@
 import { Meta, StoryObj } from "@storybook/nextjs";
-import DeleteModal from "./DeleteModal";
+import DeleteTaskModal from "./DeleteTaskModal";
 
-const meta: Meta<typeof DeleteModal> = {
-  title: "Features/TaskListItem/DeleteModal",
-  component: DeleteModal,
+const meta: Meta<typeof DeleteTaskModal> = {
+  title: "Features/Task/DeleteTaskModal",
+  component: DeleteTaskModal,
   tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
   },
   args: {
     isOpen: true,
+    taskName: "데일리 스탠드업",
     onClose: () => {},
+    onConfirm: () => {},
   },
   decorators: [
     (Story) => (

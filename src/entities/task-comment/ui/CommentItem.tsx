@@ -77,8 +77,9 @@ const CommentItem = ({ comment, showKebab = false, className, onDelete, onUpdate
     );
   }
 
+  // 댓글 목록(ul)의 항목이다. 예전에는 수정 중일 때만 li이고 평소에는 div였다
   return (
-    <div className={cn("pt-2.5 mt-[15px] flex items-start gap-4 pb-[15px] border-b border-border-primary", className)}>
+    <li className={cn("pt-2.5 mt-[15px] flex items-start gap-4 pb-[15px] border-b border-border-primary", className)}>
       <div className="flex-shrink-0 size-8">
         <Profile src={user.image} alt={`${user.nickname} 프로필`} size="md" />
       </div>
@@ -88,6 +89,7 @@ const CommentItem = ({ comment, showKebab = false, className, onDelete, onUpdate
           <span className="text-lg-bold text-text-primary flex-grow">{user.nickname}</span>
           {showKebab && (
             <Dropdown
+              label="댓글 메뉴"
               iconName="kebab"
               options={dropdownOptions}
               placement="bottom-right"
@@ -98,7 +100,7 @@ const CommentItem = ({ comment, showKebab = false, className, onDelete, onUpdate
         <p className="text-md-regular text-text-primary whitespace-pre-wrap break-words">{content}</p>
         <span className="text-md-medium text-interaction-inactive">{formatTime(createdAt)}</span>
       </div>
-    </div>
+    </li>
   );
 };
 

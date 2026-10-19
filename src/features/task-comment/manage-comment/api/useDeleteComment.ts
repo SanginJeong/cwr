@@ -18,6 +18,9 @@ const useDeleteComment = () => {
       queryClient.invalidateQueries({
         queryKey: ["task-list-comment", taskId],
       });
+      // 댓글 수를 보여주는 상세와 목록 카드도 (등록과 같다)
+      queryClient.invalidateQueries({ queryKey: ["task-list-detail"] });
+      queryClient.invalidateQueries({ queryKey: ["task-list"] });
     },
 
     onError: () => {

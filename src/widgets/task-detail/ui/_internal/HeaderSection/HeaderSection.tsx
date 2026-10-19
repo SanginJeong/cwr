@@ -6,7 +6,7 @@ import { cn } from "@/shared/lib/cn";
 import { formatToKoreanDate } from "@/shared/lib/formatDate";
 import { getFrequencyLabel } from "@/entities/task";
 import { HEADER_STYLES } from "./HEADER_STYLES";
-import { EditDataModal } from "@/features/task/manage-task";
+import { DeleteTaskModal, EditDataModal } from "@/features/task/manage-task";
 import { GetTaskDetailResponse } from "@/shared/api/types/taskApi";
 import { useTaskMutations } from "@/features/task/manage-task";
 
@@ -22,6 +22,7 @@ interface HeaderSectionProps {
 
 const HeaderSection = ({ data, isDone, taskPath }: HeaderSectionProps) => {
   const [isEditModal, setIsEditModal] = useState(false);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [form, setForm] = useState({
     name: data.name,
     description: data.description || "",
@@ -34,7 +35,7 @@ const HeaderSection = ({ data, isDone, taskPath }: HeaderSectionProps) => {
 
   const options = [
     { value: "edit", label: "수정하기", action: () => setIsEditModal(true) },
-    { value: "delete", label: "삭제하기", action: () => deleteTask(taskPath.id) },
+    { value: "delete", label: "삭제하기", action: () => setIsDeleteModal(true) },
   ];
 
   return (
@@ -58,6 +59,7 @@ const HeaderSection = ({ data, isDone, taskPath }: HeaderSectionProps) => {
             )}
           </div>
           <Dropdown
+            label="할 일 메뉴"
             iconName="kebab"
             iconClassName="size-6 tablet:size-6"
             options={options}
@@ -88,6 +90,15 @@ const HeaderSection = ({ data, isDone, taskPath }: HeaderSectionProps) => {
         </div>
       </header>
 
+      <DeleteTaskModal
+        isOpen={isDeleteModal}
+        taskName={data.name}
+        onClose={() => setIsDeleteModal(false)}
+        onConfirm={() => {
+          setIsDeleteModal(false);
+          deleteTask(taskPath.id);
+        }}
+      />
       {isEditModal && (
         <EditDataModal
           isEditModal={isEditModal}
