@@ -9,8 +9,6 @@ const config: Config = {
       mobile: { max: "430px" }, // 0–430px
       tablet: { min: "431px" }, // 431–744px
       pc: { min: "940px" }, // 940px 이상
-      // screens에 max가 섞여 있어 min-[1280px] 같은 임의 값 변형은 만들어지지 않는다. 필요한 폭은 여기에 둔다
-      wide: { min: "1280px" }, // 1280px 이상 (랜딩 히어로를 글 옆에 두는 폭)
     },
 
     extend: {
