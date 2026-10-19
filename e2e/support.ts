@@ -147,6 +147,12 @@ export const deleteAccount = async (email: string) => {
   if (error) throw new Error(`계정 삭제(${email}): ${error.message}`);
 };
 
+/** 테스트에서 만든 게시글을 지운다 (좋아요·댓글은 cascade). 시드는 게시글을 만들지 않는다 */
+export const deleteArticles = async (titlePrefix: string) => {
+  const { error } = await adminSupabase().from("articles").delete().like("title", `${titlePrefix}%`);
+  if (error) throw new Error(`게시글 삭제(${titlePrefix}): ${error.message}`);
+};
+
 /** 로그인 폼으로 로그인을 시도한다 */
 export const submitLoginForm = async (page: Page, email: string, password: string) => {
   await page.goto("/login");
