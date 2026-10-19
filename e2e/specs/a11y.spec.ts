@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
-import { expect, storageStatePath, test, type Role } from "../support";
+import { expect, openTeamPage, storageStatePath, test, type Role } from "../support";
 
 // 로드맵 2 §2-8. P2라 nightly에서만 돈다 (PR CI는 @p2를 뺀다)
 
@@ -47,6 +47,22 @@ test.describe("V1 접근성 (axe)", { tag: "@p2" }, () => {
       });
     });
   }
+
+  // 팀 페이지와 할 일 목록은 주소에 팀·목록 id가 있어 사이드바로 들어간다
+  test.describe(() => {
+    test.use({ storageState: storageStatePath("leader") });
+    test("팀 페이지", async ({ page }) => {
+      await openTeamPage(page, "개발팀");
+      await waitForContent(page, "개발팀");
+      expect(await seriousViolations(page)).toEqual([]);
+    });
+    test("할 일 목록", async ({ page }) => {
+      await openTeamPage(page, "개발팀");
+      await page.locator("a[href*='/lists/']").first().click();
+      await expect(page.getByRole("button", { name: /상세보기$/ }).first()).toBeVisible();
+      expect(await seriousViolations(page)).toEqual([]);
+    });
+  });
 });
 
 // V2 스크린샷은 e2e/visual로 옮겼다 (4개 브라우저에서 돈다. docs/cross-browser-analysis.md)
