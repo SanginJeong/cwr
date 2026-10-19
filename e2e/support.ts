@@ -177,7 +177,8 @@ export const storageStatePath = (role: Role) => `e2e/.auth/${role}.json`;
  * 로그아웃은 그 사용자의 모든 세션을 끊으므로(supabase signOut 기본 global) 로그아웃한 뒤에도 다시 부른다
  */
 export const saveLoginState = async (browser: Browser, baseURL: string, role: Role) => {
-  const context = await browser.newContext({ baseURL });
+  // 스펙 파일의 storageState를 물려받지 않게 빈 상태로 연다 (로그인돼 있으면 /login이 바로 넘어가 폼이 없다)
+  const context = await browser.newContext({ baseURL, storageState: { cookies: [], origins: [] } });
   const page = await context.newPage();
   await submitLoginForm(page, ROLES[role].email, E2E_PASSWORD);
   await expect(page).toHaveURL(/\/attendance$/);
