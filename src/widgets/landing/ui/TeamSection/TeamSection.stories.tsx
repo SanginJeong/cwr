@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import KanbanSection from "./KanbanSection";
+import TeamSection from "./TeamSection";
 
-const meta: Meta<typeof KanbanSection> = {
-  title: "Page/Landing/KanbanSection",
-  component: KanbanSection,
+const meta: Meta<typeof TeamSection> = {
+  title: "Page/Landing/TeamSection",
+  component: TeamSection,
   parameters: {
     layout: "padded",
   },

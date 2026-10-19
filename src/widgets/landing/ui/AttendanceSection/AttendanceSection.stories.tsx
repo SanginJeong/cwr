@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import DetailSection from "./DetailSection";
+import AttendanceSection from "./AttendanceSection";
 
-const meta: Meta<typeof DetailSection> = {
-  title: "Page/Landing/DetailSection",
-  component: DetailSection,
+const meta: Meta<typeof AttendanceSection> = {
+  title: "Page/Landing/AttendanceSection",
+  component: AttendanceSection,
   parameters: {
     layout: "padded",
   },

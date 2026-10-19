@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import CooperationSection from "./CooperationSection";
+import LeaveSection from "./LeaveSection";
 
-const meta: Meta<typeof CooperationSection> = {
-  title: "Page/Landing/CooperationSection",
-  component: CooperationSection,
+const meta: Meta<typeof LeaveSection> = {
+  title: "Page/Landing/LeaveSection",
+  component: LeaveSection,
   parameters: {
     layout: "padded",
   },

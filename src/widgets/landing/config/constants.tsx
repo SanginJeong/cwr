@@ -3,65 +3,72 @@ import { ReactNode } from "react";
 interface SectionContent {
   title: ReactNode;
   description: ReactNode;
+  /** 화면 낭독기가 읽는 이미지 설명 */
+  imageAlt: string;
   iconSrc: string;
   mobileSrc: string;
   tabletSrc: string;
   desktopSrc: string;
 }
 
-export const KANBAN_SECTION: SectionContent = {
+// 이미지는 로컬 시드(가상 인물)로 찍은 실제 화면이다. 화면이 바뀌면 같은 크기로 다시 찍는다
+
+export const ATTENDANCE_SECTION: SectionContent = {
   title: (
     <>
-      칸반보드로 함께
-      <br /> 할 일 목록을 관리해요
+      출근 버튼 하나로
+      <br /> 근태가 기록돼요
     </>
   ),
   description: (
     <>
-      팀원과 함께 실시간으로 할 일을 추가하고
-      <br /> 지금 무엇을 해야 하는지 한눈에 볼 수 있어요
+      근태 정책에 맞춰 정상·지각·결근이 자동으로 판정되고
+      <br /> 한 달 기록을 달력으로 한눈에 봐요
     </>
   ),
+  imageAlt: "정상·지각 판정과 휴가가 표시된 내 근태 달력",
   iconSrc: "/landing/land-2.svg",
-  mobileSrc: "/landing/img-2-2.png",
-  tabletSrc: "/landing/img-2-1.png",
-  desktopSrc: "/landing/img-2.png",
+  mobileSrc: "/landing/attendance-mobile.png",
+  tabletSrc: "/landing/attendance-tablet.png",
+  desktopSrc: "/landing/attendance.png",
 };
 
-export const DETAIL_SECTION: SectionContent = {
+export const LEAVE_SECTION: SectionContent = {
   title: (
     <>
-      세부적으로 할 일들을
-      <br /> 간편하게 체크해요
+      휴가 신청부터 승인까지
+      <br /> 한 곳에서 끝나요
     </>
   ),
   description: (
     <>
-      일정에 맞춰 해야 할 세부 항목을 정리하고,
-      <br /> 하나씩 빠르게 완료해보세요
+      직원은 날짜를 골라 신청하고
+      <br /> 팀장은 겹치는 일정을 보며 바로 승인해요
     </>
   ),
+  imageAlt: "대기 중인 휴가 신청 목록과 팀 휴가 달력",
   iconSrc: "/landing/land-3.svg",
-  mobileSrc: "/landing/img-3-2.png",
-  tabletSrc: "/landing/img-3-1.png",
-  desktopSrc: "/landing/img-3.png",
+  mobileSrc: "/landing/leave-mobile.png",
+  tabletSrc: "/landing/leave-tablet.png",
+  desktopSrc: "/landing/leave.png",
 };
 
-export const COOPERATION_SECTION: SectionContent = {
+export const TEAM_SECTION: SectionContent = {
   title: (
     <>
-      할 일 공유를 넘어
-      <br /> 의견을 나누고 함께 결정해요
+      오늘 우리 팀의 근태와
+      <br /> 할 일을 함께 봐요
     </>
   ),
   description: (
     <>
-      댓글로 진행상황을 기록하고 피드백을 주고받으며
-      <br /> 함께 결정을 내릴 수 있어요.
+      누가 출근했는지, 할 일이 얼마나 진행됐는지
+      <br /> 팀원 모두가 같은 화면으로 확인해요
     </>
   ),
+  imageAlt: "오늘 우리 팀 근태와 멤버 출근 현황, 할 일 목록이 보이는 팀 페이지",
   iconSrc: "/landing/land-4.svg",
-  mobileSrc: "/landing/img-4-2.png",
-  tabletSrc: "/landing/img-4-1.png",
-  desktopSrc: "/landing/img-4.png",
+  mobileSrc: "/landing/team-mobile.png",
+  tabletSrc: "/landing/team-tablet.png",
+  desktopSrc: "/landing/team.png",
 };
