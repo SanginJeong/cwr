@@ -6,13 +6,13 @@ import { useGSAP } from "@gsap/react";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import DeviceImage from "../_internal/DeviceImage/DeviceImage";
 import FeatureBlock from "../_internal/FeatureBlock/FeatureBlock";
-import { COOPERATION_SECTION } from "../../config/constants";
+import { TEAM_SECTION } from "../../config/constants";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const CooperationSection = () => {
+const TeamSection = () => {
   const container = useRef<HTMLDListElement>(null);
 
   useGSAP(
@@ -49,10 +49,10 @@ const CooperationSection = () => {
       <div className="flex flex-col gap-[24px] pc:gap-[108px] pc:flex-row pc:justify-center">
         <div className="feature-block">
           <FeatureBlock
-            iconSrc={COOPERATION_SECTION.iconSrc}
+            iconSrc={TEAM_SECTION.iconSrc}
             iconAlt=""
-            title={COOPERATION_SECTION.title}
-            description={COOPERATION_SECTION.description}
+            title={TEAM_SECTION.title}
+            description={TEAM_SECTION.description}
             titleClassName="text-lg-bold tablet:text-2xl-bold text-brand-primary"
             descriptionClassName="text-xs-regular tablet:text-md-regular text-interaction-inactive"
             className="pc:mt-[180px] pc:ml-[76px]"
@@ -60,11 +60,11 @@ const CooperationSection = () => {
         </div>
         <div className="feature-image relative h-fit mx-5 tablet:mx-[66px] pc:mx-0">
           <DeviceImage
-            ImageInfo={{ alt: "대시보드 이미지", width: 940, height: 800 }}
+            ImageInfo={{ alt: TEAM_SECTION.imageAlt, width: 940, height: 800 }}
             Src={{
-              mobileSrc: COOPERATION_SECTION.mobileSrc,
-              tabletSrc: COOPERATION_SECTION.tabletSrc,
-              desktopSrc: COOPERATION_SECTION.desktopSrc,
+              mobileSrc: TEAM_SECTION.mobileSrc,
+              tabletSrc: TEAM_SECTION.tabletSrc,
+              desktopSrc: TEAM_SECTION.desktopSrc,
             }}
             ImageClassName="object-cover object-left pc:w-[940px] pc:h-[800px]"
           />
@@ -74,4 +74,4 @@ const CooperationSection = () => {
   );
 };
 
-export default CooperationSection;
+export default TeamSection;

@@ -18,10 +18,10 @@ const pretendard = localFont({
 
 export const metadata: Metadata = {
   title: "Coworkers",
-  description: "팀원들과 함께하는 일정 관리 서비스. 함께 일정을 계획하고 관리해보세요.",
+  description: "출퇴근 기록부터 휴가 승인까지, 팀의 근태를 한 곳에서 관리하는 서비스.",
   openGraph: {
     title: "Coworkers",
-    description: "팀원들과 함께하는 일정 관리 서비스. 함께 일정을 계획하고 관리해보세요.",
+    description: "출퇴근 기록부터 휴가 승인까지, 팀의 근태를 한 곳에서 관리하는 서비스.",
     type: "website",
   },
 };

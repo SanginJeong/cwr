@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -57,7 +57,7 @@ const HeroSection = ({ link = ROUTES.login }: HeroSectionProps) => {
             />
             <div className="ml-[30px]">
               <p className="text-md-medium tablet:text-lg-medium pc:text-xl-medium text-state-400">
-                함께 만들어가는 회사
+                출퇴근부터 휴가 승인까지
               </p>
               <h1 className="text-2xl-brand-bold tablet:text-3xl-brand-bold pc:text-4xl-brand-bold text-brand-primary mt-1">
                 Coworkers
@@ -70,11 +70,15 @@ const HeroSection = ({ link = ROUTES.login }: HeroSectionProps) => {
         </div>
         <div className={cn("min-w-full pc:min-w-[1330px]", "hero-image")}>
           <DeviceImage
-            ImageInfo={{ alt: "대시보드 이미지", width: 1330, height: 1080 }}
+            ImageInfo={{
+              alt: "이번 달 근태 요약과 달력, 오늘 출근 카드가 보이는 내 근태 화면",
+              width: 1330,
+              height: 1080,
+            }}
             Src={{
-              mobileSrc: "/landing/img-1-2.png",
-              tabletSrc: "/landing/img-1-1.png",
-              desktopSrc: "/landing/img-1.png",
+              mobileSrc: "/landing/hero-mobile.png",
+              tabletSrc: "/landing/hero-tablet.png",
+              desktopSrc: "/landing/hero.png",
             }}
             ImageClassName="object-contain object-left w-full h-full"
           />

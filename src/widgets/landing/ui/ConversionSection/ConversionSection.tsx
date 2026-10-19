@@ -42,7 +42,7 @@ const ConversionSection = ({ link = "login" }: ConversionSectionProps) => {
         <div className="flex-col-center gap-2 tablet:gap-3">
           <h2 className="text-2lg-bold tablet:text-2xl-bold text-brand-primary">지금 바로 시작해보세요</h2>
           <p className="text-xs-regular tablet:text-lg-regular text-text-default">
-            팀원 모두와 같은 방향, 같은 속도로 나아가는 가장 쉬운 방법
+            출퇴근 기록과 휴가 승인을 가장 간단하게
           </p>
         </div>
         <LinkButton href={link} size="large" className="w-[160px]">

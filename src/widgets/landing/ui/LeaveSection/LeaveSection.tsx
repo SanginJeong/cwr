@@ -6,13 +6,13 @@ import { useGSAP } from "@gsap/react";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import DeviceImage from "../_internal/DeviceImage/DeviceImage";
 import FeatureBlock from "../_internal/FeatureBlock/FeatureBlock";
-import { DETAIL_SECTION } from "../../config/constants";
+import { LEAVE_SECTION } from "../../config/constants";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const DetailSection = () => {
+const LeaveSection = () => {
   const container = useRef<HTMLDListElement>(null);
 
   useGSAP(
@@ -49,10 +49,10 @@ const DetailSection = () => {
       <div className="flex flex-col gap-[30px] pc:gap-[108px] pc:flex-row-reverse pc:justify-center">
         <div className="feature-block">
           <FeatureBlock
-            iconSrc={DETAIL_SECTION.iconSrc}
+            iconSrc={LEAVE_SECTION.iconSrc}
             iconAlt=""
-            title={DETAIL_SECTION.title}
-            description={DETAIL_SECTION.description}
+            title={LEAVE_SECTION.title}
+            description={LEAVE_SECTION.description}
             titleClassName="text-lg-bold tablet:text-2xl-bold text-text-inverse"
             descriptionClassName="text-xs-regular tablet:text-md-regular text-point-blue"
             className="pc:mt-[180px] pc:ml-[0] pc:mr-[35px]"
@@ -60,13 +60,14 @@ const DetailSection = () => {
         </div>
         <div className="feature-image relative min-h-0 tablet:ml-[45px] pc:ml-0">
           <DeviceImage
-            ImageInfo={{ alt: "대시보드 이미지", width: 982, height: 667 }}
+            ImageInfo={{ alt: LEAVE_SECTION.imageAlt, width: 982, height: 667 }}
             Src={{
-              mobileSrc: DETAIL_SECTION.mobileSrc,
-              tabletSrc: DETAIL_SECTION.tabletSrc,
-              desktopSrc: DETAIL_SECTION.desktopSrc,
+              mobileSrc: LEAVE_SECTION.mobileSrc,
+              tabletSrc: LEAVE_SECTION.tabletSrc,
+              desktopSrc: LEAVE_SECTION.desktopSrc,
             }}
-            ImageClassName="object-cover object-right w-full h-full pc:w-[982px] pc:h-[667px]"
+            // PC에서 982px로 고정하면 사이드바가 있는 화면(~1440px)에서 왼쪽이 밖으로 밀려 잘렸다. 화면 폭에 맞춰 줄인다
+            ImageClassName="object-cover object-right w-full h-full pc:w-[min(982px,50vw)] pc:h-auto"
           />
         </div>
       </div>
@@ -74,4 +75,4 @@ const DetailSection = () => {
   );
 };
 
-export default DetailSection;
+export default LeaveSection;
