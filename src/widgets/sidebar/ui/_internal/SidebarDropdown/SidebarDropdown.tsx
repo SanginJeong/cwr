@@ -14,6 +14,7 @@ const DropdownItem = ({ title, id, isOpen }: { title: string; id: string; isOpen
   return (
     <Link
       href={ROUTES.team(id)}
+      aria-label={title}
       className={cn(
         "h-[42px] rounded-xl flex items-center gap-3 bg-primary",
         isOpen ? "w-full px-4" : "w-[42px] justify-center",
