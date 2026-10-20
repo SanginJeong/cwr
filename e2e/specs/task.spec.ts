@@ -17,10 +17,15 @@ const openTaskList = async (page: Page) => {
 test("K1 체크 표시를 눌러도 완료되고, 키보드로 상세를 연다 (회귀)", async ({ page }) => {
   await openTaskList(page);
   await expect(page.getByRole("button", { name: `${TASK} 상세보기` })).toBeVisible();
+  // 화요일·목요일에는 주간 반복 "코드 리뷰"도 같은 날 보여 첫 체크박스가 그 할 일일 수 있다. 이 할 일의 카드 안에서 고른다
+  const checkbox = page
+    .getByRole("listitem")
+    .filter({ has: page.getByRole("button", { name: `${TASK} 상세보기` }) })
+    .getByRole("checkbox");
   // 회귀: 체크박스 위의 체크 아이콘이 클릭을 가로채 상자 자체를 누르면 반응하지 않았다
-  await page.getByRole("checkbox").first().click();
+  await checkbox.click();
   await expect(page.getByLabel(`${TASK} 완료`)).toBeVisible();
-  await page.getByRole("checkbox").first().click();
+  await checkbox.click();
   await expect(page.getByLabel(`${TASK} 미완료`)).toBeVisible();
 
   // 회귀: 카드가 li role="button"이라 그 안의 체크박스·메뉴와 겹쳤다. 이제 상세보기는 따로 있는 버튼이다
